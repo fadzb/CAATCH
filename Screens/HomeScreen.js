@@ -1,107 +1,62 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, Dimensions, Image, TouchableOpacity } from 'react-native';
-import Ionicons from "react-native-vector-icons/Ionicons";
-import {Icons} from "../Constants/Icon";
-import ImageView from 'react-native-image-view';
+import { StyleSheet, Text, View, Button, TextInput, Image } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import {TabStyles, themeStyles} from "../Styles/TabStyles";
-import {HomeScreenTileRow} from "../Components/HomeScreenTileRow";
-import {SectionHeader} from "../Constants/Constants";
-import {connect} from 'react-redux'
+import { styles } from '../Styles/TabStyles';
 
-class HomeScreen extends React.Component {
-    static navigationOptions = {
-        header: null,
-        headerTitle: 'Home'
-    };
-    // static property called navigationOptions that belongs to all screen components
+export default class HomeScreen extends React.Component {
+  static navigationOptions = {
+    tabBarIcon: ({ focused, tintColor }) => (
+      <Ionicons
+        name={`ios-home${focused ? '' : '-outline'}`}
+        // if icon is not pressed use outline
+        size={25}
+        color={tintColor}
+      />
+    ),
+  };
+  // static property called navigationOptions that belongs to all screen components
 
-    constructor(props) {
-        super(props);
+  render() {
+    const sampleQuote = '"Work hard, stay positive, and get up early. It' + "'" + 's the best part of the day."';
+    const author = 'George Allen, Sr.';
+    // placeholder quotes
 
-        this.state = {
-            modalVisible: false
-        }
-    }
-
-    toggleModal = bool => {
-        this.setState({modalVisible: bool});
-    };
-    // modal for displaying image
-
-    render() {
-        return (
-            <View style={[themeStyles.homeCrisisViewContainer, TabStyles.container]}>
-                <TouchableOpacity onPress={() => this.toggleModal(true)}>
-                    <Image resizeMode={'cover'}
-                           style={[themeStyles.homeScreenImage, {width: Dimensions.get('window').width - 50, height: Dimensions.get('window').height / 2.8, marginTop: 35}]}
-                           source={this.props.wallpaperImage ? {uri: this.props.wallpaperImage} : require('../Media/Images/lavenderCropped.jpg')}
-                    />
-                </TouchableOpacity>
-                <View style={homeStyle.tileContainer}>
-                    <HomeScreenTileRow
-                        name2={SectionHeader.diary}
-                        iconName2= {Icons.diary + "-outline"}
-                        onPress2={() => this.props.navigation.navigate('Diary')}
-                        name1={SectionHeader.shortPlan}
-                        iconName1= {Icons.plan + "-outline"}
-                        onPress1={() => this.props.navigation.navigate('Plan')}
-                        third={true}
-                        name3="Reports"
-                        onPress3={() => this.props.navigation.navigate('reportSelection')}
-                        iconName3= {Icons.report + "-outline"}
-                    />
-                    <HomeScreenTileRow
-                        name1={SectionHeader.stats}
-                        iconName1= {Icons.stats + "-outline"}
-                        onPress1={() => this.props.navigation.navigate('statSelection')}
-                        name3="My Cal"
-                        iconName3= {Icons.calendar + "-outline"}
-                        onPress3={() => this.props.navigation.navigate('schedule')}
-                        third={true}
-                        name2={SectionHeader.goals}
-                        onPress2={() => this.props.navigation.navigate('goals')}
-                        iconName2= {Icons.goals + "-outline"}
-                    />
-                </View>
-                <ImageView
-                    images={this.props.wallpaperImage ? [{source: {uri: this.props.wallpaperImage}}] : [
-                        {
-                            source: require('../Media/Images/lavenderCropped.jpg'),
-                            width: 652,
-                            height: 454,
-                        }]}
-                    imageIndex={0}
-                    isVisible={this.state.modalVisible}
-                    onClose={() => this.toggleModal(false)}
-                    animationType={'slide'}
-                />
-            </View>
-        );
-    }
+    return (
+      <View style={styles.container}>
+        <Image style={homeStyle.banner} source={require('../Media/Images/HD-Peaceful-Image.jpg')} />
+        <View style={homeStyle.quoteContainer}>
+          <Text style={homeStyle.quote}>{sampleQuote}</Text>
+          <Text style={homeStyle.quoteAuthor}>{author}</Text>
+        </View>
+      </View>
+    );
+  }
 }
 
 const homeStyle = StyleSheet.create({
-    banner: {
-        //justifyContent: "flex-start"
-    },
+  banner: {
+    flex: 0.37,
+    resizeMode: 'contain',
+    justifyContent: 'flex-start',
+  },
 
-    tileContainer: {
-        flex: 1,
-        flexDirection: "column",
-        alignSelf: "stretch",
-        marginHorizontal: 10,
-        //marginVertical: 20,
-        marginBottom: 35
-    },
+  quoteContainer: {
+    flex: 0.2,
+    justifyContent: 'center',
+  },
 
+  quote: {
+    fontSize: 17,
+    textAlign: 'center',
+    paddingLeft: 15,
+    paddingRight: 15,
+    paddingBottom: 5,
+  },
+
+  quoteAuthor: {
+    textAlign: 'center',
+    fontWeight: 'bold',
+    fontSize: 17,
+  },
 });
-
-const mapStateToProps = state => ({
-    wallpaperImage: state.setting.wallpaperImage,
-});
-// function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
-
-export default connect(mapStateToProps)(HomeScreen)
-// HOC that re-renders the component automatically every time a particular section of state is updated
-

@@ -1,15 +1,15 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 
-export default class EnvironmentSafe extends React.Component {
+export default class CopingStrategies extends React.Component {
   static navigationOptions = {
-    title: 'Make the Environment Safe',
+    title: 'Coping Strategies',
   };
 
   render() {
     return (
       <View>
-        <Text>Environment Safe</Text>
+        <Text>Coping Strategies</Text>
       </View>
     );
   }
