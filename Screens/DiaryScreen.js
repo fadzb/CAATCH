@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Calendar, CalendarList, Agenda } from 'react-native-calendars';
 
 import { styles } from '../Styles/TabStyles';
 
@@ -20,8 +21,22 @@ export default class DiaryScreen extends React.Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text>DiaryScreen</Text>
+        <View style={diaryStyle.calendarContainer}>
+          <Calendar style={diaryStyle.calendar} />
+        </View>
       </View>
     );
   }
 }
+
+const diaryStyle = StyleSheet.create({
+  calendar: {
+    flex: 0.95,
+    paddingTop: 10,
+  },
+
+  calendarContainer: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
+});
