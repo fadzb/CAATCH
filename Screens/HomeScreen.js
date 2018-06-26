@@ -1,8 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, Image, TouchableHighlight } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 
 import {styles} from "../Styles/TabStyles";
+import {HomeScreenTileRow} from "../Components/HomeScreenTileRow";
 
 export default class HomeScreen extends React.Component {
 
@@ -19,16 +20,22 @@ export default class HomeScreen extends React.Component {
     // static property called navigationOptions that belongs to all screen components
 
     render() {
-        const sampleQuote = '"Work hard, stay positive, and get up early. It' + "'" + 's the best part of the day."';
-        const author = "George Allen, Sr.";
-        // placeholder quotes
-
         return (
             <View style={styles.container}>
                 <Image style={homeStyle.banner} source={require("../Media/Images/HD-Peaceful-Image.jpg")} />
-                <View style={homeStyle.quoteContainer}>
-                    <Text style={homeStyle.quote}>{sampleQuote}</Text>
-                    <Text style={homeStyle.quoteAuthor}>{author}</Text>
+                <View style={homeStyle.tileContainer}>
+                    <HomeScreenTileRow
+                        name1="My Stats"
+                        iconName1="ios-stats-outline"
+                        name2="Plan"
+                        iconName2="ios-list-outline"
+                    />
+                    <HomeScreenTileRow
+                        name1="Diary"
+                        iconName1="ios-book-outline"
+                        name2="Reports"
+                        iconName2="ios-clipboard-outline"
+                    />
                 </View>
             </View>
         );
@@ -42,23 +49,11 @@ const homeStyle = StyleSheet.create({
         justifyContent: "flex-start"
     },
 
-    quoteContainer: {
-        flex: .2,
-        justifyContent: "center"
+    tileContainer: {
+        flex: .63,
+        flexDirection: "column",
+        alignSelf: "stretch"
     },
 
-    quote: {
-        fontSize: 17,
-        textAlign: "center",
-        paddingLeft: 15,
-        paddingRight: 15,
-        paddingBottom: 5
-    },
-
-    quoteAuthor: {
-        textAlign: "center",
-        fontWeight: "bold",
-        fontSize: 17,
-    }
 });
 
