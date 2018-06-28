@@ -5,6 +5,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import {styles} from "../Styles/TabStyles";
 
 export default class TwitterScreen extends React.Component {
+
     static navigationOptions = {
         tabBarIcon: ({ tintColor }) => (
             <Ionicons
@@ -24,3 +25,7 @@ export default class TwitterScreen extends React.Component {
         );
     }
 }
+
+const newsStyle = StyleSheet.create({
+
+});
