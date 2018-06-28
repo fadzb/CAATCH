@@ -1,0 +1,44 @@
+dependencies: \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Services/EXGoogleAuthManager.m \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Target\ Support\ Files/ExpoKit/ExpoKit-prefix.pch \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Services/EXGoogleAuthManager.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/EXGoogle.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/ScopedModule/EXScopedBridgeModule.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridge.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridgeDelegate.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTJavaScriptLoader.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTDefines.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridgeModule.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTFrameUpdate.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTInvalidating.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/GoogleSignIn/GoogleSignIn.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/GoogleSignIn/GIDAuthentication.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/GoogleSignIn/GIDGoogleUser.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/GoogleSignIn/GIDProfileData.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/GoogleSignIn/GIDSignIn.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/GoogleSignIn/GIDSignInButton.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/AppAuth.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthState.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthStateChangeDelegate.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthStateErrorDelegate.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthorizationRequest.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDResponseTypes.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDScopes.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthorizationResponse.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthorizationService.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthorizationUICoordinator.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDError.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDErrorUtilities.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDGrantTypes.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDRegistrationRequest.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDRegistrationResponse.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDScopeUtilities.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDServiceConfiguration.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDServiceDiscovery.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDTokenRequest.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDTokenResponse.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDTokenUtilities.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDURLSessionProvider.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthState+IOS.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthorizationService+IOS.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/AppAuth/OIDAuthorizationUICoordinatorIOS.h

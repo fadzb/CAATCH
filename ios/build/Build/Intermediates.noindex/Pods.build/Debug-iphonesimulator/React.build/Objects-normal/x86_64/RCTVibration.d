@@ -1,0 +1,6 @@
+dependencies: \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/node_modules/react-native/Libraries/Vibration/RCTVibration.m \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Target\ Support\ Files/React/React-prefix.pch \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/node_modules/react-native/Libraries/Vibration/RCTVibration.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/node_modules/react-native/React/Base/RCTBridgeModule.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/node_modules/react-native/React/Base/RCTDefines.h

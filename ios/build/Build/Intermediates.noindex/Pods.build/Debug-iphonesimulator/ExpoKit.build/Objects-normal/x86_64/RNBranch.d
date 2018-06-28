@@ -1,0 +1,42 @@
+dependencies: \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Standalone/Branch/RNBranch.m \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Target\ Support\ Files/ExpoKit/ExpoKit-prefix.pch \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridge.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridgeDelegate.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTJavaScriptLoader.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTDefines.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridgeModule.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTFrameUpdate.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTInvalidating.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTEventDispatcher.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTLog.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTAssert.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTUtils.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Standalone/Branch/RNBranch.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/ScopedModule/EXScopedBridgeModule.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Standalone/Branch/BranchLinkProperties+RNBranch.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/Branch.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCConfig.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BranchView.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCCallbacks.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCLinkCache.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCLinkData.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BranchViewHandler.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCServerInterface.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCServerResponse.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCPreferenceHelper.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BranchLinkProperties.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BranchUniversalObject.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCServerRequestQueue.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCServerRequest.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BranchActivityItemProvider.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BranchDeepLinkingController.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCCommerceEvent.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BranchShareLink.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/Branch/BNCXcode7Support.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Standalone/Branch/BranchUniversalObject+RNBranch.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Standalone/Branch/RNBranchAgingDictionary.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Standalone/Branch/RNBranchEventEmitter.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTEventEmitter.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/EXConstants.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Internal/EXScopedModuleRegistry.h

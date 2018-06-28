@@ -1,0 +1,35 @@
+dependencies: \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Services/EXSensorManager.m \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Target\ Support\ Files/ExpoKit/ExpoKit-prefix.pch \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Core/EXKernel.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Core/EXAppBrowserController.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Core/EXKernelAppRegistry.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Core/EXKernelAppRecord.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Core/EXKernelServiceRegistry.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Core/EXKernelUtil.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/CocoaLumberjack.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDLog.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDLegacyMacros.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDLogMacros.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDAssertMacros.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDASLLogCapture.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDASLLogger.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDTTYLogger.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDFileLogger.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDOSLogger.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/ExpoKit/EXViewController.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Services/EXSensorManager.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Sensors/EXAccelerometer.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridge.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridgeDelegate.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTJavaScriptLoader.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTDefines.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridgeModule.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTFrameUpdate.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTInvalidating.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/ScopedModule/EXScopedEventEmitter.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTEventEmitter.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Sensors/EXDeviceMotion.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Sensors/EXGyroscope.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Sensors/EXMagnetometer.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/Sensors/EXMagnetometerUncalibrated.h

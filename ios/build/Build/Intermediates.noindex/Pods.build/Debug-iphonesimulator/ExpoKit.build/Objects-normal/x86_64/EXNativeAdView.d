@@ -1,0 +1,30 @@
+dependencies: \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/FBAds/EXNativeAdView.m \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Target\ Support\ Files/ExpoKit/ExpoKit-prefix.pch \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Api/FBAds/EXNativeAdView.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBNativeAd.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBAdDefines.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTView.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBorderStyle.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTComponent.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTPointerEvents.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBAudienceNetwork.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBAdChoicesView.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBAdSettings.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBAdView.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBAdSize.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBInstreamAdView.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBInterstitialAd.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBMediaView.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBMediaViewVideoRenderer.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBNativeAdCollectionViewAdProvider.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBNativeAdsManager.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBNativeAdCollectionViewCellProvider.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBNativeAdView.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBNativeAdScrollView.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBNativeAdTableViewAdProvider.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBNativeAdTableViewCellProvider.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/FBAudienceNetwork/FBAudienceNetwork/FBRewardedVideoAd.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTUtils.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTAssert.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTDefines.h

@@ -1,0 +1,30 @@
+dependencies: \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Environment/EXShellManager.m \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Target\ Support\ Files/ExpoKit/ExpoKit-prefix.pch \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Analytics/EXAnalytics.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Environment/EXBuildConstants.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Core/EXKernelUtil.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/CocoaLumberjack.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDLog.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDLegacyMacros.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDLogMacros.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDAssertMacros.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDASLLogCapture.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDASLLogger.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDTTYLogger.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDFileLogger.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Private/CocoaLumberjack/DDOSLogger.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/ExpoKit/ExpoKit.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Kernel/Environment/EXShellManager.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/ExpoKit/ios/Exponent/Versioned/Core/Internal/Test/EXTest.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTBridgeModule.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTDefines.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/Crashlytics/Crashlytics/Crashlytics.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/Crashlytics/Crashlytics/CLSAttributes.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/Crashlytics/Crashlytics/CLSLogging.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/Crashlytics/Crashlytics/CLSReport.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/Crashlytics/Crashlytics/CLSStackFrame.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/Crashlytics/Crashlytics/Answers.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/Crashlytics/Crashlytics/ANSCompatibility.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTUtils.h \
+  /Users/conorogrady/reactNative-workspace/CaatchProject/ios/Pods/Headers/Public/React/React/RCTAssert.h
