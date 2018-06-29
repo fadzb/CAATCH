@@ -3,6 +3,7 @@
 #import "AppDelegate.h"
 #import "ExpoKit.h"
 #import "EXViewController.h"
+#import <TwitterKit/TWTRKit.h>
 
 @interface AppDelegate ()
 
@@ -17,6 +18,7 @@
     _window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
     _window.backgroundColor = [UIColor whiteColor];
     [[ExpoKit sharedInstance] application:application didFinishLaunchingWithOptions:launchOptions];
+    [[Twitter sharedInstance] startWithConsumerKey:@"VQ3RHBCnaM9420iDDXUIR84yl" consumerSecret:@"a7elhJFOpqm3vzr75papfQzdI5nByyG3hh2nj5UMLRvrYytFJK"];
     _rootViewController = [ExpoKit sharedInstance].rootViewController;
     _window.rootViewController = _rootViewController;
 

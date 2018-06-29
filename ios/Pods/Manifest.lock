@@ -151,6 +151,9 @@ PODS:
     - React/Core
     - React/fishhook
     - React/RCTBlob
+  - TwitterCore (3.1.0)
+  - TwitterKit (3.3.0):
+    - TwitterCore (>= 3.1.0)
   - yoga (0.55.2.React)
 
 DEPENDENCIES:
@@ -173,6 +176,7 @@ DEPENDENCIES:
   - React/RCTText (from `../node_modules/react-native`)
   - React/RCTVibration (from `../node_modules/react-native`)
   - React/RCTWebSocket (from `../node_modules/react-native`)
+  - TwitterKit
   - yoga (from `../node_modules/react-native/ReactCommon/yoga`)
 
 EXTERNAL SOURCES:
@@ -226,8 +230,10 @@ SPEC CHECKSUMS:
   JKBigInteger2: e91672035c42328c48b7dd015b66812ddf40ca9b
   lottie-ios: 836cdbba92f62f3c6a00e37a4ce485321fe317cf
   React: 977e1cdf18a3047a35d321b34ffb678d79d19076
+  TwitterCore: 644d59e75abccb26cf0a9050d2c4dea0e5412241
+  TwitterKit: a2e60ddcedbf54091eac6f27685ca7a87681e1d7
   yoga: a23273df0088bf7f2bb7e5d7b00044ea57a2a54a
 
-PODFILE CHECKSUM: 06c1ee6d97c43178e96ecf01a2321e3cfc3fdde2
+PODFILE CHECKSUM: d14ea67e2a4b6ba6e85a0cae15befbd6240eca5c
 
 COCOAPODS: 1.4.0
