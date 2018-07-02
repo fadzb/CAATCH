@@ -47,5 +47,6 @@ const homeStyle = StyleSheet.create({
     flex: 0.63,
     flexDirection: 'column',
     alignSelf: 'stretch',
+    margin: 10,
   },
 });
