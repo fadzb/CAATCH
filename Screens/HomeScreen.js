@@ -52,7 +52,8 @@ const homeStyle = StyleSheet.create({
     tileContainer: {
         flex: .63,
         flexDirection: "column",
-        alignSelf: "stretch"
+        alignSelf: "stretch",
+        margin: 10
     },
 
 });

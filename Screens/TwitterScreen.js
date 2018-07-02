@@ -32,4 +32,4 @@ const NewsStyle = StyleSheet.create({
         height: Dimensions.get('window').height,
         width: Dimensions.get('window').width
     }
-})
+});

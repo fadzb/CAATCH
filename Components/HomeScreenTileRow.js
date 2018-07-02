@@ -29,6 +29,6 @@ HomeScreenTileRow.propTypes = {
 const tileRowStyle = StyleSheet.create({
     container: {
         flex: 1,
-        flexDirection: 'row'
+        flexDirection: 'row',
     }
 });
