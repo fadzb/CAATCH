@@ -4,6 +4,7 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import twitter from 'react-native-twitter';
 
 import {styles} from "../Styles/TabStyles";
+import Tweet from "../Components/Tweet"
 
 const tokens = {
     consumerKey: "VQ3RHBCnaM9420iDDXUIR84yl",
@@ -37,7 +38,7 @@ export default class TwitterScreen extends React.Component {
 
     componentDidMount() {
         client.get('statuses/home_timeline', {count: 100})
-            .then(tweets => tweets.map(t => t.text))
+            .then(tweets => tweets.map(t => ({text: t.text, pic: t.user.profile_image_url, name: t.user.name, username: t.user.screen_name})))
             .then(res => this.setState({
                 tweets: res
             }))
@@ -47,10 +48,16 @@ export default class TwitterScreen extends React.Component {
     render() {
         return (
             <View style={styles.container}>
-                <Text>TwitterScreen</Text>
                 <FlatList
                     data={this.state.tweets}
-                    renderItem={({item}) => <View style={{padding: 20}}><Text>{item}</Text></View>}
+                    renderItem={({item}) => <View style={{padding: 20}}>
+                        <Tweet
+                            profilePicture={{uri: item.pic}}
+                            name={item.name}
+                            username={item.username}
+                            content={item.text}
+                        />
+                    </View>}
                     keyExtractor={(item, index) => index.toString()}
                 />
             </View>
