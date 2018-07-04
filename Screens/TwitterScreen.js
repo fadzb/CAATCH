@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput, WebView, Dimensions } from '
 import Ionicons from "react-native-vector-icons/Ionicons";
 import EmbeddedTweet from '../Components/TwitterTimeline'
 
-import {styles} from "../Styles/TabStyles";
+import {TabStyles} from "../Styles/TabStyles";
 
 export default class TwitterScreen extends React.Component {
     static navigationOptions = {
@@ -19,14 +19,14 @@ export default class TwitterScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.container}>
-                <EmbeddedTweet url='https://twitter.com/AppCaatch/lists/CAATCH' style={NewsStyle.webview}></EmbeddedTweet>
+            <View style={TabStyles.container}>
+                <EmbeddedTweet url='https://twitter.com/AppCaatch/lists/CAATCH' style={newsStyle.webview}></EmbeddedTweet>
             </View>
         );
     }
 }
 
-const NewsStyle = StyleSheet.create({
+const newsStyle = StyleSheet.create({
     webview: {
         flex: 1,
         height: Dimensions.get('window').height,

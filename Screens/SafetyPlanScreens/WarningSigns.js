@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 
-import { db } from '../../Constants/DatabaseConnection'
+import { db } from '../../Constants/DatabaseConnector'
 
 export default class WarningSigns extends React.Component {
     static navigationOptions = {
@@ -18,14 +18,14 @@ export default class WarningSigns extends React.Component {
 
     updateDatabase = () => {
         db.transaction(tx => {
-            tx.executeSql('insert into Test (test_name) values (?)', [this.state.textVal])
+            tx.executeSql('insert into CopingStrategy (copeDesc) values (?)', [this.state.textVal])
         }, err => console.log(err), this.readDatabase)
     };
     // Test to ensure SQL insert works
 
     readDatabase = () => {
         db.transaction(tx => {
-            tx.executeSql('select test_name from Test', [], (_, resultSet) => console.log(resultSet.rows._array))
+            tx.executeSql('select * from CopingStrategy', [], (_, resultSet) => console.log(resultSet.rows._array))
         })
     };
     // Test to ensure SQL select works

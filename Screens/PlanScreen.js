@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 
-import {styles} from "../Styles/TabStyles";
+import {TabStyles} from "../Styles/TabStyles";
 import {SafetyPlanSelector} from "../Components/SafetyPlanSelector";
 
 export default class PlanScreen extends React.Component {
@@ -16,7 +16,7 @@ export default class PlanScreen extends React.Component {
 
     render() {
         return (
-            <View style={styles.stackContainer}>
+            <View style={TabStyles.stackContainer}>
                 <SafetyPlanSelector name="Warning Signs" press={this.handleItemPress} screen="warning"/>
                 <SafetyPlanSelector name="Coping Strategies" press={this.handleItemPress} screen="coping"/>
                 <SafetyPlanSelector name="Reasons to Live" press={this.handleItemPress} screen="reason"/>

@@ -36,7 +36,7 @@ const tileStyle = StyleSheet.create({
         justifyContent: "space-around",
         alignItems: "center",
         borderWidth: 3,
-        borderRadius: 15
+        borderRadius: 10
     },
 
     container: {
