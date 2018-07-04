@@ -1,9 +1,9 @@
 import { StyleSheet } from 'react-native';
 import { Constants } from 'expo';
 
-// globally shared styles
+// globally shared TabStyles
 
-export const styles = StyleSheet.create({
+export const TabStyles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
@@ -17,4 +17,9 @@ export const styles = StyleSheet.create({
     alignItems: 'center',
   },
   // for screens that already have default header bar
+
+  planContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
 });

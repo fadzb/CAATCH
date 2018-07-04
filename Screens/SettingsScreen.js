@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { styles } from '../Styles/TabStyles';
+import { TabStyles } from '../Styles/TabStyles';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -19,7 +19,7 @@ export default class SettingsScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={TabStyles.container}>
         <Text>SettingsScreen</Text>
       </View>
     );

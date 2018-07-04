@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Image, TouchableHighlight } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
-import { styles } from '../Styles/TabStyles';
+import { TabStyles } from '../Styles/TabStyles';
 import { HomeScreenTileRow } from '../Components/HomeScreenTileRow';
 
 export default class HomeScreen extends React.Component {
@@ -20,7 +20,7 @@ export default class HomeScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <View style={TabStyles.container}>
         <Image style={homeStyle.banner} source={require('../Media/Images/HD-Peaceful-Image.jpg')} />
         <View style={homeStyle.tileContainer}>
           <HomeScreenTileRow name1="My Stats" iconName1="ios-stats-outline" name2="Plan" iconName2="ios-list-outline" />
