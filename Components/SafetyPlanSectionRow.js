@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types';
 
-// Component used for each of the SP items on the first SP tab screen
+// Component used for rows in the various SP section lists
 
 export const SafetyPlanSectionRow = (props) => {
   return (
