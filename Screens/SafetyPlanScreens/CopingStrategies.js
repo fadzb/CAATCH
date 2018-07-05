@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'r
 import t from 'tcomb-form-native';
 
 import { TabStyles } from '../../Styles/TabStyles';
-import { updateDatabase } from '../../Constants/DatabaseHelper';
+import { updateDatabase } from '../../Util/DatabaseHelper';
 
 const Form = t.form.Form;
 
@@ -21,6 +21,23 @@ export default class CopingStrategies extends React.Component {
     title: 'Coping Strategies',
   };
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      value: null,
+    };
+  }
+
+  clearForm = () => {
+    this.setState({ value: null });
+  };
+  // clear content from all form inputs
+
+  onChange = (value) => {
+    this.setState({ value: value });
+  };
+
   onPress = () => {
     const value = this.refs.form.getValue();
     // returns values captured in form as object
@@ -30,13 +47,16 @@ export default class CopingStrategies extends React.Component {
       console.log(value);
       updateDatabase('CopingStrategy', Object.values(value), Object.keys(value));
       // write the saved values to DB if valid
+
+      this.clearForm();
+      // clear form once DB is updated
     }
   };
 
   render() {
     return (
       <View style={TabStyles.planContainer}>
-        <Form ref="form" type={cope} options={options} />
+        <Form ref="form" type={cope} value={this.state.value} onChange={this.onChange} options={options} />
         <TouchableHighlight style={copeStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
           <Text style={copeStyle.buttonText}>Save</Text>
         </TouchableHighlight>
