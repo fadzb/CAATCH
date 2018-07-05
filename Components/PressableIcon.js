@@ -1,38 +1,50 @@
-// Simple component for rendering a pressable icon. Name (label) prop is optional
-
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
-import Icon from "react-native-vector-icons/Ionicons";
+import Icon from 'react-native-vector-icons/Ionicons';
 
-export const PressableIcon = props => {
-    return (
-            <TouchableHighlight
-                    underlayColor="#FFF"
-                style={props.buttonStyle}
-                onPress={() => props.onPressFunction()}>
-                <View style={props.buttonContainerStyle}>
-                    {props.name !== undefined &&
-                        <Text style={props.textStyle}>{props.name}</Text>
-                    }
-                    <View style={props.iconStyle}>
-                        <Icon
-                            name={props.iconName}
-                            size={props.size}
-                            color={props.color}
-                        />
-                    </View>
-                </View>
-            </TouchableHighlight>
-    )
+export const PressableIcon = (props) => {
+  return (
+    <View style={pressableIconStyle.container}>
+      <TouchableHighlight
+        underlayColor="#FDEDEC"
+        style={pressableIconStyle.button}
+        onPress={() => props.onPressFunction()}
+      >
+        <View style={{ alignItems: 'center' }}>
+          {props.name !== '' && <Text style={pressableIconStyle.buttonText}>{props.name}</Text>}
+          <Icon name={props.iconName} size={props.size} />
+        </View>
+      </TouchableHighlight>
+    </View>
+  );
 };
 
 PressableIcon.propTypes = {
-    name: PropTypes.string,
-    iconName: PropTypes.string.isRequired,
-    size: PropTypes.number.isRequired,
-    onPressFunction: PropTypes.func,
-    color: PropTypes.string
+  name: PropTypes.string,
+  iconName: PropTypes.string.isRequired,
+  size: PropTypes.number.isRequired,
+  onPressFunction: PropTypes.func,
 };
 // Defining prop types for this component
+
+const pressableIconStyle = StyleSheet.create({
+  button: {
+    flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderRadius: 10,
+  },
+
+  container: {
+    flex: 1,
+    flexDirection: 'row',
+  },
+  // need to wrap button in View in order to stretch to full width of screen using flexDirection
+
+  buttonText: {
+    fontSize: 25,
+    paddingBottom: 10,
+  },
+});
