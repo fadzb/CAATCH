@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
 
-import { db } from '../../Constants/DatabaseConnector'
+import { db } from '../../Util/DatabaseConnector'
 
 export default class WarningSigns extends React.Component {
     static navigationOptions = {

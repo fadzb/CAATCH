@@ -1,6 +1,6 @@
 import React from 'react';
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
-import { checkDB } from "./Constants/DatabaseConnector";
+import { checkDB } from "./Util/DatabaseConnector";
 
 import HomeScreen from "./Screens/HomeScreen";
 import DiaryScreen from "./Screens/DiaryScreen";
