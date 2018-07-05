@@ -1,9 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import t from 'tcomb-form-native'
+import { PressableIcon } from "../../Components/PressableIcon";
 
 import {TabStyles} from "../../Styles/TabStyles";
 import {updateDatabase} from "../../Util/DatabaseHelper";
+import {mediaPicker} from "../../Util/MediaPicker";
 
 const Form = t.form.Form;
 
@@ -14,7 +16,20 @@ const cope = t.struct({
 });
 // data structure for values to be capture in form below
 
-const options = {};
+const options = {
+    fields: {
+        copeName: {
+            label: 'Name'
+        },
+        copeDesc: {
+            label: 'Description'
+        },
+        copeUrl: {
+            label: 'URL'
+        }
+    }
+};
+// for customizing form UI
 
 export default class CopingStrategies extends React.Component {
     static navigationOptions = {
@@ -55,16 +70,25 @@ export default class CopingStrategies extends React.Component {
     render() {
         return(
             <View style={TabStyles.planContainer}>
-                <Form
-                    ref="form"
-                    type={cope}
-                    value={this.state.value}
-                    onChange={this.onChange}
-                    options={options}
-                />
-                <TouchableHighlight style={copeStyle.button} onPress={this.onPress} underlayColor='#99d9f4'>
-                    <Text style={copeStyle.buttonText}>Save</Text>
-                </TouchableHighlight>
+                <View style={copeStyle.formContainer}>
+                    <Form
+                        ref="form"
+                        type={cope}
+                        value={this.state.value}
+                        onChange={this.onChange}
+                        options={options}
+                    />
+                    <TouchableHighlight style={copeStyle.button} onPress={this.onPress} underlayColor='#99d9f4'>
+                        <Text style={copeStyle.buttonText}>Save</Text>
+                    </TouchableHighlight>
+                </View>
+                <View style={copeStyle.iconContainer}>
+                    <PressableIcon
+                        iconName="ios-images-outline"
+                        size={110}
+                        onPressFunction={mediaPicker}
+                    />
+                </View>
             </View>
         )
     }
@@ -83,7 +107,16 @@ const copeStyle = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 8,
         marginBottom: 10,
+        marginTop: 10,
         alignSelf: 'stretch',
         justifyContent: 'center'
+    },
+    formContainer: {
+        flex: 1,
+        margin: 35
+    },
+    iconContainer: {
+        flex: 1,
+        flexDirection: 'row'
     }
 });

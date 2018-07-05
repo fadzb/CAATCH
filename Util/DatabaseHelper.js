@@ -18,4 +18,5 @@ export const updateDatabase = (tableName, writeData, columns) => {
     }, err => console.log(err), () => console.log("DB update success"))
 };
 // Function that takes table name (String), data to write (array) and column names
-// to write to (array) as arguments. See 'CopingStrategies.js' for example of usage
+// to write to (array) as arguments. See 'CopingStrategies.js' for example of usage.
+// Important the object keys are named the same as DB columns/fields
