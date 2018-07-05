@@ -5,17 +5,19 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import PlanScreen from '../../Screens/PlanScreen';
 import WarningSigns from '../../Screens/SafetyPlanScreens/WarningSigns';
-import CopingStrategies from '../../Screens/SafetyPlanScreens/CopingStrategies';
+import NewCopingStrategy from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/NewCopingStrategy';
 import ReasonsToLive from '../../Screens/SafetyPlanScreens/ReasonsToLive';
 import Distractions from '../../Screens/SafetyPlanScreens/Distractions';
 import Contacts from '../../Screens/SafetyPlanScreens/Contacts';
 import EnvironmentSafe from '../../Screens/SafetyPlanScreens/EnvironmentSafe';
+import CopingStrategies from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/CopingStrategies';
 
 const PlanStack = createStackNavigator(
   {
     main: PlanScreen,
     warning: WarningSigns,
     coping: CopingStrategies,
+    newCoping: NewCopingStrategy,
     reason: ReasonsToLive,
     distraction: Distractions,
     contact: Contacts,
