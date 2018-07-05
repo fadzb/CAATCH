@@ -1,3 +1,5 @@
+// Simple component for rendering a pressable icon. Name (label) prop is optional
+
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types'

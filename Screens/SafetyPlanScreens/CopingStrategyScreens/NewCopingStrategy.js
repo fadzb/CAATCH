@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import t from 'tcomb-form-native'
-import { PressableIcon } from "../../Components/PressableIcon";
+import { PressableIcon } from "../../../Components/PressableIcon";
 
-import {TabStyles} from "../../Styles/TabStyles";
-import {updateDatabase} from "../../Util/DatabaseHelper";
-import {mediaPicker} from "../../Util/MediaPicker";
+import {TabStyles} from "../../../Styles/TabStyles";
+import {updateDatabase} from "../../../Util/DatabaseHelper";
+import {mediaPicker} from "../../../Util/Media";
 
 const Form = t.form.Form;
 
@@ -31,9 +31,9 @@ const options = {
 };
 // for customizing form UI
 
-export default class CopingStrategies extends React.Component {
+export default class NewCopingStrategy extends React.Component {
     static navigationOptions = {
-        title: "Coping Strategies"
+        title: "New Strategy"
     };
 
     constructor(props) {
