@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import t from 'tcomb-form-native'
 import { PressableIcon } from "../../../Components/PressableIcon";
+import store from "../../../Redux/store"
+import {updateCoping} from "../../../Redux/actions";
 
 import {TabStyles} from "../../../Styles/TabStyles";
 import {updateDatabase} from "../../../Util/DatabaseHelper";
@@ -53,13 +55,18 @@ export default class NewCopingStrategy extends React.Component {
         this.setState({ value: value })
     };
 
+    updateCopeList = (strategyName) => {
+        store.dispatch(updateCoping(strategyName));
+        // dispatching new Coping Strategy name to global redux store
+    };
+
     onPress = () => {
         const value = this.refs.form.getValue();
         // returns values captured in form as object
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabase("CopingStrategy", Object.values(value), Object.keys(value))
+            updateDatabase("CopingStrategy", Object.values(value), Object.keys(value), this.updateCopeList(value.copeName));
             // write the saved values to DB if valid
 
             this.clearForm();
@@ -85,7 +92,7 @@ export default class NewCopingStrategy extends React.Component {
                 <View style={copeStyle.iconContainer}>
                     <PressableIcon
                         iconName="ios-images-outline"
-                        size={110}
+                        size={80}
                         onPressFunction={mediaPicker}
                     />
                 </View>
@@ -112,7 +119,7 @@ const copeStyle = StyleSheet.create({
         justifyContent: 'center'
     },
     formContainer: {
-        flex: 1,
+        flex: 2,
         margin: 35
     },
     iconContainer: {

@@ -12,10 +12,10 @@ const numberParameters = (number) => {
 };
 // Function that produces String of '?' based on number of columns to write to
 
-export const updateDatabase = (tableName, writeData, columns) => {
+export const updateDatabase = (tableName, writeData, columns, func) => {
     db.transaction(tx => {
         tx.executeSql(`insert into ${tableName} (${columns.toString()}) values (${numberParameters(columns.length)})`, writeData)
-    }, err => console.log(err), () => console.log("DB update success"))
+    }, err => console.log(err), func)
 };
 // Function that takes table name (String), data to write (array) and column names
 // to write to (array) as arguments. See 'NewCopingStrategy.js' for example of usage.
