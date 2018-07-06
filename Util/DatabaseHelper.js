@@ -12,7 +12,7 @@ const numberParameters = (number) => {
 };
 // Function that produces String of '?' based on number of columns to write to
 
-export const updateDatabase = (tableName, writeData, columns) => {
+export const updateDatabase = (tableName, writeData, columns, func) => {
   db.transaction(
     (tx) => {
       tx.executeSql(
@@ -21,7 +21,7 @@ export const updateDatabase = (tableName, writeData, columns) => {
       );
     },
     (err) => console.log(err),
-    () => console.log('DB update success')
+    func
   );
 };
 // Function that takes table name (String), data to write (array) and column names
