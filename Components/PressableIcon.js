@@ -8,22 +8,22 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 export const PressableIcon = props => {
     return (
-        <View style={pressableIconStyle.container}>
             <TouchableHighlight
                 underlayColor="#FDEDEC"
-                style={pressableIconStyle.button}
+                style={props.buttonStyle}
                 onPress={() => props.onPressFunction()}>
-                <View style={{alignItems:"center"}}>
+                <View style={props.buttonContainerStyle}>
                     {props.name !== "" &&
-                        <Text style={pressableIconStyle.buttonText}>{props.name}</Text>
+                        <Text style={props.textStyle}>{props.name}</Text>
                     }
-                    <Icon
-                        name={props.iconName}
-                        size={props.size}
-                    />
+                    <View style={props.iconStyle}>
+                        <Icon
+                            name={props.iconName}
+                            size={props.size}
+                        />
+                    </View>
                 </View>
             </TouchableHighlight>
-        </View>
     )
 };
 
@@ -34,24 +34,3 @@ PressableIcon.propTypes = {
     onPressFunction: PropTypes.func
 };
 // Defining prop types for this component
-
-const pressableIconStyle = StyleSheet.create({
-    button: {
-        flex: 1,
-        justifyContent: "space-around",
-        alignItems: "center",
-        borderRadius: 10
-    },
-
-    container: {
-        flex: 1,
-        flexDirection: 'row',
-    },
-    // need to wrap button in View in order to stretch to full width of screen using flexDirection
-
-    buttonText: {
-        fontSize: 25,
-        paddingBottom: 10
-    },
-
-});
