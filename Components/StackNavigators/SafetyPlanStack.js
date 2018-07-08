@@ -11,6 +11,7 @@ import Distractions from '../../Screens/SafetyPlanScreens/Distractions';
 import Contacts from '../../Screens/SafetyPlanScreens/Contacts';
 import EnvironmentSafe from '../../Screens/SafetyPlanScreens/EnvironmentSafe';
 import CopingStrategies from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/CopingStrategies';
+import WarningSignLink from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/WarningSignLink';
 
 const PlanStack = createStackNavigator(
   {
@@ -18,6 +19,7 @@ const PlanStack = createStackNavigator(
     warning: WarningSigns,
     coping: CopingStrategies,
     newCoping: NewCopingStrategy,
+    warningLink: WarningSignLink,
     reason: ReasonsToLive,
     distraction: Distractions,
     contact: Contacts,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
 import t from 'tcomb-form-native';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import store from '../../../Redux/store';
@@ -21,13 +21,16 @@ const cope = t.struct({
 const options = {
   fields: {
     copeName: {
-      label: 'Name',
+      placeholder: 'Name',
+      auto: 'none',
     },
     copeDesc: {
-      label: 'Description',
+      placeholder: 'Description',
+      auto: 'none',
     },
     copeUrl: {
-      label: 'URL',
+      placeholder: 'URL',
+      auto: 'none',
     },
   },
 };
@@ -80,12 +83,37 @@ export default class NewCopingStrategy extends React.Component {
       <View style={TabStyles.planContainer}>
         <View style={copeStyle.formContainer}>
           <Form ref="form" type={cope} value={this.state.value} onChange={this.onChange} options={options} />
+          <PressableIcon
+            iconName="ios-arrow-dropright-outline"
+            size={25}
+            onPressFunction={() => this.props.navigation.push('warningLink')}
+            name="Warning Sign"
+            buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
+            buttonStyle={copeStyle.listButton}
+            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
+            iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
+          />
+          <PressableIcon
+            iconName="ios-arrow-dropright-outline"
+            size={25}
+            onPressFunction={() => console.log('pressed')}
+            name="Import"
+            buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
+            buttonStyle={copeStyle.listButton}
+            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
+            iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
+          />
           <TouchableHighlight style={copeStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
             <Text style={copeStyle.buttonText}>Save</Text>
           </TouchableHighlight>
         </View>
-        <View style={copeStyle.iconContainer}>
-          <PressableIcon iconName="ios-images-outline" size={80} onPressFunction={mediaPicker} />
+        <View style={{ flex: 1, flexDirection: 'row' }}>
+          <PressableIcon
+            iconName="ios-images-outline"
+            size={80}
+            onPressFunction={mediaPicker}
+            buttonStyle={copeStyle.iconButton}
+          />
         </View>
       </View>
     );
@@ -111,10 +139,20 @@ const copeStyle = StyleSheet.create({
   },
   formContainer: {
     flex: 2,
-    margin: 35,
+    margin: 40,
   },
-  iconContainer: {
+  iconButton: {
     flex: 1,
+    justifyContent: 'space-around',
+    alignItems: 'center',
+    borderRadius: 10,
     flexDirection: 'row',
+  },
+  listButton: {
+    height: 36,
+    borderColor: '#cccccc', // <= relevant style here
+    borderWidth: 1,
+    borderRadius: 4,
+    marginBottom: 15,
   },
 });
