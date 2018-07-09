@@ -12,16 +12,18 @@ const numberParameters = (number) => {
 };
 // Function that produces String of '?' based on number of columns to write to
 
-export const updateDatabase = (tableName, writeData, columns, func) => {
+export const updateDatabase = (tableName, writeData, columns, func, resultFunc) => {
   db.transaction(
     (tx) => {
       tx.executeSql(
         `insert into ${tableName} (${columns.toString()}) values (${numberParameters(columns.length)})`,
-        writeData
+        writeData,
+        resultFunc !== undefined && ((_, res) => resultFunc(res)),
+        (err) => console.log(err)
       );
     },
     (err) => console.log(err),
-    func
+    func !== undefined && func
   );
 };
 // Function that takes table name (String), data to write (array) and column names
@@ -36,7 +38,7 @@ export const readDatabase = (column, table, func) => {
       tx.executeSql(
         `select ${column} from ${table}`,
         [],
-        (_, resultSet) => func(resultSet.rows._array),
+        func !== undefined && ((_, resultSet) => func(resultSet.rows._array)),
         (_, err) => console.log(err)
       );
     },

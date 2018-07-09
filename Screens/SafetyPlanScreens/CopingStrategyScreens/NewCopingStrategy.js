@@ -63,6 +63,19 @@ export default class NewCopingStrategy extends React.Component {
     // dispatching new Coping Strategy name to global redux store
   };
 
+  updateLinkDbTable = (copeId) => {
+    const checkedSigns = this.props.navigation.getParam('checkedSigns', null);
+
+    if (checkedSigns !== null) {
+      checkedSigns.forEach((signId) => {
+        updateDatabase('CopeSignLink', [signId, copeId.insertId], ['signId', 'copeId']);
+      });
+    } else {
+      console.log('nothing checked');
+    }
+  };
+  // function that checks if any signs were linked and, if yes, updates CopeSignLink table with respective ID's
+
   onPress = () => {
     const value = this.refs.form.getValue();
     // returns values captured in form as object
@@ -70,7 +83,13 @@ export default class NewCopingStrategy extends React.Component {
     if (value) {
       // if validation fails, value will be null
       console.log(value);
-      updateDatabase('CopingStrategy', Object.values(value), Object.keys(value), this.updateCopeList(value.copeName));
+      updateDatabase(
+        'CopingStrategy',
+        Object.values(value),
+        Object.keys(value),
+        this.updateCopeList(value.copeName),
+        this.updateLinkDbTable
+      );
       // write the saved values to DB if valid
 
       this.clearForm();
