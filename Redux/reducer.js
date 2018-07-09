@@ -12,6 +12,11 @@ const copingReducer = (state = [], action) => {
     }
     // used to get the complete coping strategy list from the DB
 
+    // if(action.type === UPDATE_PREPOP_COPE) {
+    //     return [...state, {prepop: action.payload}]
+    // }
+    // // used to get the selected pre-populated coping strategy from list screen
+
     return state
 };
 
