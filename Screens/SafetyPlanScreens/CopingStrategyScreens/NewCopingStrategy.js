@@ -49,6 +49,25 @@ export default class NewCopingStrategy extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const checkedStrat = nextProps.navigation.getParam('checkedStrats', null);
+
+    if (checkedStrat !== this.props.navigation.getParam('checkedStrats', null)) {
+      if (checkedStrat !== null) {
+        this.setState({
+          value: {
+            copeName: checkedStrat[0],
+            copeDesc: '',
+            copeUrl: '',
+          },
+        });
+      } else {
+        console.log('no strat checked');
+      }
+    }
+  }
+  // listen for new props coming from pre-populated screen and update accordingly
+
   clearForm = () => {
     this.setState({ value: null });
   };
@@ -71,7 +90,7 @@ export default class NewCopingStrategy extends React.Component {
         updateDatabase('CopeSignLink', [signId, copeId.insertId], ['signId', 'copeId']);
       });
     } else {
-      console.log('nothing checked');
+      console.log('no signs checked');
     }
   };
   // function that checks if any signs were linked and, if yes, updates CopeSignLink table with respective ID's
@@ -92,8 +111,11 @@ export default class NewCopingStrategy extends React.Component {
       );
       // write the saved values to DB if valid
 
-      this.clearForm();
+      //this.clearForm();
       // clear form once DB is updated
+
+      this.props.navigation.pop();
+      // pop to strategy list once saved
     }
   };
 
@@ -115,7 +137,7 @@ export default class NewCopingStrategy extends React.Component {
           <PressableIcon
             iconName="ios-arrow-dropright-outline"
             size={25}
-            onPressFunction={() => console.log('pressed')}
+            onPressFunction={() => this.props.navigation.push('prePopCope')}
             name="Import"
             buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
             buttonStyle={copeStyle.listButton}
