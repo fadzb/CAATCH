@@ -1,26 +1,51 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
 
-const userList = [
-    "WarningSign 1",
-    "WarningSign 2",
-    "WarningSign 3"
-];
+import {readDatabase} from "../../../Util/DatabaseHelper";
 
 export default class WarningSignLink extends React.Component {
     static navigationOptions = {
-        title: "Warning Sign"
+        title: "Warning Sign",
     };
+
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            signs: {},
+            checkedSigns: []
+        }
+    }
+
+    componentDidMount() {
+        readDatabase("*", "WarningSign", this.updateSigns)
+    }
+    // read DB for all currently saved warning signs
+
+    updateSigns = (signs) => {
+        const signStruct = {};
+        signs.forEach(s => signStruct[s.signId] = s.signName);
+
+        this.setState({ signs: signStruct})
+    };
+    // function that creates object with signId as key and signName as value. Then setStates with that object
+
+    getCheckedSigns = (signs) => {
+        this.setState({
+            checkedSigns: signs.filter(s => s !== undefined)
+        });
+    };
+    // Updates state everytime option is checked/unchecked
 
     render() {
         return(
             <View style={signLinkStyle.viewContainer}>
                 <CustomMultiPicker
-                    options={userList}
+                    options={this.state.signs}
                     multiple={true} //
-                    returnValue={"label"} // label or value
-                    callback={(res)=>{ console.log(res) }} // callback, array of selected items
+                    returnValue={"signId"} // label or value
+                    callback={this.getCheckedSigns} // callback, array of selected items
                     rowBackgroundColor={"#fff"}
                     rowHeight={40}
                     rowRadius={5}
@@ -30,6 +55,12 @@ export default class WarningSignLink extends React.Component {
                     selectedIconName={"ios-checkmark-circle-outline"}
                     unselectedIconName={"ios-radio-button-off-outline"}
                 />
+                <TouchableHighlight
+                    style={signLinkStyle.button}
+                    onPress={() => this.props.navigation.navigate('newCoping', {checkedSigns: this.state.checkedSigns})}
+                    underlayColor='#99d9f4'>
+                    <Text style={signLinkStyle.buttonText}>Done</Text>
+                </TouchableHighlight>
             </View>
         )
     }
@@ -43,5 +74,20 @@ const signLinkStyle = StyleSheet.create({
 
     itemStyle: {
         borderBottomWidth: 3
-    }
+    },
+    buttonText: {
+        fontSize: 18,
+        color: 'white',
+        alignSelf: 'center'
+    },
+    button: {
+        height: 36,
+        backgroundColor: '#48BBEC',
+        borderColor: '#48BBEC',
+        borderWidth: 1,
+        borderRadius: 8,
+        margin:15,
+        alignSelf: 'stretch',
+        justifyContent: 'center'
+    },
 });

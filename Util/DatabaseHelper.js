@@ -12,10 +12,10 @@ const numberParameters = (number) => {
 };
 // Function that produces String of '?' based on number of columns to write to
 
-export const updateDatabase = (tableName, writeData, columns, func) => {
+export const updateDatabase = (tableName, writeData, columns, func, resultFunc) => {
     db.transaction(tx => {
-        tx.executeSql(`insert into ${tableName} (${columns.toString()}) values (${numberParameters(columns.length)})`, writeData)
-    }, err => console.log(err), func)
+        tx.executeSql(`insert into ${tableName} (${columns.toString()}) values (${numberParameters(columns.length)})`, writeData, resultFunc !== undefined && ((_, res) => resultFunc(res)), err => console.log(err))
+    }, err => console.log(err), func !== undefined &&(func))
 };
 // Function that takes table name (String), data to write (array) and column names
 // to write to (array) as arguments. See 'NewCopingStrategy.js' for example of usage.
@@ -26,7 +26,7 @@ export const readDatabase = (column, table, func) => {
     let arr = [2, 2];
 
     db.transaction(tx => {
-        tx.executeSql(`select ${column} from ${table}`, [], (_, resultSet) => (func(resultSet.rows._array)), (_, err) => console.log(err))
+        tx.executeSql(`select ${column} from ${table}`, [], func !== undefined &&((_, resultSet) => (func(resultSet.rows._array))), (_, err) => console.log(err))
     }, err => console.log(err), () => console.log("DB read success"))
 
 };
