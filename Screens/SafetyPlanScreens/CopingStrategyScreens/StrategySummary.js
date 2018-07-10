@@ -3,6 +3,7 @@ import { View, StyleSheet, Dimensions, Modal, TouchableHighlight } from 'react-n
 import { Container, Header, Content, Card, CardItem, Text, Button, Icon, Left, Body } from 'native-base';
 import Image from 'react-native-scalable-image';
 import {ImageViewer} from "../../../Components/ImageViewer";
+import Moment from 'moment';
 
 
 export default class CardShowcaseExample extends React.Component {
@@ -26,6 +27,10 @@ export default class CardShowcaseExample extends React.Component {
     };
     // modal for displaying image
 
+    formatDate = date => {
+        return Moment(date).format('LLL');
+    };
+
     render() {
         const image = require("../../../Media/Images/HD-Peaceful-Image.jpg");
 
@@ -38,7 +43,7 @@ export default class CardShowcaseExample extends React.Component {
                                 <Left>
                                     <Body>
                                         <Text>{this.props.navigation.getParam('name')}</Text>
-                                        <Text note>{this.props.navigation.getParam('date')}</Text>
+                                        <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
                                     </Body>
                                 </Left>
                             </CardItem>

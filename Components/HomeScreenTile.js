@@ -11,7 +11,8 @@ export const HomeScreenTile = props => {
         <View style={tileStyle.container}>
             <TouchableHighlight
                 underlayColor="#FDEDEC"
-                style={tileStyle.button}>
+                style={tileStyle.button}
+                onPress={props.onPress}>
                 <View style={{alignItems:"center"}}>
                     <Text style={tileStyle.buttonText}>{props.name}</Text>
                     <Icon
@@ -26,7 +27,8 @@ export const HomeScreenTile = props => {
 
 HomeScreenTile.propTypes = {
     name: PropTypes.string.isRequired,
-    iconName: PropTypes.string.isRequired
+    iconName: PropTypes.string.isRequired,
+    onPress: PropTypes.func
 };
 // Defining prop types for this component
 

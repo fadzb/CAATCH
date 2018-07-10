@@ -36,20 +36,22 @@ export default class PrePopCopingStrategies extends React.Component {
     render() {
         return(
             <View style={signLinkStyle.viewContainer}>
-                <CustomMultiPicker
-                    options={this.state.strats}
-                    multiple={false} //
-                    returnValue={"label"} // label or value
-                    callback={this.getCheckedSigns} // callback, array of selected items
-                    rowBackgroundColor={"#fff"}
-                    rowHeight={40}
-                    rowRadius={5}
-                    iconColor={"#00a2dd"}
-                    iconSize={25}
-                    itemStyle={signLinkStyle.itemStyle}
-                    selectedIconName={"ios-checkmark-circle-outline"}
-                    unselectedIconName={"ios-radio-button-off-outline"}
-                />
+                <View style={{flex: 1}}>
+                    <CustomMultiPicker
+                        options={this.state.strats}
+                        multiple={false} //
+                        returnValue={"label"} // label or value
+                        callback={this.getCheckedSigns} // callback, array of selected items
+                        rowBackgroundColor={"#fff"}
+                        rowHeight={40}
+                        rowRadius={5}
+                        iconColor={"#00a2dd"}
+                        iconSize={25}
+                        itemStyle={signLinkStyle.itemStyle}
+                        selectedIconName={"ios-checkmark-circle-outline"}
+                        unselectedIconName={"ios-radio-button-off-outline"}
+                    />
+                </View>
                 <TouchableHighlight
                     style={signLinkStyle.button}
                     onPress={() => this.props.navigation.navigate('newCoping', {checkedStrats: this.state.checkedStrats})}
@@ -66,7 +68,6 @@ const signLinkStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
-
     itemStyle: {
         borderBottomWidth: 3
     },
