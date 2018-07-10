@@ -26,8 +26,10 @@ const sectionRowStyle = StyleSheet.create({
     button: {
         flex: 1,
         justifyContent: "space-around",
-        alignItems: "center",
+        //alignItems: "center",
         borderBottomWidth: 1,
+        marginLeft: 30,
+        marginRight: 30
     },
 
     container: {
