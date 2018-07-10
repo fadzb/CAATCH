@@ -30,8 +30,6 @@ export default class PrePopCopingStrategies extends React.Component {
     this.setState({
       checkedStrats: strats.filter((s) => s !== undefined),
     });
-
-    console.log(this.state.checkedStrats);
   };
   // Updates state everytime option is checked/unchecked
 

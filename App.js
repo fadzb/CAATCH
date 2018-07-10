@@ -32,7 +32,7 @@ const TabBar = createBottomTabNavigator(
     Home: HomeScreen,
     Plan: PlanStack,
     Diary: DiaryScreen,
-    Twitter: TwitterScreen,
+    News: TwitterScreen,
     Settings: SettingsScreen,
   },
 

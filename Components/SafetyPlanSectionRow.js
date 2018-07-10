@@ -7,7 +7,7 @@ import PropTypes from 'prop-types';
 export const SafetyPlanSectionRow = (props) => {
   return (
     <View style={sectionRowStyle.container}>
-      <TouchableHighlight underlayColor="#FDEDEC" style={sectionRowStyle.button} onPress={() => console.log('pressed')}>
+      <TouchableHighlight underlayColor="#FDEDEC" style={sectionRowStyle.button} onPress={props.onPress}>
         <Text style={sectionRowStyle.buttonText}>{props.name}</Text>
       </TouchableHighlight>
     </View>
