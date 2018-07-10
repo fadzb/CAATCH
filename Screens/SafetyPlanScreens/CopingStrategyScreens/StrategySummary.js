@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Modal, TouchableHighlight } from 'react-native';
+import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Button, Icon, Left, Body } from 'native-base';
 import Image from 'react-native-scalable-image';
 import { ImageViewer } from '../../../Components/ImageViewer';
@@ -29,8 +29,22 @@ export default class CardShowcaseExample extends React.Component {
     return Moment(date).format('LLL');
   };
 
+  goToLink = (url) => {
+    Linking.canOpenURL(url)
+      .then((supported) => {
+        if (!supported) {
+          console.log("Can't handle url: " + url);
+        } else {
+          return Linking.openURL(url);
+        }
+      })
+      .catch((err) => console.log('An error occurred', err));
+  };
+  // function to follow link to devices browser
+
   render() {
     const image = require('../../../Media/Images/HD-Peaceful-Image.jpg');
+    const link = this.props.navigation.getParam('url');
 
     return (
       <View style={{ flex: 1 }}>
@@ -54,7 +68,15 @@ export default class CardShowcaseExample extends React.Component {
                       onPress={() => this.toggleModal(true)}
                     />
                   </View>
-                  <Text style={stratSummaryStyle.descText}>{this.props.navigation.getParam('desc')}</Text>
+                  <Text style={stratSummaryStyle.text}>{this.props.navigation.getParam('desc')}</Text>
+                  {link !== null && (
+                    <Text style={stratSummaryStyle.text}>
+                      url:{' '}
+                      <Text style={stratSummaryStyle.urlText} onPress={() => this.goToLink('https://' + link)}>
+                        {link}
+                      </Text>
+                    </Text>
+                  )}
                 </Body>
               </CardItem>
             </Card>
@@ -74,7 +96,12 @@ const stratSummaryStyle = StyleSheet.create({
     backgroundColor: '#fff',
   },
 
-  descText: {
+  text: {
     paddingTop: 10,
+  },
+
+  urlText: {
+    textDecorationLine: 'underline',
+    color: 'blue',
   },
 });
