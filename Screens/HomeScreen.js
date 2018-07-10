@@ -1,6 +1,7 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Image, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
+import Image from 'react-native-scalable-image';
 
 import { TabStyles } from '../Styles/TabStyles';
 import { HomeScreenTileRow } from '../Components/HomeScreenTileRow';
@@ -21,12 +22,22 @@ export default class HomeScreen extends React.Component {
   render() {
     return (
       <View style={TabStyles.container}>
-        <Image style={homeStyle.banner} source={require('../Media/Images/HD-Peaceful-Image.jpg')} />
+        <Image
+          width={Dimensions.get('window').width} // height will be calculated automatically
+          source={require('../Media/Images/HD-Peaceful-Image.jpg')}
+        />
         <View style={homeStyle.tileContainer}>
-          <HomeScreenTileRow name1="My Stats" iconName1="ios-stats-outline" name2="Plan" iconName2="ios-list-outline" />
+          <HomeScreenTileRow
+            name1="My Stats"
+            iconName1="ios-stats-outline"
+            name2="Plan"
+            iconName2="ios-list-outline"
+            onPress2={() => this.props.navigation.navigate('Plan')}
+          />
           <HomeScreenTileRow
             name1="Diary"
             iconName1="ios-book-outline"
+            onPress1={() => this.props.navigation.navigate('Diary')}
             name2="Reports"
             iconName2="ios-clipboard-outline"
           />
@@ -38,13 +49,11 @@ export default class HomeScreen extends React.Component {
 
 const homeStyle = StyleSheet.create({
   banner: {
-    flex: 0.37,
-    resizeMode: 'contain',
-    justifyContent: 'flex-start',
+    //justifyContent: "flex-start"
   },
 
   tileContainer: {
-    flex: 0.63,
+    flex: 1,
     flexDirection: 'column',
     alignSelf: 'stretch',
     margin: 10,
