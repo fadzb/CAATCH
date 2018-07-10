@@ -20,6 +20,7 @@ export const PressableIcon = props => {
                         <Icon
                             name={props.iconName}
                             size={props.size}
+                            color={props.color}
                         />
                     </View>
                 </View>
@@ -31,6 +32,7 @@ PressableIcon.propTypes = {
     name: PropTypes.string,
     iconName: PropTypes.string.isRequired,
     size: PropTypes.number.isRequired,
-    onPressFunction: PropTypes.func
+    onPressFunction: PropTypes.func,
+    color: PropTypes.string
 };
 // Defining prop types for this component
