@@ -77,8 +77,8 @@ export default class NewCopingStrategy extends React.Component {
     this.setState({ value: value });
   };
 
-  updateCopeList = (strategyName) => {
-    store.dispatch(updateCoping(strategyName));
+  updateCopeList = (strategy) => {
+    store.dispatch(updateCoping(strategy));
     // dispatching new Coping Strategy name to global redux store
   };
 
@@ -106,7 +106,7 @@ export default class NewCopingStrategy extends React.Component {
         'CopingStrategy',
         Object.values(value),
         Object.keys(value),
-        this.updateCopeList(value.copeName),
+        this.updateCopeList(value),
         this.updateLinkDbTable
       );
       // write the saved values to DB if valid

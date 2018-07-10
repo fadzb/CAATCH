@@ -20,14 +20,20 @@ class CopingStrategies extends React.Component {
   // Implementation for 'new' strategy button
 
   componentDidMount() {
-    readDatabase('*', 'CopingStrategy', this.updateStrategies);
+    readDatabase('*', 'CopingStrategy', this.updateStrategies, () => console.log('DB read success'));
   }
 
   updateStrategies = (strats) => {
-    const strategies = strats.map((s) => s.copeName);
-
-    store.dispatch(getCoping(strategies));
+    store.dispatch(getCoping(strats));
     // dispatching total list of coping strategy names from DB to global redux store
+  };
+
+  summaryNav = (name, date, desc) => {
+    this.props.navigation.push('stratSummary', {
+      name: name,
+      date: date,
+      desc: desc,
+    });
   };
 
   render() {
@@ -37,7 +43,10 @@ class CopingStrategies extends React.Component {
           data={this.props.coping} // comes from mapStateToProps below
           renderItem={({ item }) => (
             <View style={stratStyle.listContainer}>
-              <SafetyPlanSectionRow name={item} />
+              <SafetyPlanSectionRow
+                name={item.copeName}
+                onPress={() => this.summaryNav(item.copeName, item.dateEntered, item.copeDesc)}
+              />
             </View>
           )}
           keyExtractor={(item, index) => index.toString()}

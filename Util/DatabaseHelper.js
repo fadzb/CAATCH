@@ -30,21 +30,20 @@ export const updateDatabase = (tableName, writeData, columns, func, resultFunc) 
 // to write to (array) as arguments. See 'NewCopingStrategy.js' for example of usage.
 // Important the object keys are named the same as DB columns/fields
 
-export const readDatabase = (column, table, func) => {
-  let arr = [2, 2];
-
+export const readDatabase = (column, table, resultFunc, func) => {
   db.transaction(
     (tx) => {
       tx.executeSql(
         `select ${column} from ${table}`,
         [],
-        func !== undefined && ((_, resultSet) => func(resultSet.rows._array)),
+        resultFunc !== undefined && ((_, resultSet) => resultFunc(resultSet.rows._array)),
         (_, err) => console.log(err)
       );
     },
     (err) => console.log(err),
-    () => console.log('DB read success')
+    func !== undefined && func
   );
 };
+
 // Function for reading from DB. Takes callback function that takes
 // result array as only argument. Only works with * or one column for now
