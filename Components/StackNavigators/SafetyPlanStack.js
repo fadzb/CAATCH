@@ -14,7 +14,7 @@ import CopingStrategies from "../../Screens/SafetyPlanScreens/CopingStrategyScre
 import WarningSignLink from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/WarningSignLink";
 import PrePopCopingStrategies from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/PrePopCopingStrategies";
 import StrategySummary from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/StrategySummary";
-
+import CopeWebView from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/CopeWebView";
 
 const PlanStack = createStackNavigator(
     {
@@ -25,6 +25,7 @@ const PlanStack = createStackNavigator(
         warningLink: WarningSignLink,
         prePopCope: PrePopCopingStrategies,
         stratSummary: StrategySummary,
+        copeWeb: CopeWebView,
         reason: ReasonsToLive,
         distraction: Distractions,
         contact: Contacts,

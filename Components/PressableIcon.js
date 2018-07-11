@@ -9,7 +9,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 export const PressableIcon = props => {
     return (
             <TouchableHighlight
-                underlayColor="#FDEDEC"
+                underlayColor="#FFF"
                 style={props.buttonStyle}
                 onPress={() => props.onPressFunction()}>
                 <View style={props.buttonContainerStyle}>

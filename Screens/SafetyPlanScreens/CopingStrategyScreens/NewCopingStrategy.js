@@ -29,8 +29,9 @@ const options = {
             auto: 'none'
         },
         copeUrl: {
-            placeholder: 'URL',
-            auto: 'none'
+            placeholder: 'URL (eg. www.google.ie)',
+            auto: 'none',
+            autoCapitalize: 'none'
         },
     }
 };
@@ -147,7 +148,7 @@ export default class NewCopingStrategy extends React.Component {
                         <Text style={copeStyle.buttonText}>Save</Text>
                     </TouchableHighlight>
                 </View>
-                <View style={{flex: 1, flexDirection: 'row'}}>
+                <View style={{flex: 1, alignItems: 'center'}}>
                     <PressableIcon
                         iconName="ios-images-outline"
                         size={80}
@@ -183,10 +184,9 @@ const copeStyle = StyleSheet.create({
     },
     iconButton: {
         flex: 1,
-        justifyContent: "space-around",
+        justifyContent: "center",
         alignItems: "center",
         borderRadius: 10,
-        flexDirection: 'row'
     },
     listButton: {
         height: 36,
@@ -194,5 +194,6 @@ const copeStyle = StyleSheet.create({
         borderWidth: 1,
         borderRadius: 4,
         marginBottom: 15,
+        backgroundColor: '#f2f2f2'
     }
 });
