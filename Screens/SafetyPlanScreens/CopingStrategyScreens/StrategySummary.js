@@ -29,19 +29,6 @@ export default class CardShowcaseExample extends React.Component {
     return Moment(date).format('LLL');
   };
 
-  goToLink = (url) => {
-    Linking.canOpenURL(url)
-      .then((supported) => {
-        if (!supported) {
-          console.log("Can't handle url: " + url);
-        } else {
-          return Linking.openURL(url);
-        }
-      })
-      .catch((err) => console.log('An error occurred', err));
-  };
-  // function to follow link to devices browser
-
   render() {
     const image = require('../../../Media/Images/HD-Peaceful-Image.jpg');
     const link = this.props.navigation.getParam('url');
@@ -72,7 +59,14 @@ export default class CardShowcaseExample extends React.Component {
                   {link !== null && (
                     <Text style={stratSummaryStyle.text}>
                       url:{' '}
-                      <Text style={stratSummaryStyle.urlText} onPress={() => this.goToLink('https://' + link)}>
+                      <Text
+                        style={stratSummaryStyle.urlText}
+                        onPress={() =>
+                          this.props.navigation.push('copeWeb', {
+                            url: 'https://' + link,
+                          })
+                        }
+                      >
                         {link}
                       </Text>
                     </Text>
