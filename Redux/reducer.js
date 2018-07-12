@@ -1,5 +1,5 @@
 import {combineReducers} from 'redux';
-import {UPDATE_COPING, GET_COPING} from "./actions";
+import {UPDATE_COPING, GET_COPING, UPDATE_SIGN, GET_SIGN} from "./actions";
 
 const copingReducer = (state = [], action) => {
     if(action.type === UPDATE_COPING) {
@@ -15,8 +15,23 @@ const copingReducer = (state = [], action) => {
     return state
 };
 
+const signReducer = (state = [], action) => {
+    if(action.type === UPDATE_SIGN) {
+        return [...state, action.payload];
+    }
+    // used for when a new coping strategy is added
+
+    if(action.type === GET_SIGN) {
+        return action.payload
+    }
+    // used to get the complete coping strategy list from the DB
+
+    return state
+};
+
 const reducer = combineReducers({
-    coping: copingReducer
+    coping: copingReducer,
+    sign: signReducer,
 });
 // as reducers grow, add to this object
 
