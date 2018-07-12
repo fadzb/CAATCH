@@ -1,10 +1,11 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking } from 'react-native';
+import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Button, Icon, Left, Body } from 'native-base';
 import Image from 'react-native-scalable-image';
 import {ImageViewer} from "../../../Components/ImageViewer";
 import Moment from 'moment';
-import Expo from 'expo'
+import {BasicSelectorRow} from "../../../Components/BasicSelectorRow";
+import {readDatabaseArg} from "../../../Util/DatabaseHelper";
 
 
 export default class StrategySummary extends React.Component {
@@ -19,9 +20,25 @@ export default class StrategySummary extends React.Component {
         super(props);
 
         this.state = {
-            modalVisible: false
+            modalVisible: false,
+            signs: []
         }
     }
+
+    componentDidMount() {
+        this.getSignLink();
+    }
+
+    getSignLink = () => {
+        currentCopeId = this.props.navigation.getParam('id');
+        linkTable = "CopeSignLink";
+
+        readDatabaseArg(
+            "*",
+            "WarningSign",
+            signs => this.setState({signs: signs}), undefined, 'as w inner join ' + linkTable + ' as c on w.signId = c.signId where copeId = ' + currentCopeId);
+    };
+    // retrieves linked warning signs to current coping strategy. Set's state with returned array
 
     toggleModal = bool => {
         this.setState({modalVisible: bool});
@@ -73,6 +90,17 @@ export default class StrategySummary extends React.Component {
                                             </Text>
                                         </Text>
                                     }
+                                    <Text style={stratSummaryStyle.linkText}>Warning Sign Link(s)</Text>
+                                    <FlatList
+                                        data={this.state.signs}
+                                        renderItem={({item}) => <View style={{flex: 1, alignSelf: 'stretch'}}>
+                                            <BasicSelectorRow
+                                                name= {item.signName}
+                                                onPress={() => console.log("pressed")}
+                                            />
+                                        </View>}
+                                        keyExtractor={(item, index) => index.toString()}
+                                    />
                                 </Body>
                             </CardItem>
                         </Card>
@@ -102,5 +130,10 @@ const stratSummaryStyle = StyleSheet.create({
     urlText: {
         textDecorationLine: 'underline',
         color: 'blue'
+    },
+
+    linkText: {
+        paddingTop: 10,
+        fontWeight: 'bold'
     }
 });
