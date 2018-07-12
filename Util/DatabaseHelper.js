@@ -65,3 +65,19 @@ export const updateDatabaseArgument = (tableName, writeData, columns, argument, 
   );
 };
 // for UPDATING not INSERTING
+
+export const readDatabaseArg = (column, table, resultFunc, func, argument) => {
+  db.transaction(
+    (tx) => {
+      tx.executeSql(
+        `select ${column} from ${table} ` + argument,
+        [],
+        resultFunc !== undefined && ((_, resultSet) => resultFunc(resultSet.rows._array)),
+        (_, err) => console.log(err)
+      );
+    },
+    (err) => console.log(err),
+    func !== undefined && func
+  );
+};
+// function for reading DB with additional arguments like joins etc.
