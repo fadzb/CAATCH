@@ -6,7 +6,7 @@ import { readDatabase } from '../../../Util/DatabaseHelper';
 
 export default class WarningSignLink extends React.Component {
   static navigationOptions = {
-    title: 'Warning Sign',
+    title: 'Warning Signs',
   };
 
   constructor(props) {

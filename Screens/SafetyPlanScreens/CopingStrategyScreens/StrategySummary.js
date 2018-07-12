@@ -6,7 +6,7 @@ import { ImageViewer } from '../../../Components/ImageViewer';
 import Moment from 'moment';
 import Expo from 'expo';
 
-export default class CardShowcaseExample extends React.Component {
+export default class StrategySummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: navigation.getParam('name'),
