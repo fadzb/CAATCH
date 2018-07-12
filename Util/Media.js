@@ -1,14 +1,21 @@
 import React from 'react';
 import Expo from 'expo';
 
-export const mediaPicker = () => {
-  Expo.Permissions.askAsync(Expo.Permissions.CAMERA_ROLL).then((response) => {
-    if (response.status !== 'granted') {
-      console.error('Camera roll permission not granted!');
-      return;
-    }
+const directoryName = 'SafetyplanMedia/';
+// file and directory names
+const directory = Expo.FileSystem.documentDirectory + directoryName;
 
-    Expo.ImagePicker.launchImageLibraryAsync().then((selectedMedia) => console.log(selectedMedia));
-  });
+export const mediaDirectoryCheck = () => {
+  Expo.FileSystem.getInfoAsync(directory)
+    // firstly checking if directory exists
+    .then((fileObj) => {
+      if (fileObj.exists && fileObj.isDirectory) {
+        console.log('SP Media directory exists');
+      } else {
+        console.log('SP Media directory DOES NOT exist');
+        Expo.FileSystem.makeDirectoryAsync(directory).catch((err) => console.log(err));
+      }
+    })
+    .catch((err) => console.error(err));
 };
-// function for displaying device camera roll and selecting images/videos
+// function checks if .db file exists and copies pre-populated file if not. Does nothing if exists
