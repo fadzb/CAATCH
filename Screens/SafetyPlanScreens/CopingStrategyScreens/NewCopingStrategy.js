@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-nat
 import t from 'tcomb-form-native'
 import { PressableIcon } from "../../../Components/PressableIcon";
 import store from "../../../Redux/store"
-import {updateCoping} from "../../../Redux/actions";
+import {updateCoping, getCoping} from "../../../Redux/actions";
+import Expo from 'expo'
 
 import {TabStyles} from "../../../Styles/TabStyles";
-import {updateDatabase} from "../../../Util/DatabaseHelper";
-import {mediaPicker} from "../../../Util/Media";
+import {updateDatabase, updateDatabaseArgument, readDatabase} from "../../../Util/DatabaseHelper";
 
 const Form = t.form.Form;
 
@@ -46,7 +46,10 @@ export default class NewCopingStrategy extends React.Component {
         super(props);
 
         this.state = {
-            value: null
+            value: null,
+            selectedMediaUri: "",
+            selectedMediaName: "",
+            selectedMediaType: ""
         }
     }
 
@@ -69,11 +72,6 @@ export default class NewCopingStrategy extends React.Component {
     }
     // listen for new props coming from pre-populated screen and update accordingly
 
-    clearForm = () => {
-        this.setState({ value: null });
-    };
-    // clear content from all form inputs
-
     onChange = (value) => {
         this.setState({ value: value })
     };
@@ -93,8 +91,65 @@ export default class NewCopingStrategy extends React.Component {
         } else {
             console.log("no signs checked");
         }
+
+        if(this.state.selectedMediaUri !== "") {
+            this.updateDBMedia(copeId)
+        }
+        // if media was selected -> update that row with path
     };
     // function that checks if any signs were linked and, if yes, updates CopeSignLink table with respective ID's
+
+    updateDBMedia = copeId => {
+
+        const mediaDirectory = 'SafetyplanMedia/';
+        const updateStrategies = (strats) => store.dispatch(getCoping(strats));
+
+        updateDatabaseArgument('CopingStrategy',
+            [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
+            ['mediaPath', 'mediaType'],
+            'where copeId = ' + copeId.insertId,
+            () => {
+                readDatabase("*", "CopingStrategy", updateStrategies, () => console.log("DB read success"))
+                // function to update db and dispatch to global store on selection of media
+            }
+        );
+
+        Expo.FileSystem.moveAsync(
+            {
+                 from: this.state.selectedMediaUri,
+                 to: Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName
+            }
+        )
+    };
+    // update selected row with media path and copy file from cache to permanent directory
+
+    captureMedia = () => {
+        Expo.Permissions.askAsync(Expo.Permissions.CAMERA_ROLL)
+            .then(response => {
+                if (response.status !== "granted") {
+                    console.error("Camera roll permission not granted!");
+                    return;
+                }
+
+                Expo.ImagePicker.launchImageLibraryAsync()
+                    .then(selectedMedia => {
+                        console.log(selectedMedia);
+
+                        if(!selectedMedia.cancelled) {
+                            const splitName = selectedMedia.uri.split('/');
+                            const shortName = splitName[splitName.length - 1];
+
+                            this.setState(
+                                {
+                                    selectedMediaUri: selectedMedia.uri,
+                                    selectedMediaName: shortName,
+                                    selectedMediaType: selectedMedia.type
+                                });
+                        }
+                    })
+            })
+    };
+    // sets the state based on the media item that is selected
 
     onPress = () => {
         const value = this.refs.form.getValue();
@@ -104,9 +159,6 @@ export default class NewCopingStrategy extends React.Component {
             console.log(value);
             updateDatabase("CopingStrategy", Object.values(value), Object.keys(value), this.updateCopeList(value), this.updateLinkDbTable);
             // write the saved values to DB if valid
-
-            //this.clearForm();
-            // clear form once DB is updated
 
             this.props.navigation.pop();
             // pop to strategy list once saved
@@ -152,7 +204,7 @@ export default class NewCopingStrategy extends React.Component {
                     <PressableIcon
                         iconName="ios-images-outline"
                         size={80}
-                        onPressFunction={mediaPicker}
+                        onPressFunction={this.captureMedia}
                         buttonStyle={copeStyle.iconButton}
                     />
                 </View>

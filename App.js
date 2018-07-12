@@ -1,6 +1,7 @@
 import React from 'react';
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 import { checkDB } from "./Util/DatabaseConnector";
+import { mediaDirectoryCheck } from "./Util/Media";
 import {Provider} from 'react-redux'
 import store from './Redux/store'
 
@@ -15,6 +16,9 @@ export default class App extends React.Component {
     componentDidMount() {
         checkDB();
         // check db file exists and, if not, copy pre-populated .db file to app file system
+
+        mediaDirectoryCheck();
+        // checks to ensure media directory exists and creates if not
     }
 
     render() {

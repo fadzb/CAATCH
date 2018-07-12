@@ -30,7 +30,7 @@ export const ImageViewer = props => {
 };
 
 ImageViewer.propTypes = {
-    image: PropTypes.number.isRequired,
+    //image: PropTypes.number.isRequired,
     onPress: PropTypes.func,
 
 };
