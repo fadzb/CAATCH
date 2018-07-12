@@ -4,70 +4,70 @@ import CustomMultiPicker from 'react-native-multiple-select-list';
 
 import { readDatabase } from '../../../Util/DatabaseHelper';
 
-export default class WarningSignLink extends React.Component {
+export default class CopingStrategyLink extends React.Component {
   static navigationOptions = {
-    title: 'Warning Signs',
+    title: 'Coping Strategies',
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      signs: {},
-      checkedSigns: [],
+      copes: {},
+      checkedCopes: [],
     };
   }
 
   componentDidMount() {
-    readDatabase('*', 'WarningSign', this.updateSigns);
+    readDatabase('*', 'CopingStrategy', this.updateCopes);
   }
-  // read DB for all currently saved warning signs
+  // read DB for all currently saved coping Strategies
 
-  updateSigns = (signs) => {
-    const signStruct = {};
-    signs.forEach((s) => (signStruct[s.signId] = s.signName));
+  updateCopes = (copes) => {
+    const copeStruct = {};
+    copes.forEach((c) => (copeStruct[c.copeId] = c.copeName));
 
-    this.setState({ signs: signStruct });
+    this.setState({ copes: copeStruct });
   };
-  // function that creates object with signId as key and signName as value. Then setStates with that object
+  // function that creates object with copeId as key and copeName as value. Then setStates with that object
 
-  getCheckedSigns = (signs) => {
+  getCheckedCopes = (copes) => {
     this.setState({
-      checkedSigns: signs.filter((s) => s !== undefined),
+      checkedCopes: copes.filter((c) => c !== undefined),
     });
   };
   // Updates state everytime option is checked/unchecked
 
   render() {
     return (
-      <View style={signLinkStyle.viewContainer}>
+      <View style={copeLinkStyle.viewContainer}>
         <CustomMultiPicker
-          options={this.state.signs}
+          options={this.state.copes}
           multiple={true} //
-          returnValue={'signId'} // label or value
-          callback={this.getCheckedSigns} // callback, array of selected items
+          returnValue={'copeId'} // label or value
+          callback={this.getCheckedCopes} // callback, array of selected items
           rowBackgroundColor={'#fff'}
           rowHeight={40}
           rowRadius={5}
           iconColor={'#00a2dd'}
           iconSize={25}
-          itemStyle={signLinkStyle.itemStyle}
+          itemStyle={copeLinkStyle.itemStyle}
           selectedIconName={'ios-checkmark-circle-outline'}
           unselectedIconName={'ios-radio-button-off-outline'}
         />
         <TouchableHighlight
-          style={signLinkStyle.button}
-          onPress={() => this.props.navigation.navigate('newCoping', { checkedSigns: this.state.checkedSigns })}
+          style={copeLinkStyle.button}
+          onPress={() => this.props.navigation.navigate('newWarning', { checkedCopes: this.state.checkedCopes })}
           underlayColor="#99d9f4"
         >
-          <Text style={signLinkStyle.buttonText}>Done</Text>
+          <Text style={copeLinkStyle.buttonText}>Done</Text>
         </TouchableHighlight>
       </View>
     );
   }
 }
 
-const signLinkStyle = StyleSheet.create({
+const copeLinkStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
     backgroundColor: '#fff',

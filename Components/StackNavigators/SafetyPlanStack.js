@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 
 import PlanScreen from '../../Screens/PlanScreen';
-import WarningSigns from '../../Screens/SafetyPlanScreens/WarningSigns';
+import WarningSigns from '../../Screens/SafetyPlanScreens/WarningSignScreens/WarningSigns';
 import NewCopingStrategy from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/NewCopingStrategy';
 import ReasonsToLive from '../../Screens/SafetyPlanScreens/ReasonsToLive';
 import Distractions from '../../Screens/SafetyPlanScreens/Distractions';
@@ -15,11 +15,17 @@ import WarningSignLink from '../../Screens/SafetyPlanScreens/CopingStrategyScree
 import PrePopCopingStrategies from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/PrePopCopingStrategies';
 import StrategySummary from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/StrategySummary';
 import CopeWebView from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/CopeWebView';
+import NewWarningSign from '../../Screens/SafetyPlanScreens/WarningSignScreens/NewWarningSign';
+import CopingStrategyLink from '../../Screens/SafetyPlanScreens/WarningSignScreens/CopingStrategyLink';
+import SignSummary from '../../Screens/SafetyPlanScreens/WarningSignScreens/SignSummary';
 
 const PlanStack = createStackNavigator(
   {
     main: PlanScreen,
     warning: WarningSigns,
+    newWarning: NewWarningSign,
+    copingLink: CopingStrategyLink,
+    signSummary: SignSummary,
     coping: CopingStrategies,
     newCoping: NewCopingStrategy,
     warningLink: WarningSignLink,
