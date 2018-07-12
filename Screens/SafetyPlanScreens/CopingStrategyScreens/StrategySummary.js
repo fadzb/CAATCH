@@ -4,6 +4,7 @@ import { Container, Header, Content, Card, CardItem, Text, Button, Icon, Left, B
 import Image from 'react-native-scalable-image';
 import { ImageViewer } from '../../../Components/ImageViewer';
 import Moment from 'moment';
+import Expo from 'expo';
 
 export default class CardShowcaseExample extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -30,7 +31,9 @@ export default class CardShowcaseExample extends React.Component {
   };
 
   render() {
-    const image = require('../../../Media/Images/HD-Peaceful-Image.jpg');
+    const mediaPath = this.props.navigation.getParam('media');
+    const image = { uri: mediaPath };
+
     const link = this.props.navigation.getParam('url');
 
     return (
@@ -48,13 +51,15 @@ export default class CardShowcaseExample extends React.Component {
               </CardItem>
               <CardItem>
                 <Body>
-                  <View>
-                    <Image
-                      width={Dimensions.get('window').width - 35} // height will be calculated automatically
-                      source={image}
-                      onPress={() => this.toggleModal(true)}
-                    />
-                  </View>
+                  {mediaPath !== null && (
+                    <View>
+                      <Image
+                        width={Dimensions.get('window').width - 35} // height will be calculated automatically
+                        source={image}
+                        onPress={() => this.toggleModal(true)}
+                      />
+                    </View>
+                  )}
                   <Text style={stratSummaryStyle.text}>{this.props.navigation.getParam('desc')}</Text>
                   {link !== null && (
                     <Text style={stratSummaryStyle.text}>
@@ -76,9 +81,11 @@ export default class CardShowcaseExample extends React.Component {
             </Card>
           </Content>
         </Container>
-        <Modal visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
-          <ImageViewer image={image} onPress={() => this.toggleModal(false)} />
-        </Modal>
+        {mediaPath !== null && (
+          <Modal visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
+            <ImageViewer image={image} onPress={() => this.toggleModal(false)} />
+          </Modal>
+        )}
       </View>
     );
   }

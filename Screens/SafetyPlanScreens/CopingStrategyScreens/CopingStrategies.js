@@ -28,12 +28,13 @@ class CopingStrategies extends React.Component {
     // dispatching total list of coping strategy names from DB to global redux store
   };
 
-  summaryNav = (name, date, desc, url) => {
+  summaryNav = (name, date, desc, url, media) => {
     this.props.navigation.push('stratSummary', {
       name: name,
       date: date,
       desc: desc,
       url: url,
+      media: media,
     });
   };
 
@@ -46,7 +47,9 @@ class CopingStrategies extends React.Component {
             <View style={stratStyle.listContainer}>
               <SafetyPlanSectionRow
                 name={item.copeName}
-                onPress={() => this.summaryNav(item.copeName, item.dateEntered, item.copeDesc, item.copeUrl)}
+                onPress={() =>
+                  this.summaryNav(item.copeName, item.dateEntered, item.copeDesc, item.copeUrl, item.mediaPath)
+                }
               />
             </View>
           )}
