@@ -81,6 +81,13 @@ export default class NewCopingStrategy extends React.Component {
     // dispatching new Coping Strategy name to global redux store
   };
 
+  refreshDb = (func) => {
+    readDatabase('*', 'CopingStrategy', func, () => console.log('DB read success'));
+  };
+  // for refreshing global state from Coping Strategy table in DB
+
+  updateGlobalStrategies = (strats) => store.dispatch(getCoping(strats));
+
   updateLinkDbTable = (copeId) => {
     const checkedSigns = this.props.navigation.getParam('checkedSigns', null);
 
@@ -96,22 +103,20 @@ export default class NewCopingStrategy extends React.Component {
       this.updateDBMedia(copeId);
     }
     // if media was selected -> update that row with path
+
+    this.refreshDb(this.updateGlobalStrategies);
   };
   // function that checks if any signs were linked and, if yes, updates CopeSignLink table with respective ID's
 
   updateDBMedia = (copeId) => {
     const mediaDirectory = 'SafetyplanMedia/';
-    const updateStrategies = (strats) => store.dispatch(getCoping(strats));
 
     updateDatabaseArgument(
       'CopingStrategy',
       [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
       ['mediaPath', 'mediaType'],
       'where copeId = ' + copeId.insertId,
-      () => {
-        readDatabase('*', 'CopingStrategy', updateStrategies, () => console.log('DB read success'));
-        // function to update db and dispatch to global store on selection of media
-      }
+      this.refreshDb(this.updateGlobalStrategies)
     );
 
     Expo.FileSystem.moveAsync({
