@@ -6,6 +6,7 @@ import {ImageViewer} from "../../../Components/ImageViewer";
 import Moment from 'moment';
 import {CardListItem} from "../../../Components/CardListItem";
 import {readDatabaseArg} from "../../../Util/DatabaseHelper";
+import {Video} from 'expo';
 
 
 export default class StrategySummary extends React.Component {
@@ -21,7 +22,8 @@ export default class StrategySummary extends React.Component {
 
         this.state = {
             modalVisible: false,
-            signs: []
+            signs: [],
+            playVideo: false
         }
     }
 
@@ -46,13 +48,21 @@ export default class StrategySummary extends React.Component {
     };
     // modal for displaying image
 
+    toggleVideo = bool => {
+        this.setState({playVideo: bool});
+
+        this.player.presentFullscreenPlayer();
+    };
+    // present video player in fullscreen mode
+
     formatDate = date => {
         return Moment(date).format('LLL');
     };
 
     render() {
         const mediaPath = this.props.navigation.getParam('media');
-        const image = {uri: mediaPath};
+        const media = {uri: mediaPath};
+        const mediaType = this.props.navigation.getParam('mediaType');
 
         const link = this.props.navigation.getParam('url');
 
@@ -74,8 +84,8 @@ export default class StrategySummary extends React.Component {
                                 {mediaPath !== null && <View>
                                         <Image
                                             width={(Dimensions.get('window').width) - 35} // height will be calculated automatically
-                                            source={image}
-                                            onPress={() => this.toggleModal(true)}
+                                            source={media}
+                                            onPress={mediaType === 'image' ? () => this.toggleModal(true) : () => this.toggleVideo(true)}
                                         />
                                     </View>}
                                     <Text style={stratSummaryStyle.text}>
@@ -115,12 +125,19 @@ export default class StrategySummary extends React.Component {
                         </Card>
                     </Content>
                 </Container>
-                {mediaPath !== null && <Modal visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
+                <Video
+                    ref={(ref) => {
+                        this.player = ref
+                    }}
+                    source={media}
+                    shouldPlay={this.state.playVideo}
+                />
+                <Modal visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
                     <ImageViewer
-                        image={image}
+                        image={media}
                         onPress={() => this.toggleModal(false)}
                     />
-                </Modal>}
+                </Modal>
             </View>
         );
     }

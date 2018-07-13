@@ -136,7 +136,7 @@ export default class NewCopingStrategy extends React.Component {
                     return;
                 }
 
-                Expo.ImagePicker.launchImageLibraryAsync()
+                Expo.ImagePicker.launchImageLibraryAsync({mediaTypes: Expo.ImagePicker.MediaTypeOptions.All})
                     .then(selectedMedia => {
                         console.log(selectedMedia);
 
