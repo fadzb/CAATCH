@@ -133,20 +133,22 @@ export default class NewCopingStrategy extends React.Component {
         return;
       }
 
-      Expo.ImagePicker.launchImageLibraryAsync().then((selectedMedia) => {
-        console.log(selectedMedia);
+      Expo.ImagePicker.launchImageLibraryAsync({ mediaTypes: Expo.ImagePicker.MediaTypeOptions.All }).then(
+        (selectedMedia) => {
+          console.log(selectedMedia);
 
-        if (!selectedMedia.cancelled) {
-          const splitName = selectedMedia.uri.split('/');
-          const shortName = splitName[splitName.length - 1];
+          if (!selectedMedia.cancelled) {
+            const splitName = selectedMedia.uri.split('/');
+            const shortName = splitName[splitName.length - 1];
 
-          this.setState({
-            selectedMediaUri: selectedMedia.uri,
-            selectedMediaName: shortName,
-            selectedMediaType: selectedMedia.type,
-          });
+            this.setState({
+              selectedMediaUri: selectedMedia.uri,
+              selectedMediaName: shortName,
+              selectedMediaType: selectedMedia.type,
+            });
+          }
         }
-      });
+      );
     });
   };
   // sets the state based on the media item that is selected
