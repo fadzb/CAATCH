@@ -4,7 +4,7 @@ import { Container, Header, Content, Card, CardItem, Text, Button, Icon, Left, B
 import Image from 'react-native-scalable-image';
 import {ImageViewer} from "../../../Components/ImageViewer";
 import Moment from 'moment';
-import {BasicSelectorRow} from "../../../Components/BasicSelectorRow";
+import {CardListItem} from "../../../Components/CardListItem";
 import {readDatabaseArg} from "../../../Util/DatabaseHelper";
 
 
@@ -32,11 +32,12 @@ export default class StrategySummary extends React.Component {
     getSignLink = () => {
         currentCopeId = this.props.navigation.getParam('id');
         linkTable = "CopeSignLink";
+        columnQuery = "w.signId, w.signName, w.signDesc, w.dateEntered";
 
         readDatabaseArg(
-            "*",
+            columnQuery,
             "WarningSign",
-            signs => this.setState({signs: signs}), undefined, 'as w inner join ' + linkTable + ' as c on w.signId = c.signId where copeId = ' + currentCopeId);
+            signs => {this.setState({signs: signs})}, undefined, 'as w inner join ' + linkTable + ' as c on w.signId = c.signId where copeId = ' + currentCopeId);
     };
     // retrieves linked warning signs to current coping strategy. Set's state with returned array
 
@@ -59,7 +60,7 @@ export default class StrategySummary extends React.Component {
             <View style={{flex: 1}}>
                 <Container style={stratSummaryStyle.viewContainer}>
                     <Content>
-                        <Card>
+                        <Card style={stratSummaryStyle.cardStyle}>
                             <CardItem>
                                 <Left>
                                     <Body>
@@ -90,17 +91,25 @@ export default class StrategySummary extends React.Component {
                                             </Text>
                                         </Text>
                                     }
-                                    <Text style={stratSummaryStyle.linkText}>Warning Sign Link(s)</Text>
-                                    <FlatList
-                                        data={this.state.signs}
-                                        renderItem={({item}) => <View style={{flex: 1, alignSelf: 'stretch'}}>
-                                            <BasicSelectorRow
-                                                name= {item.signName}
-                                                onPress={() => console.log("pressed")}
-                                            />
+                                    {this.state.signs.length !== 0 && <View style={stratSummaryStyle.linkListContainer}>
+                                            <View style={{flex: 1, alignSelf: 'stretch'}}>
+                                                <FlatList
+                                                    data={this.state.signs}
+                                                    renderItem={({item}) =>
+                                                        <View>
+                                                            <CardListItem
+                                                                name= {item.signName}
+                                                                onPress={() => this.props.navigation.push('signSummary', {
+                                                                    name: item.signName,
+                                                                    desc: item.signDesc,
+                                                                    date: item.dateEntered
+                                                                })}
+                                                            />
+                                                        </View>}
+                                                    keyExtractor={(item, index) => index.toString()}
+                                                />
+                                            </View>
                                         </View>}
-                                        keyExtractor={(item, index) => index.toString()}
-                                    />
                                 </Body>
                             </CardItem>
                         </Card>
@@ -123,17 +132,25 @@ const stratSummaryStyle = StyleSheet.create({
         backgroundColor: '#fff',
     },
 
+    cardStyle: {
+        backgroundColor: '#cccccc'
+    },
+
     text: {
         paddingTop: 10
     },
 
     urlText: {
         textDecorationLine: 'underline',
-        color: 'blue'
+        color: 'blue',
     },
 
-    linkText: {
-        paddingTop: 10,
-        fontWeight: 'bold'
+    linkListContainer: {
+        backgroundColor: 'white',
+        borderWidth: 2,
+        alignSelf: 'stretch',
+        padding: 5,
+        borderRadius: 7,
+        marginTop: 10
     }
 });
