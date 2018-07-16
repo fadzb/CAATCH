@@ -3,11 +3,11 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-nat
 import t from 'tcomb-form-native'
 import { PressableIcon } from "../../../Components/PressableIcon";
 import store from "../../../Redux/store"
-import {updateSign} from "../../../Redux/actions";
+import {updateSign, getSign} from "../../../Redux/actions";
 import Expo from 'expo'
 
 import {TabStyles} from "../../../Styles/TabStyles";
-import {updateDatabase, updateDatabaseArgument, readDatabase} from "../../../Util/DatabaseHelper";
+import {updateDatabase, updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
 
 const Form = t.form.Form;
 
@@ -44,24 +44,6 @@ export default class NewWarningSign extends React.Component {
         }
     }
 
-    componentWillReceiveProps(nextProps) {
-        const checkedStrat = nextProps.navigation.getParam('checkedStrats', null);
-
-        if(checkedStrat !== this.props.navigation.getParam('checkedStrats', null)) {
-            if (checkedStrat !== null) {
-                this.setState({
-                    value: {
-                        copeName: checkedStrat[0],
-                        copeDesc: "",
-                    }
-                })
-            } else {
-                console.log("no strat checked");
-            }
-        }
-    }
-    // listen for new props coming from pre-populated screen and update accordingly
-
     onChange = (value) => {
         this.setState({ value: value })
     };
@@ -81,6 +63,8 @@ export default class NewWarningSign extends React.Component {
         } else {
             console.log("no copes checked");
         }
+
+        readDatabaseArg("*", "WarningSign", (signs) => store.dispatch(getSign(signs)), () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // function that checks if any copes were linked and, if yes, updates CopeSignLink table with respective ID's
 

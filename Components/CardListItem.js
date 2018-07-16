@@ -7,11 +7,15 @@ export const CardListItem = props => {
     return (
         <View style={props.containerStyle}>
             <CardItem button onPress={props.onPress}>
-                <Icon active name="ios-warning-outline" />
-                <Text>{props.name}</Text>
-                <Right>
-                    <Icon name="arrow-forward" />
-                </Right>
+                <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                    <Icon active name="ios-warning-outline" />
+                    <Text>{props.name}</Text>
+                    <View style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row', paddingRight: 10}}>
+                        <Right>
+                            <Icon name="arrow-forward" />
+                        </Right>
+                    </View>
+                </View>
             </CardItem>
         </View>
     )
