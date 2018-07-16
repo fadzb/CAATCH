@@ -10,7 +10,7 @@ export const PressableIcon = (props) => {
   return (
     <TouchableHighlight underlayColor="#FFF" style={props.buttonStyle} onPress={() => props.onPressFunction()}>
       <View style={props.buttonContainerStyle}>
-        {props.name !== '' && <Text style={props.textStyle}>{props.name}</Text>}
+        {props.name !== undefined && <Text style={props.textStyle}>{props.name}</Text>}
         <View style={props.iconStyle}>
           <Icon name={props.iconName} size={props.size} color={props.color} />
         </View>

@@ -46,6 +46,8 @@ class WarningSigns extends React.Component {
               <SafetyPlanSectionRow
                 name={item.signName}
                 onPress={() => this.summaryNav(item.signName, item.dateEntered, item.signDesc)}
+                delete={true}
+                deleteFunction={() => console.log('deleting ...')}
               />
             </View>
           )}
