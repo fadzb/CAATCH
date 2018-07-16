@@ -30,9 +30,9 @@ export default class StrategySummary extends React.Component {
   }
 
   getSignLink = () => {
-    currentCopeId = this.props.navigation.getParam('id');
-    linkTable = 'CopeSignLink';
-    columnQuery = 'w.signId, w.signName, w.signDesc, w.dateEntered';
+    const currentCopeId = this.props.navigation.getParam('id');
+    const linkTable = 'CopeSignLink';
+    const columnQuery = 'w.signId, w.signName, w.signDesc, w.dateEntered';
 
     readDatabaseArg(
       columnQuery,
@@ -52,9 +52,8 @@ export default class StrategySummary extends React.Component {
   // modal for displaying image
 
   toggleVideo = (bool) => {
-    this.setState({ playVideo: bool });
-
     this.player.presentFullscreenPlayer();
+    this.setState({ playVideo: bool });
   };
   // present video player in fullscreen mode
 
@@ -88,7 +87,7 @@ export default class StrategySummary extends React.Component {
                     <View>
                       <Image
                         width={Dimensions.get('window').width - 35} // height will be calculated automatically
-                        source={media}
+                        source={mediaType === 'image' ? media : require('../../../Media/Images/video-play-button.jpg')}
                         onPress={mediaType === 'image' ? () => this.toggleModal(true) : () => this.toggleVideo(true)}
                       />
                     </View>
@@ -120,6 +119,7 @@ export default class StrategySummary extends React.Component {
                                 name={item.signName}
                                 onPress={() =>
                                   this.props.navigation.push('signSummary', {
+                                    id: item.signId,
                                     name: item.signName,
                                     desc: item.signDesc,
                                     date: item.dateEntered,

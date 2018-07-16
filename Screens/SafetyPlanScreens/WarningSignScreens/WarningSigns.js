@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity } from 'react-native';
-import { readDatabase } from '../../../Util/DatabaseHelper';
+import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { readDatabaseArg, updateDatabaseArgument } from '../../../Util/DatabaseHelper';
 import { SafetyPlanSectionRow } from '../../../Components/SafetyPlanSectionRow';
 import { connect } from 'react-redux';
 import { getSign } from '../../../Redux/actions';
 import store from '../../../Redux/store';
+import Moment from 'moment';
 
 class WarningSigns extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -20,16 +21,52 @@ class WarningSigns extends React.Component {
   // Implementation for 'new' strategy button
 
   componentDidMount() {
-    readDatabase('*', 'WarningSign', this.updateSigns, () => console.log('DB read success'));
+    this.getCompleteList();
   }
+
+  getCompleteList = () => {
+    readDatabaseArg(
+      '*',
+      'WarningSign',
+      this.updateSigns,
+      () => console.log('DB read success'),
+      'where dateDeleted is NULL'
+    );
+  };
+  // fetching all warning signs that do not have a deleted date
 
   updateSigns = (signs) => {
     store.dispatch(getSign(signs));
     // dispatching total list of warning signs names from DB to global redux store
   };
 
-  summaryNav = (name, date, desc) => {
+  deleteSign = (id) => {
+    updateDatabaseArgument(
+      'WarningSign',
+      [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
+      ['dateDeleted'],
+      'where signId = ' + id,
+      () => console.log('deleting sign...'),
+      (res) => this.getCompleteList()
+    );
+  };
+  // deleting pressed strategy and updating redux global store to re-render the strategy list
+
+  showAlert = (id) => {
+    Alert.alert(
+      'Delete Sign',
+      'Are you sure you want to delete this warning sign?',
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel' },
+        { text: 'Delete', onPress: () => this.deleteSign(id), style: 'destructive' },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  summaryNav = (id, name, date, desc) => {
     this.props.navigation.push('signSummary', {
+      id: id,
       name: name,
       date: date,
       desc: desc,
@@ -45,9 +82,9 @@ class WarningSigns extends React.Component {
             <View style={stratStyle.listContainer}>
               <SafetyPlanSectionRow
                 name={item.signName}
-                onPress={() => this.summaryNav(item.signName, item.dateEntered, item.signDesc)}
+                onPress={() => this.summaryNav(item.signId, item.signName, item.dateEntered, item.signDesc)}
                 delete={true}
-                deleteFunction={() => console.log('deleting ...')}
+                deleteFunction={() => this.showAlert(item.signId)}
               />
             </View>
           )}
