@@ -2,13 +2,25 @@ import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types';
 
+import { PressableIcon } from './PressableIcon';
+
 // Component used for rows in the various SP section lists
 
 export const SafetyPlanSectionRow = (props) => {
   return (
     <View style={sectionRowStyle.container}>
       <TouchableHighlight underlayColor="#FDEDEC" style={sectionRowStyle.button} onPress={props.onPress}>
-        <Text style={sectionRowStyle.buttonText}>{props.name}</Text>
+        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between' }}>
+          <Text style={sectionRowStyle.buttonText}>{props.name}</Text>
+          {props.delete && (
+            <PressableIcon
+              iconName={'ios-trash-outline'}
+              size={30}
+              buttonStyle={sectionRowStyle.deleteButtonStyle}
+              onPressFunction={props.deleteFunction}
+            />
+          )}
+        </View>
       </TouchableHighlight>
     </View>
   );
@@ -16,6 +28,8 @@ export const SafetyPlanSectionRow = (props) => {
 
 SafetyPlanSectionRow.propTypes = {
   name: PropTypes.string,
+  deleteFunction: PropTypes.func,
+  delete: PropTypes.bool.isRequired,
 };
 // Defining prop types for this component
 
@@ -37,5 +51,11 @@ const sectionRowStyle = StyleSheet.create({
 
   buttonText: {
     fontSize: 20,
+    alignSelf: 'center',
+  },
+
+  deleteButtonStyle: {
+    alignSelf: 'center',
+    paddingRight: 10,
   },
 });
