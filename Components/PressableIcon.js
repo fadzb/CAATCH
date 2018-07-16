@@ -13,7 +13,7 @@ export const PressableIcon = props => {
                 style={props.buttonStyle}
                 onPress={() => props.onPressFunction()}>
                 <View style={props.buttonContainerStyle}>
-                    {props.name !== "" &&
+                    {props.name !== undefined &&
                         <Text style={props.textStyle}>{props.name}</Text>
                     }
                     <View style={props.iconStyle}>

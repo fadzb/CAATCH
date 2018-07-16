@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types'
 
+import {PressableIcon} from "./PressableIcon";
+
 // Component used for rows in the various SP section lists
 
 export const SafetyPlanSectionRow = props => {
@@ -11,14 +13,24 @@ export const SafetyPlanSectionRow = props => {
                 underlayColor="#FDEDEC"
                 style={sectionRowStyle.button}
                 onPress={props.onPress}>
-                <Text style={sectionRowStyle.buttonText}>{props.name}</Text>
+                <View style={{flex: 1, flexDirection: 'row', justifyContent: "space-between",}}>
+                    <Text style={sectionRowStyle.buttonText}>{props.name}</Text>
+                    {props.delete && <PressableIcon
+                        iconName={'ios-trash-outline'}
+                        size={30}
+                        buttonStyle={sectionRowStyle.deleteButtonStyle}
+                        onPressFunction={props.deleteFunction}
+                    />}
+                </View>
             </TouchableHighlight>
         </View>
     )
 };
 
 SafetyPlanSectionRow.propTypes = {
-    name: PropTypes.string
+    name: PropTypes.string,
+    deleteFunction: PropTypes.func,
+    delete: PropTypes.bool.isRequired
 };
 // Defining prop types for this component
 
@@ -29,7 +41,7 @@ const sectionRowStyle = StyleSheet.create({
         //alignItems: "center",
         borderBottomWidth: 1,
         marginLeft: 30,
-        marginRight: 30
+        marginRight: 30,
     },
 
     container: {
@@ -39,6 +51,12 @@ const sectionRowStyle = StyleSheet.create({
     // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
     buttonText: {
-        fontSize: 20
+        fontSize: 20,
+        alignSelf: 'center',
+    },
+
+    deleteButtonStyle: {
+        alignSelf: 'center',
+        paddingRight: 10
     }
 });

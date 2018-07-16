@@ -1,10 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity } from 'react-native';
-import { readDatabase } from "../../../Util/DatabaseHelper";
+import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { readDatabaseArg, updateDatabaseArgument } from "../../../Util/DatabaseHelper";
 import { SafetyPlanSectionRow } from '../../../Components/SafetyPlanSectionRow'
 import {connect} from 'react-redux'
 import {getCoping} from "../../../Redux/actions";
 import store from "../../../Redux/store"
+import Moment from 'moment';
 
 class CopingStrategies extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -21,12 +22,34 @@ class CopingStrategies extends React.Component {
     // Implementation for 'new' strategy button
 
     componentDidMount() {
-        readDatabase("*", "CopingStrategy", this.updateStrategies, () => console.log("DB read success"))
+        this.getCompleteList();
     }
 
     updateStrategies = (strats) => {
         store.dispatch(getCoping(strats));
         // dispatching total list of coping strategy names from DB to global redux store
+    };
+
+    getCompleteList = () => {
+        readDatabaseArg("*", "CopingStrategy", this.updateStrategies, () => console.log("DB read success"), 'where dateDeleted is NULL');
+    };
+    // fetching all coping strategies that do not have a deleted date
+
+    deleteStrat = id => {
+        updateDatabaseArgument("CopingStrategy", [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where copeId = " + id, () => console.log("deleting strategy..."), (res) => this.getCompleteList())
+    };
+    // deleting pressed strategy and updating redux global store to re-render the strategy list
+
+    showAlert = (id) => {
+        Alert.alert(
+            'Delete Strategy',
+            'Are you sure you want to delete this coping strategy?',
+            [
+                {text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel'},
+                {text: 'Delete', onPress: () => this.deleteStrat(id), style: 'destructive'},
+            ],
+            { cancelable: false }
+        )
     };
 
     summaryNav = (id, name, date, desc, url, media, mediaType) => {
@@ -50,6 +73,8 @@ class CopingStrategies extends React.Component {
                         <SafetyPlanSectionRow
                             name= {item.copeName}
                             onPress={() => this.summaryNav(item.copeId, item.copeName, item.dateEntered, item.copeDesc, item.copeUrl, item.mediaPath, item.mediaType)}
+                            delete={true}
+                            deleteFunction={() => this.showAlert(item.copeId)}
                         />
                     </View>}
                     keyExtractor={(item, index) => index.toString()}
