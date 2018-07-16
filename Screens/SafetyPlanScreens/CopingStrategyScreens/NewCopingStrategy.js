@@ -7,7 +7,7 @@ import { updateCoping, getCoping } from '../../../Redux/actions';
 import Expo from 'expo';
 
 import { TabStyles } from '../../../Styles/TabStyles';
-import { updateDatabase, updateDatabaseArgument, readDatabase } from '../../../Util/DatabaseHelper';
+import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
 
 const Form = t.form.Form;
 
@@ -82,7 +82,7 @@ export default class NewCopingStrategy extends React.Component {
   };
 
   refreshDb = (func) => {
-    readDatabase('*', 'CopingStrategy', func, () => console.log('DB read success'));
+    readDatabaseArg('*', 'CopingStrategy', func, () => console.log('DB read success'), 'where dateDeleted is NULL');
   };
   // for refreshing global state from Coping Strategy table in DB
 
