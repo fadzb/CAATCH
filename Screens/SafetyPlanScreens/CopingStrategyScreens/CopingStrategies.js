@@ -6,6 +6,7 @@ import { connect } from 'react-redux';
 import { getCoping } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import Moment from 'moment';
+import { FileSystem } from 'expo';
 
 class CopingStrategies extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -40,7 +41,9 @@ class CopingStrategies extends React.Component {
   };
   // fetching all coping strategies that do not have a deleted date
 
-  deleteStrat = (id) => {
+  deleteStrat = (id, path) => {
+    this.removeMediaFile(path);
+
     updateDatabaseArgument(
       'CopingStrategy',
       [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
@@ -52,13 +55,20 @@ class CopingStrategies extends React.Component {
   };
   // deleting pressed strategy and updating redux global store to re-render the strategy list.
 
-  showAlert = (id) => {
+  removeMediaFile = (path) => {
+    FileSystem.deleteAsync(path)
+      .then((res) => console.log('strategy media deleted..'))
+      .catch((err) => console.log(err));
+  };
+  // remove media file from SP media folder in documentDirectory
+
+  showAlert = (id, path) => {
     Alert.alert(
       'Delete Strategy',
       'Are you sure you want to delete this coping strategy?',
       [
         { text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel' },
-        { text: 'Delete', onPress: () => this.deleteStrat(id), style: 'destructive' },
+        { text: 'Delete', onPress: () => this.deleteStrat(id, path), style: 'destructive' },
       ],
       { cancelable: false }
     );
@@ -97,7 +107,7 @@ class CopingStrategies extends React.Component {
                   )
                 }
                 delete={true}
-                deleteFunction={() => this.showAlert(item.copeId)}
+                deleteFunction={() => this.showAlert(item.copeId, item.mediaPath)}
               />
             </View>
           )}
