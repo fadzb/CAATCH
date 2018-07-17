@@ -106,7 +106,6 @@ class CopingStrategies extends React.Component {
                     item.mediaType
                   )
                 }
-                delete={true}
                 deleteFunction={() => this.showAlert(item.copeId, item.mediaPath)}
               />
             </View>
