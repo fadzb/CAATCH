@@ -81,7 +81,6 @@ class CopingStrategies extends React.Component {
                         <SafetyPlanSectionRow
                             name= {item.copeName}
                             onPress={() => this.summaryNav(item.copeId, item.copeName, item.dateEntered, item.copeDesc, item.copeUrl, item.mediaPath, item.mediaType)}
-                            delete={true}
                             deleteFunction={() => this.showAlert(item.copeId, item.mediaPath)}
                         />
                     </View>}

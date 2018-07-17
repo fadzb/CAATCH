@@ -183,7 +183,7 @@ export default class NewCopingStrategy extends React.Component {
                         <Text style={copeStyle.buttonText}>Save</Text>
                     </TouchableHighlight>
                 </View>
-                <View style={{flex: 1, alignItems: 'center'}}>
+                <View style={{alignItems: 'center', justifyContent: 'flex-start'}}>
                     <PressableIcon
                         iconName="ios-images-outline"
                         size={80}
@@ -214,12 +214,9 @@ const copeStyle = StyleSheet.create({
         justifyContent: 'center'
     },
     formContainer: {
-        flex: 2,
         margin: 40,
     },
     iconButton: {
-        flex: 1,
-        justifyContent: "center",
         alignItems: "center",
         borderRadius: 10,
     },
