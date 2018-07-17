@@ -50,7 +50,7 @@ class CopingStrategies extends React.Component {
       (res) => this.getCompleteList()
     );
   };
-  // deleting pressed strategy and updating redux global store to re-render the strategy list
+  // deleting pressed strategy and updating redux global store to re-render the strategy list.
 
   showAlert = (id) => {
     Alert.alert(
