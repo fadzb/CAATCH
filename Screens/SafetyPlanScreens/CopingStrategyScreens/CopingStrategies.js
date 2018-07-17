@@ -36,9 +36,9 @@ class CopingStrategies extends React.Component {
     // fetching all coping strategies that do not have a deleted date
 
     deleteStrat = id => {
-        updateDatabaseArgument("CopingStrategy", [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where copeId = " + id, () => console.log("deleting strategy..."), (res) => this.getCompleteList())
+        updateDatabaseArgument("CopingStrategy", [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where copeId = " + id, () => console.log("deleting strategy..."), (res) => this.getCompleteList());
     };
-    // deleting pressed strategy and updating redux global store to re-render the strategy list
+    // deleting pressed strategy and updating redux global store to re-render the strategy list.
 
     showAlert = (id) => {
         Alert.alert(

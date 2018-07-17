@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
 
-import {readDatabase} from "../../../Util/DatabaseHelper";
+import {readDatabaseArg} from "../../../Util/DatabaseHelper";
 
 export default class CopingStrategyLink extends React.Component {
     static navigationOptions = {
@@ -19,9 +19,9 @@ export default class CopingStrategyLink extends React.Component {
     }
 
     componentDidMount() {
-        readDatabase("*", "CopingStrategy", this.updateCopes)
+        readDatabaseArg("*", "CopingStrategy", this.updateCopes, () => console.log("DB read success"), 'where dateDeleted is NULL');
     }
-    // read DB for all currently saved coping Strategies
+    // read DB for all currently saved coping Strategies where dateDeleted is null
 
     updateCopes = (copes) => {
         const copeStruct = {};

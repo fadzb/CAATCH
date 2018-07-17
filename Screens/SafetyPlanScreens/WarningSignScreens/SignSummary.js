@@ -28,12 +28,14 @@ export default class SignSummary extends React.Component {
     getCopeLink = () => {
         const currentSignId = this.props.navigation.getParam('id');
         const linkTable = "CopeSignLink";
-        const columnQuery = "c.copeId, c.copeName, c.copeDesc, c.copeUrl, c.mediaType, c.mediaPath, c.dateEntered";
+        const columnQuery = "c.copeId, c.copeName, c.copeDesc, c.copeUrl, c.mediaType, c.mediaPath, c.dateEntered, c.dateDeleted";
 
         readDatabaseArg(
             columnQuery,
             "CopingStrategy",
-            copes => {this.setState({copes: copes})}, undefined, 'as c inner join ' + linkTable + ' as w on c.copeId = w.copeId where signId = ' + currentSignId);
+            copes => {this.setState({copes: copes})},
+            undefined,
+            'as c inner join ' + linkTable + ' as w on c.copeId = w.copeId where signId = ' + currentSignId + ' AND c.dateDeleted is null');
     };
     // retrieves linked coping strategies to current warning sign. Set's state with returned array
 
