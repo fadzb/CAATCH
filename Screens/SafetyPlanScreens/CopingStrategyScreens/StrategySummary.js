@@ -1,12 +1,11 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList } from 'react-native';
-import { Container, Header, Content, Card, CardItem, Text, Button, Icon, Left, Body } from 'native-base';
+import { Container, Header, Content, Card, CardItem, Text, Button, Left, Body } from 'native-base';
 import Image from 'react-native-scalable-image';
 import { ImageViewer } from '../../../Components/ImageViewer';
 import Moment from 'moment';
-import { CardListItem } from '../../../Components/CardListItem';
-import { readDatabaseArg } from '../../../Util/DatabaseHelper';
 import { Video } from 'expo';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class StrategySummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -20,31 +19,9 @@ export default class StrategySummary extends React.Component {
 
     this.state = {
       modalVisible: false,
-      signs: [],
       playVideo: false,
     };
   }
-
-  componentDidMount() {
-    this.getSignLink();
-  }
-
-  getSignLink = () => {
-    const currentCopeId = this.props.navigation.getParam('id');
-    const linkTable = 'CopeSignLink';
-    const columnQuery = 'w.signId, w.signName, w.signDesc, w.dateEntered';
-
-    readDatabaseArg(
-      columnQuery,
-      'WarningSign',
-      (signs) => {
-        this.setState({ signs: signs });
-      },
-      undefined,
-      'as w inner join ' + linkTable + ' as c on w.signId = c.signId where copeId = ' + currentCopeId
-    );
-  };
-  // retrieves linked warning signs to current coping strategy. Set's state with returned array
 
   toggleModal = (bool) => {
     this.setState({ modalVisible: bool });
@@ -52,7 +29,11 @@ export default class StrategySummary extends React.Component {
   // modal for displaying image
 
   toggleVideo = (bool) => {
-    this.player.presentFullscreenPlayer();
+    this.player
+      .presentFullscreenPlayer()
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
+
     this.setState({ playVideo: bool });
   };
   // present video player in fullscreen mode
@@ -94,8 +75,8 @@ export default class StrategySummary extends React.Component {
                   )}
                   <Text style={stratSummaryStyle.text}>{this.props.navigation.getParam('desc')}</Text>
                   {link !== null && (
-                    <Text style={stratSummaryStyle.text}>
-                      url:{' '}
+                    <View style={stratSummaryStyle.textLinkView}>
+                      <Icon name="ios-link" size={20} style={{ paddingRight: 5 }} />
                       <Text
                         style={stratSummaryStyle.urlText}
                         onPress={() =>
@@ -106,31 +87,6 @@ export default class StrategySummary extends React.Component {
                       >
                         {link}
                       </Text>
-                    </Text>
-                  )}
-                  {this.state.signs.length !== 0 && (
-                    <View style={stratSummaryStyle.linkListContainer}>
-                      <View style={{ flex: 1, alignSelf: 'stretch' }}>
-                        <FlatList
-                          data={this.state.signs}
-                          renderItem={({ item }) => (
-                            <View>
-                              <CardListItem
-                                name={item.signName}
-                                onPress={() =>
-                                  this.props.navigation.push('signSummary', {
-                                    id: item.signId,
-                                    name: item.signName,
-                                    desc: item.signDesc,
-                                    date: item.dateEntered,
-                                  })
-                                }
-                              />
-                            </View>
-                          )}
-                          keyExtractor={(item, index) => index.toString()}
-                        />
-                      </View>
                     </View>
                   )}
                 </Body>
@@ -163,6 +119,12 @@ const stratSummaryStyle = StyleSheet.create({
     backgroundColor: '#cccccc',
   },
 
+  textLinkView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 5,
+  },
+
   text: {
     paddingTop: 10,
   },
@@ -170,6 +132,7 @@ const stratSummaryStyle = StyleSheet.create({
   urlText: {
     textDecorationLine: 'underline',
     color: 'blue',
+    alignSelf: 'center',
   },
 
   linkListContainer: {

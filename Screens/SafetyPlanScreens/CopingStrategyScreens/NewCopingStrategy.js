@@ -88,25 +88,14 @@ export default class NewCopingStrategy extends React.Component {
 
   updateGlobalStrategies = (strats) => store.dispatch(getCoping(strats));
 
-  updateLinkDbTable = (copeId) => {
-    const checkedSigns = this.props.navigation.getParam('checkedSigns', null);
-
-    if (checkedSigns !== null) {
-      checkedSigns.forEach((signId) => {
-        updateDatabase('CopeSignLink', [signId, copeId.insertId], ['signId', 'copeId']);
-      });
-    } else {
-      console.log('no signs checked');
-    }
-
+  checkMediaSelected = (copeId) => {
     if (this.state.selectedMediaUri !== '') {
       this.updateDBMedia(copeId);
     }
-    // if media was selected -> update that row with path
 
     this.refreshDb(this.updateGlobalStrategies);
   };
-  // function that checks if any signs were linked and, if yes, updates CopeSignLink table with respective ID's
+  // if media was selected -> update that row with path
 
   updateDBMedia = (copeId) => {
     const mediaDirectory = 'SafetyplanMedia/';
@@ -115,8 +104,7 @@ export default class NewCopingStrategy extends React.Component {
       'CopingStrategy',
       [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
       ['mediaPath', 'mediaType'],
-      'where copeId = ' + copeId.insertId,
-      this.refreshDb(this.updateGlobalStrategies)
+      'where copeId = ' + copeId.insertId
     );
 
     Expo.FileSystem.moveAsync({
@@ -165,7 +153,7 @@ export default class NewCopingStrategy extends React.Component {
         Object.values(value),
         Object.keys(value),
         this.updateCopeList(value),
-        this.updateLinkDbTable
+        this.checkMediaSelected
       );
       // write the saved values to DB if valid
 
@@ -179,16 +167,6 @@ export default class NewCopingStrategy extends React.Component {
       <View style={TabStyles.planContainer}>
         <View style={copeStyle.formContainer}>
           <Form ref="form" type={cope} value={this.state.value} onChange={this.onChange} options={options} />
-          <PressableIcon
-            iconName="ios-arrow-dropright-outline"
-            size={25}
-            onPressFunction={() => this.props.navigation.push('warningLink')}
-            name="Warning Sign"
-            buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
-            buttonStyle={copeStyle.listButton}
-            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
-            iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
-          />
           <PressableIcon
             iconName="ios-arrow-dropright-outline"
             size={25}
