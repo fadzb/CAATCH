@@ -33,7 +33,7 @@ const options = {
 
 export default class NewWarningSign extends React.Component {
     static navigationOptions = {
-        title: "New Strategy"
+        title: "New Sign"
     };
 
     constructor(props) {

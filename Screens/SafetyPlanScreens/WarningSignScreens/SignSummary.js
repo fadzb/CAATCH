@@ -61,6 +61,7 @@ export default class SignSummary extends React.Component {
                                     {this.props.navigation.getParam('desc')}
                                 </Text>
                                 {this.state.copes.length !== 0 && <View style={signSummaryStyle.linkListContainer}>
+                                    <Text style={signSummaryStyle.linkText}>Coping Strategies</Text>
                                     <View style={{flex: 1, alignSelf: 'stretch'}}>
                                         <FlatList
                                             data={this.state.copes}
@@ -68,6 +69,7 @@ export default class SignSummary extends React.Component {
                                                 <View>
                                                     <CardListItem
                                                         name= {item.copeName}
+                                                        iconName='ios-build-outline'
                                                         onPress={() => this.props.navigation.push('stratSummary', {
                                                             id: item.copeId,
                                                             name: item.copeName,
@@ -106,6 +108,11 @@ const signSummaryStyle = StyleSheet.create({
     urlText: {
         textDecorationLine: 'underline',
         color: 'blue'
+    },
+
+    linkText: {
+        fontWeight: 'bold',
+        padding: 10
     },
 
     linkListContainer: {

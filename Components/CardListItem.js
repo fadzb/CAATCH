@@ -8,7 +8,7 @@ export const CardListItem = props => {
         <View style={props.containerStyle}>
             <CardItem button onPress={props.onPress}>
                 <View style={{flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                    <Icon active name="ios-warning-outline" />
+                    <Icon active name={props.iconName} />
                     <Text>{props.name}</Text>
                     <View style={{flex: 1, justifyContent: 'flex-end', flexDirection: 'row', paddingRight: 10}}>
                         <Right>
