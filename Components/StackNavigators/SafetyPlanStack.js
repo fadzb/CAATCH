@@ -9,7 +9,8 @@ import WarningSigns from "../../Screens/SafetyPlanScreens/WarningSignScreens/War
 import NewCopingStrategy from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/NewCopingStrategy";
 import ReasonsToLive from "../../Screens/SafetyPlanScreens/ReasonsToLive";
 import Distractions from "../../Screens/SafetyPlanScreens/Distractions";
-import Contacts from "../../Screens/SafetyPlanScreens/Contacts";
+import Contacts from "../../Screens/SafetyPlanScreens/ContactScreens/Contacts";
+import NewContact from "../../Screens/SafetyPlanScreens/ContactScreens/NewContact";
 import EnvironmentSafe from "../../Screens/SafetyPlanScreens/EnvironmentSafe";
 import CopingStrategies from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/CopingStrategies";
 import PrePopCopingStrategies from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/PrePopCopingStrategies";
@@ -18,6 +19,7 @@ import CopeWebView from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/C
 import NewWarningSign from "../../Screens/SafetyPlanScreens/WarningSignScreens/NewWarningSign";
 import CopingStrategyLink from "../../Screens/SafetyPlanScreens/WarningSignScreens/CopingStrategyLink";
 import SignSummary from "../../Screens/SafetyPlanScreens/WarningSignScreens/SignSummary";
+import PhoneContacts from "../../Screens/SafetyPlanScreens/ContactScreens/PhoneContacts";
 
 const PlanStack = createStackNavigator(
     {
@@ -34,6 +36,8 @@ const PlanStack = createStackNavigator(
         reason: ReasonsToLive,
         distraction: Distractions,
         contact: Contacts,
+        newContact: NewContact,
+        phoneContacts: PhoneContacts,
         environment: EnvironmentSafe
     },
 

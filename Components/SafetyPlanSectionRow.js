@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import {Thumbnail} from 'native-base'
 import PropTypes from 'prop-types'
 import Swipeable from 'react-native-swipeable';
 import {Icons} from "../Constants/Icon";
@@ -39,7 +40,11 @@ export class SafetyPlanSectionRow extends React.Component {
                         underlayColor="#FDEDEC"
                         style={sectionRowStyle.button}
                         onPress={this.props.onPress}>
-                        <View style={{flex: 1, flexDirection: 'row', justifyContent: "space-between",}}>
+                        <View style={{flex: 1, flexDirection: 'row', justifyContent: "flex-start", alignItems: 'center'}}>
+                            {this.props.thumbnail !== undefined && <Thumbnail source={this.props.thumbnail} />}
+                            {this.props.circleView !== undefined && <View style={sectionRowStyle.circleView}>
+                                <Text style={{fontSize: 20}}>{this.props.circleView}</Text>
+                            </View>}
                             <Text style={sectionRowStyle.buttonText}>{this.props.name}</Text>
                         </View>
                     </TouchableHighlight>
@@ -72,7 +77,17 @@ const sectionRowStyle = StyleSheet.create({
 
     buttonText: {
         fontSize: 20,
-        alignSelf: 'center',
+        paddingLeft: 20
     },
+
+    circleView: {
+        width: 50,
+        height: 50,
+        borderRadius: 50/2,
+        //backgroundColor: 'red',
+        borderWidth: 2,
+        justifyContent: 'center',
+        alignItems: 'center'
+    }
 
 });
