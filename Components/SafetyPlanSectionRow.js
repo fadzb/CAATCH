@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types';
 import Swipeable from 'react-native-swipeable';
+import { Icons } from '../Constants/Icon';
 
 import { PressableIcon } from './PressableIcon';
 
@@ -18,7 +19,7 @@ export class SafetyPlanSectionRow extends React.Component {
   rightDeleteButton = [
     <View style={{ flex: 1, justifyContent: 'center' }}>
       <PressableIcon
-        iconName={'ios-trash-outline'}
+        iconName={Icons.delete + '-outline'}
         size={40}
         buttonStyle={sectionRowStyle.deleteButtonStyle}
         onPressFunction={this.onPressDelete}

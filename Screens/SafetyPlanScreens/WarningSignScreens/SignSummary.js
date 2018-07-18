@@ -4,6 +4,7 @@ import { Container, Header, Content, Card, CardItem, Text, Button, Icon, Left, B
 import Moment from 'moment';
 import { CardListItem } from '../../../Components/CardListItem';
 import { readDatabaseArg } from '../../../Util/DatabaseHelper';
+import { Icons } from '../../../Constants/Icon';
 
 export default class SignSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -77,7 +78,7 @@ export default class SignSummary extends React.Component {
                             <View>
                               <CardListItem
                                 name={item.copeName}
-                                iconName="ios-build-outline"
+                                iconName={Icons.copingStrategy + '-outline'}
                                 onPress={() =>
                                   this.props.navigation.push('stratSummary', {
                                     id: item.copeId,
