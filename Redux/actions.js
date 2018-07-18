@@ -6,6 +6,9 @@ export const GET_COPING = 'GET_COPING';
 export const UPDATE_SIGN = 'UPDATE_SIGN';
 export const GET_SIGN = 'GET_SIGN';
 
+export const UPDATE_CONTACT = 'UPDATE_CONTACT';
+export const GET_CONTACT = 'GET_CONTACT';
+
 // action creators
 
 export const updateCoping = (update) => ({
@@ -26,4 +29,14 @@ export const updateSign = (update) => ({
 export const getSign = (signList) => ({
   type: GET_SIGN,
   payload: signList,
+});
+
+export const updateContact = (update) => ({
+  type: UPDATE_CONTACT,
+  payload: update,
+});
+
+export const getContact = (contactList) => ({
+  type: GET_CONTACT,
+  payload: contactList,
 });
