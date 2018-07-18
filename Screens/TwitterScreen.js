@@ -2,12 +2,13 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, WebView, Dimensions } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import EmbeddedTweet from '../Components/TwitterTimeline';
+import { Icons } from '../Constants/Icon';
 
 import { TabStyles } from '../Styles/TabStyles';
 
 export default class TwitterScreen extends React.Component {
   static navigationOptions = {
-    tabBarIcon: ({ tintColor }) => <Ionicons name={`logo-twitter`} size={25} color={tintColor} />,
+    tabBarIcon: ({ tintColor }) => <Ionicons name={Icons.news} size={25} color={tintColor} />,
   };
   // static property called navigationOptions that belongs to all screen components
 

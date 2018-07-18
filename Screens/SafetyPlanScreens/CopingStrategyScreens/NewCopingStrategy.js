@@ -5,6 +5,7 @@ import { PressableIcon } from '../../../Components/PressableIcon';
 import store from '../../../Redux/store';
 import { updateCoping, getCoping } from '../../../Redux/actions';
 import Expo from 'expo';
+import { Icons } from '../../../Constants/Icon';
 
 import { TabStyles } from '../../../Styles/TabStyles';
 import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
@@ -183,7 +184,7 @@ export default class NewCopingStrategy extends React.Component {
         </View>
         <View style={{ alignItems: 'center', justifyContent: 'flex-start' }}>
           <PressableIcon
-            iconName="ios-images-outline"
+            iconName={Icons.media + '-outline'}
             size={80}
             onPressFunction={this.captureMedia}
             buttonStyle={copeStyle.iconButton}
