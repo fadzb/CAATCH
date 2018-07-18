@@ -2,6 +2,7 @@ import React from 'react';
 import { Button, Text, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Ionicons from "react-native-vector-icons/Ionicons";
+import {Icons} from "../../Constants/Icon";
 
 import PlanScreen from "../../Screens/PlanScreen";
 import WarningSigns from "../../Screens/SafetyPlanScreens/WarningSignScreens/WarningSigns";
@@ -45,7 +46,7 @@ const PlanStack = createStackNavigator(
 PlanStack.navigationOptions = {
     tabBarIcon: ({ focused, tintColor }) => (
         <Ionicons
-            name={`ios-list${focused ? "" : "-outline"}`}
+            name={Icons.plan + `${focused ? "" : "-outline"}`}
             // if icon is not pressed use outline
             size={25}
             color={tintColor}

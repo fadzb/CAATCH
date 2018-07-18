@@ -1,7 +1,8 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, WebView, Dimensions } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import EmbeddedTweet from '../Components/TwitterTimeline'
+import EmbeddedTweet from '../Components/TwitterTimeline';
+import {Icons} from "../Constants/Icon";
 
 import {TabStyles} from "../Styles/TabStyles";
 
@@ -9,7 +10,7 @@ export default class TwitterScreen extends React.Component {
     static navigationOptions = {
         tabBarIcon: ({ tintColor }) => (
             <Ionicons
-                name={`logo-twitter`}
+                name={Icons.news}
                 size={25}
                 color={tintColor}
             />

@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, Dimensions } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Image from 'react-native-scalable-image';
+import {Icons} from "../Constants/Icon";
 
 import {TabStyles} from "../Styles/TabStyles";
 import {HomeScreenTileRow} from "../Components/HomeScreenTileRow";
@@ -11,7 +12,7 @@ export default class HomeScreen extends React.Component {
     static navigationOptions = {
         tabBarIcon: ({ focused, tintColor }) => (
             <Ionicons
-                name={`ios-home${focused ? "" : "-outline"}`}
+                name={Icons.home + `${focused ? "" : "-outline"}`}
                 // if icon is not pressed use outline
                 size={25}
                 color={tintColor}
@@ -28,17 +29,17 @@ export default class HomeScreen extends React.Component {
                 <View style={homeStyle.tileContainer}>
                     <HomeScreenTileRow
                         name1="My Stats"
-                        iconName1="ios-stats-outline"
+                        iconName1= {Icons.stats + "-outline"}
                         name2="Plan"
-                        iconName2="ios-list-outline"
+                        iconName2= {Icons.plan + "-outline"}
                         onPress2={() => this.props.navigation.navigate('Plan')}
                     />
                     <HomeScreenTileRow
                         name1="Diary"
-                        iconName1="ios-book-outline"
+                        iconName1= {Icons.diary + "-outline"}
                         onPress1={() => this.props.navigation.navigate('Diary')}
                         name2="Reports"
-                        iconName2="ios-clipboard-outline"
+                        iconName2= {Icons.report + "-outline"}
                     />
                 </View>
             </View>
