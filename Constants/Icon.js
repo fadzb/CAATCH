@@ -18,4 +18,5 @@ export const Icons = {
   delete: 'ios-trash',
   message: 'ios-text',
   email: 'ios-mail',
+  camera: 'ios-camera',
 };
