@@ -33,10 +33,12 @@ const options = {
         phone: {
             placeholder: 'Phone',
             auto: 'none',
+            keyboardType: 'numeric'
         },
         email: {
             placeholder: 'Email',
             auto: 'none',
+            autoCapitalize: 'none'
         },
     }
 };
@@ -129,7 +131,7 @@ export default class NewContact extends React.Component {
                     return;
                 }
 
-                Expo.ImagePicker.launchImageLibraryAsync({mediaTypes: Expo.ImagePicker.MediaTypeOptions.All})
+                Expo.ImagePicker.launchImageLibraryAsync({mediaTypes: Expo.ImagePicker.MediaTypeOptions.Images})
                     .then(selectedMedia => {
                         console.log(selectedMedia);
 
