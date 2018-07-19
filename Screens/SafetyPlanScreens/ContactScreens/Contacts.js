@@ -40,7 +40,7 @@ class Contacts extends React.Component {
     // dispatching total list of contacts from DB to global redux store
   };
 
-  deleteSign = (id) => {
+  deleteContact = (id) => {
     updateDatabaseArgument(
       'Contact',
       [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
@@ -58,7 +58,7 @@ class Contacts extends React.Component {
       'Are you sure you want to delete this contact?',
       [
         { text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel' },
-        { text: 'Delete', onPress: () => this.deleteSign(id), style: 'destructive' },
+        { text: 'Delete', onPress: () => this.deleteContact(id), style: 'destructive' },
       ],
       { cancelable: false }
     );
@@ -91,7 +91,7 @@ class Contacts extends React.Component {
             item.dateEntered
           )
         }
-        deleteFunction={() => this.showAlert(item.signId)}
+        deleteFunction={() => this.showAlert(item.contactId)}
         thumbnail={item.image === null ? undefined : { uri: item.image }}
         circleView={item.image === null ? item.firstName.slice(0, 1).toUpperCase() : undefined}
       />
