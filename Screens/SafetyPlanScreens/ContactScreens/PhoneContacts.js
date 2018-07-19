@@ -1,8 +1,8 @@
+// Screen for displaying phones contacts in sorted and selectable section list
+
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, SectionList } from 'react-native';
 import {ContactRow} from "../../../Components/ContactRow";
-
-import {TabStyles} from "../../../Styles/TabStyles";
 
 export default class PhoneContacts extends React.Component {
     static navigationOptions = {

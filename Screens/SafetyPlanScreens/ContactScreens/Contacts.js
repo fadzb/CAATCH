@@ -19,7 +19,7 @@ class Contacts extends React.Component {
             ),
         }
     };
-    // Implementation for 'new' strategy button
+    // Implementation for 'new' contact button
 
     componentDidMount() {
         this.getCompleteList();
@@ -28,17 +28,17 @@ class Contacts extends React.Component {
     getCompleteList = () => {
         readDatabaseArg("*", "Contact", this.updateContacts, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
-    // fetching all warning signs that do not have a deleted date
+    // fetching all contacts that do not have a deleted date
 
     updateContacts = (contacts) => {
         store.dispatch(getContact(contacts));
-        // dispatching total list of warning signs names from DB to global redux store
+        // dispatching total list of contacts from DB to global redux store
     };
 
     deleteSign = id => {
         updateDatabaseArgument("Contact", [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where contactId = " + id, () => console.log("deleting contact..."), (res) => this.getCompleteList())
     };
-    // deleting pressed strategy and updating redux global store to re-render the strategy list
+    // deleting pressed contact and updating redux global store to re-render the contact list
 
     showAlert = (id) => {
         Alert.alert(
@@ -61,20 +61,24 @@ class Contacts extends React.Component {
         });
     };
 
+    renderItem = ({item}) => (
+        <View style={contactsStyle.listContainer}>
+            <SafetyPlanSectionRow
+                name= {item.firstName + `${item.surname !== null ? ' ' + item.surname : ''}`}
+                onPress={() => this.summaryNav(item.signId, item.signName, item.dateEntered, item.signDesc)}
+                deleteFunction={() => this.showAlert(item.signId)}
+                thumbnail={item.image === null ? undefined : {uri: item.image}}
+                circleView={item.image === null ? item.firstName.slice(0,1).toUpperCase() : undefined}
+            />
+        </View>
+    );
+
     render() {
         return (
             <View style={contactsStyle.viewContainer}>
                 <FlatList
                     data={this.props.contact} // comes from mapStateToProps below
-                    renderItem={({item}) => <View style={contactsStyle.listContainer}>
-                        <SafetyPlanSectionRow
-                            name= {item.firstName + `${item.surname !== null ? ' ' + item.surname : ''}`}
-                            onPress={() => this.summaryNav(item.signId, item.signName, item.dateEntered, item.signDesc)}
-                            deleteFunction={() => this.showAlert(item.signId)}
-                            thumbnail={item.image}
-                            circleView={item.image === null ? item.firstName.slice(0,1).toUpperCase() : null}
-                        />
-                    </View>}
+                    renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}
                 />
             </View>

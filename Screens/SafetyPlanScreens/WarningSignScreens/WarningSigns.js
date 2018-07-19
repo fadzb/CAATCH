@@ -6,6 +6,7 @@ import {connect} from 'react-redux'
 import {getSign} from "../../../Redux/actions";
 import store from "../../../Redux/store"
 import Moment from 'moment';
+import {Icons} from "../../../Constants/Icon";
 
 class WarningSigns extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -61,18 +62,23 @@ class WarningSigns extends React.Component {
         });
     };
 
+    renderItem = ({item}) => (
+        <View style={stratStyle.listContainer}>
+            <SafetyPlanSectionRow
+                name= {item.signName}
+                onPress={() => this.summaryNav(item.signId, item.signName, item.dateEntered, item.signDesc)}
+                deleteFunction={() => this.showAlert(item.signId)}
+                icon={Icons.warningSign + "-outline"}
+            />
+        </View>
+    );
+
     render() {
         return (
             <View style={stratStyle.viewContainer}>
                 <FlatList
                     data={this.props.sign} // comes from mapStateToProps below
-                    renderItem={({item}) => <View style={stratStyle.listContainer}>
-                        <SafetyPlanSectionRow
-                            name= {item.signName}
-                            onPress={() => this.summaryNav(item.signId, item.signName, item.dateEntered, item.signDesc)}
-                            deleteFunction={() => this.showAlert(item.signId)}
-                        />
-                    </View>}
+                    renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}
                 />
             </View>

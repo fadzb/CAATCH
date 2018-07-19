@@ -83,13 +83,13 @@ export default class NewContact extends React.Component {
 
     updateContactList = (contact) => {
         store.dispatch(updateContact(contact));
-        // dispatching new Coping Strategy name to global redux store
+        // dispatching new contact to global redux store
     };
 
     refreshDb = func => {
         readDatabaseArg("*", "Contact", func, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
-    // for refreshing global state from Coping Strategy table in DB
+    // for refreshing global state from Contact table in DB
 
     updateGlobalContacts = (contacts) => store.dispatch(getContact(contacts));
 
@@ -108,7 +108,7 @@ export default class NewContact extends React.Component {
 
         updateDatabaseArgument('Contact',
             [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName],
-            ['mediaPath'],
+            ['image'],
             'where contactId = ' + contactId.insertId,
         );
 
@@ -171,14 +171,14 @@ export default class NewContact extends React.Component {
                 }
 
                 Expo.Contacts.getContactsAsync({fields: [Expo.Contacts.PHONE_NUMBERS,
-                    Expo.Contacts.EMAILS,
-                    Expo.Contacts.THUMBNAIL,
-                    Expo.Contacts.IMAGE], pageSize: 10000})
+                    Expo.Contacts.EMAILS], pageSize: 10000})
                     .then(res => {
                         this.props.navigation.push('phoneContacts', {contacts: res.data})
                     })
+                    .catch(err => console.log(err))
             })
     };
+    // media that retrieves all (providing less than 10000 contacts!) contacts from phones directory
 
     render() {
         return(
