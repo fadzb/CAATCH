@@ -7,6 +7,7 @@ import { getCoping } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import Moment from 'moment';
 import { FileSystem } from 'expo';
+import { Icons } from '../../../Constants/Icon';
 
 class CopingStrategies extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -86,30 +87,35 @@ class CopingStrategies extends React.Component {
     });
   };
 
+  renderItem = ({ item }) => (
+    <View style={stratStyle.listContainer}>
+      <SafetyPlanSectionRow
+        name={item.copeName}
+        onPress={() =>
+          this.summaryNav(
+            item.copeId,
+            item.copeName,
+            item.dateEntered,
+            item.copeDesc,
+            item.copeUrl,
+            item.mediaPath,
+            item.mediaType
+          )
+        }
+        deleteFunction={() => this.showAlert(item.copeId, item.mediaPath)}
+        videoThumbnail={item.mediaPath !== null && item.mediaType === 'video' ? { uri: item.mediaPath } : undefined}
+        thumbnail={item.mediaPath !== null && item.mediaType === 'image' ? { uri: item.mediaPath } : undefined}
+        icon={item.mediaPath === null ? Icons.copingStrategy + '-outline' : undefined}
+      />
+    </View>
+  );
+
   render() {
     return (
       <View style={stratStyle.viewContainer}>
         <FlatList
           data={this.props.coping} // comes from mapStateToProps below
-          renderItem={({ item }) => (
-            <View style={stratStyle.listContainer}>
-              <SafetyPlanSectionRow
-                name={item.copeName}
-                onPress={() =>
-                  this.summaryNav(
-                    item.copeId,
-                    item.copeName,
-                    item.dateEntered,
-                    item.copeDesc,
-                    item.copeUrl,
-                    item.mediaPath,
-                    item.mediaType
-                  )
-                }
-                deleteFunction={() => this.showAlert(item.copeId, item.mediaPath)}
-              />
-            </View>
-          )}
+          renderItem={this.renderItem}
           keyExtractor={(item, index) => index.toString()}
         />
       </View>
