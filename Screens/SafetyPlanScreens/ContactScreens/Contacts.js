@@ -64,12 +64,15 @@ class Contacts extends React.Component {
     );
   };
 
-  summaryNav = (id, name, date, desc) => {
+  summaryNav = (id, firstName, surname, phone, email, image, date) => {
     this.props.navigation.push('contactSummary', {
       id: id,
-      name: name,
+      firstName: firstName,
+      surname: surname,
+      phone: phone,
+      email: email,
+      image: image,
       date: date,
-      desc: desc,
     });
   };
 
@@ -77,7 +80,17 @@ class Contacts extends React.Component {
     <View style={contactsStyle.listContainer}>
       <SafetyPlanSectionRow
         name={item.firstName + `${item.surname !== null ? ' ' + item.surname : ''}`}
-        onPress={() => this.summaryNav(item.signId, item.signName, item.dateEntered, item.signDesc)}
+        onPress={() =>
+          this.summaryNav(
+            item.contactId,
+            item.firstName,
+            item.surname,
+            item.phone,
+            item.email,
+            item.image,
+            item.dateEntered
+          )
+        }
         deleteFunction={() => this.showAlert(item.signId)}
         thumbnail={item.image === null ? undefined : { uri: item.image }}
         circleView={item.image === null ? item.firstName.slice(0, 1).toUpperCase() : undefined}
