@@ -20,6 +20,7 @@ import NewWarningSign from '../../Screens/SafetyPlanScreens/WarningSignScreens/N
 import CopingStrategyLink from '../../Screens/SafetyPlanScreens/WarningSignScreens/CopingStrategyLink';
 import SignSummary from '../../Screens/SafetyPlanScreens/WarningSignScreens/SignSummary';
 import PhoneContacts from '../../Screens/SafetyPlanScreens/ContactScreens/PhoneContacts';
+import ContactSummary from '../../Screens/SafetyPlanScreens/ContactScreens/ContactSummary';
 
 const PlanStack = createStackNavigator(
   {
@@ -38,6 +39,7 @@ const PlanStack = createStackNavigator(
     contact: Contacts,
     newContact: NewContact,
     phoneContacts: PhoneContacts,
+    contactSummary: ContactSummary,
     environment: EnvironmentSafe,
   },
 

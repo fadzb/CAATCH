@@ -16,4 +16,6 @@ export const Icons = {
   environmentSafe: 'ios-checkmark-circle',
   media: 'ios-images',
   delete: 'ios-trash',
+  message: 'ios-text',
+  email: 'ios-mail',
 };
