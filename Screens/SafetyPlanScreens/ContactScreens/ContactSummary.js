@@ -94,7 +94,7 @@ export default class ContactSummary extends React.Component {
                         <PressableIcon
                             iconName={Icons.message + "-outline"}
                             size={50}
-                            onPressFunction={() => Communications.text(phone, true)}
+                            onPressFunction={() => Communications.text(phone, "")}
                             buttonStyle={contactSummaryStyle.iconButton}
                         />
                     </View>
@@ -153,7 +153,9 @@ const contactSummaryStyle = StyleSheet.create({
         paddingTop: 15,
         paddingBottom: 15,
         borderTopWidth: 2,
-        borderColor: '#E0E0E0'
+        borderColor: '#E0E0E0',
+        marginLeft: 20,
+        marginRight: 20,
     },
 
     contactTextRow: {
@@ -161,7 +163,9 @@ const contactSummaryStyle = StyleSheet.create({
         paddingBottom: 10,
         borderTopWidth: 2,
         borderColor: '#E0E0E0',
-        flexDirection: 'row'
+        flexDirection: 'row',
+        marginLeft: 20,
+        marginRight: 20,
     },
 
     contactButtonsView: {

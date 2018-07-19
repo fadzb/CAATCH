@@ -35,7 +35,7 @@ class Contacts extends React.Component {
         // dispatching total list of contacts from DB to global redux store
     };
 
-    deleteSign = id => {
+    deleteContact = id => {
         updateDatabaseArgument("Contact", [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where contactId = " + id, () => console.log("deleting contact..."), (res) => this.getCompleteList())
     };
     // deleting pressed contact and updating redux global store to re-render the contact list
@@ -46,7 +46,7 @@ class Contacts extends React.Component {
             'Are you sure you want to delete this contact?',
             [
                 {text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel'},
-                {text: 'Delete', onPress: () => this.deleteSign(id), style: 'destructive'},
+                {text: 'Delete', onPress: () => this.deleteContact(id), style: 'destructive'},
             ],
             { cancelable: false }
         )
@@ -69,7 +69,7 @@ class Contacts extends React.Component {
             <SafetyPlanSectionRow
                 name= {item.firstName + `${item.surname !== null ? ' ' + item.surname : ''}`}
                 onPress={() => this.summaryNav(item.contactId, item.firstName, item.surname, item.phone, item.email, item.image, item.dateEntered)}
-                deleteFunction={() => this.showAlert(item.signId)}
+                deleteFunction={() => this.showAlert(item.contactId)}
                 thumbnail={item.image === null ? undefined : {uri: item.image}}
                 circleView={item.image === null ? item.firstName.slice(0,1).toUpperCase() : undefined}
             />

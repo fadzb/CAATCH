@@ -123,6 +123,33 @@ export default class NewContact extends React.Component {
     };
     // update selected row with media path and copy file from cache to permanent directory
 
+    takePhoto = () => {
+        Expo.Permissions.askAsync(Expo.Permissions.CAMERA)
+            .then(response => {
+                if (response.status !== "granted") {
+                    console.error("Camera permission not granted!");
+                    return;
+                }
+
+                Expo.ImagePicker.launchCameraAsync()
+                    .then(mediaShot => {
+                        console.log(mediaShot);
+
+                        if(!mediaShot.cancelled) {
+                            const splitName = mediaShot.uri.split('/');
+                            const shortName = splitName[splitName.length - 1];
+
+                            this.setState(
+                                {
+                                    selectedMediaUri: mediaShot.uri,
+                                    selectedMediaName: shortName,
+                                });
+                        }
+                    })
+            })
+    };
+    // sets the state based on the media item that is taken via camera
+
     captureMedia = () => {
         Expo.Permissions.askAsync(Expo.Permissions.CAMERA_ROLL)
             .then(response => {
@@ -207,11 +234,17 @@ export default class NewContact extends React.Component {
                         <Text style={contactStyle.buttonText}>Save</Text>
                     </TouchableHighlight>
                 </View>
-                <View style={{alignItems: 'center', justifyContent: 'flex-start'}}>
+                <View style={contactStyle.iconContainer}>
                     <PressableIcon
                         iconName={Icons.media + "-outline"}
                         size={80}
                         onPressFunction={this.captureMedia}
+                        buttonStyle={contactStyle.iconButton}
+                    />
+                    <PressableIcon
+                        iconName={Icons.camera + "-outline"}
+                        size={80}
+                        onPressFunction={this.takePhoto}
                         buttonStyle={contactStyle.iconButton}
                     />
                 </View>
@@ -243,6 +276,8 @@ const contactStyle = StyleSheet.create({
     iconButton: {
         alignItems: "center",
         borderRadius: 10,
+        paddingRight: 20,
+        paddingLeft: 20
     },
     listButton: {
         height: 36,
@@ -251,5 +286,10 @@ const contactStyle = StyleSheet.create({
         borderRadius: 4,
         marginBottom: 15,
         backgroundColor: '#f2f2f2'
+    },
+    iconContainer: {
+        alignItems: 'center',
+        flexDirection: 'row',
+        justifyContent: 'center',
     }
 });
