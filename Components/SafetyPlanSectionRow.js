@@ -46,7 +46,11 @@ export class SafetyPlanSectionRow extends React.Component {
                   videoDisplayStyle={sectionRowStyle.videoDisplay}
                 />
               )}
-              {this.props.icon !== undefined && <Icon name={this.props.icon} size={56} color={this.props.iconColor} />}
+              {this.props.icon !== undefined && (
+                <View style={sectionRowStyle.iconContainer}>
+                  <Icon name={this.props.icon} size={56} color={this.props.iconColor} />
+                </View>
+              )}
               {this.props.circleView !== undefined && (
                 <View style={sectionRowStyle.circleView}>
                   <Text style={{ fontSize: 20 }}>{this.props.circleView}</Text>
@@ -109,5 +113,12 @@ const sectionRowStyle = StyleSheet.create({
     width: 56,
     height: 56,
     borderRadius: 56 / 2,
+  },
+
+  iconContainer: {
+    width: 56,
+    height: 56,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

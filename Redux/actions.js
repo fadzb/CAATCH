@@ -12,6 +12,9 @@ export const GET_CONTACT = 'GET_CONTACT';
 export const UPDATE_REASON = 'UPDATE_REASON';
 export const GET_REASON = 'GET_REASON';
 
+export const UPDATE_DISTRACTION = 'UPDATE_DISTRACTION';
+export const GET_DISTRACTION = 'GET_DISTRACTION';
+
 // action creators
 
 export const updateCoping = (update) => ({
@@ -52,4 +55,14 @@ export const updateReason = (update) => ({
 export const getReason = (reasonList) => ({
   type: GET_REASON,
   payload: reasonList,
+});
+
+export const updateDistraction = (update) => ({
+  type: UPDATE_DISTRACTION,
+  payload: update,
+});
+
+export const getDistraction = (distractionList) => ({
+  type: GET_DISTRACTION,
+  payload: distractionList,
 });
