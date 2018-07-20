@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import {
     UPDATE_COPING, GET_COPING, UPDATE_SIGN, GET_SIGN, GET_CONTACT, UPDATE_CONTACT, UPDATE_REASON,
-    GET_REASON
+    GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION
 } from "./actions";
 
 const copingReducer = (state = [], action) => {
@@ -60,11 +60,26 @@ const reasonReducer = (state = [], action) => {
     return state
 };
 
+const distractionReducer = (state = [], action) => {
+    if(action.type === UPDATE_DISTRACTION) {
+        return [...state, action.payload];
+    }
+    // used for when a new distraction is added
+
+    if(action.type === GET_DISTRACTION) {
+        return action.payload
+    }
+    // used to get the complete contact list from the DB
+
+    return state
+};
+
 const reducer = combineReducers({
     coping: copingReducer,
     sign: signReducer,
     contact: contactReducer,
     reason: reasonReducer,
+    distraction: distractionReducer,
 });
 // as reducers grow, add to this object
 

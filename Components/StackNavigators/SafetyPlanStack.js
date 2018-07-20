@@ -8,7 +8,7 @@ import PlanScreen from "../../Screens/PlanScreen";
 import WarningSigns from "../../Screens/SafetyPlanScreens/WarningSignScreens/WarningSigns";
 import NewCopingStrategy from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/NewCopingStrategy";
 import ReasonsToLive from "../../Screens/SafetyPlanScreens/ReasonScreens/ReasonsToLive";
-import Distractions from "../../Screens/SafetyPlanScreens/Distractions";
+import Distractions from "../../Screens/SafetyPlanScreens/DistractionScreens/Distractions";
 import Contacts from "../../Screens/SafetyPlanScreens/ContactScreens/Contacts";
 import NewContact from "../../Screens/SafetyPlanScreens/ContactScreens/NewContact";
 import EnvironmentSafe from "../../Screens/SafetyPlanScreens/EnvironmentSafe";
@@ -23,6 +23,10 @@ import PhoneContacts from "../../Screens/SafetyPlanScreens/ContactScreens/PhoneC
 import ContactSummary from "../../Screens/SafetyPlanScreens/ContactScreens/ContactSummary";
 import NewReason from "../../Screens/SafetyPlanScreens/ReasonScreens/NewReason";
 import ReasonSummary from "../../Screens/SafetyPlanScreens/ReasonScreens/ReasonSummary";
+import NewDistraction from "../../Screens/SafetyPlanScreens/DistractionScreens/NewDistraction";
+import PrePopDistraction from "../../Screens/SafetyPlanScreens/DistractionScreens/PrePopDistraction";
+import DistractionSummary from "../../Screens/SafetyPlanScreens/DistractionScreens/DistractionSummary";
+import DistractContactLink from "../../Screens/SafetyPlanScreens/DistractionScreens/DistractContactLink";
 
 const PlanStack = createStackNavigator(
     {
@@ -40,6 +44,10 @@ const PlanStack = createStackNavigator(
         newReason: NewReason,
         reasonSummary: ReasonSummary,
         distraction: Distractions,
+        newDistraction: NewDistraction,
+        prePopDistraction: PrePopDistraction,
+        distractionSummary: DistractionSummary,
+        contactLink: DistractContactLink,
         contact: Contacts,
         newContact: NewContact,
         phoneContacts: PhoneContacts,

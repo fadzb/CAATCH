@@ -56,3 +56,10 @@ export const prePopCoping = [
         copeName: "Instant messaging someone",
     },
 ];
+
+
+export const prePopDistraction = [
+    {
+        distractName: "Sample pre-pop distraction",
+    },
+];

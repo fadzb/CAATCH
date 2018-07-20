@@ -1,69 +1,69 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
-import {prePopCoping} from "../../../Constants/Prepopulated";
+import {prePopDistraction} from "../../../Constants/Prepopulated";
 
-export default class PrePopCopingStrategies extends React.Component {
+export default class PrePopDistraction extends React.Component {
     static navigationOptions = {
-        title: "Select Strategy",
+        title: "Select Distraction",
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            strats: [],
-            checkedStrats: []
+            distractions: [],
+            checkedDistractions: []
         }
     }
 
     componentDidMount() {
-        this.updateStrats(prePopCoping);
+        this.updateDistractions(prePopDistraction);
     }
 
-    updateStrats = (strats) => {
-        this.setState({ strats: strats.map(s => s.copeName) });
+    updateDistractions = (distractions) => {
+        this.setState({ distractions: distractions.map(dis => dis.distractName) });
     };
-    // update checklist with strategies from pre-populated array
+    // update checklist with distractions from pre-populated array
 
-    getCheckedStrats = (strats) => {
+    getCheckedDistractions = (distractions) => {
         this.setState({
-            checkedStrats: strats.filter(s => s !== undefined)
+            checkedDistractions: distractions.filter(dis => dis !== undefined)
         });
     };
     // Updates state everytime option is checked/unchecked
 
     render() {
         return(
-            <View style={preCopeStyle.viewContainer}>
+            <View style={preDistractionStyle.viewContainer}>
                 <View style={{flex: 1}}>
                     <CustomMultiPicker
-                        options={this.state.strats}
+                        options={this.state.distractions}
                         multiple={false} //
                         returnValue={"label"} // label or value
-                        callback={this.getCheckedStrats} // callback, array of selected items
+                        callback={this.getCheckedDistractions} // callback, array of selected items
                         rowBackgroundColor={"#fff"}
                         rowHeight={40}
                         rowRadius={5}
                         iconColor={"#00a2dd"}
                         iconSize={25}
-                        itemStyle={preCopeStyle.itemStyle}
+                        itemStyle={preDistractionStyle.itemStyle}
                         selectedIconName={"ios-checkmark-circle-outline"}
                         unselectedIconName={"ios-radio-button-off-outline"}
                     />
                 </View>
                 <TouchableHighlight
-                    style={preCopeStyle.button}
-                    onPress={() => this.props.navigation.navigate('newCoping', {checkedStrats: this.state.checkedStrats})}
+                    style={preDistractionStyle.button}
+                    onPress={() => this.props.navigation.navigate('newDistraction', {checkedDistractions: this.state.checkedDistractions})}
                     underlayColor='#99d9f4'>
-                    <Text style={preCopeStyle.buttonText}>Done</Text>
+                    <Text style={preDistractionStyle.buttonText}>Done</Text>
                 </TouchableHighlight>
             </View>
         )
     }
 }
 
-const preCopeStyle = StyleSheet.create({
+const preDistractionStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
         backgroundColor: '#fff',
