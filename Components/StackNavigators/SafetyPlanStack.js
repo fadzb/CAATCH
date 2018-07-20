@@ -7,7 +7,7 @@ import {Icons} from "../../Constants/Icon";
 import PlanScreen from "../../Screens/PlanScreen";
 import WarningSigns from "../../Screens/SafetyPlanScreens/WarningSignScreens/WarningSigns";
 import NewCopingStrategy from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/NewCopingStrategy";
-import ReasonsToLive from "../../Screens/SafetyPlanScreens/ReasonsToLive";
+import ReasonsToLive from "../../Screens/SafetyPlanScreens/ReasonScreens/ReasonsToLive";
 import Distractions from "../../Screens/SafetyPlanScreens/Distractions";
 import Contacts from "../../Screens/SafetyPlanScreens/ContactScreens/Contacts";
 import NewContact from "../../Screens/SafetyPlanScreens/ContactScreens/NewContact";
@@ -15,12 +15,14 @@ import EnvironmentSafe from "../../Screens/SafetyPlanScreens/EnvironmentSafe";
 import CopingStrategies from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/CopingStrategies";
 import PrePopCopingStrategies from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/PrePopCopingStrategies";
 import StrategySummary from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/StrategySummary";
-import CopeWebView from "../../Screens/SafetyPlanScreens/CopingStrategyScreens/CopeWebView";
+import PlanWebView from "../../Screens/SafetyPlanScreens/PlanWebView";
 import NewWarningSign from "../../Screens/SafetyPlanScreens/WarningSignScreens/NewWarningSign";
 import CopingStrategyLink from "../../Screens/SafetyPlanScreens/WarningSignScreens/CopingStrategyLink";
 import SignSummary from "../../Screens/SafetyPlanScreens/WarningSignScreens/SignSummary";
 import PhoneContacts from "../../Screens/SafetyPlanScreens/ContactScreens/PhoneContacts";
 import ContactSummary from "../../Screens/SafetyPlanScreens/ContactScreens/ContactSummary";
+import NewReason from "../../Screens/SafetyPlanScreens/ReasonScreens/NewReason";
+import ReasonSummary from "../../Screens/SafetyPlanScreens/ReasonScreens/ReasonSummary";
 
 const PlanStack = createStackNavigator(
     {
@@ -33,8 +35,10 @@ const PlanStack = createStackNavigator(
         newCoping: NewCopingStrategy,
         prePopCope: PrePopCopingStrategies,
         stratSummary: StrategySummary,
-        copeWeb: CopeWebView,
+        planWeb: PlanWebView,
         reason: ReasonsToLive,
+        newReason: NewReason,
+        reasonSummary: ReasonSummary,
         distraction: Distractions,
         contact: Contacts,
         newContact: NewContact,

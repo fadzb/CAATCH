@@ -8,7 +8,7 @@ import {Video} from 'expo';
 import Icon from "react-native-vector-icons/Ionicons";
 
 
-export default class StrategySummary extends React.Component {
+export default class ReasonSummary extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
@@ -50,44 +50,44 @@ export default class StrategySummary extends React.Component {
 
         return (
             <View style={{flex: 1}}>
-                <Container style={stratSummaryStyle.viewContainer}>
+                <Container style={reasonSummaryStyle.viewContainer}>
                     <Content>
-                        <Card style={stratSummaryStyle.cardStyle}>
+                        <Card style={reasonSummaryStyle.cardStyle}>
                             <CardItem>
                                 <Left>
                                     <Body>
-                                        <Text>{this.props.navigation.getParam('name')}</Text>
-                                        <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
+                                    <Text>{this.props.navigation.getParam('name')}</Text>
+                                    <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
                                     </Body>
                                 </Left>
                             </CardItem>
                             <CardItem>
                                 <Body>
                                 {mediaPath !== null && <View>
-                                        <Image
-                                            width={(Dimensions.get('window').width) - 35} // height will be calculated automatically
-                                            source={mediaType === 'image' ? media : require("../../../Media/Images/video-play-button.jpg")}
-                                            onPress={mediaType === 'image' ? () => this.toggleModal(true) : () => this.toggleVideo(true)}
-                                        />
-                                    </View>}
-                                    <Text style={stratSummaryStyle.text}>
-                                        {this.props.navigation.getParam('desc')}
+                                    <Image
+                                        width={(Dimensions.get('window').width) - 35} // height will be calculated automatically
+                                        source={mediaType === 'image' ? media : require("../../../Media/Images/video-play-button.jpg")}
+                                        onPress={mediaType === 'image' ? () => this.toggleModal(true) : () => this.toggleVideo(true)}
+                                    />
+                                </View>}
+                                <Text style={reasonSummaryStyle.text}>
+                                    {this.props.navigation.getParam('desc')}
+                                </Text>
+                                {link !== null &&
+                                <View style={reasonSummaryStyle.textLinkView}>
+                                    <Icon
+                                        name='ios-link'
+                                        size={20}
+                                        style={{paddingRight: 5}}
+                                    />
+                                    <Text style={reasonSummaryStyle.urlText}
+                                          onPress={() => this.props.navigation.push('planWeb', {
+                                              url: 'https://' + link
+                                          })}>
+                                        {link}
                                     </Text>
-                                    {link !== null &&
-                                        <View style={stratSummaryStyle.textLinkView}>
-                                            <Icon
-                                                name='ios-link'
-                                                size={20}
-                                                style={{paddingRight: 5}}
-                                            />
-                                            <Text style={stratSummaryStyle.urlText}
-                                                       onPress={() => this.props.navigation.push('planWeb', {
-                                                           url: 'https://' + link
-                                                       })}>
-                                            {link}
-                                            </Text>
-                                        </View>
-                                    }
+                                </View>
+                                }
                                 </Body>
                             </CardItem>
                         </Card>
@@ -111,7 +111,7 @@ export default class StrategySummary extends React.Component {
     }
 }
 
-const stratSummaryStyle = StyleSheet.create({
+const reasonSummaryStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
         backgroundColor: '#fff',

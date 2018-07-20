@@ -1,9 +1,9 @@
-// webview screen for coping strategy urls
+// webview screen for Safety Plan urls
 
 import React from 'react';
 import { StyleSheet, WebView } from 'react-native';
 
-export default class CopeWebView extends React.Component {
+export default class PlanWebView extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: navigation.getParam('url'),
