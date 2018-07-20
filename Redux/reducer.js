@@ -1,5 +1,14 @@
 import { combineReducers } from 'redux';
-import { UPDATE_COPING, GET_COPING, UPDATE_SIGN, GET_SIGN, GET_CONTACT, UPDATE_CONTACT } from './actions';
+import {
+  UPDATE_COPING,
+  GET_COPING,
+  UPDATE_SIGN,
+  GET_SIGN,
+  GET_CONTACT,
+  UPDATE_CONTACT,
+  UPDATE_REASON,
+  GET_REASON,
+} from './actions';
 
 const copingReducer = (state = [], action) => {
   if (action.type === UPDATE_COPING) {
@@ -43,10 +52,25 @@ const contactReducer = (state = [], action) => {
   return state;
 };
 
+const reasonReducer = (state = [], action) => {
+  if (action.type === UPDATE_REASON) {
+    return [...state, action.payload];
+  }
+  // used for when a new reason is added
+
+  if (action.type === GET_REASON) {
+    return action.payload;
+  }
+  // used to get the complete contact list from the DB
+
+  return state;
+};
+
 const reducer = combineReducers({
   coping: copingReducer,
   sign: signReducer,
   contact: contactReducer,
+  reason: reasonReducer,
 });
 // as reducers grow, add to this object
 

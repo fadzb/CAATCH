@@ -80,7 +80,7 @@ export default class StrategySummary extends React.Component {
                       <Text
                         style={stratSummaryStyle.urlText}
                         onPress={() =>
-                          this.props.navigation.push('copeWeb', {
+                          this.props.navigation.push('planWeb', {
                             url: 'https://' + link,
                           })
                         }

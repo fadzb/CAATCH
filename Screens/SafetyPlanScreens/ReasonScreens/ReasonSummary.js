@@ -1,238 +1,146 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList, Alert } from 'react-native';
+import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Button, Left, Body } from 'native-base';
-import {PressableImage} from "../../../Components/PressableImage";
-import {ImageViewer} from "../../../Components/ImageViewer";
+import Image from 'react-native-scalable-image';
+import { ImageViewer } from '../../../Components/ImageViewer';
 import Moment from 'moment';
-import {Video} from 'expo';
-import Icon from "react-native-vector-icons/Ionicons";
-import {openSafetyPlanItem, latestSafetyPlanItem} from "../../../Util/Usage";
-import {Icons} from "../../../Constants/Icon";
-import {PressableIcon} from "../../../Components/PressableIcon";
-import {updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
-import {FileSystem} from 'expo'
-import {getReason} from "../../../Redux/actions";
-import store from "../../../Redux/store"
-import {DbTableNames, UsageFunctionIds, DbPrimaryKeys} from "../../../Constants/Constants";
-import ImageView from 'react-native-image-view';
-import {AppColors} from "../../../Styles/TabStyles";
-
+import { Video } from 'expo';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class ReasonSummary extends React.Component {
-
-    static navigationOptions = ({ navigation }) => {
-        return {
-            title: navigation.getParam('name'),
-        }
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('name'),
     };
+  };
 
-    constructor(props) {
-        super(props);
+  constructor(props) {
+    super(props);
 
-        this.state = {
-            modalVisible: false,
-            playVideo: false
-        }
-    }
-
-    componentDidMount() {
-        openSafetyPlanItem(UsageFunctionIds.mostViewed.reason, DbTableNames.reason, this.props.navigation.getParam('id'), DbPrimaryKeys.reason, this.props.navigation.getParam('name'));
-
-        latestSafetyPlanItem(UsageFunctionIds.lastViewed.reason, this.props.navigation.getParam('id'), this.props.navigation.getParam('name'))
-        // update DB for open reason function most and last viewed
-    }
-
-    toggleModal = bool => {
-        this.setState({modalVisible: bool});
+    this.state = {
+      modalVisible: false,
+      playVideo: false,
     };
-    // modal for displaying image
+  }
 
-    toggleVideo = bool => {
-        this.player.presentFullscreenPlayer().then(res => console.log(res)).catch(err => console.log(err));
+  toggleModal = (bool) => {
+    this.setState({ modalVisible: bool });
+  };
+  // modal for displaying image
 
-        this.setState({playVideo: bool});
-    };
-    // present video player in fullscreen mode
+  toggleVideo = (bool) => {
+    this.player
+      .presentFullscreenPlayer()
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
 
-    formatDate = date => {
-        return Moment(date).format('LLL');
-    };
+    this.setState({ playVideo: bool });
+  };
+  // present video player in fullscreen mode
 
-    updateReasons = (reasons) => {
-        store.dispatch(getReason(reasons));
-        // dispatching total list of reason names from DB to global redux store
-    };
+  formatDate = (date) => {
+    return Moment(date).format('LLL');
+  };
 
-    getCompleteList = () => {
-        readDatabaseArg("*", DbTableNames.reason, this.updateReasons, () => console.log("DB read success"), 'where dateDeleted is NULL');
-    };
-    // fetching all reasons that do not have a deleted date
+  render() {
+    const mediaPath = this.props.navigation.getParam('media');
+    const media = { uri: mediaPath };
+    const mediaType = this.props.navigation.getParam('mediaType');
 
-    editReason = (id, name, desc, url) => {
-        this.props.navigation.push('editReason', {
-            id: id,
-            name: name,
-            desc: desc,
-            url: url,
-        });
-    };
+    const link = this.props.navigation.getParam('url');
 
-    deleteReason = (id, path) => {
-        this.removeMediaFile(path);
-
-        updateDatabaseArgument(DbTableNames.reason,
-            [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
-            ["dateDeleted"],
-            "where reasonId = " + id,
-            () => this.props.navigation.pop(),
-            (res) => this.getCompleteList());
-    };
-    // deleting pressed reason and updating redux global store to re-render the reason list.
-
-    removeMediaFile = path => {
-        FileSystem.deleteAsync(path).then(res => console.log('reason media deleted..')).catch(err => console.log(err));
-    };
-    // remove media file from SP media folder in documentDirectory
-
-    showAlert = (id, path) => {
-        Alert.alert(
-            'Delete Reason',
-            'Are you sure you want to delete this Reason?',
-            [
-                {text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel'},
-                {text: 'Delete', onPress: () => this.deleteReason(id, path), style: 'destructive'},
-            ],
-            { cancelable: false }
-        )
-    };
-
-    render() {
-        const mediaPath = this.props.navigation.getParam('media');
-        const media = {uri: mediaPath};
-        const mediaType = this.props.navigation.getParam('mediaType');
-
-        const link = this.props.navigation.getParam('url');
-
-        const images = [
-            {
-                source: media,
-            },
-        ];
-
-        return (
-            <View style={{flex: 1}}>
-                <Container style={reasonSummaryStyle.viewContainer}>
-                    <Content>
-                        <Card style={reasonSummaryStyle.cardStyle}>
-                            <CardItem>
-                                <Left>
-                                    <Body>
-                                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                            <View style={{flex: 4, paddingRight: 9}}>
-                                                <Text>{this.props.navigation.getParam('name')}</Text>
-                                                <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
-                                            </View>
-                                            <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between'}}>
-                                                <PressableIcon
-                                                    iconName={Icons.edit + '-outline'}
-                                                    size={35}
-                                                    onPressFunction={() => this.editReason(this.props.navigation.getParam('id'),
-                                                        this.props.navigation.getParam('name'),
-                                                        this.props.navigation.getParam('desc'),
-                                                        link)}
-                                                />
-                                                <PressableIcon
-                                                    iconName={Icons.delete + '-outline'}
-                                                    size={35}
-                                                    onPressFunction={() => this.showAlert(this.props.navigation.getParam('id'), mediaPath)}
-                                                    color='red'
-                                                />
-                                            </View>
-                                        </View>
-                                    </Body>
-                                </Left>
-                            </CardItem>
-                            <CardItem>
-                                <Body>
-                                {mediaPath !== null && <View>
-                                    <PressableImage
-                                        source={mediaType === 'image' ? media : require("../../../Media/Images/video-play-button.jpg")}
-                                        onPressFunction={mediaType === 'image' ? () => this.toggleModal(true) : () => this.toggleVideo(true)}
-                                    />
-                                </View>}
-                                <Text style={reasonSummaryStyle.text}>
-                                    {this.props.navigation.getParam('desc')}
-                                </Text>
-                                {link !== null &&
-                                <View style={reasonSummaryStyle.textLinkView}>
-                                    <Icon
-                                        name='ios-link'
-                                        size={20}
-                                        style={{paddingRight: 5}}
-                                    />
-                                    <Text style={reasonSummaryStyle.urlText}
-                                          onPress={() => this.props.navigation.push('planWeb', {
-                                              url: 'https://' + link
-                                          })}>
-                                        {link}
-                                    </Text>
-                                </View>
-                                }
-                                </Body>
-                            </CardItem>
-                        </Card>
-                    </Content>
-                </Container>
-                <Video
-                    ref={(ref) => {
-                        this.player = ref
-                    }}
-                    source={media}
-                    shouldPlay={this.state.playVideo}
-                />
-                <ImageView
-                    images={images}
-                    imageIndex={0}
-                    isVisible={this.state.modalVisible}
-                    onClose={() => this.toggleModal(false)}
-                    animationType={'slide'}
-                />
-            </View>
-        );
-    }
+    return (
+      <View style={{ flex: 1 }}>
+        <Container style={reasonSummaryStyle.viewContainer}>
+          <Content>
+            <Card style={reasonSummaryStyle.cardStyle}>
+              <CardItem>
+                <Left>
+                  <Body>
+                    <Text>{this.props.navigation.getParam('name')}</Text>
+                    <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
+                  </Body>
+                </Left>
+              </CardItem>
+              <CardItem>
+                <Body>
+                  {mediaPath !== null && (
+                    <View>
+                      <Image
+                        width={Dimensions.get('window').width - 35} // height will be calculated automatically
+                        source={mediaType === 'image' ? media : require('../../../Media/Images/video-play-button.jpg')}
+                        onPress={mediaType === 'image' ? () => this.toggleModal(true) : () => this.toggleVideo(true)}
+                      />
+                    </View>
+                  )}
+                  <Text style={reasonSummaryStyle.text}>{this.props.navigation.getParam('desc')}</Text>
+                  {link !== null && (
+                    <View style={reasonSummaryStyle.textLinkView}>
+                      <Icon name="ios-link" size={20} style={{ paddingRight: 5 }} />
+                      <Text
+                        style={reasonSummaryStyle.urlText}
+                        onPress={() =>
+                          this.props.navigation.push('planWeb', {
+                            url: 'https://' + link,
+                          })
+                        }
+                      >
+                        {link}
+                      </Text>
+                    </View>
+                  )}
+                </Body>
+              </CardItem>
+            </Card>
+          </Content>
+        </Container>
+        <Video
+          ref={(ref) => {
+            this.player = ref;
+          }}
+          source={media}
+          shouldPlay={this.state.playVideo}
+        />
+        <Modal visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
+          <ImageViewer image={media} onPress={() => this.toggleModal(false)} />
+        </Modal>
+      </View>
+    );
+  }
 }
 
 const reasonSummaryStyle = StyleSheet.create({
-    viewContainer: {
-        flex: 1,
-    },
+  viewContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
 
-    cardStyle: {
-        backgroundColor: '#cccccc'
-    },
+  cardStyle: {
+    backgroundColor: '#cccccc',
+  },
 
-    textLinkView: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        paddingTop: 20
-    },
+  textLinkView: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    paddingTop: 5,
+  },
 
-    text: {
-        paddingTop: 10
-    },
+  text: {
+    paddingTop: 10,
+  },
 
-    urlText: {
-        textDecorationLine: 'underline',
-        color: AppColors.orange,
-        alignSelf: 'center'
-    },
+  urlText: {
+    textDecorationLine: 'underline',
+    color: 'blue',
+    alignSelf: 'center',
+  },
 
-    linkListContainer: {
-        backgroundColor: 'white',
-        borderWidth: 2,
-        alignSelf: 'stretch',
-        padding: 5,
-        borderRadius: 7,
-        marginTop: 10
-    }
+  linkListContainer: {
+    backgroundColor: 'white',
+    borderWidth: 2,
+    alignSelf: 'stretch',
+    padding: 5,
+    borderRadius: 7,
+    marginTop: 10,
+  },
 });
