@@ -11,6 +11,7 @@ export const mediaDirectoryCheck = () => {
     .then((fileObj) => {
       if (fileObj.exists && fileObj.isDirectory) {
         console.log('SP Media directory exists');
+        //deleteMediaDirectory();
       } else {
         console.log('SP Media directory DOES NOT exist');
         Expo.FileSystem.makeDirectoryAsync(directory).catch((err) => console.log(err));
@@ -19,3 +20,8 @@ export const mediaDirectoryCheck = () => {
     .catch((err) => console.error(err));
 };
 // function checks if .db file exists and copies pre-populated file if not. Does nothing if exists
+
+const deleteMediaDirectory = () => {
+  Expo.FileSystem.deleteAsync(directory);
+};
+// function to delete Media Directory from file system, FOR TESTING PURPOSES ONLY -> see line 14
