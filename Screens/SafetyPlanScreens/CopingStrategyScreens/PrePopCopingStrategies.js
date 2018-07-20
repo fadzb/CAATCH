@@ -26,7 +26,7 @@ export default class PrePopCopingStrategies extends React.Component {
   };
   // update checklist with strategies from pre-populated array
 
-  getCheckedSigns = (strats) => {
+  getCheckedStrats = (strats) => {
     this.setState({
       checkedStrats: strats.filter((s) => s !== undefined),
     });
@@ -35,36 +35,36 @@ export default class PrePopCopingStrategies extends React.Component {
 
   render() {
     return (
-      <View style={signLinkStyle.viewContainer}>
+      <View style={preCopeStyle.viewContainer}>
         <View style={{ flex: 1 }}>
           <CustomMultiPicker
             options={this.state.strats}
             multiple={false} //
             returnValue={'label'} // label or value
-            callback={this.getCheckedSigns} // callback, array of selected items
+            callback={this.getCheckedStrats} // callback, array of selected items
             rowBackgroundColor={'#fff'}
             rowHeight={40}
             rowRadius={5}
             iconColor={'#00a2dd'}
             iconSize={25}
-            itemStyle={signLinkStyle.itemStyle}
+            itemStyle={preCopeStyle.itemStyle}
             selectedIconName={'ios-checkmark-circle-outline'}
             unselectedIconName={'ios-radio-button-off-outline'}
           />
         </View>
         <TouchableHighlight
-          style={signLinkStyle.button}
+          style={preCopeStyle.button}
           onPress={() => this.props.navigation.navigate('newCoping', { checkedStrats: this.state.checkedStrats })}
           underlayColor="#99d9f4"
         >
-          <Text style={signLinkStyle.buttonText}>Done</Text>
+          <Text style={preCopeStyle.buttonText}>Done</Text>
         </TouchableHighlight>
       </View>
     );
   }
 }
 
-const signLinkStyle = StyleSheet.create({
+const preCopeStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
     backgroundColor: '#fff',
