@@ -7,10 +7,11 @@ import store from './Redux/store';
 import { getPrePops } from './Constants/Prepopulated';
 
 import HomeScreen from './Screens/HomeScreen';
-import DiaryScreen from './Screens/DiaryScreen';
+import DiaryScreen from './Screens/DiaryScreens/DiaryScreen';
 import TwitterScreen from './Screens/TwitterScreen';
 import SettingsScreen from './Screens/SettingsScreen';
 import PlanStack from './Components/StackNavigators/SafetyPlanStack';
+import DiaryStack from './Components/StackNavigators/DiaryStack';
 //Initial Tab screens/stack navs
 
 export default class App extends React.Component {
@@ -39,7 +40,7 @@ const TabBar = createBottomTabNavigator(
   {
     Home: HomeScreen,
     Plan: PlanStack,
-    Diary: DiaryScreen,
+    Diary: DiaryStack,
     News: TwitterScreen,
     Settings: SettingsScreen,
   },
