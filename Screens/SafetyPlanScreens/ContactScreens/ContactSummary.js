@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList, Text } from 'react-native';
+import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, TouchableOpacity, Linking, FlatList, Text } from 'react-native';
 import { Thumbnail } from 'native-base';
 import Image from 'react-native-scalable-image';
 import {ImageViewer} from "../../../Components/ImageViewer";
@@ -71,9 +71,9 @@ export default class ContactSummary extends React.Component {
         return (
             <View style={{flex: 1, backgroundColor: "white"}}>
                 <View style={contactSummaryStyle.thumbnailContainer}>
-                    {mediaPath !== null ? <TouchableHighlight onPress={() => this.toggleModal(true)}>
+                    {mediaPath !== null ? <TouchableOpacity onPress={() => this.toggleModal(true)}>
                             <Thumbnail style={contactSummaryStyle.thumbnail} source={media} />
-                        </TouchableHighlight> :
+                        </TouchableOpacity> :
                         <View style={contactSummaryStyle.circleView}>
                             <Text style={{fontSize: 70}}>{this.props.navigation.getParam('firstName').slice(0,1).toUpperCase()}</Text>
                         </View>}
@@ -113,7 +113,7 @@ export default class ContactSummary extends React.Component {
                         />
                     </View>
                 </View>}
-                <Modal visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
+                <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
                     <ImageViewer
                         image={media}
                         onPress={() => this.toggleModal(false)}

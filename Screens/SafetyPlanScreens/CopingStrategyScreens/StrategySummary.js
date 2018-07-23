@@ -100,7 +100,7 @@ export default class StrategySummary extends React.Component {
                     source={media}
                     shouldPlay={this.state.playVideo}
                 />
-                <Modal visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
+                <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
                     <ImageViewer
                         image={media}
                         onPress={() => this.toggleModal(false)}

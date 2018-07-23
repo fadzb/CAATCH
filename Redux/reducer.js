@@ -1,8 +1,11 @@
 import {combineReducers} from 'redux';
 import {
     UPDATE_COPING, GET_COPING, UPDATE_SIGN, GET_SIGN, GET_CONTACT, UPDATE_CONTACT, UPDATE_REASON,
-    GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION
+    GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE
 } from "./actions";
+import Moment from 'moment';
+
+//SafetyPlan
 
 const copingReducer = (state = [], action) => {
     if(action.type === UPDATE_COPING) {
@@ -74,12 +77,25 @@ const distractionReducer = (state = [], action) => {
     return state
 };
 
+
+//Diary
+
+const diaryReducer = (state = {date: Moment(new Date()).format('LL')}, action) => {
+    if(action.type === UPDATE_DATE) {
+        return {...state, date: action.payload};
+    }
+    // used for when a new date is selected
+
+    return state
+};
+
 const reducer = combineReducers({
     coping: copingReducer,
     sign: signReducer,
     contact: contactReducer,
     reason: reasonReducer,
     distraction: distractionReducer,
+    diary: diaryReducer
 });
 // as reducers grow, add to this object
 
