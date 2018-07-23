@@ -4,6 +4,7 @@ import { checkDB } from './Util/DatabaseConnector';
 import { mediaDirectoryCheck } from './Util/Media';
 import { Provider } from 'react-redux';
 import store from './Redux/store';
+import { getPrePops } from './Constants/Prepopulated';
 
 import HomeScreen from './Screens/HomeScreen';
 import DiaryScreen from './Screens/DiaryScreen';
@@ -19,6 +20,9 @@ export default class App extends React.Component {
 
     mediaDirectoryCheck();
     // checks to ensure media directory exists and creates if not
+
+    getPrePops();
+    // get all SP prepop items from DB
   }
 
   render() {
