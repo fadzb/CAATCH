@@ -1,5 +1,7 @@
 // action types
 
+//SafetyPlan
+
 export const UPDATE_COPING = 'UPDATE_COPING';
 export const GET_COPING = 'GET_COPING';
 
@@ -15,7 +17,13 @@ export const GET_REASON = 'GET_REASON';
 export const UPDATE_DISTRACTION = 'UPDATE_DISTRACTION';
 export const GET_DISTRACTION = 'GET_DISTRACTION';
 
+//Diary
+
+export const UPDATE_DATE = 'UPDATE_DATE';
+
 // action creators
+
+//SafetyPlan
 
 export const updateCoping = (update) => ({
   type: UPDATE_COPING,
@@ -65,4 +73,11 @@ export const updateDistraction = (update) => ({
 export const getDistraction = (distractionList) => ({
   type: GET_DISTRACTION,
   payload: distractionList,
+});
+
+//Diary
+
+export const updateDate = (update) => ({
+  type: UPDATE_DATE,
+  payload: update,
 });

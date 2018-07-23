@@ -19,4 +19,10 @@ export const Icons = {
   message: 'ios-text',
   email: 'ios-mail',
   camera: 'ios-camera',
+  skills: 'ios-star',
+  feelings: 'ios-person',
+  medication: 'ios-medkit',
+  generalDiary: 'ios-document',
+  closeModal: 'ios-close',
+  calendar: 'ios-calendar',
 };

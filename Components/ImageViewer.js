@@ -6,12 +6,13 @@ import PropTypes from 'prop-types';
 import Image from 'react-native-scalable-image';
 import { PressableIcon } from './PressableIcon';
 import { Constants } from 'expo';
+import { Icons } from '../Constants/Icon';
 
 export const ImageViewer = (props) => {
   return (
     <View style={imageViewerStyle.container}>
       <View style={imageViewerStyle.closeButton}>
-        <PressableIcon size={50} iconName={'ios-close'} color="white" onPressFunction={props.onPress} />
+        <PressableIcon size={50} iconName={Icons.closeModal} color="white" onPressFunction={props.onPress} />
       </View>
       <View style={imageViewerStyle.image}>
         <Image
