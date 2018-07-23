@@ -1,65 +1,11 @@
-// file for saving Pre-populated Safety Plan Content
+// function for retrieving Pre-populated Safety Plan Content
 
-export const prePopCoping = [
-    {
-        copeName: "Relaxing",
-    },
-    {
-        copeName: "Working out",
-    },
-    {
-        copeName: "Reading",
-    },
-    {
-        copeName: "Going to a movie",
-    },
-    {
-        copeName: "Saving money",
-    },
-    {
-        copeName: "Traveling",
-    },
-    {
-        copeName: "Writing",
-    },
-    {
-        copeName: "Talking with friends",
-    },
-    {
-        copeName: "Having a quiet night",
-    },
-    {
-        copeName: "Dancing",
-    },
-    {
-        copeName: "Going to a beach",
-    },
-    {
-        copeName: "Watching sports on TV",
-    },
-    {
-        copeName: "Singing",
-    },
-    {
-        copeName: "Going for a bike ride",
-    },
-    {
-        copeName: "Baking",
-    },
-    {
-        copeName: "Planning the future",
-    },
-    {
-        copeName: "Going running",
-    },
-    {
-        copeName: "Instant messaging someone",
-    },
-];
+import {readDatabase} from "../Util/DatabaseHelper";
 
+export const getPrePops = () => {
+    readDatabase('*',
+        'PrepopSafetyPlan',
+        p => safetyPlanPrePops = p.map(t => ({name: t.prepopName, category: t.prepopCategory})))
+};
 
-export const prePopDistraction = [
-    {
-        distractName: "Sample pre-pop distraction",
-    },
-];
+export let safetyPlanPrePops = [];
