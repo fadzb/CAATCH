@@ -30,13 +30,9 @@ class DiaryScreen extends React.Component {
     };
 
     handleDateSelection = (date) => {
-        store.dispatch(updateDate(this.formatDate(date.dateString)));
+        store.dispatch(updateDate(Moment(date.dateString).format('YYYY-MM-DD HH:mm:ss.SSS')));
 
         this.toggleModal(false)
-    };
-
-    formatDate = date => {
-        return Moment(date).format('LL');
     };
 
     render() {
@@ -49,7 +45,7 @@ class DiaryScreen extends React.Component {
                                 name={Icons.calendar + '-outline'}
                                 size={25}
                             />
-                            <Text style={diaryStyle.dateButtonText}>{this.props.diaryDate}</Text>
+                            <Text style={diaryStyle.dateButtonText}>{Moment(this.props.diaryDate).format('LL')}</Text>
                         </View>
                     </TouchableOpacity>
                 </View>

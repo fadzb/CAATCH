@@ -3,8 +3,8 @@ import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity }
 import Moment from 'moment';
 import SkillRow from '../../Components/SkillRow'
 import {connect} from 'react-redux'
-
-import {TabStyles} from "../../Styles/TabStyles";
+import store from "../../Redux/store"
+import {resetSkillRating} from "../../Redux/actions";
 import {readDatabaseArg, updateDatabase} from "../../Util/DatabaseHelper";
 
 class Skills extends React.Component {
@@ -18,7 +18,7 @@ class Skills extends React.Component {
 
         this.state = {
             skills: [],
-            sessionId: null,
+            sessionDate: new Date(),
         }
     }
 
@@ -27,18 +27,16 @@ class Skills extends React.Component {
 
         readDatabaseArg('*', 'Diary', this.getSkills, undefined, 'where diaryType = ' + diaryType);
         //get skills
-
-        this.createSession();
-        //create new session
     }
 
     createSession = () => {
         updateDatabase('Session',
-            [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
-            ["dateEntered"],
+            [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), this.props.diaryDate],
+            ["dateEntered", "diaryDate"],
             undefined,
-            (res) => this.setState({sessionId: res.insertId}))
+            (res) => this.handleSave(res.insertId))
     };
+    // when user presses save - create session in DB with date recorded at screen opening
 
     getSkills = skills => {
         this.setState({ skills: skills })
@@ -53,16 +51,20 @@ class Skills extends React.Component {
         </View>
     );
 
-    handleSave = () => {
+    handleSave = (sessionId) => {
         this.props.skillRating.forEach(rating => {
             updateDatabase('DiarySession',
-                [this.state.sessionId, rating.id, rating.rating],
-                ['sessionId', 'diaryId', 'rating'])
-        })
+                [sessionId, rating.id, rating.rating],
+                ['sessionId', 'diaryId', 'rating'],
+                () => store.dispatch(resetSkillRating()))
+        });
+
+        this.props.navigation.pop();
     };
+    //after creating session transaction in DB - write ratings to DB, reset global ratings store and pop back to previous screen
 
     footer = () => (
-        <TouchableOpacity style={skillStyle.button} onPress={this.handleSave}>
+        <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
             <Text style={skillStyle.buttonText}>Save</Text>
         </TouchableOpacity>
     );
@@ -111,7 +113,8 @@ const skillStyle = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    skillRating: state.diary.skillRating
+    skillRating: state.diary.skillRating,
+    diaryDate: state.diary.date
 });
 // function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
 
