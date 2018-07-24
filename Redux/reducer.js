@@ -12,6 +12,7 @@ import {
   UPDATE_DISTRACTION,
   UPDATE_DATE,
   UPDATE_SKILL_RATING,
+  RESET_SKILL_RATING,
 } from './actions';
 import Moment from 'moment';
 import { defaultSkillRating } from '../Constants/ReduxConstants';
@@ -92,7 +93,10 @@ const distractionReducer = (state = [], action) => {
 
 const defaultSkillRatings = defaultSkillRating();
 
-const diaryReducer = (state = { skillRating: defaultSkillRatings, date: Moment(new Date()).format('LL') }, action) => {
+const diaryReducer = (
+  state = { skillRating: defaultSkillRatings, date: Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS') },
+  action
+) => {
   if (action.type === UPDATE_DATE) {
     return { ...state, date: action.payload };
   }
@@ -111,6 +115,11 @@ const diaryReducer = (state = { skillRating: defaultSkillRatings, date: Moment(n
     };
   }
   // used for when a new skill rating is recorded
+
+  if (action.type === RESET_SKILL_RATING) {
+    return { ...state, skillRating: [...defaultSkillRatings] };
+  }
+  // used for when skill ratings are reset
 
   return state;
 };
