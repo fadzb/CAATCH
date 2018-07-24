@@ -11,8 +11,10 @@ import {
   GET_DISTRACTION,
   UPDATE_DISTRACTION,
   UPDATE_DATE,
+  UPDATE_SKILL_RATING,
 } from './actions';
 import Moment from 'moment';
+import { defaultSkillRating } from '../Constants/ReduxConstants';
 
 //SafetyPlan
 
@@ -88,11 +90,27 @@ const distractionReducer = (state = [], action) => {
 
 //Diary
 
-const diaryReducer = (state = { date: Moment(new Date()).format('LL') }, action) => {
+const defaultSkillRatings = defaultSkillRating();
+
+const diaryReducer = (state = { skillRating: defaultSkillRatings, date: Moment(new Date()).format('LL') }, action) => {
   if (action.type === UPDATE_DATE) {
     return { ...state, date: action.payload };
   }
   // used for when a new date is selected
+
+  if (action.type === UPDATE_SKILL_RATING) {
+    return {
+      ...state,
+      skillRating: [...state.skillRating].map((rating) => {
+        if (rating.id === action.payload.id) {
+          return action.payload;
+        } else {
+          return rating;
+        }
+      }),
+    };
+  }
+  // used for when a new skill rating is recorded
 
   return state;
 };

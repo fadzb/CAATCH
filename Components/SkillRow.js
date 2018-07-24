@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import PropTypes from 'prop-types';
+import store from '../Redux/store';
+import { updateSkillRating } from '../Redux/actions';
 
 export default class SkillRow extends React.Component {
   constructor(props) {
@@ -14,6 +16,16 @@ export default class SkillRow extends React.Component {
 
   updateIndex = (selectedIndex) => {
     this.setState({ selectedIndex });
+
+    let rating;
+
+    if (selectedIndex === 1) {
+      rating = 'No';
+    } else {
+      rating = 'Yes';
+    }
+
+    store.dispatch(updateSkillRating({ id: this.props.index, rating: rating }));
   };
 
   render() {
