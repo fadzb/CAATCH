@@ -21,6 +21,8 @@ export const GET_DISTRACTION = "GET_DISTRACTION";
 
 export const UPDATE_DATE = "UPDATE_DATE";
 
+export const UPDATE_SKILL_RATING = "UPDATE_SKILL_RATING";
+
 // action creators
 
 //SafetyPlan
@@ -83,5 +85,10 @@ export const getDistraction = distractionList => ({
 
 export const updateDate = update => ({
     type: UPDATE_DATE,
+    payload: update
+});
+
+export const updateSkillRating = update => ({
+    type: UPDATE_SKILL_RATING,
     payload: update
 });

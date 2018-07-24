@@ -1,13 +1,13 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList } from 'react-native';
-import Ionicons from "react-native-vector-icons/Ionicons";
-import {Icons} from "../../Constants/Icon";
+import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import Moment from 'moment';
 import SkillRow from '../../Components/SkillRow'
+import {connect} from 'react-redux'
 
 import {TabStyles} from "../../Styles/TabStyles";
-import {readDatabase} from "../../Util/DatabaseHelper";
+import {readDatabaseArg, updateDatabase} from "../../Util/DatabaseHelper";
 
-export default class Skills extends React.Component {
+class Skills extends React.Component {
     static navigationOptions = {
         title: "Skills"
     };
@@ -17,13 +17,28 @@ export default class Skills extends React.Component {
         super(props);
 
         this.state = {
-            skills: []
+            skills: [],
+            sessionId: null,
         }
     }
 
     componentDidMount() {
-        readDatabase('*', 'Skill', this.getSkills)
+        const diaryType = '"Skill"';
+
+        readDatabaseArg('*', 'Diary', this.getSkills, undefined, 'where diaryType = ' + diaryType);
+        //get skills
+
+        this.createSession();
+        //create new session
     }
+
+    createSession = () => {
+        updateDatabase('Session',
+            [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
+            ["dateEntered"],
+            undefined,
+            (res) => this.setState({sessionId: res.insertId}))
+    };
 
     getSkills = skills => {
         this.setState({ skills: skills })
@@ -32,18 +47,34 @@ export default class Skills extends React.Component {
     renderItem = ({item}) => (
         <View style={skillStyle.listContainer}>
             <SkillRow
-                name= {item.skillName}
+                name= {item.diaryName}
+                index= {item.diaryId}
             />
         </View>
+    );
+
+    handleSave = () => {
+        this.props.skillRating.forEach(rating => {
+            updateDatabase('DiarySession',
+                [this.state.sessionId, rating.id, rating.rating],
+                ['sessionId', 'diaryId', 'rating'])
+        })
+    };
+
+    footer = () => (
+        <TouchableOpacity style={skillStyle.button} onPress={this.handleSave}>
+            <Text style={skillStyle.buttonText}>Save</Text>
+        </TouchableOpacity>
     );
 
     render() {
         return (
             <View style={skillStyle.viewContainer}>
                 <FlatList
-                    data={this.state.skills} // comes from mapStateToProps below
+                    data={this.state.skills}
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}
+                    ListFooterComponent={this.footer}
                 />
             </View>
         );
@@ -60,4 +91,29 @@ const skillStyle = StyleSheet.create({
         flex: 1,
         backgroundColor: '#fff',
     },
+
+    buttonText: {
+        fontSize: 18,
+        color: '#007AFF',
+        alignSelf: 'center',
+    },
+
+    button: {
+        height: 36,
+        backgroundColor: '#fff',
+        borderColor: '#007AFF',
+        borderWidth: 1,
+        borderRadius: 8,
+        margin: 30,
+        alignSelf: 'stretch',
+        justifyContent: 'center',
+    },
 });
+
+const mapStateToProps = state => ({
+    skillRating: state.diary.skillRating
+});
+// function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
+
+export default connect(mapStateToProps)(Skills)
+// HOC that re-renders the component automatically every time a particular section of state is updated
