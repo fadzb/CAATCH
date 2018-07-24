@@ -5,10 +5,12 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import {Icons} from "../../Constants/Icon";
 
 import DiaryScreen from '../../Screens/DiaryScreens/DiaryScreen'
+import Skills from "../../Screens/DiaryScreens/Skills";
 
 const DiaryStack = createStackNavigator(
     {
         main: DiaryScreen,
+        skills: Skills
     },
 
     {

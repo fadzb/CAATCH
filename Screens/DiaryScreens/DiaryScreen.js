@@ -54,7 +54,7 @@ class DiaryScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{flex: 1, alignSelf: 'stretch'}}>
-                    <DiaryGrid/>
+                    <DiaryGrid navigation={this.props.navigation}/>
                 </View>
                 <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={false} onRequestClose={() => this.toggleModal(false)}>
                     <CalendarView
