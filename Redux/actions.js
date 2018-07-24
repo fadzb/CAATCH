@@ -22,6 +22,7 @@ export const GET_DISTRACTION = 'GET_DISTRACTION';
 export const UPDATE_DATE = 'UPDATE_DATE';
 
 export const UPDATE_SKILL_RATING = 'UPDATE_SKILL_RATING';
+export const RESET_SKILL_RATING = 'RESET_SKILL_RATING';
 
 // action creators
 
@@ -87,4 +88,8 @@ export const updateDate = (update) => ({
 export const updateSkillRating = (update) => ({
   type: UPDATE_SKILL_RATING,
   payload: update,
+});
+
+export const resetSkillRating = () => ({
+  type: RESET_SKILL_RATING,
 });

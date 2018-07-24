@@ -27,6 +27,7 @@ export default class SkillRow extends React.Component {
 
     store.dispatch(updateSkillRating({ id: this.props.index, rating: rating }));
   };
+  // when user selects Y or N, update global ratings store
 
   render() {
     const buttons = ['Yes', 'No'];
@@ -69,7 +70,6 @@ const skillRowStyle = StyleSheet.create({
   },
 
   container: {
-    //flex: 1,
     height: 70,
     alignSelf: 'stretch',
     justifyContent: 'center',
