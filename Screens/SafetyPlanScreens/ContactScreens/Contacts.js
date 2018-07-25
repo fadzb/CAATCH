@@ -76,6 +76,19 @@ class Contacts extends React.Component {
     });
   };
 
+  compareNames = (contact1, contact2) => {
+    if (contact2.firstName === 'Samaritans') {
+      return 1;
+    } else if (contact1.firstName.toUpperCase() < contact2.firstName.toUpperCase()) {
+      return -1;
+    } else if (contact1.firstName.toUpperCase() > contact2.firstName.toUpperCase()) {
+      return 1;
+    } else {
+      return 0;
+    }
+  };
+  // feed into sort function to sort contacts alphabetically. Also keeping Samaritans at top
+
   renderItem = ({ item }) => (
     <View style={contactsStyle.listContainer}>
       <SafetyPlanSectionRow
@@ -102,7 +115,7 @@ class Contacts extends React.Component {
     return (
       <View style={contactsStyle.viewContainer}>
         <FlatList
-          data={this.props.contact} // comes from mapStateToProps below
+          data={this.props.contact.sort(this.compareNames)} // comes from mapStateToProps below
           renderItem={this.renderItem}
           keyExtractor={(item, index) => index.toString()}
         />
