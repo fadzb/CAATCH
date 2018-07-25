@@ -1,6 +1,8 @@
-// function for retrieving Pre-populated Safety Plan Content
+// function for retrieving Pre-populated Content from DB
 
 import { readDatabase } from '../Util/DatabaseHelper';
+
+// SafetyPlan
 
 export const getPrePops = () => {
   readDatabase(
@@ -11,3 +13,11 @@ export const getPrePops = () => {
 };
 
 export let safetyPlanPrePops = [];
+
+// Diary
+
+export const getDiaryPrePops = () => {
+  readDatabase('*', 'Diary', (d) => (diaryPlanPrePops = d));
+};
+
+export let diaryPlanPrePops = [];

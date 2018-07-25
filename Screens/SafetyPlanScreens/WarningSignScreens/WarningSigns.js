@@ -7,6 +7,7 @@ import { getSign } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import Moment from 'moment';
 import { Icons } from '../../../Constants/Icon';
+import { compareDates } from '../../../Util/Compare';
 
 class WarningSigns extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -89,7 +90,7 @@ class WarningSigns extends React.Component {
     return (
       <View style={stratStyle.viewContainer}>
         <FlatList
-          data={this.props.sign} // comes from mapStateToProps below
+          data={this.props.sign.sort(compareDates)} // comes from mapStateToProps below
           renderItem={this.renderItem}
           keyExtractor={(item, index) => index.toString()}
         />
