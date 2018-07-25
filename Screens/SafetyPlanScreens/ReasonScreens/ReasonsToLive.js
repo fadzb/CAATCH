@@ -8,6 +8,7 @@ import store from "../../../Redux/store"
 import Moment from 'moment';
 import {FileSystem} from 'expo'
 import {Icons} from "../../../Constants/Icon";
+import {compareDates} from "../../../Util/Compare";
 
 class ReasonsToLive extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -90,7 +91,7 @@ class ReasonsToLive extends React.Component {
         return (
             <View style={reasonStyle.viewContainer}>
                 <FlatList
-                    data={this.props.reason} // comes from mapStateToProps below
+                    data={this.props.reason.sort(compareDates)} // comes from mapStateToProps below
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}
                 />

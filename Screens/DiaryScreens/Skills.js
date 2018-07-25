@@ -6,6 +6,8 @@ import {connect} from 'react-redux'
 import store from "../../Redux/store"
 import {resetSkillRating} from "../../Redux/actions";
 import {readDatabaseArg, updateDatabase} from "../../Util/DatabaseHelper";
+import {diaryPlanPrePops} from "../../Constants/Prepopulated";
+
 
 class Skills extends React.Component {
     static navigationOptions = {
@@ -23,10 +25,7 @@ class Skills extends React.Component {
     }
 
     componentDidMount() {
-        const diaryType = '"Skill"';
-
-        readDatabaseArg('*', 'Diary', this.getSkills, undefined, 'where diaryType = ' + diaryType);
-        //get skills
+        this.getSkills(diaryPlanPrePops)
     }
 
     createSession = () => {
@@ -38,8 +37,8 @@ class Skills extends React.Component {
     };
     // when user presses save - create session in DB with date recorded at screen opening
 
-    getSkills = skills => {
-        this.setState({ skills: skills })
+    getSkills = diaryItem => {
+        this.setState({ skills: diaryItem.filter(d => d.diaryType === "Skill") })
     };
 
     renderItem = ({item}) => (

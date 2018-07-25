@@ -8,6 +8,7 @@ import store from "../../../Redux/store"
 import Moment from 'moment';
 import {FileSystem} from 'expo'
 import {Icons} from "../../../Constants/Icon";
+import {compareDates} from "../../../Util/Compare";
 
 class CopingStrategies extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -90,7 +91,7 @@ class CopingStrategies extends React.Component {
         return (
             <View style={stratStyle.viewContainer}>
                 <FlatList
-                    data={this.props.coping} // comes from mapStateToProps below
+                    data={this.props.coping.sort(compareDates)} // comes from mapStateToProps below
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}
                 />
