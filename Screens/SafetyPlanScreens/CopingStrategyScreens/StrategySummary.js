@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Button, Left, Body } from 'native-base';
-import Image from 'react-native-scalable-image';
+import {PressableImage} from "../../../Components/PressableImage";
 import {ImageViewer} from "../../../Components/ImageViewer";
 import Moment from 'moment';
 import {Video} from 'expo';
@@ -64,10 +64,9 @@ export default class StrategySummary extends React.Component {
                             <CardItem>
                                 <Body>
                                 {mediaPath !== null && <View>
-                                        <Image
-                                            width={(Dimensions.get('window').width) - 35} // height will be calculated automatically
+                                        <PressableImage
                                             source={mediaType === 'image' ? media : require("../../../Media/Images/video-play-button.jpg")}
-                                            onPress={mediaType === 'image' ? () => this.toggleModal(true) : () => this.toggleVideo(true)}
+                                            onPressFunction={mediaType === 'image' ? () => this.toggleModal(true) : () => this.toggleVideo(true)}
                                         />
                                     </View>}
                                     <Text style={stratSummaryStyle.text}>
@@ -124,11 +123,11 @@ const stratSummaryStyle = StyleSheet.create({
     textLinkView: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingTop: 5
+        paddingTop: 5,
     },
 
     text: {
-        paddingTop: 10
+        paddingTop: 10,
     },
 
     urlText: {
@@ -144,5 +143,6 @@ const stratSummaryStyle = StyleSheet.create({
         padding: 5,
         borderRadius: 7,
         marginTop: 10
-    }
+    },
+
 });
