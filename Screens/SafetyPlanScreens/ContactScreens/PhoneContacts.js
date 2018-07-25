@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, SectionList } from 'react-native';
+import { SearchBar } from 'react-native-elements';
 import { ContactRow } from '../../../Components/ContactRow';
 
 export default class PhoneContacts extends React.Component {
@@ -14,35 +15,40 @@ export default class PhoneContacts extends React.Component {
 
     this.state = {
       contacts: [],
+      searchText: '',
+      originalContacts: [],
     };
   }
 
   componentDidMount() {
-    this.setState({
-      contacts: this.props.navigation
-        .getParam('contacts')
-        .map((c) => {
-          let phone = '';
-          let email = '';
+    this.setState(
+      {
+        contacts: this.props.navigation
+          .getParam('contacts')
+          .map((c) => {
+            let phone = '';
+            let email = '';
 
-          if (c.phoneNumbers.length !== 0) {
-            phone = c.phoneNumbers[0].number;
-          }
+            if (c.phoneNumbers.length !== 0) {
+              phone = c.phoneNumbers[0].number;
+            }
 
-          if (c.emails.length !== 0) {
-            email = c.emails[0].email;
-          }
+            if (c.emails.length !== 0) {
+              email = c.emails[0].email;
+            }
 
-          return {
-            name: c.name,
-            firstName: c.firstName,
-            surname: c.lastName,
-            phone: phone,
-            email: email,
-          };
-        })
-        .sort(this.compareNames),
-    });
+            return {
+              name: c.name,
+              firstName: c.firstName,
+              surname: c.lastName,
+              phone: phone,
+              email: email,
+            };
+          })
+          .sort(this.compareNames),
+      },
+      () => this.setState({ originalContacts: [...this.state.contacts] })
+    );
   }
 
   compareNames = (contact1, contact2) => {
@@ -54,6 +60,24 @@ export default class PhoneContacts extends React.Component {
       return 0;
     }
   };
+
+  handleChangeText = (text) => {
+    let contactArr;
+
+    this.setState((prevState) => {
+      if (this.state.searchText.length > text.length) {
+        contactArr = this.state.originalContacts;
+      } else {
+        contactArr = [...prevState.contacts];
+      }
+
+      return {
+        contacts: contactArr.filter((c) => c.name.toUpperCase().includes(text.toUpperCase())),
+        searchText: text,
+      };
+    });
+  };
+  // filters contact list based on user input to search box
 
   renderItem = (obj) => (
     <View style={phoneContactStyle.listContainer}>
@@ -90,6 +114,13 @@ export default class PhoneContacts extends React.Component {
 
     return (
       <View style={phoneContactStyle.viewContainer}>
+        <SearchBar
+          onChangeText={this.handleChangeText}
+          placeholder="Type Here..."
+          //autoCapitalize={'none'}
+          placeholderTextColor={'white'}
+          icon={{ color: 'white' }}
+        />
         <SectionList
           renderItem={this.renderItem}
           renderSectionHeader={this.renderSectionHeader}
