@@ -7,6 +7,7 @@ import Moment from 'moment';
 import Communications from 'react-native-communications'
 import {PressableIcon} from "../../../Components/PressableIcon";
 import {Icons} from "../../../Constants/Icon";
+import {openSafetyPlanItem} from "../../../Util/Usage";
 
 
 export default class ContactSummary extends React.Component {
@@ -39,6 +40,9 @@ export default class ContactSummary extends React.Component {
 
     componentDidMount() {
         this.getName();
+
+        openSafetyPlanItem(5, "Contact", this.props.navigation.getParam('id'))
+        // update DB for open contact function
     }
 
     toggleModal = bool => {

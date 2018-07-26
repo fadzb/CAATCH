@@ -6,6 +6,7 @@ import {ImageViewer} from "../../../Components/ImageViewer";
 import Moment from 'moment';
 import {Video} from 'expo';
 import Icon from "react-native-vector-icons/Ionicons";
+import {openSafetyPlanItem} from "../../../Util/Usage";
 
 
 export default class StrategySummary extends React.Component {
@@ -23,6 +24,11 @@ export default class StrategySummary extends React.Component {
             modalVisible: false,
             playVideo: false
         }
+    }
+
+    componentDidMount() {
+        openSafetyPlanItem(2, 'CopingStrategy', this.props.navigation.getParam('id'))
+        // update DB for open coping function
     }
 
     toggleModal = bool => {

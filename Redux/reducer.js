@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import {
     UPDATE_COPING, GET_COPING, UPDATE_SIGN, GET_SIGN, GET_CONTACT, UPDATE_CONTACT, UPDATE_REASON,
-    GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE, UPDATE_SKILL_RATING, RESET_SKILL_RATING
+    GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE, UPDATE_SKILL_RATING, RESET_SKILL_RATING, UPDATE_USAGE
 } from "./actions";
 import Moment from 'moment';
 import {defaultSkillRating} from "../Constants/ReduxConstants";
@@ -108,6 +108,17 @@ const diaryReducer = (state = {skillRating: defaultSkillRatings, date: Moment(ne
     return state
 };
 
+//Usage
+
+const usageReducer = (state = 0, action) => {
+    if(action.type === UPDATE_USAGE) {
+        return action.payload;
+    }
+    // store usageId when app is started up
+
+    return state
+};
+
 
 const reducer = combineReducers({
     coping: copingReducer,
@@ -115,7 +126,8 @@ const reducer = combineReducers({
     contact: contactReducer,
     reason: reasonReducer,
     distraction: distractionReducer,
-    diary: diaryReducer
+    diary: diaryReducer,
+    usage: usageReducer,
 });
 // as reducers grow, add to this object
 

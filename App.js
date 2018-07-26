@@ -1,33 +1,42 @@
 import React from 'react';
-import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
+import {createBottomTabNavigator} from 'react-navigation';
 import { checkDB } from "./Util/DatabaseConnector";
 import { mediaDirectoryCheck } from "./Util/Media";
 import {Provider} from 'react-redux'
 import store from './Redux/store'
-import {getPrePops, getDiaryPrePops} from "./Constants/Prepopulated";
+import {updateDatabase} from "./Util/DatabaseHelper";
+import Moment from 'moment';
+import {updateUsage} from "./Redux/actions";
 
 import HomeScreen from "./Screens/HomeScreen";
-import DiaryScreen from "./Screens/DiaryScreens/DiaryScreen";
 import TwitterScreen from "./Screens/TwitterScreen";
 import SettingsScreen from "./Screens/SettingsScreen";
 import PlanStack from "./Components/StackNavigators/SafetyPlanStack";
 import DiaryStack from "./Components/StackNavigators/DiaryStack"
+
 //Initial Tab screens/stack navs
 
 export default class App extends React.Component {
     componentDidMount() {
-        checkDB();
+        checkDB(() => this.postCheckDbFunctions());
         // check db file exists and, if not, copy pre-populated .db file to app file system
+    }
 
+    postCheckDbFunctions = () => {
         mediaDirectoryCheck();
         // checks to ensure media directory exists and creates if not
 
-        getPrePops();
-        // get all SP prepop items from DB
+        this.createNewUsage();
+    };
 
-        getDiaryPrePops();
-        // get all diary prepop items from DB
-    }
+    createNewUsage = () => {
+        updateDatabase("Usage",
+            [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
+            ["dateEntered"],
+            undefined,
+            res => store.dispatch(updateUsage(res.insertId)))
+    };
+    // creating new usage transaction in DB and storing usageId in global store
 
     render() {
         return (

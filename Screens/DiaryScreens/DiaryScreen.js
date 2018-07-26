@@ -8,6 +8,7 @@ import {CalendarView} from "../../Components/CalendarView";
 import {connect} from 'react-redux'
 import store from "../../Redux/store"
 import {updateDate} from "../../Redux/actions";
+import {getDiaryPrePops} from "../../Constants/Prepopulated";
 
 import {TabStyles} from "../../Styles/TabStyles";
 
@@ -23,6 +24,11 @@ class DiaryScreen extends React.Component {
         this.state = {
             modalVisible: false,
         }
+    }
+
+    componentDidMount() {
+        getDiaryPrePops();
+        // get all diary prepop items from DB
     }
 
     toggleModal = bool => {

@@ -9,6 +9,7 @@ import {readDatabaseArg} from "../../../Util/DatabaseHelper";
 import Icon from "react-native-vector-icons/Ionicons";
 import {CardListItem} from "../../../Components/CardListItem";
 import {Icons} from "../../../Constants/Icon";
+import {openSafetyPlanItem} from "../../../Util/Usage";
 
 export default class DistractionSummary extends React.Component {
 
@@ -30,6 +31,9 @@ export default class DistractionSummary extends React.Component {
 
     componentDidMount() {
         this.getContactLink();
+
+        openSafetyPlanItem(3, "Distraction", this.props.navigation.getParam('id'))
+        // update DB for open distraction function
     }
 
     getContactLink = () => {

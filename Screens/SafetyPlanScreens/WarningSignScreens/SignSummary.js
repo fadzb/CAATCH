@@ -5,6 +5,7 @@ import Moment from 'moment';
 import {CardListItem} from "../../../Components/CardListItem";
 import {readDatabaseArg} from "../../../Util/DatabaseHelper";
 import {Icons} from "../../../Constants/Icon";
+import {openSafetyPlanItem} from "../../../Util/Usage";
 
 export default class SignSummary extends React.Component {
 
@@ -24,6 +25,9 @@ export default class SignSummary extends React.Component {
 
     componentDidMount() {
         this.getCopeLink();
+
+        openSafetyPlanItem(1, "WarningSign", this.props.navigation.getParam('id'));
+        // update DB for open sign function
     }
 
     getCopeLink = () => {
