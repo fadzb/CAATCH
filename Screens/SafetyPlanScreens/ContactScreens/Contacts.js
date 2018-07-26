@@ -40,6 +40,17 @@ class Contacts extends React.Component {
     // dispatching total list of contacts from DB to global redux store
   };
 
+  editContact = (id, firstName, surname, phone, email, image) => {
+    this.props.navigation.push('editContact', {
+      id: id,
+      firstName: firstName,
+      surname: surname,
+      phone: phone,
+      email: email,
+      image: image,
+    });
+  };
+
   deleteContact = (id) => {
     updateDatabaseArgument(
       'Contact',
@@ -105,6 +116,9 @@ class Contacts extends React.Component {
           )
         }
         deleteFunction={() => this.showAlert(item.contactId)}
+        editFunction={() =>
+          this.editContact(item.contactId, item.firstName, item.surname, item.phone, item.email, item.image)
+        }
         thumbnail={item.image === null ? undefined : { uri: item.image }}
         circleView={item.image === null ? item.firstName.slice(0, 1).toUpperCase() : undefined}
       />

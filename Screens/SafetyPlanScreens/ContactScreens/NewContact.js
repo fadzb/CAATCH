@@ -62,7 +62,7 @@ export default class NewContact extends React.Component {
   componentWillReceiveProps(nextProps) {
     const checkedContact = nextProps.navigation.getParam('checkedContact', null);
 
-    if (checkedContact !== this.props.navigation.getParam('checkedStrats', null)) {
+    if (checkedContact !== this.props.navigation.getParam('checkedContact', null)) {
       if (checkedContact !== null) {
         this.setState({
           value: {

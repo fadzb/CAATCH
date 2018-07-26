@@ -54,7 +54,11 @@ export default class PrePopCopingStrategies extends React.Component {
         </View>
         <TouchableHighlight
           style={preCopeStyle.button}
-          onPress={() => this.props.navigation.navigate('newCoping', { checkedStrats: this.state.checkedStrats })}
+          onPress={
+            this.props.navigation.getParam('edit')
+              ? () => this.props.navigation.navigate('editCoping', { checkedStrats: this.state.checkedStrats })
+              : () => this.props.navigation.navigate('newCoping', { checkedStrats: this.state.checkedStrats })
+          }
           underlayColor="#99d9f4"
         >
           <Text style={preCopeStyle.buttonText}>Done</Text>

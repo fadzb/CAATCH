@@ -81,3 +81,9 @@ export const readDatabaseArg = (column, table, resultFunc, func, argument) => {
   );
 };
 // function for reading DB with additional arguments like joins etc.
+
+export const deleteDatabaseRow = (table, argument) => {
+  db.transaction((tx) => {
+    tx.executeSql(`delete from ${table} ` + argument);
+  });
+};

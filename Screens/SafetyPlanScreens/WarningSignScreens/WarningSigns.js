@@ -42,6 +42,14 @@ class WarningSigns extends React.Component {
     // dispatching total list of warning signs names from DB to global redux store
   };
 
+  editSign = (id, name, desc) => {
+    this.props.navigation.push('editWarning', {
+      id: id,
+      name: name,
+      desc: desc,
+    });
+  };
+
   deleteSign = (id) => {
     updateDatabaseArgument(
       'WarningSign',
@@ -81,6 +89,7 @@ class WarningSigns extends React.Component {
         name={item.signName}
         onPress={() => this.summaryNav(item.signId, item.signName, item.dateEntered, item.signDesc)}
         deleteFunction={() => this.showAlert(item.signId)}
+        editFunction={() => this.editSign(item.signId, item.signName, item.signDesc)}
         icon={Icons.warningSign + '-outline'}
       />
     </View>

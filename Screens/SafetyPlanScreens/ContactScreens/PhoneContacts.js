@@ -84,7 +84,11 @@ export default class PhoneContacts extends React.Component {
       <ContactRow
         name={obj.item.name}
         number={obj.item.phone}
-        onPress={() => this.props.navigation.navigate('newContact', { checkedContact: obj.item })}
+        onPress={
+          this.props.navigation.getParam('edit')
+            ? () => this.props.navigation.navigate('editContact', { checkedContact: obj.item })
+            : () => this.props.navigation.navigate('newContact', { checkedContact: obj.item })
+        }
       />
     </View>
   );
