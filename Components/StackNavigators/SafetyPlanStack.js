@@ -27,29 +27,39 @@ import NewDistraction from '../../Screens/SafetyPlanScreens/DistractionScreens/N
 import PrePopDistraction from '../../Screens/SafetyPlanScreens/DistractionScreens/PrePopDistraction';
 import DistractionSummary from '../../Screens/SafetyPlanScreens/DistractionScreens/DistractionSummary';
 import DistractContactLink from '../../Screens/SafetyPlanScreens/DistractionScreens/DistractContactLink';
+import EditContact from '../../Screens/SafetyPlanScreens/ContactScreens/EditContact';
+import EditCopingStrategy from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/EditCopingStrategy';
+import EditDistraction from '../../Screens/SafetyPlanScreens/DistractionScreens/EditDistraction';
+import EditReason from '../../Screens/SafetyPlanScreens/ReasonScreens/EditReason';
+import EditWarningSign from '../../Screens/SafetyPlanScreens/WarningSignScreens/EditWarningSign';
 
 const PlanStack = createStackNavigator(
   {
     main: PlanScreen,
     warning: WarningSigns,
     newWarning: NewWarningSign,
+    editWarning: EditWarningSign,
     copingLink: CopingStrategyLink,
     signSummary: SignSummary,
     coping: CopingStrategies,
     newCoping: NewCopingStrategy,
+    editCoping: EditCopingStrategy,
     prePopCope: PrePopCopingStrategies,
     stratSummary: StrategySummary,
     planWeb: PlanWebView,
     reason: ReasonsToLive,
     newReason: NewReason,
+    editReason: EditReason,
     reasonSummary: ReasonSummary,
     distraction: Distractions,
     newDistraction: NewDistraction,
+    editDistraction: EditDistraction,
     prePopDistraction: PrePopDistraction,
     distractionSummary: DistractionSummary,
     contactLink: DistractContactLink,
     contact: Contacts,
     newContact: NewContact,
+    editContact: EditContact,
     phoneContacts: PhoneContacts,
     contactSummary: ContactSummary,
     environment: EnvironmentSafe,

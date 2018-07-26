@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-nat
 import t from 'tcomb-form-native';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import store from '../../../Redux/store';
-import { updateContact, getContact } from '../../../Redux/actions';
+import { updateCoping, getCoping } from '../../../Redux/actions';
 import Expo from 'expo';
 import { Icons } from '../../../Constants/Icon';
 
@@ -12,31 +12,25 @@ import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../.
 
 const Form = t.form.Form;
 
-const contact = t.struct({
-  firstName: t.String,
-  surname: t.maybe(t.String),
-  phone: t.String,
-  email: t.maybe(t.String),
+const cope = t.struct({
+  copeName: t.String,
+  copeDesc: t.String,
+  copeUrl: t.maybe(t.String),
 });
 // data structure for values to be capture in form below
 
 const options = {
   fields: {
-    firstName: {
-      placeholder: 'First Name',
+    copeName: {
+      placeholder: 'Name',
       auto: 'none',
     },
-    surname: {
-      placeholder: 'Surname',
+    copeDesc: {
+      placeholder: 'Description',
       auto: 'none',
     },
-    phone: {
-      placeholder: 'Phone',
-      auto: 'none',
-      keyboardType: 'numeric',
-    },
-    email: {
-      placeholder: 'Email',
+    copeUrl: {
+      placeholder: 'URL (eg. www.google.ie)',
       auto: 'none',
       autoCapitalize: 'none',
     },
@@ -44,74 +38,78 @@ const options = {
 };
 // for customizing form UI
 
-export default class NewContact extends React.Component {
+export default class EditCopingStrategy extends React.Component {
   static navigationOptions = {
-    title: 'New Contact',
+    title: 'Edit Strategy',
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      value: null,
+      value: {
+        copeName: this.props.navigation.getParam('name'),
+        copeDesc: this.props.navigation.getParam('desc'),
+        copeUrl: this.props.navigation.getParam('url'),
+      },
       selectedMediaUri: '',
       selectedMediaName: '',
+      selectedMediaType: '',
     };
   }
 
   componentWillReceiveProps(nextProps) {
-    const checkedContact = nextProps.navigation.getParam('checkedContact', null);
+    const checkedStrat = nextProps.navigation.getParam('checkedStrats', null);
 
-    if (checkedContact !== this.props.navigation.getParam('checkedContact', null)) {
-      if (checkedContact !== null) {
+    if (checkedStrat !== this.props.navigation.getParam('checkedStrats', null)) {
+      if (checkedStrat !== null) {
         this.setState({
           value: {
-            firstName: checkedContact.firstName,
-            surname: checkedContact.surname,
-            email: checkedContact.email,
-            phone: checkedContact.phone,
+            copeName: checkedStrat[0],
+            copeDesc: '',
+            copeUrl: '',
           },
         });
       } else {
-        console.log('no contact selected');
+        console.log('no strat checked');
       }
     }
   }
-  // listen for new props coming from phone contacts screen and update accordingly
+  // listen for new props coming from pre-populated screen and update accordingly
 
   onChange = (value) => {
     this.setState({ value: value });
   };
 
-  updateContactList = (contact) => {
-    store.dispatch(updateContact(contact));
-    // dispatching new contact to global redux store
+  updateCopeList = (strategy) => {
+    store.dispatch(updateCoping(strategy));
+    // dispatching new Coping Strategy name to global redux store
   };
 
   refreshDb = (func) => {
-    readDatabaseArg('*', 'Contact', func, () => console.log('DB read success'), 'where dateDeleted is NULL');
+    readDatabaseArg('*', 'CopingStrategy', func, () => console.log('DB read success'), 'where dateDeleted is NULL');
   };
-  // for refreshing global state from Contact table in DB
+  // for refreshing global state from Coping Strategy table in DB
 
-  updateGlobalContacts = (contacts) => store.dispatch(getContact(contacts));
+  updateGlobalStrategies = (strats) => store.dispatch(getCoping(strats));
 
-  checkMediaSelected = (contactId) => {
+  checkMediaSelected = () => {
     if (this.state.selectedMediaUri !== '') {
-      this.updateDBMedia(contactId);
+      this.updateDBMedia(this.props.navigation.getParam('id'));
     }
 
-    this.refreshDb(this.updateGlobalContacts);
+    this.refreshDb(this.updateGlobalStrategies);
   };
   // if media was selected -> update that row with path
 
-  updateDBMedia = (contactId) => {
+  updateDBMedia = (copeId) => {
     const mediaDirectory = 'SafetyplanMedia/';
 
     updateDatabaseArgument(
-      'Contact',
-      [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName],
-      ['image'],
-      'where contactId = ' + contactId.insertId
+      'CopingStrategy',
+      [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
+      ['mediaPath', 'mediaType'],
+      'where copeId = ' + copeId
     );
 
     Expo.FileSystem.moveAsync({
@@ -138,6 +136,7 @@ export default class NewContact extends React.Component {
           this.setState({
             selectedMediaUri: mediaShot.uri,
             selectedMediaName: shortName,
+            selectedMediaType: mediaShot.type,
           });
         }
       });
@@ -152,7 +151,7 @@ export default class NewContact extends React.Component {
         return;
       }
 
-      Expo.ImagePicker.launchImageLibraryAsync({ mediaTypes: Expo.ImagePicker.MediaTypeOptions.Images }).then(
+      Expo.ImagePicker.launchImageLibraryAsync({ mediaTypes: Expo.ImagePicker.MediaTypeOptions.All }).then(
         (selectedMedia) => {
           console.log(selectedMedia);
 
@@ -163,6 +162,7 @@ export default class NewContact extends React.Component {
             this.setState({
               selectedMediaUri: selectedMedia.uri,
               selectedMediaName: shortName,
+              selectedMediaType: selectedMedia.type,
             });
           }
         }
@@ -178,67 +178,52 @@ export default class NewContact extends React.Component {
     if (value) {
       // if validation fails, value will be null
       console.log(value);
-      updateDatabase(
-        'Contact',
+      updateDatabaseArgument(
+        'CopingStrategy',
         Object.values(value),
         Object.keys(value),
-        this.updateContactList(value),
+        'where copeId = ' + this.props.navigation.getParam('id'),
+        this.updateCopeList(value),
         this.checkMediaSelected
       );
       // write the saved values to DB if valid
 
       this.props.navigation.pop();
-      // pop to contact list once saved
+      // pop to strategy list once saved
     }
   };
-
-  getPhoneContacts = () => {
-    Expo.Permissions.askAsync(Expo.Permissions.CONTACTS).then((response) => {
-      if (response.status !== 'granted') {
-        console.error('Contacts permission not granted!');
-        return;
-      }
-
-      Expo.Contacts.getContactsAsync({ fields: [Expo.Contacts.PHONE_NUMBERS, Expo.Contacts.EMAILS], pageSize: 10000 })
-        .then((res) => {
-          this.props.navigation.push('phoneContacts', { contacts: res.data });
-        })
-        .catch((err) => console.log(err));
-    });
-  };
-  // media that retrieves all (providing less than 10000 contacts!) contacts from phones directory
 
   render() {
     return (
       <View style={TabStyles.planContainer}>
-        <View style={contactStyle.formContainer}>
-          <Form ref="form" type={contact} value={this.state.value} onChange={this.onChange} options={options} />
+        <View style={copeStyle.formContainer}>
+          <Form ref="form" type={cope} value={this.state.value} onChange={this.onChange} options={options} />
           <PressableIcon
             iconName="ios-arrow-dropright-outline"
             size={25}
-            onPressFunction={this.getPhoneContacts}
-            name="Import Phone Contacts"
+            onPressFunction={() => this.props.navigation.push('prePopCope', { edit: true })}
+            name="Import"
             buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
-            buttonStyle={contactStyle.listButton}
+            buttonStyle={copeStyle.listButton}
             textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
             iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
           />
-          <TouchableHighlight style={contactStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
-            <Text style={contactStyle.buttonText}>Save</Text>
+          <TouchableHighlight style={copeStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
+            <Text style={copeStyle.buttonText}>Save</Text>
           </TouchableHighlight>
         </View>
-        <View style={contactStyle.iconContainer}>
+        <View style={copeStyle.iconContainer}>
           <PressableIcon
             iconName={Icons.media + '-outline'}
             size={80}
             onPressFunction={this.captureMedia}
-            buttonStyle={contactStyle.iconButton}
+            buttonStyle={copeStyle.iconButton}
           />
           <PressableIcon
             iconName={Icons.camera + '-outline'}
             size={80}
             onPressFunction={this.takePhoto}
-            buttonStyle={contactStyle.iconButton}
+            buttonStyle={copeStyle.iconButton}
           />
         </View>
       </View>
@@ -246,7 +231,7 @@ export default class NewContact extends React.Component {
   }
 }
 
-const contactStyle = StyleSheet.create({
+const copeStyle = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: 'white',

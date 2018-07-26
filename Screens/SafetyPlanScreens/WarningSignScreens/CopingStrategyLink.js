@@ -60,10 +60,19 @@ export default class CopingStrategyLink extends React.Component {
           itemStyle={copeLinkStyle.itemStyle}
           selectedIconName={'ios-checkmark-circle-outline'}
           unselectedIconName={'ios-radio-button-off-outline'}
+          selected={
+            this.props.navigation.getParam('selectedStrats') !== undefined
+              ? this.props.navigation.getParam('selectedStrats').map((sc) => sc.copeId.toString())
+              : undefined
+          }
         />
         <TouchableHighlight
           style={copeLinkStyle.button}
-          onPress={() => this.props.navigation.navigate('newWarning', { checkedCopes: this.state.checkedCopes })}
+          onPress={
+            this.props.navigation.getParam('edit')
+              ? () => this.props.navigation.navigate('editWarning', { checkedCopes: this.state.checkedCopes })
+              : () => this.props.navigation.navigate('newWarning', { checkedCopes: this.state.checkedCopes })
+          }
           underlayColor="#99d9f4"
         >
           <Text style={copeLinkStyle.buttonText}>Done</Text>

@@ -56,8 +56,16 @@ export default class PrePopDistraction extends React.Component {
         </View>
         <TouchableHighlight
           style={preDistractionStyle.button}
-          onPress={() =>
-            this.props.navigation.navigate('newDistraction', { checkedDistractions: this.state.checkedDistractions })
+          onPress={
+            this.props.navigation.getParam('edit')
+              ? () =>
+                  this.props.navigation.navigate('editDistraction', {
+                    checkedDistractions: this.state.checkedDistractions,
+                  })
+              : () =>
+                  this.props.navigation.navigate('newDistraction', {
+                    checkedDistractions: this.state.checkedDistractions,
+                  })
           }
           underlayColor="#99d9f4"
         >

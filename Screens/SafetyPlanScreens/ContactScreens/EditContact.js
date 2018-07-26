@@ -44,16 +44,21 @@ const options = {
 };
 // for customizing form UI
 
-export default class NewContact extends React.Component {
+export default class EditContact extends React.Component {
   static navigationOptions = {
-    title: 'New Contact',
+    title: 'Edit Contact',
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      value: null,
+      value: {
+        firstName: this.props.navigation.getParam('firstName'),
+        surname: this.props.navigation.getParam('surname'),
+        email: this.props.navigation.getParam('email'),
+        phone: this.props.navigation.getParam('phone'),
+      },
       selectedMediaUri: '',
       selectedMediaName: '',
     };
@@ -95,9 +100,9 @@ export default class NewContact extends React.Component {
 
   updateGlobalContacts = (contacts) => store.dispatch(getContact(contacts));
 
-  checkMediaSelected = (contactId) => {
+  checkMediaSelected = () => {
     if (this.state.selectedMediaUri !== '') {
-      this.updateDBMedia(contactId);
+      this.updateDBMedia(this.props.navigation.getParam('id'));
     }
 
     this.refreshDb(this.updateGlobalContacts);
@@ -111,7 +116,7 @@ export default class NewContact extends React.Component {
       'Contact',
       [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName],
       ['image'],
-      'where contactId = ' + contactId.insertId
+      'where contactId = ' + contactId
     );
 
     Expo.FileSystem.moveAsync({
@@ -178,10 +183,11 @@ export default class NewContact extends React.Component {
     if (value) {
       // if validation fails, value will be null
       console.log(value);
-      updateDatabase(
+      updateDatabaseArgument(
         'Contact',
         Object.values(value),
         Object.keys(value),
+        'where contactId = ' + this.props.navigation.getParam('id'),
         this.updateContactList(value),
         this.checkMediaSelected
       );
@@ -201,7 +207,7 @@ export default class NewContact extends React.Component {
 
       Expo.Contacts.getContactsAsync({ fields: [Expo.Contacts.PHONE_NUMBERS, Expo.Contacts.EMAILS], pageSize: 10000 })
         .then((res) => {
-          this.props.navigation.push('phoneContacts', { contacts: res.data });
+          this.props.navigation.push('phoneContacts', { contacts: res.data, edit: true });
         })
         .catch((err) => console.log(err));
     });
