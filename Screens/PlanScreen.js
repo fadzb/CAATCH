@@ -1,5 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
+import { getPrePops } from '../Constants/Prepopulated';
 
 import { TabStyles } from '../Styles/TabStyles';
 import { SafetyPlanSelector } from '../Components/SafetyPlanSelector';
@@ -9,6 +10,11 @@ export default class PlanScreen extends React.Component {
   static navigationOptions = {
     title: 'Safety Plan',
   };
+
+  componentDidMount() {
+    getPrePops();
+    // get all SP prepop items from DB
+  }
 
   handleItemPress = (screen) => {
     this.props.navigation.push(screen);
