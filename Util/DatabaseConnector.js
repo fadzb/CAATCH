@@ -13,7 +13,7 @@ const file = directory + dbFileName;
 
 export const db = SQLite.openDatabase(dbFileName);
 
-export const checkDB = () => {
+export const checkDB = (callback) => {
   FileSystem.getInfoAsync(directory)
     // firstly checking if directory exists
     .then((fileObj) => {
@@ -32,13 +32,17 @@ export const checkDB = () => {
             console.log('File exists');
             //deleteDB();
             // uncomment above to test deletion of .db file
+
+            callback();
+            // delete and callback cannot be uncommented at same time. Either or. Look to moving delete somewhere else
           } else {
             console.log('File DOES NOT exist');
             //download file here
 
-            FileSystem.downloadAsync(Asset.fromModule(require('../Database/caatch.db')).uri, file).catch((err) =>
-              console.log(err)
-            );
+            FileSystem.downloadAsync(Asset.fromModule(require('../Database/caatch.db')).uri, file)
+              .then(() => console.log('test'))
+              .then(callback())
+              .catch((err) => console.log(err));
             // Have to download file from project directory in order to copy to Expo file system
           }
         })
@@ -48,7 +52,7 @@ export const checkDB = () => {
 };
 // function checks if .db file exists and copies pre-populated file if not. Does nothing if exists
 
-const deleteDB = () => {
+const deleteDB = (calback) => {
   FileSystem.deleteAsync(file);
 };
 // function to delete database from file system, FOR TESTING PURPOSES ONLY -> see line 31

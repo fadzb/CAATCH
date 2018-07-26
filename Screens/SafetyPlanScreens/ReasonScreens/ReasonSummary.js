@@ -6,6 +6,7 @@ import { ImageViewer } from '../../../Components/ImageViewer';
 import Moment from 'moment';
 import { Video } from 'expo';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { openSafetyPlanItem } from '../../../Util/Usage';
 
 export default class ReasonSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -21,6 +22,13 @@ export default class ReasonSummary extends React.Component {
       modalVisible: false,
       playVideo: false,
     };
+  }
+
+  componentDidMount() {
+    this.updateFunctionUsageTable();
+
+    openSafetyPlanItem(4, 'Reason', this.props.navigation.getParam('id'));
+    // update DB for open reason function
   }
 
   toggleModal = (bool) => {

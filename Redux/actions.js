@@ -24,7 +24,18 @@ export const UPDATE_DATE = 'UPDATE_DATE';
 export const UPDATE_SKILL_RATING = 'UPDATE_SKILL_RATING';
 export const RESET_SKILL_RATING = 'RESET_SKILL_RATING';
 
+//Usage
+
+export const UPDATE_USAGE = 'UPDATE_USAGE';
+
 // action creators
+
+//Usage
+
+export const updateUsage = (update) => ({
+  type: UPDATE_USAGE,
+  payload: update,
+});
 
 //SafetyPlan
 
