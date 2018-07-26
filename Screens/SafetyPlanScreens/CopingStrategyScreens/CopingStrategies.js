@@ -38,6 +38,15 @@ class CopingStrategies extends React.Component {
     };
     // fetching all coping strategies that do not have a deleted date
 
+    editStrat = (id, name, desc, url) => {
+        this.props.navigation.push('editCoping', {
+            id: id,
+            name: name,
+            desc: desc,
+            url: url,
+        });
+    };
+
     deleteStrat = (id, path) => {
         this.removeMediaFile(path);
 
@@ -80,6 +89,7 @@ class CopingStrategies extends React.Component {
                 name= {item.copeName}
                 onPress={() => this.summaryNav(item.copeId, item.copeName, item.dateEntered, item.copeDesc, item.copeUrl, item.mediaPath, item.mediaType)}
                 deleteFunction={() => this.showAlert(item.copeId, item.mediaPath)}
+                editFunction={() => this.editStrat(item.copeId, item.copeName, item.copeDesc, item.copeUrl)}
                 videoThumbnail={(item.mediaPath !== null && item.mediaType === 'video') ? {uri: item.mediaPath} : undefined}
                 thumbnail={(item.mediaPath !== null && item.mediaType === 'image') ? {uri: item.mediaPath} : undefined}
                 icon={item.mediaPath === null ? Icons.copingStrategy + "-outline" : undefined}

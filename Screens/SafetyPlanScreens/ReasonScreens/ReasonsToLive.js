@@ -38,6 +38,15 @@ class ReasonsToLive extends React.Component {
     };
     // fetching all reasons that do not have a deleted date
 
+    editReason = (id, name, desc, url) => {
+        this.props.navigation.push('editReason', {
+            id: id,
+            name: name,
+            desc: desc,
+            url: url,
+        });
+    };
+
     deleteReason = (id, path) => {
         this.removeMediaFile(path);
 
@@ -80,6 +89,7 @@ class ReasonsToLive extends React.Component {
                 name= {item.reasonName}
                 onPress={() => this.summaryNav(item.reasonId, item.reasonName, item.dateEntered, item.reasonDesc, item.reasonUrl, item.mediaPath, item.mediaType)}
                 deleteFunction={() => this.showAlert(item.reasonId, item.mediaPath)}
+                editFunction={() => this.editReason(item.reasonId, item.reasonName, item.reasonDesc, item.reasonUrl)}
                 videoThumbnail={(item.mediaPath !== null && item.mediaType === 'video') ? {uri: item.mediaPath} : undefined}
                 thumbnail={(item.mediaPath !== null && item.mediaType === 'image') ? {uri: item.mediaPath} : undefined}
                 icon={item.mediaPath === null ? Icons.lifeWorthLiving + "-outline" : undefined}

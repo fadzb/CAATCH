@@ -38,6 +38,15 @@ class Distractions extends React.Component {
     };
     // fetching all distractions that do not have a deleted date
 
+    editDistraction = (id, name, desc, url) => {
+        this.props.navigation.push('editDistraction', {
+            id: id,
+            name: name,
+            desc: desc,
+            url: url,
+        });
+    };
+
     deleteDistraction = (id, path) => {
         this.removeMediaFile(path);
 
@@ -80,6 +89,7 @@ class Distractions extends React.Component {
                 name= {item.distractName}
                 onPress={() => this.summaryNav(item.distractId, item.distractName, item.dateEntered, item.distractDesc, item.distractUrl, item.mediaPath, item.mediaType)}
                 deleteFunction={() => this.showAlert(item.distractId, item.mediaPath)}
+                editFunction={() => this.editDistraction(item.distractId, item.distractName, item.distractDesc, item.distractUrl)}
                 videoThumbnail={(item.mediaPath !== null && item.mediaType === 'video') ? {uri: item.mediaPath} : undefined}
                 thumbnail={(item.mediaPath !== null && item.mediaType === 'image') ? {uri: item.mediaPath} : undefined}
                 icon={item.mediaPath === null ? Icons.distractions + "-outline" : undefined}

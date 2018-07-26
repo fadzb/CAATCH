@@ -20,23 +20,38 @@ export class SafetyPlanSectionRow extends React.Component {
         // recenter swipeable once delete button is pressed
     };
 
-    rightDeleteButton =
+    onPressEdit = () => {
+        this.props.editFunction();
+
+        this.swipeable.recenter();
+        // recenter swipeable once delete button is pressed
+    };
+
+    rightButtons =
             [
+                <View style={{flex: 1, justifyContent: 'center'}}>
+                    <PressableIcon
+                        iconName={Icons.edit + '-outline'}
+                        size={40}
+                        onPressFunction={this.onPressEdit}
+                        //color='black'
+                    />
+                </View>,
+
                 <View style={{flex: 1, justifyContent: 'center'}}>
                     <PressableIcon
                         iconName={Icons.delete + '-outline'}
                         size={40}
-                        buttonStyle={sectionRowStyle.deleteButtonStyle}
                         onPressFunction={this.onPressDelete}
                         color='red'
                     />
-                </View>
+                </View>,
             ];
     // delete button that appears on swipe
 
     render() {
         return (
-            <Swipeable onRef={ref => this.swipeable = ref} rightButtons={this.rightDeleteButton}>
+            <Swipeable onRef={ref => this.swipeable = ref} rightButtons={this.rightButtons}>
                 <View style={sectionRowStyle.container}>
                     <TouchableHighlight
                         underlayColor="#FDEDEC"

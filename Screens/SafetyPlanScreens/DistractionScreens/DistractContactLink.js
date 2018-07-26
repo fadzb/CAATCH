@@ -60,10 +60,15 @@ export default class DistractContactLink extends React.Component {
                     itemStyle={contactLinkStyle.itemStyle}
                     selectedIconName={"ios-checkmark-circle-outline"}
                     unselectedIconName={"ios-radio-button-off-outline"}
+                    selected={this.props.navigation.getParam('selectedContacts') !== undefined
+                        ? this.props.navigation.getParam('selectedContacts').map(sc => sc.contactId.toString())
+                        : undefined}
                 />
                 <TouchableHighlight
                     style={contactLinkStyle.button}
-                    onPress={() => this.props.navigation.navigate('newDistraction', {checkedContacts: this.state.checkedContacts})}
+                    onPress={this.props.navigation.getParam('edit')
+                        ? () => this.props.navigation.navigate('editDistraction', {checkedContacts: this.state.checkedContacts})
+                        : () => this.props.navigation.navigate('newDistraction', {checkedContacts: this.state.checkedContacts})}
                     underlayColor='#99d9f4'>
                     <Text style={contactLinkStyle.buttonText}>Done</Text>
                 </TouchableHighlight>

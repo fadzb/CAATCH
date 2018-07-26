@@ -3,40 +3,34 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-nat
 import t from 'tcomb-form-native'
 import { PressableIcon } from "../../../Components/PressableIcon";
 import store from "../../../Redux/store"
-import {updateContact, getContact} from "../../../Redux/actions";
+import {updateDistraction, getDistraction} from "../../../Redux/actions";
 import Expo from 'expo';
 import {Icons} from "../../../Constants/Icon";
 
 import {TabStyles} from "../../../Styles/TabStyles";
-import {updateDatabase, updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
+import {updateDatabase, updateDatabaseArgument, readDatabaseArg, deleteDatabaseRow} from "../../../Util/DatabaseHelper";
 
 const Form = t.form.Form;
 
-const contact = t.struct({
-    firstName: t.String,
-    surname: t.maybe(t.String),
-    phone: t.String,
-    email: t.maybe(t.String),
+const distraction = t.struct({
+    distractName: t.String,
+    distractDesc: t.String,
+    distractUrl: t.maybe(t.String),
 });
 // data structure for values to be capture in form below
 
 const options = {
     fields: {
-        firstName: {
-            placeholder: 'First Name',
+        distractName: {
+            placeholder: 'Name',
             auto: 'none'
         },
-        surname: {
-            placeholder: 'Surname',
+        distractDesc: {
+            placeholder: 'Description',
             auto: 'none'
         },
-        phone: {
-            placeholder: 'Phone',
-            auto: 'none',
-            keyboardType: 'numeric'
-        },
-        email: {
-            placeholder: 'Email',
+        distractUrl: {
+            placeholder: 'URL (eg. www.google.ie)',
             auto: 'none',
             autoCapitalize: 'none'
         },
@@ -44,74 +38,92 @@ const options = {
 };
 // for customizing form UI
 
-export default class NewContact extends React.Component {
+export default class EditDistraction extends React.Component {
     static navigationOptions = {
-        title: "New Contact"
+        title: "Edit Distraction"
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            value: null,
+            value: {
+                distractName: this.props.navigation.getParam('name'),
+                distractDesc: this.props.navigation.getParam('desc'),
+                distractUrl: this.props.navigation.getParam('url')
+            },
             selectedMediaUri: "",
             selectedMediaName: "",
+            selectedMediaType: ""
         }
     }
 
     componentWillReceiveProps(nextProps) {
-        const checkedContact = nextProps.navigation.getParam('checkedContact', null);
+        const checkedDistractions = nextProps.navigation.getParam('checkedDistractions', null);
 
-        if(checkedContact !== this.props.navigation.getParam('checkedContact', null)) {
-            if (checkedContact !== null) {
+        if(checkedDistractions !== this.props.navigation.getParam('checkedDistractions', null)) {
+            if (checkedDistractions !== null) {
                 this.setState({
                     value: {
-                        firstName: checkedContact.firstName,
-                        surname: checkedContact.surname,
-                        email: checkedContact.email,
-                        phone: checkedContact.phone
+                        distractName: checkedDistractions[0],
+                        distractDesc: "",
+                        distractUrl: ""
                     }
                 })
             } else {
-                console.log("no contact selected");
+                console.log("no distraction checked");
             }
         }
     }
-    // listen for new props coming from phone contacts screen and update accordingly
+    // listen for new props coming from pre-populated screen and update accordingly
 
     onChange = (value) => {
         this.setState({ value: value })
     };
 
-    updateContactList = (contact) => {
-        store.dispatch(updateContact(contact));
-        // dispatching new contact to global redux store
+    updateDistractionList = (distraction) => {
+        store.dispatch(updateDistraction(distraction));
+        // dispatching new Distraction name to global redux store
     };
 
     refreshDb = func => {
-        readDatabaseArg("*", "Contact", func, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", "Distraction", func, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
-    // for refreshing global state from Contact table in DB
+    // for refreshing global state from Distraction table in DB
 
-    updateGlobalContacts = (contacts) => store.dispatch(getContact(contacts));
+    updateGlobalDistractions = (distractions) => store.dispatch(getDistraction(distractions));
 
-    checkMediaSelected = (contactId) => {
+    checkMediaSelected = () => {
         if(this.state.selectedMediaUri !== "") {
-            this.updateDBMedia(contactId)
+            this.updateDBMedia(this.props.navigation.getParam('id'))
         }
 
-        this.refreshDb(this.updateGlobalContacts);
+        this.refreshDb(this.updateGlobalDistractions);
+
+        this.updateLinkDbTable(this.props.navigation.getParam('id'));
     };
     // if media was selected -> update that row with path
 
-    updateDBMedia = contactId => {
+    updateLinkDbTable = (distractId) => {
+        const checkedContacts = this.props.navigation.getParam('checkedContacts', null);
+
+        deleteDatabaseRow("DistractContactLink", "where distractId = " + distractId);
+
+        checkedContacts.forEach(contactId => {
+            updateDatabase("DistractContactLink", [contactId, distractId], ["contactId", "distractId"]);
+        });
+
+        readDatabaseArg("*", "Distraction", (distractions) => store.dispatch(getDistraction(distractions)), () => console.log("DB read success"), 'where dateDeleted is NULL');
+    };
+
+    updateDBMedia = distractId => {
 
         const mediaDirectory = 'SafetyplanMedia/';
 
-        updateDatabaseArgument('Contact',
-            [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName],
-            ['image'],
-            'where contactId = ' + contactId.insertId,
+        updateDatabaseArgument('Distraction',
+            [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
+            ['mediaPath', 'mediaType'],
+            'where distractId = ' + distractId,
         );
 
         Expo.FileSystem.moveAsync(
@@ -143,6 +155,7 @@ export default class NewContact extends React.Component {
                                 {
                                     selectedMediaUri: mediaShot.uri,
                                     selectedMediaName: shortName,
+                                    selectedMediaType: mediaShot.type
                                 });
                         }
                     })
@@ -158,7 +171,7 @@ export default class NewContact extends React.Component {
                     return;
                 }
 
-                Expo.ImagePicker.launchImageLibraryAsync({mediaTypes: Expo.ImagePicker.MediaTypeOptions.Images})
+                Expo.ImagePicker.launchImageLibraryAsync({mediaTypes: Expo.ImagePicker.MediaTypeOptions.All})
                     .then(selectedMedia => {
                         console.log(selectedMedia);
 
@@ -170,6 +183,7 @@ export default class NewContact extends React.Component {
                                 {
                                     selectedMediaUri: selectedMedia.uri,
                                     selectedMediaName: shortName,
+                                    selectedMediaType: selectedMedia.type
                                 });
                         }
                     })
@@ -177,45 +191,45 @@ export default class NewContact extends React.Component {
     };
     // sets the state based on the media item that is selected
 
+    contactLinkNav = () => {
+        const currentDistractId = this.props.navigation.getParam('id');
+        const linkTable = "DistractContactLink";
+        const columnQuery = "c.contactId, c.firstName, c.surname, c.phone, c.email, c.image, c.dateEntered, c.dateDeleted";
+
+        readDatabaseArg(
+            columnQuery,
+            "Contact",
+            contacts => {this.props.navigation.push('contactLink', {selectedContacts: contacts, edit: true}); console.log(contacts)},
+            undefined,
+            'as c inner join ' + linkTable + ' as d on c.contactId = d.contactId where distractId = ' + currentDistractId + ' AND c.dateDeleted is null');
+    };
+
     onPress = () => {
         const value = this.refs.form.getValue();
         // returns values captured in form as object
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabase("Contact", Object.values(value), Object.keys(value), this.updateContactList(value), this.checkMediaSelected);
+            updateDatabaseArgument("Distraction",
+                Object.values(value),
+                Object.keys(value),
+                'where distractId = ' + this.props.navigation.getParam('id'),
+                this.updateDistractionList(value),
+                this.checkMediaSelected);
             // write the saved values to DB if valid
 
             this.props.navigation.pop();
-            // pop to contact list once saved
+            // pop to distraction list once saved
         }
     };
-
-    getPhoneContacts = () => {
-        Expo.Permissions.askAsync(Expo.Permissions.CONTACTS)
-            .then(response => {
-                if (response.status !== "granted") {
-                    console.error("Contacts permission not granted!");
-                    return;
-                }
-
-                Expo.Contacts.getContactsAsync({fields: [Expo.Contacts.PHONE_NUMBERS,
-                    Expo.Contacts.EMAILS], pageSize: 10000})
-                    .then(res => {
-                        this.props.navigation.push('phoneContacts', {contacts: res.data})
-                    })
-                    .catch(err => console.log(err))
-            })
-    };
-    // media that retrieves all (providing less than 10000 contacts!) contacts from phones directory
 
     render() {
         return(
             <View style={TabStyles.planContainer}>
-                <View style={contactStyle.formContainer}>
+                <View style={distractionStyle.formContainer}>
                     <Form
                         ref="form"
-                        type={contact}
+                        type={distraction}
                         value={this.state.value}
                         onChange={this.onChange}
                         options={options}
@@ -223,29 +237,39 @@ export default class NewContact extends React.Component {
                     <PressableIcon
                         iconName="ios-arrow-dropright-outline"
                         size={25}
-                        onPressFunction={this.getPhoneContacts}
-                        name="Import Phone Contacts"
+                        onPressFunction={() => this.props.navigation.push('prePopDistraction', {edit: true})}
+                        name="Import"
                         buttonContainerStyle={{flex: 1, flexDirection: 'row'}}
-                        buttonStyle={contactStyle.listButton}
+                        buttonStyle={distractionStyle.listButton}
                         textStyle={{alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6}}
                         iconStyle={{alignSelf: 'center', flex: 1, alignItems: 'center'}}
                     />
-                    <TouchableHighlight style={contactStyle.button} onPress={this.onPress} underlayColor='#99d9f4'>
-                        <Text style={contactStyle.buttonText}>Save</Text>
+                    <PressableIcon
+                        iconName="ios-arrow-dropright-outline"
+                        size={25}
+                        onPressFunction={this.contactLinkNav}
+                        name="Contact"
+                        buttonContainerStyle={{flex: 1, flexDirection: 'row'}}
+                        buttonStyle={distractionStyle.listButton}
+                        textStyle={{alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6}}
+                        iconStyle={{alignSelf: 'center', flex: 1, alignItems: 'center'}}
+                    />
+                    <TouchableHighlight style={distractionStyle.button} onPress={this.onPress} underlayColor='#99d9f4'>
+                        <Text style={distractionStyle.buttonText}>Save</Text>
                     </TouchableHighlight>
                 </View>
-                <View style={contactStyle.iconContainer}>
+                <View style={distractionStyle.iconContainer}>
                     <PressableIcon
                         iconName={Icons.media + "-outline"}
                         size={80}
                         onPressFunction={this.captureMedia}
-                        buttonStyle={contactStyle.iconButton}
+                        buttonStyle={distractionStyle.iconButton}
                     />
                     <PressableIcon
                         iconName={Icons.camera + "-outline"}
                         size={80}
                         onPressFunction={this.takePhoto}
-                        buttonStyle={contactStyle.iconButton}
+                        buttonStyle={distractionStyle.iconButton}
                     />
                 </View>
             </View>
@@ -253,7 +277,7 @@ export default class NewContact extends React.Component {
     }
 }
 
-const contactStyle = StyleSheet.create({
+const distractionStyle = StyleSheet.create({
     buttonText: {
         fontSize: 18,
         color: 'white',

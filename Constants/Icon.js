@@ -25,5 +25,6 @@ export const Icons = {
     medication: 'ios-medkit',
     generalDiary: 'ios-document',
     closeModal: 'ios-close',
-    calendar: 'ios-calendar'
+    calendar: 'ios-calendar',
+    edit: 'ios-create'
 };
