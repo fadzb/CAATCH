@@ -10,8 +10,18 @@ export default class SkillRow extends React.Component {
     super(props);
 
     this.state = {
-      selectedIndex: 1,
+      selectedIndex: 1, // default to 'No'
     };
+  }
+
+  componentDidMount() {
+    this.setState(
+      {
+        selectedIndex: this.props.prevSelected === null ? 1 : this.props.prevSelected,
+      },
+      () => this.updateIndex(this.state.selectedIndex)
+    );
+    // set state with previously saved selections, if any, and update global state
   }
 
   updateIndex = (selectedIndex) => {
