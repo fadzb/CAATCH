@@ -64,6 +64,7 @@ export default class DistractContactLink extends React.Component {
           iconColor={'#00a2dd'}
           iconSize={25}
           itemStyle={contactLinkStyle.itemStyle}
+          search={true}
           selectedIconName={'ios-checkmark-circle-outline'}
           unselectedIconName={'ios-radio-button-off-outline'}
           selected={

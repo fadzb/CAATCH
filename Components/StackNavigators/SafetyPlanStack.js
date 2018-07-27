@@ -4,7 +4,7 @@ import { createStackNavigator } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Icons } from '../../Constants/Icon';
 
-import PlanScreen from '../../Screens/PlanScreen';
+import PlanScreen from '../../Screens/SafetyPlanScreens/PlanScreen';
 import WarningSigns from '../../Screens/SafetyPlanScreens/WarningSignScreens/WarningSigns';
 import NewCopingStrategy from '../../Screens/SafetyPlanScreens/CopingStrategyScreens/NewCopingStrategy';
 import ReasonsToLive from '../../Screens/SafetyPlanScreens/ReasonScreens/ReasonsToLive';
