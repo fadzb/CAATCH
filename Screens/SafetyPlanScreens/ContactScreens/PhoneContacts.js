@@ -110,9 +110,10 @@ export default class PhoneContacts extends React.Component {
                 <SearchBar
                     onChangeText={this.handleChangeText}
                     placeholder='Type Here...'
-                    //autoCapitalize={'none'}
-                    placeholderTextColor={"white"}
-                    icon={{color: "white"}}
+                    placeholderTextColor={'#000'}
+                    icon={{color: '#000'}}
+                    inputStyle={{color: '#000', backgroundColor: "white"}}
+                    clearButtonMode={'while-editing'}
                 />
                 <SectionList
                     renderItem={this.renderItem}

@@ -50,6 +50,7 @@ export default class PrePopDistraction extends React.Component {
                         itemStyle={preDistractionStyle.itemStyle}
                         selectedIconName={"ios-checkmark-circle-outline"}
                         unselectedIconName={"ios-radio-button-off-outline"}
+                        search={true}
                     />
                 </View>
                 <TouchableHighlight

@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput } from 'react-native';
-import {getPrePops} from "../Constants/Prepopulated";
+import {getPrePops} from "../../Constants/Prepopulated";
 
-import {TabStyles} from "../Styles/TabStyles";
-import {SafetyPlanSelector} from "../Components/SafetyPlanSelector";
-import {Icons} from "../Constants/Icon";
+import {TabStyles} from "../../Styles/TabStyles";
+import {SafetyPlanSelector} from "../../Components/SafetyPlanSelector";
+import {Icons} from "../../Constants/Icon";
 
 export default class PlanScreen extends React.Component {
     static navigationOptions = {

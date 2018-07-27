@@ -50,6 +50,7 @@ export default class CopingStrategyLink extends React.Component {
                     rowHeight={40}
                     rowRadius={5}
                     iconColor={"#00a2dd"}
+                    search={true}
                     iconSize={25}
                     itemStyle={copeLinkStyle.itemStyle}
                     selectedIconName={"ios-checkmark-circle-outline"}
