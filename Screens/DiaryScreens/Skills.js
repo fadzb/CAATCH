@@ -1,11 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
 import Moment from 'moment';
 import SkillRow from '../../Components/SkillRow'
 import {connect} from 'react-redux'
 import store from "../../Redux/store"
 import {resetSkillRating} from "../../Redux/actions";
-import {readDatabaseArg, updateDatabase} from "../../Util/DatabaseHelper";
+import {deleteDatabaseRow, readDatabaseArg, updateDatabase, updateDatabaseArgument} from "../../Util/DatabaseHelper";
 import {diaryPlanPrePops} from "../../Constants/Prepopulated";
 
 
@@ -21,11 +21,15 @@ class Skills extends React.Component {
         this.state = {
             skills: [],
             sessionDate: new Date(),
+            prevSelected: false,
+            historyChecked: false
         }
     }
 
     componentDidMount() {
-        this.getSkills(diaryPlanPrePops)
+        this.getSkills(diaryPlanPrePops);
+
+        this.checkPreviousEntry();
     }
 
     createSession = () => {
@@ -41,14 +45,47 @@ class Skills extends React.Component {
         this.setState({ skills: diaryItem.filter(d => d.diaryType === "Skill") })
     };
 
+    checkPreviousEntry = () => {
+        const selectedDate = Moment(this.props.diaryDate).format("YYYY-MM-DD");
+        const columns = "d.sessionId, s.diaryDate, d.diaryId, d.rating, di.diaryName";
+
+        readDatabaseArg(columns,
+            "DiarySession",
+            this.savePrevSelected,
+            undefined,
+            " as d inner join Session as s on d.sessionId = s.sessionId inner join Diary as di on d.diaryId = di.diaryId where DATE(diaryDate) = '" + selectedDate + "'");
+    };
+    // check if previous entry is saved for this date and, if yes, get that info for current state
+
+    savePrevSelected = (res) => {
+        if(res.length !== 0) {
+            this.setState({skills: res.map(sk => {
+                if(sk.rating === 'No') {
+                    return {...sk, rating: 1}
+                } else {
+                    return {...sk, rating: 0}
+                }
+            })}, () => {
+                this.setState({historyChecked: true, prevSelected: true})
+            })
+        } else {
+            this.setState({historyChecked: true})
+        }
+    };
+    // need to keep track of when we checked through callback in order to delay render of flatlist component
+
     renderItem = ({item}) => (
         <View style={skillStyle.listContainer}>
             <SkillRow
                 name= {item.diaryName}
                 index= {item.diaryId}
+                prevSelected={(this.state.skills.filter(sk => sk.diaryId === item.diaryId))[0].rating !== undefined
+                    ? (this.state.skills.filter(sk => sk.diaryId === item.diaryId))[0].rating
+                    : null}
             />
         </View>
     );
+    // prevSelected prop contains the history for that day if it was already filled in
 
     handleSave = (sessionId) => {
         this.props.skillRating.forEach(rating => {
@@ -58,28 +95,42 @@ class Skills extends React.Component {
                 () => store.dispatch(resetSkillRating()))
         });
 
+        if(this.state.prevSelected) {
+            this.state.skills.forEach(rating => {
+                deleteDatabaseRow('DiarySession', 'where diaryId = ' + rating.diaryId + ' and sessionId = ' + rating.sessionId)
+            })
+        }
+
         this.props.navigation.pop();
     };
     //after creating session transaction in DB - write ratings to DB, reset global ratings store and pop back to previous screen
+    //if there was already data saved for that day - delete. Only storing one entry for skills
 
     footer = () => (
         <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
             <Text style={skillStyle.buttonText}>Save</Text>
         </TouchableOpacity>
     );
+    // save button
 
     render() {
         return (
             <View style={skillStyle.viewContainer}>
-                <FlatList
+                <View style={skillStyle.dateHeader}>
+                    <Text style={skillStyle.dateHeaderText}>{Moment(this.props.diaryDate).format('LL')}</Text>
+                </View>
+                {this.state.historyChecked ? <FlatList
                     data={this.state.skills}
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}
                     ListFooterComponent={this.footer}
-                />
+                /> : <View style={{flex: 1, justifyContent: 'center'}}>
+                        <ActivityIndicator size="large" color="#007AFF" />
+                </View>}
             </View>
         );
     }
+    // rendering flatlist conditionally in order to display previously filled in entries
 }
 
 const skillStyle = StyleSheet.create({
@@ -109,6 +160,17 @@ const skillStyle = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'center',
     },
+
+    dateHeader: {
+        paddingTop: 10,
+        paddingBottom: 10,
+        alignItems: 'center'
+    },
+
+    dateHeaderText: {
+        fontSize: 17,
+        fontWeight: 'bold'
+    }
 });
 
 const mapStateToProps = state => ({
