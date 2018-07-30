@@ -9,10 +9,11 @@ import { deleteDatabaseRow, readDatabaseArg, updateDatabase, updateDatabaseArgum
 import { diaryPlanPrePops } from '../../Constants/Prepopulated';
 
 class Skills extends React.Component {
-  static navigationOptions = {
-    title: 'Skills',
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: navigation.getParam('title'),
+    };
   };
-  // static property called navigationOptions that belongs to all screen components
 
   constructor(props) {
     super(props);
@@ -127,9 +128,9 @@ class Skills extends React.Component {
   render() {
     return (
       <View style={skillStyle.viewContainer}>
-        <View style={skillStyle.dateHeader}>
-          <Text style={skillStyle.dateHeaderText}>{Moment(this.props.diaryDate).format('LL')}</Text>
-        </View>
+        {/*<View style={skillStyle.dateHeader}>*/}
+        {/*<Text style={skillStyle.dateHeaderText}>{Moment(this.props.diaryDate).format('LL')}</Text>*/}
+        {/*</View>*/}
         {this.state.historyChecked ? (
           <FlatList
             data={this.state.skills}
