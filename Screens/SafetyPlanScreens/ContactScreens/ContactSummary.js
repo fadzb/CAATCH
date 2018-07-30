@@ -14,8 +14,8 @@ export default class ContactSummary extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
 
-        firstName = navigation.getParam('firstName');
-        surname = navigation.getParam('surname');
+        const firstName = navigation.getParam('firstName');
+        const surname = navigation.getParam('surname');
 
         if(surname === null) {
             return {

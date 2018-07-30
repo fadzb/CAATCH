@@ -6,11 +6,11 @@ import {Icons} from "../Constants/Icon";
 
 import Icon from "react-native-vector-icons/Ionicons";
 
-export const DiaryGrid = ({navigation}) => {
+export const DiaryGrid = (props) => {
     return (
         <View style={gridStyle.container}>
             <View style={gridStyle.rowContainer}>
-                <DiaryTile onPress={() => navigation.push('skills')} name='Skills' iconName={Icons.skills + '-outline'}/>
+                <DiaryTile onPress={() => props.navigation.push('skills', {title: props.date})} name='Skills' iconName={Icons.skills + '-outline'}/>
                 <DiaryTile name='Feelings' iconName={Icons.feelings + '-outline'}/>
             </View>
             <View style={gridStyle.rowContainer}>
