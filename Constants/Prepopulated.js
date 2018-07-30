@@ -17,7 +17,7 @@ export let safetyPlanPrePops = [];
 // Diary
 
 export const getDiaryPrePops = () => {
-  readDatabase('*', 'Diary', (d) => (diaryPlanPrePops = d));
+  readDatabase('*', 'Diary', (d) => (diaryPrePops = d));
 };
 
-export let diaryPlanPrePops = [];
+export let diaryPrePops = [];

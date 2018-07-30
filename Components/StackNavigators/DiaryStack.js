@@ -6,11 +6,13 @@ import { Icons } from '../../Constants/Icon';
 
 import DiaryScreen from '../../Screens/DiaryScreens/DiaryScreen';
 import Skills from '../../Screens/DiaryScreens/Skills';
+import Feelings from '../../Screens/DiaryScreens/Feelings';
 
 const DiaryStack = createStackNavigator(
   {
     main: DiaryScreen,
     skills: Skills,
+    feelings: Feelings,
   },
 
   {
