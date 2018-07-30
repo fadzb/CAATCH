@@ -6,7 +6,7 @@ import { connect } from 'react-redux';
 import store from '../../Redux/store';
 import { resetSkillRating } from '../../Redux/actions';
 import { deleteDatabaseRow, readDatabaseArg, updateDatabase, updateDatabaseArgument } from '../../Util/DatabaseHelper';
-import { diaryPlanPrePops } from '../../Constants/Prepopulated';
+import { diaryPrePops } from '../../Constants/Prepopulated';
 
 class Skills extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -27,7 +27,7 @@ class Skills extends React.Component {
   }
 
   componentDidMount() {
-    this.getSkills(diaryPlanPrePops);
+    this.getSkills(diaryPrePops);
 
     this.checkPreviousEntry();
   }
@@ -128,9 +128,6 @@ class Skills extends React.Component {
   render() {
     return (
       <View style={skillStyle.viewContainer}>
-        {/*<View style={skillStyle.dateHeader}>*/}
-        {/*<Text style={skillStyle.dateHeaderText}>{Moment(this.props.diaryDate).format('LL')}</Text>*/}
-        {/*</View>*/}
         {this.state.historyChecked ? (
           <FlatList
             data={this.state.skills}
@@ -175,17 +172,6 @@ const skillStyle = StyleSheet.create({
     margin: 30,
     alignSelf: 'stretch',
     justifyContent: 'center',
-  },
-
-  dateHeader: {
-    paddingTop: 10,
-    paddingBottom: 10,
-    alignItems: 'center',
-  },
-
-  dateHeaderText: {
-    fontSize: 17,
-    fontWeight: 'bold',
   },
 });
 
