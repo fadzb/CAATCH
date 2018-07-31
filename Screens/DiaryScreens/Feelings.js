@@ -1,12 +1,12 @@
 import React from 'react';
 import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
 import {diaryPrePops} from "../../Constants/Prepopulated";
-import SnapSlider from 'react-native-snap-slider';
 import FeelingRow from '../../Components/FeelingRow'
+import {updateDatabase} from "../../Util/DatabaseHelper";
+import Moment from 'moment';
+import {connect} from 'react-redux'
 
-import {TabStyles} from "../../Styles/TabStyles";
-
-export default class Feelings extends React.Component {
+class Feelings extends React.Component {
     static navigationOptions = {
         title: "Feelings"
     };
@@ -16,7 +16,8 @@ export default class Feelings extends React.Component {
         super(props);
 
         this.state = {
-            feelings: []
+            feelings: [],
+            sessionDate: new Date(),
         }
     }
 
@@ -27,13 +28,27 @@ export default class Feelings extends React.Component {
     getFeelings = feelingItem => {
         this.setState({ feelings: feelingItem.filter(f => f.diaryType === "Feeling") })
     };
+    // retrieve feelings array from DB
 
-    slidingComplete = (itemSelected) => {
-        console.log("slidingComplete");
-        console.log("item selected " + this.refs.slider.state.item);
-        console.log("item selected(from callback)" + itemSelected);
-        console.log("value " + this.sliderOptions[this.refs.slider.state.item].value);
+    createSession = () => {
+        updateDatabase('Session',
+            [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), this.props.diaryDate],
+            ["dateEntered", "diaryDate"],
+            undefined,
+            (res) => this.handleSave(res.insertId))
     };
+    // when user presses save - create session in DB with date recorded at screen opening
+
+    handleSave = (sessionId) => {
+        this.props.feelingRating.forEach(rating => {
+            updateDatabase('DiarySession',
+                [sessionId, rating.id, rating.rating],
+                ['sessionId', 'diaryId', 'rating'])
+        });
+
+        this.props.navigation.pop();
+    };
+    // iterate through global rating store for feelings and save in DB
 
     renderItem = ({item}) => {
         return (
@@ -47,7 +62,7 @@ export default class Feelings extends React.Component {
     // prevSelected prop contains the history for that day if it was already filled in
 
     footer = () => (
-        <TouchableOpacity style={feelingStyle.button} onPress={() => console.log('saved')}>
+        <TouchableOpacity style={feelingStyle.button} onPress={this.createSession}>
             <Text style={feelingStyle.buttonText}>Save</Text>
         </TouchableOpacity>
     );
@@ -92,3 +107,13 @@ const feelingStyle = StyleSheet.create({
         justifyContent: 'center',
     },
 });
+
+
+const mapStateToProps = state => ({
+    feelingRating: state.diary.feelingRating,
+    diaryDate: state.diary.date
+});
+// function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
+
+export default connect(mapStateToProps)(Feelings)
+// HOC that re-renders the component automatically every time a particular section of state is updated
