@@ -24,6 +24,9 @@ export const UPDATE_DATE = 'UPDATE_DATE';
 export const UPDATE_SKILL_RATING = 'UPDATE_SKILL_RATING';
 export const RESET_SKILL_RATING = 'RESET_SKILL_RATING';
 
+export const UPDATE_FEELING_RATING = 'UPDATE_FEELING_RATING';
+export const RESET_FEELING_RATING = 'RESET_FEELING_RATING';
+
 //Usage
 
 export const UPDATE_USAGE = 'UPDATE_USAGE';
@@ -103,4 +106,13 @@ export const updateSkillRating = (update) => ({
 
 export const resetSkillRating = () => ({
   type: RESET_SKILL_RATING,
+});
+
+export const updateFeelingRating = (update) => ({
+  type: UPDATE_FEELING_RATING,
+  payload: update,
+});
+
+export const resetFeelingRating = () => ({
+  type: RESET_FEELING_RATING,
 });

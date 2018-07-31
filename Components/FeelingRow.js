@@ -1,6 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View } from 'react-native';
-import SnapSlider from 'react-native-snap-slider';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import Slider from 'react-native-slider';
+import store from '../Redux/store';
+import { updateFeelingRating } from '../Redux/actions';
 
 export default class FeelingRow extends React.Component {
   constructor(props) {
@@ -8,12 +10,16 @@ export default class FeelingRow extends React.Component {
 
     this.state = {
       options: [],
+      value: 0,
+      width: 0,
+      scale: 0,
     };
   }
 
   componentDidMount() {
     this.setState({
       options: this.getSliderOptions(this.props.feeling),
+      scale: this.props.feeling.scale,
     });
   }
 
@@ -26,33 +32,58 @@ export default class FeelingRow extends React.Component {
 
     return arr;
   };
+  //create array of objects for each rating in feeling
 
-  slidingComplete = (itemSelected) => {
-    console.log('slidingComplete');
-    console.log('item selected ' + this.refs.slider.state.item);
-    console.log('item selected(from callback)' + itemSelected);
-    console.log('value ' + this.state.options[this.refs.slider.state.item].value);
+  tapSliderHandler = (evt) => {
+    const pressPosition = evt.nativeEvent.locationX;
+
+    this.setState({ value: Math.round(((pressPosition - sliderMargin) / this.state.width) * this.state.scale) }, () =>
+      store.dispatch(updateFeelingRating({ id: this.props.feeling.diaryId, rating: this.state.value }))
+    );
   };
+  //enable pressing on slider. Taking 10 from pixel position as that is length of border. Pass rating to global redux store on callback
+
+  valueChangeHandler = (val) => {
+    this.setState({ value: val });
+
+    store.dispatch(updateFeelingRating({ id: this.props.feeling.diaryId, rating: val }));
+  };
+
+  onLayout = (e) => {
+    this.setState({
+      width: e.nativeEvent.layout.width,
+    });
+  };
+  //retrieves width of view containing slider component
 
   render() {
     return (
       <View style={feelingRowStyle.viewContainer}>
         <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
-        <SnapSlider
-          ref="slider"
-          containerStyle={feelingRowStyle.snapsliderContainer}
-          style={feelingRowStyle.snapslider}
-          itemWrapperStyle={feelingRowStyle.snapsliderItemWrapper}
-          itemStyle={feelingRowStyle.snapsliderItem}
-          items={this.getSliderOptions(this.props.feeling)}
-          labelPosition="bottom"
-          defaultItem={0}
-          onSlidingComplete={this.slidingComplete}
-        />
+        <View onLayout={this.onLayout} ref="slider">
+          <TouchableWithoutFeedback onPressIn={this.tapSliderHandler}>
+            <Slider
+              minimumValue={0}
+              maximumValue={this.props.feeling.scale}
+              step={1}
+              value={this.state.value}
+              onValueChange={this.valueChangeHandler}
+            />
+          </TouchableWithoutFeedback>
+        </View>
+        <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+          {this.state.options.map((m, i) => (
+            <View style={{ height: 20, width: 20, alignItems: 'center' }} key={i.toString()}>
+              <Text style={{ fontSize: 15 }}>{i.toString()}</Text>
+            </View>
+          ))}
+        </View>
       </View>
     );
   }
 }
+
+const sliderMargin = 10;
 
 const feelingRowStyle = StyleSheet.create({
   viewContainer: {
@@ -60,28 +91,11 @@ const feelingRowStyle = StyleSheet.create({
     paddingTop: 15,
     paddingBottom: 15,
     borderBottomWidth: 0.5,
-    marginLeft: 20,
-    marginRight: 20,
+    marginLeft: sliderMargin,
+    marginRight: sliderMargin,
   },
   text: {
     paddingBottom: 15,
     fontSize: 15,
-  },
-  snapsliderContainer: {
-    borderWidth: 0,
-    backgroundColor: 'transparent',
-    marginLeft: 10,
-    marginRight: 10,
-  },
-  snapslider: {
-    borderWidth: 0,
-  },
-  snapsliderItemWrapper: {
-    borderWidth: 0,
-    marginLeft: 5,
-    marginRight: 5,
-  },
-  snapsliderItem: {
-    borderWidth: 0,
   },
 });
