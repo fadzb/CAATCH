@@ -1,8 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TouchableWithoutFeedback, Dimensions, Alert } from 'react-native';
 import Slider from "react-native-slider";
 import store from "../Redux/store"
 import {updateFeelingRating} from "../Redux/actions";
+import {PressableIcon} from "./PressableIcon";
+import {Icons} from "../Constants/Icon";
 
 export default class FeelingRow extends React.Component {
 
@@ -56,10 +58,30 @@ export default class FeelingRow extends React.Component {
     };
     //retrieves width of view containing slider component
 
+    infoAlert = () => {
+        Alert.alert(
+            this.props.feeling.diaryName,
+            this.props.feeling.info,
+            [
+                {text: 'OK', onPress: () => console.log('OK pressed')},
+            ],
+            { cancelable: false }
+        )
+    };
+    // alert for displaying feeling info
+
     render() {
         return (
             <View style={feelingRowStyle.viewContainer}>
-                <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
+                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                    <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
+                    <PressableIcon
+                        iconName={Icons.info + '-outline'}
+                        size={25}
+                        onPressFunction={this.infoAlert}
+                        color='#007AFF'
+                    />
+                </View>
                 <View onLayout={this.onLayout} ref="slider">
                     <TouchableWithoutFeedback onPressIn={this.tapSliderHandler}>
                         <Slider
@@ -72,7 +94,7 @@ export default class FeelingRow extends React.Component {
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                    {this.state.options.map((m, i) => <View style={{height: 20, width: 20, alignItems: 'center'}} key={i.toString()}>
+                    {this.state.options.map((m, i) => <View style={feelingRowStyle.labelContainer} key={i.toString()}>
                         <Text style={{fontSize: 15}} >{i.toString()}</Text>
                     </View>)}
                 </View>
@@ -96,5 +118,10 @@ const feelingRowStyle = StyleSheet.create({
         paddingBottom: 15,
         fontSize: 15
     },
+    labelContainer: {
+        height: 20,
+        width: 20,
+        alignItems: 'center'
+    }
 
 });

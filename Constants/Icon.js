@@ -26,5 +26,6 @@ export const Icons = {
     generalDiary: 'ios-document',
     closeModal: 'ios-close',
     calendar: 'ios-calendar',
-    edit: 'ios-create'
+    edit: 'ios-create',
+    info: 'ios-information-circle'
 };
