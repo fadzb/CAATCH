@@ -49,7 +49,7 @@ class Skills extends React.Component {
 
   checkPreviousEntry = () => {
     const selectedDate = Moment(this.props.diaryDate).format('YYYY-MM-DD');
-    const columns = 'd.sessionId, s.diaryDate, d.diaryId, d.rating, di.diaryName';
+    const columns = 'd.sessionId, s.diaryDate, d.diaryId, d.rating, di.diaryName, di.info';
 
     readDatabaseArg(
       columns,
@@ -89,6 +89,7 @@ class Skills extends React.Component {
     <View style={skillStyle.listContainer}>
       <SkillRow
         name={item.diaryName}
+        info={item.info}
         index={item.diaryId}
         prevSelected={
           this.state.skills.filter((sk) => sk.diaryId === item.diaryId)[0].rating !== undefined

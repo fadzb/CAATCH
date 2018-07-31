@@ -1,9 +1,11 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, Alert } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import store from '../Redux/store';
 import { updateSkillRating } from '../Redux/actions';
+import { PressableIcon } from './PressableIcon';
+import { Icons } from '../Constants/Icon';
 
 export default class SkillRow extends React.Component {
   constructor(props) {
@@ -39,14 +41,29 @@ export default class SkillRow extends React.Component {
   };
   // when user selects Y or N, update global ratings store
 
+  infoAlert = () => {
+    Alert.alert(this.props.name, this.props.info, [{ text: 'OK', onPress: () => console.log('OK pressed') }], {
+      cancelable: false,
+    });
+  };
+  // alert for displaying skill info
+
   render() {
     const buttons = ['Yes', 'No'];
 
     return (
       <View style={skillRowStyle.container}>
         <TouchableHighlight underlayColor="#FDEDEC" style={skillRowStyle.button} onPress={this.props.onPress}>
-          <View style={{ flexDirection: 'row', alignItems: 'center', flex: 1 }}>
-            <Text style={skillRowStyle.buttonText}>{this.props.name}</Text>
+          <View style={skillRowStyle.rowContainer}>
+            <View style={skillRowStyle.textContainer}>
+              <Text style={skillRowStyle.buttonText}>{this.props.name}</Text>
+              <PressableIcon
+                iconName={Icons.info + '-outline'}
+                size={25}
+                onPressFunction={this.infoAlert}
+                color="#007AFF"
+              />
+            </View>
             <ButtonGroup
               onPress={this.updateIndex}
               selectedIndex={this.state.selectedIndex}
@@ -80,16 +97,29 @@ const skillRowStyle = StyleSheet.create({
   },
 
   container: {
-    height: 70,
+    //height: 80,
     alignSelf: 'stretch',
     justifyContent: 'center',
+    flex: 1,
   },
   // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
   buttonText: {
     fontSize: 15,
+    paddingBottom: 5,
+  },
+
+  textContainer: {
     flex: 1.5,
     paddingLeft: 5,
     paddingRight: 5,
+  },
+
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginTop: 12,
+    marginBottom: 12,
   },
 });
