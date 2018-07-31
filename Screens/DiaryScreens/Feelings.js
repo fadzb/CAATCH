@@ -7,8 +7,10 @@ import Moment from 'moment';
 import {connect} from 'react-redux'
 
 class Feelings extends React.Component {
-    static navigationOptions = {
-        title: "Feelings"
+    static navigationOptions = ({ navigation }) => {
+        return {
+            title: navigation.getParam('title'),
+        }
     };
     // static property called navigationOptions that belongs to all screen components
 
@@ -61,13 +63,6 @@ class Feelings extends React.Component {
     };
     // prevSelected prop contains the history for that day if it was already filled in
 
-    footer = () => (
-        <TouchableOpacity style={feelingStyle.button} onPress={this.createSession}>
-            <Text style={feelingStyle.buttonText}>Save</Text>
-        </TouchableOpacity>
-    );
-    // save button
-
     render() {
         return (
             <View style={feelingStyle.viewContainer}>
@@ -75,8 +70,10 @@ class Feelings extends React.Component {
                     data={this.state.feelings}
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}
-                    ListFooterComponent={this.footer}
                 />
+                <TouchableOpacity style={feelingStyle.button} onPress={this.createSession}>
+                    <Text style={feelingStyle.buttonText}>Save</Text>
+                </TouchableOpacity>
             </View>
         );
     }
@@ -102,7 +99,7 @@ const feelingStyle = StyleSheet.create({
         borderColor: '#007AFF',
         borderWidth: 1,
         borderRadius: 8,
-        margin: 30,
+        margin: 15,
         alignSelf: 'stretch',
         justifyContent: 'center',
     },

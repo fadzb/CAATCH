@@ -106,22 +106,18 @@ class Skills extends React.Component {
     //after creating session transaction in DB - write ratings to DB, reset global ratings store and pop back to previous screen
     //if there was already data saved for that day - delete. Only storing one entry for skills
 
-    footer = () => (
-        <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
-            <Text style={skillStyle.buttonText}>Save</Text>
-        </TouchableOpacity>
-    );
-    // save button
-
     render() {
         return (
             <View style={skillStyle.viewContainer}>
-                {this.state.historyChecked ? <FlatList
+                {this.state.historyChecked ? <View style={{flex: 1}}><FlatList
                     data={this.state.skills}
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}
-                    ListFooterComponent={this.footer}
-                /> : <View style={{flex: 1, justifyContent: 'center'}}>
+                />
+                    <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
+                        <Text style={skillStyle.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                </View> : <View style={{flex: 1, justifyContent: 'center'}}>
                         <ActivityIndicator size="large" color="#007AFF" />
                 </View>}
             </View>
@@ -132,7 +128,6 @@ class Skills extends React.Component {
 
 const skillStyle = StyleSheet.create({
     listContainer: {
-        flex: 1,
         alignSelf: 'stretch'
     },
 
@@ -153,7 +148,7 @@ const skillStyle = StyleSheet.create({
         borderColor: '#007AFF',
         borderWidth: 1,
         borderRadius: 8,
-        margin: 30,
+        margin: 15,
         alignSelf: 'stretch',
         justifyContent: 'center',
     },
