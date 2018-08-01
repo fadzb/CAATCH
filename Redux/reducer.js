@@ -16,6 +16,8 @@ import {
   UPDATE_USAGE,
   UPDATE_FEELING_RATING,
   RESET_FEELING_RATING,
+  UPDATE_SLEEP_RATING,
+  RESET_SLEEP_RATING,
 } from './actions';
 import Moment from 'moment';
 import { defaultSkillRating, defaultFeelingRating } from '../Constants/ReduxConstants';
@@ -99,6 +101,7 @@ const defaultFeelingRatings = defaultFeelingRating();
 
 const diaryReducer = (
   state = {
+    sleepRating: 3,
     feelingRating: defaultFeelingRatings,
     skillRating: defaultSkillRatings,
     date: Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS'),
@@ -147,6 +150,16 @@ const diaryReducer = (
     return { ...state, feelingRating: [...defaultFeelingRatings] };
   }
   // used for when feeling ratings are reset
+
+  if (action.type === UPDATE_SLEEP_RATING) {
+    return { ...state, sleepRating: action.payload };
+  }
+  // used for when a new sleep rating is recorded
+
+  if (action.type === RESET_SLEEP_RATING) {
+    return { ...state, sleepRating: 3 };
+  }
+  // used for when sleep rating are reset
 
   return state;
 };
