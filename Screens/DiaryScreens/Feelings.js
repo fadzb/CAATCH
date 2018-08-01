@@ -5,6 +5,8 @@ import FeelingRow from '../../Components/FeelingRow'
 import {updateDatabase} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
 import {connect} from 'react-redux'
+import {resetFeelingRating} from "../../Redux/actions";
+import store from "../../Redux/store"
 
 class Feelings extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -45,7 +47,8 @@ class Feelings extends React.Component {
         this.props.feelingRating.forEach(rating => {
             updateDatabase('DiarySession',
                 [sessionId, rating.id, rating.rating],
-                ['sessionId', 'diaryId', 'rating'])
+                ['sessionId', 'diaryId', 'rating'],
+                () => store.dispatch(resetFeelingRating()))
         });
 
         this.props.navigation.pop();

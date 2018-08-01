@@ -1,7 +1,7 @@
 import {combineReducers} from 'redux';
 import {
     UPDATE_COPING, GET_COPING, UPDATE_SIGN, GET_SIGN, GET_CONTACT, UPDATE_CONTACT, UPDATE_REASON,
-    GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE, UPDATE_SKILL_RATING, RESET_SKILL_RATING, UPDATE_USAGE, UPDATE_FEELING_RATING, RESET_FEELING_RATING
+    GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE, UPDATE_SKILL_RATING, RESET_SKILL_RATING, UPDATE_USAGE, UPDATE_FEELING_RATING, RESET_FEELING_RATING, UPDATE_SLEEP_RATING, RESET_SLEEP_RATING
 } from "./actions";
 import Moment from 'moment';
 import {defaultSkillRating, defaultFeelingRating} from "../Constants/ReduxConstants";
@@ -84,7 +84,7 @@ const distractionReducer = (state = [], action) => {
 const defaultSkillRatings = defaultSkillRating();
 const defaultFeelingRatings = defaultFeelingRating();
 
-const diaryReducer = (state = {feelingRating: defaultFeelingRatings, skillRating: defaultSkillRatings, date: Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')}, action) => {
+const diaryReducer = (state = {sleepRating: 3, feelingRating: defaultFeelingRatings, skillRating: defaultSkillRatings, date: Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')}, action) => {
     if(action.type === UPDATE_DATE) {
         return {...state, date: action.payload};
     }
@@ -121,6 +121,16 @@ const diaryReducer = (state = {feelingRating: defaultFeelingRatings, skillRating
         return {...state, feelingRating: [...defaultFeelingRatings]};
     }
     // used for when feeling ratings are reset
+
+    if(action.type === UPDATE_SLEEP_RATING) {
+        return {...state, sleepRating: action.payload}
+    }
+    // used for when a new sleep rating is recorded
+
+    if(action.type === RESET_SLEEP_RATING) {
+        return {...state, sleepRating: 3};
+    }
+    // used for when sleep rating are reset
 
     return state
 };
