@@ -23,7 +23,11 @@ export const DiaryGrid = (props) => {
       </View>
       <View style={gridStyle.rowContainer}>
         <DiaryTile name="Medication" iconName={Icons.medication + '-outline'} />
-        <DiaryTile name="General" iconName={Icons.generalDiary + '-outline'} />
+        <DiaryTile
+          onPress={() => props.navigation.push('general', { title: props.date })}
+          name="General"
+          iconName={Icons.generalDiary + '-outline'}
+        />
       </View>
       <View style={gridStyle.lastRowContainer}>
         <DiaryTile name="Warning Sign" iconName={Icons.warningSign + '-outline'} />
