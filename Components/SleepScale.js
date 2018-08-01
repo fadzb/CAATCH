@@ -1,5 +1,7 @@
 import React from 'react';
 import { PixelRatio, StyleSheet, Text, View, PanResponder, Animated, TouchableOpacity, Dimensions } from 'react-native';
+import store from '../Redux/store';
+import { updateSleepRating } from '../Redux/actions';
 
 const REACTIONS = [
   { label: 'Worried', src: require('../Media/Images/worried.png'), bigSrc: require('../Media/Images/worried_big.png') },
@@ -52,6 +54,11 @@ export default class SleepScale extends React.Component {
 
   updatePan(toValue) {
     Animated.spring(this._pan, { toValue, friction: 7 }).start();
+
+    console.log(toValue / DISTANCE);
+    // how to access pressed smiley index
+
+    store.dispatch(updateSleepRating(toValue / DISTANCE + 1));
   }
 
   render() {
