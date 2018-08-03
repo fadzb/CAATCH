@@ -49,16 +49,17 @@ class Skills extends React.Component {
 
   checkPreviousEntry = () => {
     const selectedDate = Moment(this.props.diaryDate).format('YYYY-MM-DD');
-    const columns = 'd.sessionId, s.diaryDate, d.diaryId, d.rating, di.diaryName, di.info';
+    const columns = 'd.sessionId, s.diaryDate, d.diaryId, d.rating, di.diaryType, di.diaryName, di.info';
 
     readDatabaseArg(
       columns,
       'DiarySession',
       this.savePrevSelected,
       undefined,
-      " as d inner join Session as s on d.sessionId = s.sessionId inner join Diary as di on d.diaryId = di.diaryId where DATE(diaryDate) = '" +
+      ' as d inner join Session as s on d.sessionId = s.sessionId inner join Diary as di on d.diaryId = di.diaryId' +
+        " where DATE(diaryDate) = '" +
         selectedDate +
-        "'"
+        "' and diaryType = 'Skill'"
     );
   };
   // check if previous entry is saved for this date and, if yes, get that info for current state
