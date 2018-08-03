@@ -90,7 +90,7 @@ class WarningSigns extends React.Component {
         onPress={() => this.summaryNav(item.signId, item.signName, item.dateEntered, item.signDesc)}
         deleteFunction={() => this.showAlert(item.signId)}
         editFunction={() => this.editSign(item.signId, item.signName, item.signDesc)}
-        icon={Icons.warningSign + '-outline'}
+        circleView="WS"
       />
     </View>
   );
