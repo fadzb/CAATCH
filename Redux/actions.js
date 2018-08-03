@@ -30,6 +30,9 @@ export const RESET_FEELING_RATING = 'RESET_FEELING_RATING';
 export const UPDATE_SLEEP_RATING = 'UPDATE_SLEEP_RATING';
 export const RESET_SLEEP_RATING = 'RESET_SLEEP_RATING';
 
+export const UPDATE_MOOD_RATING = 'UPDATE_MOOD_RATING';
+export const RESET_MOOD_RATING = 'RESET_MOOD_RATING';
+
 //Usage
 
 export const UPDATE_USAGE = 'UPDATE_USAGE';
@@ -127,4 +130,13 @@ export const updateSleepRating = (update) => ({
 
 export const resetSleepRating = () => ({
   type: RESET_SLEEP_RATING,
+});
+
+export const updateMoodRating = (update) => ({
+  type: UPDATE_MOOD_RATING,
+  payload: update,
+});
+
+export const resetMoodRating = () => ({
+  type: RESET_MOOD_RATING,
 });

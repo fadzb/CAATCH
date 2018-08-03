@@ -1,11 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
 import { connect } from 'react-redux';
-import SleepScale from '../../Components/SleepScale';
 import { updateDatabase } from '../../Util/DatabaseHelper';
 import Moment from 'moment';
 import { resetSleepRating } from '../../Redux/actions';
 import store from '../../Redux/store';
+import ButtonRating from '../../Components/ButtonRating';
 
 class General extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -39,25 +39,33 @@ class General extends React.Component {
   handleSave = (sessionId) => {
     const sleepId = 28;
     const notesId = 29;
+    const moodId = 30;
 
     updateDatabase('DiarySession', [sessionId, sleepId, this.props.sleepRating], ['sessionId', 'diaryId', 'rating']);
+    //update DB for sleep rating
 
-    updateDatabase('DiarySession', [sessionId, notesId, this.state.text], ['sessionId', 'diaryId', 'rating'], () =>
-      store.dispatch(resetSleepRating())
-    );
+    updateDatabase('DiarySession', [sessionId, moodId, this.props.moodRating], ['sessionId', 'diaryId', 'rating']);
+    //update DB for mood rating
+
+    if (this.state.text.length > 0) {
+      updateDatabase('DiarySession', [sessionId, notesId, this.state.text], ['sessionId', 'diaryId', 'rating'], () =>
+        store.dispatch(resetSleepRating())
+      );
+    }
+    //if user inputs general text, update DB
 
     this.props.navigation.pop();
   };
-  // accessing global sleep store and state for input and saving to DB
+  // accessing global sleep + mood store and state for input and saving to DB
 
   render() {
     return (
       <View style={generalStyle.listContainer}>
         <View style={generalStyle.sleep}>
-          <Text style={generalStyle.sleepText}>Sleep Scale</Text>
-          <SleepScale />
+          <ButtonRating title="Mood Scale" />
+          <ButtonRating title="Sleep Scale" />
         </View>
-        <View style={{ flex: 2, marginLeft: 15, marginRight: 15 }}>
+        <View style={{ flex: 2, marginTop: 10, marginLeft: 15, marginRight: 15 }}>
           <Text style={{ fontWeight: 'bold', fontSize: 16, paddingBottom: 15 }}>General Notes</Text>
           <TextInput
             multiline={true}
@@ -78,7 +86,7 @@ class General extends React.Component {
             onChangeText={this.handleTextChange}
           />
         </View>
-        <View style={{ flex: 1, justifyContent: 'center' }}>
+        <View style={{ flex: 1, marginTop: 10 }}>
           <TouchableOpacity style={generalStyle.button} onPress={this.createSession}>
             <Text style={generalStyle.buttonText}>Save</Text>
           </TouchableOpacity>
@@ -96,7 +104,7 @@ const generalStyle = StyleSheet.create({
   },
 
   sleep: {
-    //flex: 2
+    marginTop: 10,
   },
 
   sleepText: {
@@ -124,6 +132,7 @@ const generalStyle = StyleSheet.create({
 
 const mapStateToProps = (state) => ({
   sleepRating: state.diary.sleepRating,
+  moodRating: state.diary.moodRating,
   diaryDate: state.diary.date,
 });
 // function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
