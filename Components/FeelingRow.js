@@ -73,14 +73,14 @@ export default class FeelingRow extends React.Component {
     render() {
         return (
             <View style={feelingRowStyle.viewContainer}>
-                <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                    <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', paddingBottom: 15,}}>
                     <PressableIcon
                         iconName={Icons.info + '-outline'}
                         size={25}
                         onPressFunction={this.infoAlert}
                         color='#007AFF'
                     />
+                    <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
                 </View>
                 <View onLayout={this.onLayout} ref="slider">
                     <TouchableWithoutFeedback onPressIn={this.tapSliderHandler}>
@@ -115,7 +115,7 @@ const feelingRowStyle = StyleSheet.create({
         marginRight: sliderMargin,
     },
     text: {
-        paddingBottom: 15,
+        paddingLeft: 5,
         fontSize: 15
     },
     labelContainer: {
