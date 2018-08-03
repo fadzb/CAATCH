@@ -56,13 +56,13 @@ export default class SkillRow extends React.Component {
         <TouchableHighlight underlayColor="#FDEDEC" style={skillRowStyle.button} onPress={this.props.onPress}>
           <View style={skillRowStyle.rowContainer}>
             <View style={skillRowStyle.textContainer}>
-              <Text style={skillRowStyle.buttonText}>{this.props.name}</Text>
               <PressableIcon
                 iconName={Icons.info + '-outline'}
                 size={25}
                 onPressFunction={this.infoAlert}
                 color="#007AFF"
               />
+              <Text style={skillRowStyle.buttonText}>{this.props.name}</Text>
             </View>
             <ButtonGroup
               onPress={this.updateIndex}
@@ -97,7 +97,6 @@ const skillRowStyle = StyleSheet.create({
   },
 
   container: {
-    //height: 80,
     alignSelf: 'stretch',
     justifyContent: 'center',
     flex: 1,
@@ -106,13 +105,15 @@ const skillRowStyle = StyleSheet.create({
 
   buttonText: {
     fontSize: 15,
-    paddingBottom: 5,
+    paddingLeft: 5,
+    flex: 1,
   },
 
   textContainer: {
     flex: 1.5,
-    paddingLeft: 5,
-    paddingRight: 5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 5,
   },
 
   rowContainer: {
