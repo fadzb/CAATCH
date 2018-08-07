@@ -64,11 +64,13 @@ export default class EditWarningSign extends React.Component {
   updateLinkDbTable = () => {
     const checkedCopes = this.props.navigation.getParam('checkedCopes', null);
 
-    deleteDatabaseRow('CopeSignLink', 'where signId = ' + this.props.navigation.getParam('id'));
+    if (checkedCopes !== null) {
+      deleteDatabaseRow('CopeSignLink', 'where signId = ' + this.props.navigation.getParam('id'));
 
-    checkedCopes.forEach((copeId) => {
-      updateDatabase('CopeSignLink', [copeId, this.props.navigation.getParam('id')], ['copeId', 'signId']);
-    });
+      checkedCopes.forEach((copeId) => {
+        updateDatabase('CopeSignLink', [copeId, this.props.navigation.getParam('id')], ['copeId', 'signId']);
+      });
+    }
 
     readDatabaseArg(
       '*',
@@ -119,7 +121,7 @@ export default class EditWarningSign extends React.Component {
       );
       // write the saved values to DB if valid
 
-      this.props.navigation.pop();
+      this.props.navigation.navigate('warning');
       // pop to sign list once saved
     }
   };

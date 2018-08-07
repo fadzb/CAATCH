@@ -1,11 +1,14 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList } from 'react-native';
+import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList, Alert } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Button, Icon, Left, Body } from 'native-base';
 import Moment from 'moment';
 import { CardListItem } from '../../../Components/CardListItem';
-import { readDatabaseArg } from '../../../Util/DatabaseHelper';
+import { readDatabaseArg, updateDatabaseArgument } from '../../../Util/DatabaseHelper';
 import { Icons } from '../../../Constants/Icon';
 import { openSafetyPlanItem } from '../../../Util/Usage';
+import { PressableIcon } from '../../../Components/PressableIcon';
+import { getSign } from '../../../Redux/actions';
+import store from '../../../Redux/store';
 
 export default class SignSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -55,6 +58,54 @@ export default class SignSummary extends React.Component {
     return Moment(date).format('LLL');
   };
 
+  getCompleteList = () => {
+    readDatabaseArg(
+      '*',
+      'WarningSign',
+      this.updateSigns,
+      () => console.log('DB read success'),
+      'where dateDeleted is NULL'
+    );
+  };
+  // fetching all warning signs that do not have a deleted date
+
+  updateSigns = (signs) => {
+    store.dispatch(getSign(signs));
+    // dispatching total list of warning signs names from DB to global redux store
+  };
+
+  editSign = (id, name, desc) => {
+    this.props.navigation.push('editWarning', {
+      id: id,
+      name: name,
+      desc: desc,
+    });
+  };
+
+  deleteSign = (id) => {
+    updateDatabaseArgument(
+      'WarningSign',
+      [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
+      ['dateDeleted'],
+      'where signId = ' + id,
+      () => this.props.navigation.pop(),
+      (res) => this.getCompleteList()
+    );
+  };
+  // deleting pressed strategy and updating redux global store to re-render the strategy list
+
+  showAlert = (id) => {
+    Alert.alert(
+      'Delete Sign',
+      'Are you sure you want to delete this warning sign?',
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel' },
+        { text: 'Delete', onPress: () => this.deleteSign(id), style: 'destructive' },
+      ],
+      { cancelable: false }
+    );
+  };
+
   render() {
     return (
       <View style={{ flex: 1 }}>
@@ -64,8 +115,32 @@ export default class SignSummary extends React.Component {
               <CardItem>
                 <Left>
                   <Body>
-                    <Text>{this.props.navigation.getParam('name')}</Text>
-                    <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <View>
+                        <Text>{this.props.navigation.getParam('name')}</Text>
+                        <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <PressableIcon
+                          iconName={Icons.edit + '-outline'}
+                          size={35}
+                          onPressFunction={() =>
+                            this.editSign(
+                              this.props.navigation.getParam('id'),
+                              this.props.navigation.getParam('name'),
+                              this.props.navigation.getParam('desc')
+                            )
+                          }
+                          buttonStyle={{ marginRight: 13 }}
+                        />
+                        <PressableIcon
+                          iconName={Icons.delete + '-outline'}
+                          size={35}
+                          onPressFunction={() => this.showAlert(this.props.navigation.getParam('id'))}
+                          color="red"
+                        />
+                      </View>
+                    </View>
                   </Body>
                 </Left>
               </CardItem>

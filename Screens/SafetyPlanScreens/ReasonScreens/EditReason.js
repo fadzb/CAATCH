@@ -169,7 +169,7 @@ export default class EditReason extends React.Component {
       );
       // write the saved values to DB if valid
 
-      this.props.navigation.pop();
+      this.props.navigation.navigate('reason');
       // pop to reason list once saved
     }
   };

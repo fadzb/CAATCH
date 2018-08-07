@@ -9,15 +9,18 @@ import {
   Linking,
   FlatList,
   Text,
+  Alert,
 } from 'react-native';
 import { Thumbnail } from 'native-base';
-import Image from 'react-native-scalable-image';
 import { ImageViewer } from '../../../Components/ImageViewer';
 import Moment from 'moment';
 import Communications from 'react-native-communications';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import { Icons } from '../../../Constants/Icon';
 import { openSafetyPlanItem } from '../../../Util/Usage';
+import { updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
+import { getContact } from '../../../Redux/actions';
+import store from '../../../Redux/store';
 
 export default class ContactSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -60,6 +63,57 @@ export default class ContactSummary extends React.Component {
     return Moment(date).format('LLL');
   };
 
+  getCompleteList = () => {
+    readDatabaseArg(
+      '*',
+      'Contact',
+      this.updateContacts,
+      () => console.log('DB read success'),
+      'where dateDeleted is NULL'
+    );
+  };
+  // fetching all contacts that do not have a deleted date
+
+  updateContacts = (contacts) => {
+    store.dispatch(getContact(contacts));
+    // dispatching total list of contacts from DB to global redux store
+  };
+
+  editContact = (id, firstName, surname, phone, email, image) => {
+    this.props.navigation.push('editContact', {
+      id: id,
+      firstName: firstName,
+      surname: surname,
+      phone: phone,
+      email: email,
+      image: image,
+    });
+  };
+
+  deleteContact = (id) => {
+    updateDatabaseArgument(
+      'Contact',
+      [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
+      ['dateDeleted'],
+      'where contactId = ' + id,
+      () => this.props.navigation.pop(),
+      (res) => this.getCompleteList()
+    );
+  };
+  // deleting pressed contact and updating redux global store to re-render the contact list
+
+  showAlert = (id) => {
+    Alert.alert(
+      'Delete Contact',
+      'Are you sure you want to delete this contact?',
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel' },
+        { text: 'Delete', onPress: () => this.deleteContact(id), style: 'destructive' },
+      ],
+      { cancelable: false }
+    );
+  };
+
   getName = () => {
     const firstName = this.props.navigation.getParam('firstName');
     const surname = this.props.navigation.getParam('surname');
@@ -94,7 +148,27 @@ export default class ContactSummary extends React.Component {
           )}
         </View>
         <View style={contactSummaryStyle.nameTextView}>
+          <PressableIcon
+            iconName={Icons.edit + '-outline'}
+            size={35}
+            onPressFunction={() =>
+              this.editContact(
+                this.props.navigation.getParam('id'),
+                this.props.navigation.getParam('firstName'),
+                this.props.navigation.getParam('surname'),
+                phone,
+                email,
+                mediaPath
+              )
+            }
+          />
           <Text style={{ fontSize: 22 }}>{this.state.name}</Text>
+          <PressableIcon
+            iconName={Icons.delete + '-outline'}
+            size={35}
+            onPressFunction={() => this.showAlert(this.props.navigation.getParam('id'))}
+            color="red"
+          />
         </View>
         <View style={contactSummaryStyle.contactTextRow}>
           <View style={{ paddingLeft: 15 }}>
@@ -171,12 +245,16 @@ const contactSummaryStyle = StyleSheet.create({
 
   nameTextView: {
     alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
     paddingTop: 15,
     paddingBottom: 15,
     borderTopWidth: 2,
     borderColor: '#E0E0E0',
     marginLeft: 20,
     marginRight: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
   },
 
   contactTextRow: {

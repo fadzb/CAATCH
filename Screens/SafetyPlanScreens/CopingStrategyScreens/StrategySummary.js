@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList } from 'react-native';
+import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList, Alert } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Button, Left, Body } from 'native-base';
 import { PressableImage } from '../../../Components/PressableImage';
 import { ImageViewer } from '../../../Components/ImageViewer';
@@ -7,6 +7,12 @@ import Moment from 'moment';
 import { Video } from 'expo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { openSafetyPlanItem } from '../../../Util/Usage';
+import { Icons } from '../../../Constants/Icon';
+import { PressableIcon } from '../../../Components/PressableIcon';
+import { updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
+import { FileSystem } from 'expo';
+import { getCoping } from '../../../Redux/actions';
+import store from '../../../Redux/store';
 
 export default class StrategySummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -44,6 +50,64 @@ export default class StrategySummary extends React.Component {
   };
   // present video player in fullscreen mode
 
+  showAlert = (id, path) => {
+    Alert.alert(
+      'Delete Strategy',
+      'Are you sure you want to delete this coping strategy?',
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel' },
+        { text: 'Delete', onPress: () => this.deleteStrat(id, path), style: 'destructive' },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  editStrat = (id, name, desc, url) => {
+    this.props.navigation.push('editCoping', {
+      id: id,
+      name: name,
+      desc: desc,
+      url: url,
+    });
+  };
+
+  deleteStrat = (id, path) => {
+    this.removeMediaFile(path);
+
+    updateDatabaseArgument(
+      'CopingStrategy',
+      [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
+      ['dateDeleted'],
+      'where copeId = ' + id,
+      () => this.props.navigation.pop(),
+      (res) => this.getCompleteList()
+    );
+  };
+  // deleting pressed strategy and updating redux global store to re-render the strategy list.
+
+  updateStrategies = (strats) => {
+    store.dispatch(getCoping(strats));
+    // dispatching total list of coping strategy names from DB to global redux store
+  };
+
+  getCompleteList = () => {
+    readDatabaseArg(
+      '*',
+      'CopingStrategy',
+      this.updateStrategies,
+      () => console.log('DB read success'),
+      'where dateDeleted is NULL'
+    );
+  };
+  // fetching all coping strategies that do not have a deleted date
+
+  removeMediaFile = (path) => {
+    FileSystem.deleteAsync(path)
+      .then((res) => console.log('strategy media deleted..'))
+      .catch((err) => console.log(err));
+  };
+  // remove media file from SP media folder in documentDirectory
+
   formatDate = (date) => {
     return Moment(date).format('LLL');
   };
@@ -63,8 +127,33 @@ export default class StrategySummary extends React.Component {
               <CardItem>
                 <Left>
                   <Body>
-                    <Text>{this.props.navigation.getParam('name')}</Text>
-                    <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
+                    <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
+                      <View>
+                        <Text>{this.props.navigation.getParam('name')}</Text>
+                        <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
+                      </View>
+                      <View style={{ flexDirection: 'row' }}>
+                        <PressableIcon
+                          iconName={Icons.edit + '-outline'}
+                          size={35}
+                          onPressFunction={() =>
+                            this.editStrat(
+                              this.props.navigation.getParam('id'),
+                              this.props.navigation.getParam('name'),
+                              this.props.navigation.getParam('desc'),
+                              link
+                            )
+                          }
+                          buttonStyle={{ marginRight: 13 }}
+                        />
+                        <PressableIcon
+                          iconName={Icons.delete + '-outline'}
+                          size={35}
+                          onPressFunction={() => this.showAlert(this.props.navigation.getParam('id'), mediaPath)}
+                          color="red"
+                        />
+                      </View>
+                    </View>
                   </Body>
                 </Left>
               </CardItem>
