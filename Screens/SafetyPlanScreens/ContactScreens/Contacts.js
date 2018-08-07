@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, SectionList, TouchableOpacity, Alert } from 'react-native';
 import { readDatabaseArg, updateDatabaseArgument } from "../../../Util/DatabaseHelper";
 import { SafetyPlanSectionRow } from '../../../Components/SafetyPlanSectionRow'
 import {connect} from 'react-redux'
@@ -101,12 +101,30 @@ class Contacts extends React.Component {
         </View>
     );
 
+    renderSectionHeader = obj => <View style={contactsStyle.sectionHeader}>
+        <Text style={{fontSize: 18, fontWeight: 'bold'}}>{obj.section.title}</Text>
+    </View>;
+
     render() {
+
+        const sections =  [
+            {
+                title: 'Personal',
+                data: this.props.contact.sort(this.compareNames).filter(contact => contact.contactType === "Personal")
+            },
+            {
+                title: 'Agencies',
+                data: this.props.contact.sort(this.compareNames).filter(contact => contact.contactType === "Professional")
+            }
+        ];
+        // section headers and data from personal/agency split
+
         return (
             <View style={contactsStyle.viewContainer}>
-                <FlatList
-                    data={this.props.contact.sort(this.compareNames)} // comes from mapStateToProps below
+                <SectionList
                     renderItem={this.renderItem}
+                    renderSectionHeader={this.renderSectionHeader}
+                    sections={sections}
                     keyExtractor={(item, index) => index.toString()}
                 />
             </View>
@@ -122,6 +140,18 @@ const contactsStyle = StyleSheet.create({
     listContainer: {
         flex: 1,
         alignSelf: 'stretch'
+    },
+    sectionHeader: {
+        flex: 1,
+        alignItems: 'stretch',
+        marginTop: 20,
+        marginLeft: 15,
+        marginRight: 15,
+        marginBottom: 5,
+        backgroundColor: '#f0f0f5',
+        padding: 8,
+        borderWidth: 1,
+        borderRadius: 2
     }
 });
 
