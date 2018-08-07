@@ -125,13 +125,19 @@ class Contacts extends React.Component {
     </View>
   );
 
-  renderSectionHeader = (obj) => (
-    <View style={contactsStyle.sectionHeader}>
-      <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{obj.section.title}</Text>
-    </View>
-  );
+  renderSectionHeader = (obj) => {
+    if (obj.section.data.length !== 0) {
+      return (
+        <View style={contactsStyle.sectionHeader}>
+          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{obj.section.title}</Text>
+        </View>
+      );
+    }
+  };
 
   render() {
+    const titles = ['Personal', 'Agencies'];
+
     const sections = [
       {
         title: 'Personal',
@@ -169,7 +175,7 @@ const contactsStyle = StyleSheet.create({
   sectionHeader: {
     flex: 1,
     alignItems: 'stretch',
-    marginTop: 20,
+    marginTop: 10,
     marginLeft: 15,
     marginRight: 15,
     marginBottom: 5,
