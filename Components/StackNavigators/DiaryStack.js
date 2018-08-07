@@ -8,6 +8,7 @@ import DiaryScreen from '../../Screens/DiaryScreens/DiaryScreen';
 import Skills from '../../Screens/DiaryScreens/Skills';
 import Feelings from '../../Screens/DiaryScreens/Feelings';
 import General from '../../Screens/DiaryScreens/General';
+import SafetyPlanSelection from '../../Screens/DiaryScreens/SafetyPlanSelection';
 
 const DiaryStack = createStackNavigator(
   {
@@ -15,6 +16,7 @@ const DiaryStack = createStackNavigator(
     skills: Skills,
     feelings: Feelings,
     general: General,
+    spSelection: SafetyPlanSelection,
   },
 
   {
