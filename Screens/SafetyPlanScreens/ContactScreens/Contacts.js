@@ -112,9 +112,6 @@ class Contacts extends React.Component {
     };
 
     render() {
-
-        const titles = ['Personal', 'Agencies'];
-
         const sections =  [
             {
                 title: 'Personal',
