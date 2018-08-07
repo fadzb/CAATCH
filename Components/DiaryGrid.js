@@ -30,8 +30,16 @@ export const DiaryGrid = (props) => {
         />
       </View>
       <View style={gridStyle.lastRowContainer}>
-        <DiaryTile name="Warning Sign" iconName={Icons.warningSign + '-outline'} />
-        <DiaryTile name="Coping Strategy" iconName={Icons.copingStrategy + '-outline'} />
+        <DiaryTile
+          onPress={() => props.navigation.push('spSelection', { title: props.date, type: 'sign' })}
+          name="Warning Sign"
+          iconName={Icons.warningSign + '-outline'}
+        />
+        <DiaryTile
+          onPress={() => props.navigation.push('spSelection', { title: props.date, type: 'cope' })}
+          name="Coping Strategy"
+          iconName={Icons.copingStrategy + '-outline'}
+        />
       </View>
     </View>
   );
