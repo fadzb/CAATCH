@@ -191,8 +191,8 @@ export default class EditCopingStrategy extends React.Component {
                 this.checkMediaSelected);
             // write the saved values to DB if valid
 
-            this.props.navigation.pop();
-            // pop to strategy list once saved
+            this.props.navigation.navigate('coping');
+            // navigate to strategy list once saved
         }
     };
 

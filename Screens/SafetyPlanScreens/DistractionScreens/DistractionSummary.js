@@ -1,15 +1,19 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList } from 'react-native';
+import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList, Alert } from 'react-native';
 import { Container, Header, Content, Card, CardItem, Text, Button, Left, Body } from 'native-base';
 import {PressableImage} from "../../../Components/PressableImage";
 import {ImageViewer} from "../../../Components/ImageViewer";
 import Moment from 'moment';
 import {Video} from 'expo';
-import {readDatabaseArg} from "../../../Util/DatabaseHelper";
+import {readDatabaseArg, updateDatabaseArgument} from "../../../Util/DatabaseHelper";
 import Icon from "react-native-vector-icons/Ionicons";
 import {CardListItem} from "../../../Components/CardListItem";
 import {Icons} from "../../../Constants/Icon";
 import {openSafetyPlanItem} from "../../../Util/Usage";
+import {PressableIcon} from "../../../Components/PressableIcon";
+import {FileSystem} from 'expo'
+import {getDistraction} from "../../../Redux/actions";
+import store from "../../../Redux/store"
 
 export default class DistractionSummary extends React.Component {
 
@@ -66,6 +70,54 @@ export default class DistractionSummary extends React.Component {
         return Moment(date).format('LLL');
     };
 
+    updateDistractions = (distractions) => {
+        store.dispatch(getDistraction(distractions));
+        // dispatching total list of distraction names from DB to global redux store
+    };
+
+    getCompleteList = () => {
+        readDatabaseArg("*", "Distraction", this.updateDistractions, () => console.log("DB read success"), 'where dateDeleted is NULL');
+    };
+    // fetching all distractions that do not have a deleted date
+
+    editDistraction = (id, name, desc, url) => {
+        this.props.navigation.push('editDistraction', {
+            id: id,
+            name: name,
+            desc: desc,
+            url: url,
+        });
+    };
+
+    deleteDistraction = (id, path) => {
+        this.removeMediaFile(path);
+
+        updateDatabaseArgument("Distraction",
+            [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
+            ["dateDeleted"],
+            "where distractId = " + id,
+            () => this.props.navigation.pop(),
+            (res) => this.getCompleteList());
+    };
+    // deleting pressed distraction and updating redux global store to re-render the distraction list.
+
+    removeMediaFile = path => {
+        FileSystem.deleteAsync(path).then(res => console.log('distraction media deleted..')).catch(err => console.log(err));
+    };
+    // remove media file from SP media folder in documentDirectory
+
+    showAlert = (id, path) => {
+        Alert.alert(
+            'Delete Distraction',
+            'Are you sure you want to delete this Distraction?',
+            [
+                {text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel'},
+                {text: 'Delete', onPress: () => this.deleteDistraction(id, path), style: 'destructive'},
+            ],
+            { cancelable: false }
+        )
+    };
+
     render() {
         const mediaPath = this.props.navigation.getParam('media');
         const media = {uri: mediaPath};
@@ -81,8 +133,29 @@ export default class DistractionSummary extends React.Component {
                             <CardItem>
                                 <Left>
                                     <Body>
-                                    <Text>{this.props.navigation.getParam('name')}</Text>
-                                    <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
+                                        <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                                            <View>
+                                                <Text>{this.props.navigation.getParam('name')}</Text>
+                                                <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
+                                            </View>
+                                            <View style={{flexDirection: 'row'}}>
+                                                <PressableIcon
+                                                    iconName={Icons.edit + '-outline'}
+                                                    size={35}
+                                                    onPressFunction={() => this.editDistraction(this.props.navigation.getParam('id'),
+                                                        this.props.navigation.getParam('name'),
+                                                        this.props.navigation.getParam('desc'),
+                                                        link)}
+                                                    buttonStyle={{marginRight: 13}}
+                                                />
+                                                <PressableIcon
+                                                    iconName={Icons.delete + '-outline'}
+                                                    size={35}
+                                                    onPressFunction={() => this.showAlert(this.props.navigation.getParam('id'), mediaPath)}
+                                                    color='red'
+                                                />
+                                            </View>
+                                        </View>
                                     </Body>
                                 </Left>
                             </CardItem>
