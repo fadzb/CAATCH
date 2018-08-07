@@ -1,11 +1,21 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, KeyboardAvoidingView } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  TouchableOpacity,
+  KeyboardAvoidingView,
+  Dimensions,
+} from 'react-native';
 import { connect } from 'react-redux';
 import { updateDatabase } from '../../Util/DatabaseHelper';
 import Moment from 'moment';
 import { resetSleepRating } from '../../Redux/actions';
 import store from '../../Redux/store';
 import ButtonRating from '../../Components/ButtonRating';
+import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view';
 
 class General extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -61,36 +71,38 @@ class General extends React.Component {
   render() {
     return (
       <View style={generalStyle.listContainer}>
-        <View style={generalStyle.sleep}>
-          <ButtonRating title="Mood Scale" />
-          <ButtonRating title="Sleep Scale" />
-        </View>
-        <View style={{ flex: 2, marginTop: 10, marginLeft: 15, marginRight: 15 }}>
-          <Text style={{ fontWeight: 'bold', fontSize: 16, paddingBottom: 15 }}>General Notes</Text>
-          <TextInput
-            multiline={true}
-            style={{
-              backgroundColor: '#f0f0f5',
-              flex: 1,
-              borderRadius: 7,
-              borderWidth: 1,
-              padding: 15,
-              paddingBottom: 15,
-              paddingTop: 15,
-              textAlignVertical: 'top',
-            }}
-            placeholder="User can enter personal thoughts and notes here"
-            placeholderTextColor="black"
-            underlineColorAndroid="transparent"
-            value={this.state.text}
-            onChangeText={this.handleTextChange}
-          />
-        </View>
-        <View style={{ flex: 1, marginTop: 10 }}>
-          <TouchableOpacity style={generalStyle.button} onPress={this.createSession}>
-            <Text style={generalStyle.buttonText}>Save</Text>
-          </TouchableOpacity>
-        </View>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={'position'}>
+          <View style={generalStyle.sleep}>
+            <ButtonRating title="Mood Scale" />
+            <ButtonRating title="Sleep Scale" />
+          </View>
+          <View style={{ marginTop: 10, marginLeft: 15, marginRight: 15 }}>
+            <Text style={{ fontWeight: 'bold', fontSize: 16, paddingBottom: 15 }}>General Notes</Text>
+            <TextInput
+              multiline={true}
+              style={{
+                backgroundColor: '#f0f0f5',
+                height: Dimensions.get('window').height / 4,
+                borderRadius: 7,
+                borderWidth: 1,
+                padding: 15,
+                paddingBottom: 15,
+                paddingTop: 15,
+                textAlignVertical: 'top',
+              }}
+              placeholder="User can enter personal thoughts and notes here"
+              placeholderTextColor="black"
+              underlineColorAndroid="transparent"
+              value={this.state.text}
+              onChangeText={this.handleTextChange}
+            />
+          </View>
+          <View style={{ marginTop: 10 }}>
+            <TouchableOpacity style={generalStyle.button} onPress={this.createSession}>
+              <Text style={generalStyle.buttonText}>Save</Text>
+            </TouchableOpacity>
+          </View>
+        </KeyboardAvoidingView>
       </View>
     );
   }
