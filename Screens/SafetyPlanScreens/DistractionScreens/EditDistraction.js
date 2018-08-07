@@ -112,11 +112,13 @@ export default class EditDistraction extends React.Component {
   updateLinkDbTable = (distractId) => {
     const checkedContacts = this.props.navigation.getParam('checkedContacts', null);
 
-    deleteDatabaseRow('DistractContactLink', 'where distractId = ' + distractId);
+    if (checkedContacts !== null) {
+      deleteDatabaseRow('DistractContactLink', 'where distractId = ' + distractId);
 
-    checkedContacts.forEach((contactId) => {
-      updateDatabase('DistractContactLink', [contactId, distractId], ['contactId', 'distractId']);
-    });
+      checkedContacts.forEach((contactId) => {
+        updateDatabase('DistractContactLink', [contactId, distractId], ['contactId', 'distractId']);
+      });
+    }
 
     readDatabaseArg(
       '*',
@@ -234,7 +236,7 @@ export default class EditDistraction extends React.Component {
       );
       // write the saved values to DB if valid
 
-      this.props.navigation.pop();
+      this.props.navigation.navigate('distraction');
       // pop to distraction list once saved
     }
   };
