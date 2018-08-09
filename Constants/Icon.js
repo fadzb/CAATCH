@@ -27,5 +27,6 @@ export const Icons = {
     closeModal: 'ios-close',
     calendar: 'ios-calendar',
     edit: 'ios-create',
-    info: 'ios-information-circle'
+    info: 'ios-information-circle',
+    password: 'ios-lock',
 };
