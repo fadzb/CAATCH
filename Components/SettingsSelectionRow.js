@@ -1,99 +1,67 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, Switch } from 'react-native';
-import PropTypes from 'prop-types'
-import Icon from "react-native-vector-icons/Ionicons";
-import {PressableIcon} from "./PressableIcon";
-import {Icons} from "../Constants/Icon";
-import {AppColors, ComponentStyleConst, TabStyles, themeStyles} from "../Styles/TabStyles";
+import PropTypes from 'prop-types';
+import Icon from 'react-native-vector-icons/Ionicons';
 
-export const SettingsSelectionRow = props => {
-    return(
-        <View style={[settingRowStyle.container,  {height: props.height}]}>
-            <TouchableHighlight
-                underlayColor="#FDEDEC"
-                style={[themeStyles.settingsButtons ,settingRowStyle.button]}
-                onPress={props.onPress}>
-                <View style={settingRowStyle.rowContainer}>
-                    <View style={settingRowStyle.textContainer}>
-                        <View style={{width: 30}}>
-                            <Icon
-                                name={props.iconName}
-                                size={30}
-                                color={ComponentStyleConst.settingsIconColor}
-                            />
-                        </View>
-                        <Text style={[themeStyles.settingsScreenText, settingRowStyle.buttonText]}>{props.name}</Text>
-                    </View>
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        {props.info && <View style={{marginRight: 10}}><PressableIcon
-                            iconName={Icons.info + '-outline'}
-                            size={25}
-                            onPressFunction={props.infoAlert}
-                            color='#007AFF'
-                        /></View>}
-                        {props.switch &&
-                            <Switch
-                                value={props.switchValue}
-                                onValueChange={props.handleSwitch}
-                            />
-                        }
-                        {props.arrow &&
-                        <View style={{paddingRight: 15}}>
-                            <Icon
-                                name={Icons.dividerArrow}
-                                size={25}
-                                color={AppColors.blue}
-                            />
-                        </View>
-                        }
-                    </View>
-                </View>
-            </TouchableHighlight>
+export const SettingsSelectionRow = (props) => {
+  return (
+    <View style={settingRowStyle.container}>
+      <TouchableHighlight underlayColor="#FDEDEC" style={settingRowStyle.button} onPress={props.onPress}>
+        <View style={settingRowStyle.rowContainer}>
+          <View style={settingRowStyle.textContainer}>
+            <Icon name={props.iconName} size={30} />
+            <Text style={settingRowStyle.buttonText}>{props.name}</Text>
+          </View>
+          <View>{props.switch && <Switch value={props.switchValue} onValueChange={props.handleSwitch} />}</View>
         </View>
-    )
+      </TouchableHighlight>
+    </View>
+  );
 };
 
 SettingsSelectionRow.propTypes = {
-    name: PropTypes.string.isRequired,
-    iconName: PropTypes.string.isRequired,
-    switch: PropTypes.bool,
-    onPress: PropTypes.func,
-    switchValue: PropTypes.bool
+  name: PropTypes.string.isRequired,
+  iconName: PropTypes.string.isRequired,
+  switch: PropTypes.bool,
+  onPress: PropTypes.func,
+  switchValue: PropTypes.bool,
 };
 // Defining prop types for this component
 
 const settingRowStyle = StyleSheet.create({
-    button: {
-        marginLeft: 10,
-        marginRight: 10,
-        flex: 1
-    },
+  button: {
+    flex: 1,
+    borderBottomWidth: 0.5,
+    marginLeft: 10,
+    marginRight: 10,
+  },
 
-    container: {
-        alignSelf: 'stretch',
-        justifyContent: 'flex-start',
-    },
-    // need to wrap button in View in order to stretch to full width of screen using flexDirection
+  container: {
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+    flex: 1,
+  },
+  // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
-    buttonText: {
-        fontSize: 15,
-        paddingLeft: 10,
-        flex: 1
-    },
+  buttonText: {
+    fontSize: 15,
+    paddingLeft: 10,
+    flex: 1,
+  },
 
-    textContainer: {
-        flex: 1.5,
-        flexDirection: 'row',
-        alignItems: 'center',
-        marginRight: 5,
-        marginLeft: 5,
-    },
+  textContainer: {
+    flex: 1.5,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginRight: 5,
+    marginLeft: 5,
+  },
 
-    rowContainer: {
-        flexDirection: 'row',
-        alignItems: 'center',
-        flex: 1,
-        marginTop: 12,
-        marginBottom: 12
-    }
+  rowContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    flex: 1,
+    marginTop: 12,
+    marginBottom: 12,
+  },
 });

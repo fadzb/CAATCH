@@ -27,4 +27,5 @@ export const Icons = {
   calendar: 'ios-calendar',
   edit: 'ios-create',
   info: 'ios-information-circle',
+  password: 'ios-lock',
 };
