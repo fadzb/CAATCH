@@ -1,0 +1,32 @@
+import React from 'react';
+import { Button, Text, View } from 'react-native';
+import { createStackNavigator } from 'react-navigation';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+import { Icons } from '../../Constants/Icon';
+
+import SettingsScreen from '../../Screens/SettingsScreen';
+
+const SettingsStack = createStackNavigator(
+  {
+    main: SettingsScreen,
+  },
+
+  {
+    initialRouteName: 'main',
+  }
+);
+// Settings stack navigator
+
+SettingsStack.navigationOptions = {
+  tabBarIcon: ({ focused, tintColor }) => (
+    <Ionicons
+      name={Icons.settings + `${focused ? '' : '-outline'}`}
+      // if icon is not pressed use outline
+      size={25}
+      color={tintColor}
+    />
+  ),
+};
+// setting tab icon of SettingsStack to diary icon
+
+export default SettingsStack;
