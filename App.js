@@ -9,13 +9,12 @@ import Moment from 'moment';
 import {updateUsage} from "./Redux/actions";
 import { AppLoading } from 'expo';
 
-import HomeScreen from "./Screens/HomeScreen";
 import TwitterScreen from "./Screens/TwitterScreen";
-import SettingsScreen from "./Screens/SettingsScreen";
 import PlanStack from "./Components/StackNavigators/SafetyPlanStack";
 import DiaryStack from "./Components/StackNavigators/DiaryStack"
 import SettingsStack from "./Components/StackNavigators/SettingsStack";
 import Passcode from "./Screens/Passcode";
+import HomeStack from "./Components/StackNavigators/HomeStack";
 
 //Initial Tab screens/stack navs
 
@@ -35,6 +34,8 @@ export default class App extends React.Component {
 
         this.createNewUsage();
         // new usage session added to DB
+
+        this.checkPasscode();
     };
 
     checkPasscode = () => {
@@ -59,7 +60,7 @@ export default class App extends React.Component {
     // creating new usage transaction in DB and storing usageId in global store
 
     loadData = () => {
-        checkDB(() => this.postCheckDbFunctions());
+        checkDB(this.postCheckDbFunctions)
 
         //Return promise here for home screen media so it is loaded during splash screen
     };
@@ -69,8 +70,8 @@ export default class App extends React.Component {
             return (
                 <AppLoading
                     startAsync={this.loadData}
-                    onFinish={this.checkPasscode}
-                    //onFinish={() => console.log("Uncomment for deleting DB only")}
+                    //onFinish={this.postCheckDbFunctions}
+                    onFinish={() => console.log("loading finished")}
                     onError={console.warn}
                 />
             );
@@ -97,7 +98,7 @@ export default class App extends React.Component {
 
 const TabBar = createBottomTabNavigator(
     {
-        Home: HomeScreen,
+        Home: HomeStack,
         Plan: PlanStack,
         Diary: DiaryStack,
         News: TwitterScreen,

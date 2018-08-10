@@ -7,16 +7,9 @@ import {TabStyles} from "../Styles/TabStyles";
 import {HomeScreenTileRow} from "../Components/HomeScreenTileRow";
 
 export default class HomeScreen extends React.Component {
-
     static navigationOptions = {
-        tabBarIcon: ({ focused, tintColor }) => (
-            <Ionicons
-                name={Icons.home + `${focused ? "" : "-outline"}`}
-                // if icon is not pressed use outline
-                size={25}
-                color={tintColor}
-            />
-        )
+        header: null,
+        headerTitle: 'Home'
     };
     // static property called navigationOptions that belongs to all screen components
 
@@ -32,6 +25,7 @@ export default class HomeScreen extends React.Component {
                         iconName1= {Icons.stats + "-outline"}
                         name2="Schedule"
                         iconName2= {Icons.calendar + "-outline"}
+                        onPress2={() => this.props.navigation.navigate('schedule')}
                         third={true}
                         name3="Reports"
                         iconName3= {Icons.report + "-outline"}
