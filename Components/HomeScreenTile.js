@@ -31,8 +31,9 @@ const tileStyle = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     alignItems: 'center',
-    borderWidth: 3,
-    borderRadius: 10,
+    borderWidth: 1,
+    borderRadius: 7,
+    backgroundColor: 'white',
   },
 
   container: {
@@ -43,7 +44,7 @@ const tileStyle = StyleSheet.create({
   // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
   buttonText: {
-    fontSize: 25,
+    fontSize: 18,
     paddingBottom: 10,
   },
 });

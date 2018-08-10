@@ -9,6 +9,7 @@ export const HomeScreenTileRow = (props) => {
     <View style={tileRowStyle.container}>
       <HomeScreenTile name={props.name1} iconName={props.iconName1} onPress={props.onPress1} />
       <HomeScreenTile name={props.name2} iconName={props.iconName2} onPress={props.onPress2} />
+      {props.third && <HomeScreenTile name={props.name3} iconName={props.iconName3} onPress={props.onPress3} />}
     </View>
   );
 };
