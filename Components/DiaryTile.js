@@ -27,8 +27,8 @@ DiaryTile.propTypes = {
 const tileStyle = StyleSheet.create({
   button: {
     flex: 1,
-    borderWidth: 2,
-    borderRadius: 10,
+    borderWidth: 1,
+    borderRadius: 7,
     justifyContent: 'center',
   },
 

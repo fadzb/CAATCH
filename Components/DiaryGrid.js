@@ -29,7 +29,7 @@ export const DiaryGrid = (props) => {
           iconName={Icons.generalDiary + '-outline'}
         />
       </View>
-      <View style={gridStyle.lastRowContainer}>
+      <View style={gridStyle.rowContainer}>
         <DiaryTile
           onPress={() => props.navigation.push('spSelection', { title: props.date, type: 'sign' })}
           name="Warning Sign"
