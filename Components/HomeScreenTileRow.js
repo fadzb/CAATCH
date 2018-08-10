@@ -17,6 +17,11 @@ export const HomeScreenTileRow = props => {
                 iconName= {props.iconName2}
                 onPress={props.onPress2}
             />
+            {props.third && <HomeScreenTile
+                name= {props.name3}
+                iconName= {props.iconName3}
+                onPress={props.onPress3}
+            />}
         </View>
     )
 };

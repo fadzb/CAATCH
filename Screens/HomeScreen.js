@@ -1,7 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, Dimensions, Image } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
-import Image from 'react-native-scalable-image';
 import {Icons} from "../Constants/Icon";
 
 import {TabStyles} from "../Styles/TabStyles";
@@ -24,22 +23,26 @@ export default class HomeScreen extends React.Component {
     render() {
         return (
             <View style={TabStyles.container}>
-                <Image width={Dimensions.get('window').width} // height will be calculated automatically
+                <Image resizeMode={'cover'}
+                       style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height / 3}}
                        source={require("../Media/Images/HD-Peaceful-Image.jpg")} />
                 <View style={homeStyle.tileContainer}>
                     <HomeScreenTileRow
                         name1="My Stats"
                         iconName1= {Icons.stats + "-outline"}
-                        name2="Plan"
-                        iconName2= {Icons.plan + "-outline"}
-                        onPress2={() => this.props.navigation.navigate('Plan')}
+                        name2="Schedule"
+                        iconName2= {Icons.calendar + "-outline"}
+                        third={true}
+                        name3="Reports"
+                        iconName3= {Icons.report + "-outline"}
                     />
                     <HomeScreenTileRow
-                        name1="Diary"
-                        iconName1= {Icons.diary + "-outline"}
-                        onPress1={() => this.props.navigation.navigate('Diary')}
-                        name2="Reports"
-                        iconName2= {Icons.report + "-outline"}
+                        name2="Diary"
+                        iconName2= {Icons.diary + "-outline"}
+                        onPress2={() => this.props.navigation.navigate('Diary')}
+                        name1="Plan"
+                        iconName1= {Icons.plan + "-outline"}
+                        onPress1={() => this.props.navigation.navigate('Plan')}
                     />
                 </View>
             </View>
