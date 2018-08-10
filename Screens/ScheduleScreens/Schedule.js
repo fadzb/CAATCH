@@ -1,159 +1,110 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Modal, TouchableHighlight, TouchableOpacity, Dimensions, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  Modal,
+  TouchableHighlight,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
+import Icon from 'react-native-vector-icons/Ionicons';
+import Moment from 'moment';
+import { Icons } from '../../Constants/Icon';
+import { DiaryGrid } from '../../Components/DiaryGrid';
 import { Agenda } from 'react-native-calendars';
-import {connect} from 'react-redux'
-import store from "../../Redux/store"
-import {getSchedule, updateScheduleDate} from "../../Redux/actions";
-import {readDatabase} from "../../Util/DatabaseHelper";
-import {DbTableNames} from "../../Constants/Constants";
-import {AppColors, themeStyles} from "../../Styles/TabStyles";
+import { connect } from 'react-redux';
+import store from '../../Redux/store';
+import { updateDate } from '../../Redux/actions';
+import { getDiaryPrePops } from '../../Constants/Prepopulated';
 
-class Schedule extends React.Component {
-    static navigationOptions = ({ navigation }) => {
-        return {
-            title: 'My Cal',
-            headerRight: (
-                <TouchableOpacity
-                    onPress={() => navigation.push('newSchedule')}
-                ><Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
-                </TouchableOpacity>
-            ),
-        }
+import { TabStyles } from '../../Styles/TabStyles';
+
+export default class Schedule extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      items: {},
     };
+  }
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            items: {},
-            agendaReady: false
-        };
-    }
+  render() {
+    return (
+      <Agenda
+        items={this.state.items}
+        loadItemsForMonth={this.loadItems.bind(this)}
+        renderItem={this.renderItem.bind(this)}
+        renderEmptyDate={this.renderEmptyDate.bind(this)}
+        rowHasChanged={this.rowHasChanged.bind(this)}
+      />
+    );
+  }
 
-    componentDidMount() {
-        readDatabase('*',
-            DbTableNames.schedule,
-            res => {
-                let resultItems = {};
-
-                res.forEach(sch => {
-                    if(resultItems[sch.date] === undefined) {
-                        resultItems[sch.date] = [{
-                            id: sch.scheduleId,
-                            date: sch.date,
-                            title: sch.title,
-                            description: sch.description,
-                            timeFrom: sch.timeFrom,
-                            timeTo: sch.timeTo,
-                            nativeId: sch.nativeCalendarId
-                        }]
-                    } else {
-                        resultItems[sch.date].push({
-                            id: sch.scheduleId,
-                            date: sch.date,
-                            title: sch.title,
-                            description: sch.description,
-                            timeFrom: sch.timeFrom,
-                            timeTo: sch.timeTo,
-                            nativeId: sch.nativeCalendarId
-                        })
-                    }
-                });
-
-                this.setState({items: resultItems}, () => {
-                    this.updateStore();
-
-                    this.setState({agendaReady: true});
-                })
+  loadItems = (day) => {
+    setTimeout(() => {
+      for (let i = -15; i < 85; i++) {
+        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
+        const strTime = this.timeToString(time);
+        if (!this.state.items[strTime]) {
+          this.state.items[strTime] = [];
+          const numItems = Math.floor(Math.random() * 5);
+          for (let j = 0; j < numItems; j++) {
+            this.state.items[strTime].push({
+              name: 'Item for ' + strTime,
+              height: Math.max(50, Math.floor(Math.random() * 150)),
             });
-    }
-    // reading DB for saved schedule items. Render agenda component once finished through agenda ready state property
+          }
+        }
+      }
 
-    updateStore = () => {
-        store.dispatch(getSchedule(this.state.items))
-    };
-    // update redux store with all db rows in Schedule table
+      const newItems = {};
+      Object.keys(this.state.items).forEach((key) => {
+        newItems[key] = this.state.items[key];
+      });
+      this.setState({
+        items: newItems,
+      });
+    }, 1000);
 
-    render() {
-        return (
-            <View style={scheduleStyle.viewContainer}>
-                {this.state.agendaReady ? <Agenda
-                    items={this.props.schedule}
-                    renderItem={this.renderItem}
-                    renderEmptyData={this.renderEmptyDate}
-                    rowHasChanged={this.rowHasChanged}
-                    onDayPress={day => store.dispatch(updateScheduleDate(day.dateString))}
-                    theme={{
-                        dotColor: AppColors.orange,
-                        selectedDayBackgroundColor: AppColors.orange,
-                        agendaKnobColor: AppColors.blue
-                    }}
-                /> : <View style={{flex: 1, justifyContent: 'center'}}>
-                    <ActivityIndicator size="large" color="#007AFF" />
-                </View>}
-            </View>
-        );
-    }
+    console.log(`Load Items for ${day.year}-${day.month}`);
 
-    getDate = (day, date) => {
-        const month = '0' + day.month;
-        const dateString = '0' + date;
+    console.log(day.dateString);
+  };
 
-        return (day.year + '-' + month.slice(-2) + '-' + dateString.slice(-2));
-    };
-    // returns date string in desired text. May need for something else
+  renderItem = (item) => (
+    <View style={[styles.item, { height: item.height }]}>
+      <Text>{item.name}</Text>
+    </View>
+  );
 
-    renderItem = (item) => <TouchableOpacity style={[scheduleStyle.item, {height: item.height}]} onPress={() => this.props.navigation.push('newSchedule', {...item, edit: true})}>
-        <View>
-            <Text style={scheduleStyle.timeText}>{item.timeTo !== null ? item.timeFrom + " - " + item.timeTo : item.timeFrom}</Text>
-            <Text style={scheduleStyle.titleText}>{item.title}</Text>
-            {item.description !== null && <Text style={scheduleStyle.descText}>{item.description}</Text>}
-        </View>
-    </TouchableOpacity>;
+  renderEmptyDate = () => (
+    <View style={styles.emptyDate}>
+      <Text>This is empty date!</Text>
+    </View>
+  );
 
-    renderEmptyDate = () => <View style={scheduleStyle.emptyDate}><Text>{""}</Text></View>;
-    // display nothing on dates where noo appt exists
+  rowHasChanged = (r1, r2) => r1.name !== r2.name;
 
-    rowHasChanged = (r1, r2) => r1.title !== r2.title || r1.description !== r2.description || r1.date !== r2.date || r1.timeFrom !== r2.timeFrom || r1.timeTo !== r2.timeTo;
-    // function that checks whether a row has changed or not
+  timeToString = (time) => {
+    const date = new Date(time);
+    return date.toISOString().split('T')[0];
+  };
 }
 
-const scheduleStyle = StyleSheet.create({
-    viewContainer: {
-        flex: 1,
-    },
-    item: {
-        backgroundColor: 'white',
-        flex: 1,
-        borderRadius: 5,
-        padding: 10,
-        marginRight: 10,
-        marginTop: 17
-    },
-    emptyDate: {
-        height: 15,
-        flex:1,
-        paddingTop: 30
-    },
-    timeText: {
-        fontSize: 15,
-        paddingTop: 5,
-        paddingBottom: 10
-    },
-    titleText: {
-        fontSize: 15,
-        fontWeight: '600',
-        paddingBottom: 5
-    },
-    descText: {
-        fontSize: 15,
-        color: '#737373'
-    }
+const styles = StyleSheet.create({
+  item: {
+    backgroundColor: 'white',
+    flex: 1,
+    borderRadius: 5,
+    padding: 10,
+    marginRight: 10,
+    marginTop: 17,
+  },
+  emptyDate: {
+    height: 15,
+    flex: 1,
+    paddingTop: 30,
+  },
 });
-
-const mapStateToProps = state => ({
-    schedule: state.schedule.appointments
-});
-// function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
-
-export default connect(mapStateToProps)(Schedule)
-// HOC that re-renders the component automatically every time a particular section of state is updated
