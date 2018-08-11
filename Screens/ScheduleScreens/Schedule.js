@@ -9,6 +9,7 @@ import {
   TouchableHighlight,
   TouchableOpacity,
   Dimensions,
+  ActivityIndicator,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Moment from 'moment';
@@ -21,79 +22,83 @@ import { updateDate } from '../../Redux/actions';
 import { getDiaryPrePops } from '../../Constants/Prepopulated';
 
 import { TabStyles } from '../../Styles/TabStyles';
+import { readDatabase } from '../../Util/DatabaseHelper';
 
 export default class Schedule extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    return {
+      title: 'Schedule',
+    };
+  };
+
   constructor(props) {
     super(props);
     this.state = {
       items: {},
+      agendaReady: false,
     };
   }
 
+  componentDidMount() {
+    readDatabase('*', 'Schedule', (res) => {
+      let resultItems = {};
+
+      res.forEach((sch) => {
+        resultItems[sch.date] = [{ id: sch.scheduleId, title: sch.title, desc: sch.description, time: sch.time }];
+      });
+
+      this.setState({ items: resultItems }, this.setState({ agendaReady: true }));
+    });
+  }
+  // reading DB for saved schedule items. Render agenda component once finished through agenda ready state property
+
   render() {
     return (
-      <Agenda
-        items={this.state.items}
-        loadItemsForMonth={this.loadItems.bind(this)}
-        renderItem={this.renderItem.bind(this)}
-        renderEmptyDate={this.renderEmptyDate.bind(this)}
-        rowHasChanged={this.rowHasChanged.bind(this)}
-      />
+      <View style={scheduleStyle.viewContainer}>
+        {this.state.agendaReady ? (
+          <Agenda
+            items={this.state.items}
+            renderItem={this.renderItem}
+            renderEmptyData={this.renderEmptyDate}
+            rowHasChanged={this.rowHasChanged}
+          />
+        ) : (
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color="#007AFF" />
+          </View>
+        )}
+      </View>
     );
   }
 
-  loadItems = (day) => {
-    setTimeout(() => {
-      for (let i = -15; i < 85; i++) {
-        const time = day.timestamp + i * 24 * 60 * 60 * 1000;
-        const strTime = this.timeToString(time);
-        if (!this.state.items[strTime]) {
-          this.state.items[strTime] = [];
-          const numItems = Math.floor(Math.random() * 5);
-          for (let j = 0; j < numItems; j++) {
-            this.state.items[strTime].push({
-              name: 'Item for ' + strTime,
-              height: Math.max(50, Math.floor(Math.random() * 150)),
-            });
-          }
-        }
-      }
+  getDate = (day, date) => {
+    const month = '0' + day.month;
+    const dateString = '0' + date;
 
-      const newItems = {};
-      Object.keys(this.state.items).forEach((key) => {
-        newItems[key] = this.state.items[key];
-      });
-      this.setState({
-        items: newItems,
-      });
-    }, 1000);
-
-    console.log(`Load Items for ${day.year}-${day.month}`);
-
-    console.log(day.dateString);
+    return day.year + '-' + month.slice(-2) + '-' + dateString.slice(-2);
   };
+  // returns date string in desired text. May need for something else
 
   renderItem = (item) => (
-    <View style={[styles.item, { height: item.height }]}>
-      <Text>{item.name}</Text>
+    <View style={[scheduleStyle.item, { height: item.height }]}>
+      <Text>{item.title}</Text>
     </View>
   );
 
   renderEmptyDate = () => (
-    <View style={styles.emptyDate}>
+    <View style={scheduleStyle.emptyDate}>
       <Text>This is empty date!</Text>
     </View>
   );
 
   rowHasChanged = (r1, r2) => r1.name !== r2.name;
-
-  timeToString = (time) => {
-    const date = new Date(time);
-    return date.toISOString().split('T')[0];
-  };
 }
 
-const styles = StyleSheet.create({
+const scheduleStyle = StyleSheet.create({
+  viewContainer: {
+    flex: 1,
+    backgroundColor: '#fff',
+  },
   item: {
     backgroundColor: 'white',
     flex: 1,
