@@ -28,4 +28,5 @@ export const Icons = {
   edit: 'ios-create',
   info: 'ios-information-circle',
   password: 'ios-lock',
+  clock: 'ios-time',
 };
