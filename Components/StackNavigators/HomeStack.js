@@ -5,11 +5,13 @@ import {Icons} from "../../Constants/Icon";
 
 import HomeScreen from "../../Screens/HomeScreen";
 import Schedule from "../../Screens/ScheduleScreens/Schedule";
+import NewSchedule from "../../Screens/ScheduleScreens/NewSchedule";
 
 const HomeStack = createStackNavigator(
     {
         main: HomeScreen,
-        schedule: Schedule
+        schedule: Schedule,
+        newSchedule: NewSchedule
     },
 
     {

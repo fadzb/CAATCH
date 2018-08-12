@@ -21,7 +21,7 @@ export const CalendarView = props => {
             <View style={calendarViewStyle.calendar}>
                 <Calendar
                     onDayPress={props.dayPress}
-                    maxDate={new Date()}
+                    maxDate={props.maxDate && new Date()}
                 />
             </View>
         </View>

@@ -62,6 +62,7 @@ class DiaryScreen extends React.Component {
                     <CalendarView
                         onPress={() => this.toggleModal(false)}
                         dayPress={this.handleDateSelection}
+                        maxDate={true}
                     />
                 </Modal>
             </View>

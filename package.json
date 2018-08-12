@@ -34,6 +34,7 @@
     "react-native-elements": "^0.19.1",
     "react-native-image-zoom-viewer": "^2.2.13",
     "react-native-keyboard-aware-scroll-view": "^0.6.0",
+    "react-native-modal-datetime-picker": "^6.0.0",
     "react-native-multiple-select-list": "^1.0.4",
     "react-native-pin-code": "^0.4.1",
     "react-native-scalable-image": "^0.4.0",
