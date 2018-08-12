@@ -14,7 +14,7 @@ export const CalendarView = (props) => {
         <PressableIcon size={45} iconName={Icons.closeModal} color="black" onPressFunction={props.onPress} />
       </View>
       <View style={calendarViewStyle.calendar}>
-        <Calendar onDayPress={props.dayPress} maxDate={new Date()} />
+        <Calendar onDayPress={props.dayPress} maxDate={props.maxDate && new Date()} />
       </View>
     </View>
   );

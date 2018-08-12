@@ -28,6 +28,11 @@ export default class Schedule extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
       title: 'Schedule',
+      headerRight: (
+        <TouchableOpacity onPress={() => navigation.push('newSchedule')}>
+          <Text style={{ padding: 10 }}>New +</Text>
+        </TouchableOpacity>
+      ),
     };
   };
 
