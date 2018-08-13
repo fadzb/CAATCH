@@ -20,6 +20,8 @@ import {
   RESET_SLEEP_RATING,
   UPDATE_MOOD_RATING,
   RESET_MOOD_RATING,
+  UPDATE_SCHEDULE,
+  GET_SCHEDULE,
 } from './actions';
 import Moment from 'moment';
 import { defaultSkillRating, defaultFeelingRating } from '../Constants/ReduxConstants';
@@ -188,6 +190,17 @@ const usageReducer = (state = 0, action) => {
   return state;
 };
 
+//Schedule
+
+const scheduleReducer = (state = {}, action) => {
+  if (action.type === GET_SCHEDULE) {
+    return action.payload;
+  }
+  // used to get the complete appt list from the DB
+
+  return state;
+};
+
 const reducer = combineReducers({
   coping: copingReducer,
   sign: signReducer,
@@ -196,6 +209,7 @@ const reducer = combineReducers({
   distraction: distractionReducer,
   diary: diaryReducer,
   usage: usageReducer,
+  schedule: scheduleReducer,
 });
 // as reducers grow, add to this object
 

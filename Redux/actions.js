@@ -37,6 +37,10 @@ export const RESET_MOOD_RATING = 'RESET_MOOD_RATING';
 
 export const UPDATE_USAGE = 'UPDATE_USAGE';
 
+//Schedule
+
+export const GET_SCHEDULE = 'GET_SCHEDULE';
+
 // action creators
 
 //Usage
@@ -44,6 +48,13 @@ export const UPDATE_USAGE = 'UPDATE_USAGE';
 export const updateUsage = (update) => ({
   type: UPDATE_USAGE,
   payload: update,
+});
+
+//Schedule
+
+export const getSchedule = (apptList) => ({
+  type: GET_SCHEDULE,
+  payload: apptList,
 });
 
 //SafetyPlan
