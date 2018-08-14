@@ -10,13 +10,13 @@ import store from '../../Redux/store';
 
 class Feelings extends React.Component {
   static navigationOptions = ({ navigation }) => {
-    const title = navigation.getParam('title');
+    const diaryDate = store.getState().diary.date;
 
     return {
-      title: title,
+      title: 'Feelings' + ' ' + Moment(diaryDate).format('DD.MM.YYYY'),
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('feelingsSummary')}>
-          <Text style={{ padding: 10 }}>Prior Entries</Text>
+          <Text style={{ padding: 10 }}>Archive</Text>
         </TouchableOpacity>
       ),
     };

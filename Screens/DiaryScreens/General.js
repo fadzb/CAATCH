@@ -19,8 +19,10 @@ import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view
 
 class General extends React.Component {
   static navigationOptions = ({ navigation }) => {
+    const diaryDate = store.getState().diary.date;
+
     return {
-      title: navigation.getParam('title'),
+      title: 'General' + ' ' + Moment(diaryDate).format('DD.MM.YYYY'),
     };
   };
   // static property called navigationOptions that belongs to all screen components
