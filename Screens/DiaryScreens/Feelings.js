@@ -10,8 +10,15 @@ import store from '../../Redux/store';
 
 class Feelings extends React.Component {
   static navigationOptions = ({ navigation }) => {
+    const title = navigation.getParam('title');
+
     return {
-      title: navigation.getParam('title'),
+      title: title,
+      headerRight: (
+        <TouchableOpacity onPress={() => navigation.push('feelingsSummary')}>
+          <Text style={{ padding: 10 }}>Prior Entries</Text>
+        </TouchableOpacity>
+      ),
     };
   };
   // static property called navigationOptions that belongs to all screen components
