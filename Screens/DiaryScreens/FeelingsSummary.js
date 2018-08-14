@@ -8,8 +8,10 @@ import {readDatabaseArg} from "../../Util/DatabaseHelper";
 
 export default class FeelingsSummary extends React.Component {
     static navigationOptions = ({ navigation }) => {
+        const diaryDate = store.getState().diary.date;
+
         return {
-            title: 'Prior Entries',
+            title: 'Archive' + " " + Moment(diaryDate).format('DD.MM.YYYY'),
         }
     };
 
@@ -25,7 +27,7 @@ export default class FeelingsSummary extends React.Component {
         const diaryDate = store.getState().diary.date;
 
         const selectedDate = Moment(diaryDate).format("YYYY-MM-DD");
-        const columns = "d.sessionId, s.diaryDate, s.dateEntered, d.diaryId, d.rating, di.diaryType, di.diaryName, di.info";
+        const columns = "d.sessionId, s.diaryDate, di.scale, s.dateEntered, d.diaryId, d.rating, di.diaryType, di.diaryName, di.info";
 
         readDatabaseArg(columns,
             "DiarySession",
@@ -55,7 +57,7 @@ export default class FeelingsSummary extends React.Component {
         <View style={feelingSummaryStyle.listContainer}>
             <SelectionRow
                 name= {Moment(item[0].dateEntered).format('LLL')}
-                onPress={() => console.log('pressed')}
+                onPress={() => this.props.navigation.push('feelingsSession', {resultsArr: item})}
                 icon={Icons.feelings}
             />
         </View>

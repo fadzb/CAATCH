@@ -103,7 +103,7 @@ export default class FeelingRow extends React.Component {
     }
 };
 
-const sliderMargin = 10;
+const sliderMargin = 15;
 
 const feelingRowStyle = StyleSheet.create({
     viewContainer: {
