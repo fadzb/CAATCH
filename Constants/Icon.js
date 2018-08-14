@@ -29,4 +29,5 @@ export const Icons = {
   info: 'ios-information-circle',
   password: 'ios-lock',
   clock: 'ios-time',
+  dividerArrow: 'ios-arrow-forward',
 };
