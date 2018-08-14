@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight, Modal, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableHighlight, Modal, Dimensions, Alert } from 'react-native';
 import t from 'tcomb-form-native';
 import { PressableIcon } from '../../Components/PressableIcon';
 import store from '../../Redux/store';
@@ -190,6 +190,24 @@ export default class NewSchedule extends React.Component {
     this.toggleTimePicker(false);
   };
 
+  showAlert = () => {
+    Alert.alert(
+      'Delete Appointment',
+      'Are you sure you want to delete this appointment?',
+      [
+        { text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel' },
+        { text: 'Delete', onPress: () => this.deleteAppointment(), style: 'destructive' },
+      ],
+      { cancelable: false }
+    );
+  };
+
+  deleteAppointment = () => {
+    const scheduleId = this.props.navigation.getParam('id');
+
+    deleteDatabaseRow('Schedule', 'where scheduleId = ' + scheduleId, this.getGlobalSchedule);
+  };
+
   render() {
     return (
       <View style={TabStyles.planContainer}>
@@ -230,6 +248,14 @@ export default class NewSchedule extends React.Component {
           <TouchableHighlight style={newScheduleStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
             <Text style={newScheduleStyle.buttonText}>Save</Text>
           </TouchableHighlight>
+          {this.props.navigation.getParam('edit') && (
+            <PressableIcon
+              iconName={Icons.delete + '-outline'}
+              size={50}
+              onPressFunction={this.showAlert}
+              buttonStyle={newScheduleStyle.deleteButton}
+            />
+          )}
         </View>
         <DateTimePicker
           isVisible={this.state.timePickerVisible}
@@ -300,5 +326,9 @@ const newScheduleStyle = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
+  },
+  deleteButton: {
+    alignSelf: 'center',
+    marginTop: 20,
   },
 });
