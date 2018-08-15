@@ -55,7 +55,11 @@ class Feelings extends React.Component {
   handleSave = (sessionId) => {
     this.props.feelingRating.forEach((rating) => {
       updateDatabase('DiarySession', [sessionId, rating.id, rating.rating], ['sessionId', 'diaryId', 'rating'], () =>
-        store.dispatch(resetFeelingRating())
+        store.dispatch(
+          resetFeelingRating(
+            diaryPrePops.filter((t) => t.diaryType === 'Feeling').map((f) => ({ id: f.diaryId, rating: 0 }))
+          )
+        )
       );
     });
 
