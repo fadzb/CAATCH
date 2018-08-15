@@ -1,5 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  FlatList,
+  TouchableOpacity,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 import Moment from 'moment';
 import SkillRow from '../../Components/SkillRow';
 import { connect } from 'react-redux';
@@ -7,11 +17,16 @@ import store from '../../Redux/store';
 import { resetSkillRating } from '../../Redux/actions';
 import { deleteDatabaseRow, readDatabaseArg, updateDatabase, updateDatabaseArgument } from '../../Util/DatabaseHelper';
 import { diaryPrePops } from '../../Constants/Prepopulated';
+import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
+import getTheme from '../../native-base-theme/components';
+import platform from '../../native-base-theme/variables/platform';
 
 class Skills extends React.Component {
   static navigationOptions = ({ navigation }) => {
+    const diaryDate = store.getState().diary.date;
+
     return {
-      title: navigation.getParam('title'),
+      title: 'Skills' + ' ' + Moment(diaryDate).format('DD.MM.YYYY'),
     };
   };
 
@@ -23,6 +38,7 @@ class Skills extends React.Component {
       sessionDate: new Date(),
       prevSelected: false,
       historyChecked: false,
+      savePressed: false,
     };
   }
 
@@ -33,13 +49,15 @@ class Skills extends React.Component {
   }
 
   createSession = () => {
-    updateDatabase(
-      'Session',
-      [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), this.props.diaryDate],
-      ['dateEntered', 'diaryDate'],
-      undefined,
-      (res) => this.handleSave(res.insertId)
-    );
+    this.setState({ savePressed: true }, () => {
+      updateDatabase(
+        'Session',
+        [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), this.props.diaryDate],
+        ['dateEntered', 'diaryDate'],
+        undefined,
+        (res) => this.handleSave(res.insertId)
+      );
+    });
   };
   // when user presses save - create session in DB with date recorded at screen opening
 
@@ -49,7 +67,7 @@ class Skills extends React.Component {
 
   checkPreviousEntry = () => {
     const selectedDate = Moment(this.props.diaryDate).format('YYYY-MM-DD');
-    const columns = 'd.sessionId, s.diaryDate, d.diaryId, d.rating, di.diaryType, di.diaryName, di.info';
+    const columns = 'd.sessionId, s.diaryDate, d.diaryId, d.rating, di.diaryType, di.subType, di.diaryName, di.info';
 
     readDatabaseArg(
       columns,
@@ -97,6 +115,7 @@ class Skills extends React.Component {
             ? this.state.skills.filter((sk) => sk.diaryId === item.diaryId)[0].rating
             : null
         }
+        savePressed={this.state.savePressed}
       />
     </View>
   );
@@ -105,7 +124,11 @@ class Skills extends React.Component {
   handleSave = (sessionId) => {
     this.props.skillRating.forEach((rating) => {
       updateDatabase('DiarySession', [sessionId, rating.id, rating.rating], ['sessionId', 'diaryId', 'rating'], () =>
-        store.dispatch(resetSkillRating())
+        store.dispatch(
+          resetSkillRating(
+            diaryPrePops.filter((t) => t.diaryType === 'Skill').map((s) => ({ id: s.diaryId, rating: 'No' }))
+          )
+        )
       );
     });
 
@@ -121,19 +144,70 @@ class Skills extends React.Component {
   //if there was already data saved for that day - delete. Only storing one entry for skills
 
   render() {
+    const mindfulness = 1;
+    const interpersonalEffectiveness = 2;
+    const emotionRegulation = 3;
+    const distressTolerance = 4;
+
+    const NUMBER_OF_TABS = 4;
+
     return (
       <View style={skillStyle.viewContainer}>
         {this.state.historyChecked ? (
-          <View style={{ flex: 1 }}>
-            <FlatList
-              data={this.state.skills}
-              renderItem={this.renderItem}
-              keyExtractor={(item, index) => index.toString()}
-            />
-            <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
-              <Text style={skillStyle.buttonText}>Save</Text>
-            </TouchableOpacity>
-          </View>
+          <Container>
+            <StyleProvider style={getTheme(platform)}>
+              <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
+                <Tab heading={'M'}>
+                  <View style={{ flex: 1 }}>
+                    <FlatList
+                      data={this.state.skills.filter((sk) => sk.subType === mindfulness)}
+                      renderItem={this.renderItem}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                    <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
+                      <Text style={skillStyle.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Tab>
+                <Tab heading={'IE'}>
+                  <View style={{ flex: 1 }}>
+                    <FlatList
+                      data={this.state.skills.filter((sk) => sk.subType === interpersonalEffectiveness)}
+                      renderItem={this.renderItem}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                    <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
+                      <Text style={skillStyle.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Tab>
+                <Tab heading={'ER'}>
+                  <View style={{ flex: 1 }}>
+                    <FlatList
+                      data={this.state.skills.filter((sk) => sk.subType === emotionRegulation)}
+                      renderItem={this.renderItem}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                    <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
+                      <Text style={skillStyle.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Tab>
+                <Tab heading={'DT'}>
+                  <View style={{ flex: 1 }}>
+                    <FlatList
+                      data={this.state.skills.filter((sk) => sk.subType === distressTolerance)}
+                      renderItem={this.renderItem}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                    <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
+                      <Text style={skillStyle.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                  </View>
+                </Tab>
+              </Tabs>
+            </StyleProvider>
+          </Container>
         ) : (
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <ActivityIndicator size="large" color="#007AFF" />
@@ -167,7 +241,10 @@ const skillStyle = StyleSheet.create({
     borderColor: '#007AFF',
     borderWidth: 1,
     borderRadius: 8,
-    margin: 15,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 5,
+    marginBottom: 5,
     alignSelf: 'stretch',
     justifyContent: 'center',
   },

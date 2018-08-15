@@ -24,7 +24,6 @@ import {
   GET_SCHEDULE,
 } from './actions';
 import Moment from 'moment';
-import { defaultSkillRating, defaultFeelingRating } from '../Constants/ReduxConstants';
 
 //SafetyPlan
 
@@ -100,15 +99,12 @@ const distractionReducer = (state = [], action) => {
 
 //Diary
 
-const defaultSkillRatings = defaultSkillRating();
-const defaultFeelingRatings = defaultFeelingRating();
-
 const diaryReducer = (
   state = {
     moodRating: 3,
     sleepRating: 3,
-    feelingRating: defaultFeelingRatings,
-    skillRating: defaultSkillRatings,
+    feelingRating: [],
+    skillRating: [],
     date: Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS'),
   },
   action
@@ -121,7 +117,7 @@ const diaryReducer = (
   if (action.type === UPDATE_SKILL_RATING) {
     return {
       ...state,
-      skillRating: [...state.skillRating].map((rating) => {
+      skillRating: state.skillRating.map((rating) => {
         if (rating.id === action.payload.id) {
           return action.payload;
         } else {
@@ -133,14 +129,14 @@ const diaryReducer = (
   // used for when a new skill rating is recorded
 
   if (action.type === RESET_SKILL_RATING) {
-    return { ...state, skillRating: [...defaultSkillRatings] };
+    return { ...state, skillRating: action.payload };
   }
   // used for when skill ratings are reset
 
   if (action.type === UPDATE_FEELING_RATING) {
     return {
       ...state,
-      feelingRating: [...state.feelingRating].map((rating) => {
+      feelingRating: state.feelingRating.map((rating) => {
         if (rating.id === action.payload.id) {
           return action.payload;
         } else {
@@ -152,7 +148,7 @@ const diaryReducer = (
   // used for when a new feeling rating is recorded
 
   if (action.type === RESET_FEELING_RATING) {
-    return { ...state, feelingRating: [...defaultFeelingRatings] };
+    return { ...state, feelingRating: action.payload };
   }
   // used for when feeling ratings are reset
 
