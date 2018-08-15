@@ -20,7 +20,7 @@ const DiaryStack = createStackNavigator(
         feelingsSummary: FeelingsSummary,
         feelingsSession: FeelingsSession,
         general: General,
-        spSelection: SafetyPlanSelection,
+        spSelection: SafetyPlanSelection
     },
 
     {

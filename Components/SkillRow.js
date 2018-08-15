@@ -24,18 +24,26 @@ export default class SkillRow extends React.Component {
         // set state with previously saved selections, if any, and update global state
     }
 
+    componentWillReceiveProps(nextProps) {
+        const savePressed = nextProps.savePressed;
+
+        if(savePressed !== this.props.savePressed) {
+            let rating;
+
+            if(this.state.selectedIndex === 1) {
+                rating = 'No'
+            } else {
+                rating = 'Yes'
+            }
+
+            store.dispatch(updateSkillRating({id: this.props.index, rating: rating}))
+            console.log("should be first")
+        }
+    }
+    // listen for new props coming from parent component when save button is pressed and update global store accordingly
+
     updateIndex = (selectedIndex) => {
         this.setState({selectedIndex});
-
-        let rating;
-
-        if(selectedIndex === 1) {
-            rating = 'No'
-        } else {
-            rating = 'Yes'
-        }
-
-        store.dispatch(updateSkillRating({id: this.props.index, rating: rating}))
     };
     // when user selects Y or N, update global ratings store
 
@@ -74,11 +82,11 @@ export default class SkillRow extends React.Component {
                             onPress={this.updateIndex}
                             selectedIndex={this.state.selectedIndex}
                             buttons={buttons}
-                            containerStyle={{flex: 1, borderColor: '#007AFF'}}
-                            buttonStyle={{backgroundColor: 'white'}}
-                            textStyle={{color: '#007AFF'}}
-                            selectedButtonStyle={{backgroundColor: '#007AFF'}}
-                            selectedTextStyle={{color: 'white'}}
+                            containerStyle={skillRowStyle.buttonContainer}
+                            buttonStyle={skillRowStyle.buttonGroup}
+                            textStyle={skillRowStyle.buttonGroupText}
+                            selectedButtonStyle={skillRowStyle.buttonGroupSelected}
+                            selectedTextStyle={skillRowStyle.buttonGroupSelectedText}
                             innerBorderStyle={{color: 'white'}}
                         />
                     </View>
@@ -126,8 +134,29 @@ const skillRowStyle = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         flex: 1,
-        marginTop: 12,
-        marginBottom: 12
+        marginTop: 8,
+        marginBottom: 8
+    },
+
+    buttonContainer: {
+        flex: 1,
+        borderColor: '#007AFF'
+    },
+
+    buttonGroup: {
+        backgroundColor: 'white'
+    },
+
+    buttonGroupText: {
+        color: '#007AFF'
+    },
+
+    buttonGroupSelected: {
+        backgroundColor: '#007AFF'
+    },
+
+    buttonGroupSelectedText: {
+        color: 'white'
     }
 
 });

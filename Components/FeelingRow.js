@@ -73,7 +73,7 @@ export default class FeelingRow extends React.Component {
     render() {
         return (
             <View style={feelingRowStyle.viewContainer}>
-                <View style={{flexDirection: 'row', alignItems: 'center', paddingBottom: 15,}}>
+                <View style={{flexDirection: 'row', alignItems: 'center', paddingBottom: 10,}}>
                     <PressableIcon
                         iconName={Icons.info + '-outline'}
                         size={25}
