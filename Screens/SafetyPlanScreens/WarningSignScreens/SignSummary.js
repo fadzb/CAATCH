@@ -131,7 +131,7 @@ export default class SignSummary extends React.Component {
                               this.props.navigation.getParam('desc')
                             )
                           }
-                          buttonStyle={{ marginRight: 13 }}
+                          buttonStyle={{ marginRight: 20 }}
                         />
                         <PressableIcon
                           iconName={Icons.delete + '-outline'}
