@@ -169,7 +169,7 @@ export default class DistractionSummary extends React.Component {
                               link
                             )
                           }
-                          buttonStyle={{ marginRight: 13 }}
+                          buttonStyle={{ marginRight: 20 }}
                         />
                         <PressableIcon
                           iconName={Icons.delete + '-outline'}

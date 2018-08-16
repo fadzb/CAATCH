@@ -144,7 +144,7 @@ export default class ReasonSummary extends React.Component {
                               link
                             )
                           }
-                          buttonStyle={{ marginRight: 13 }}
+                          buttonStyle={{ marginRight: 20 }}
                         />
                         <PressableIcon
                           iconName={Icons.delete + '-outline'}

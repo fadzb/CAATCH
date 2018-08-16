@@ -146,29 +146,32 @@ export default class ContactSummary extends React.Component {
               </Text>
             </View>
           )}
+          <View style={contactSummaryStyle.deleteEditButtons}>
+            <PressableIcon
+              iconName={Icons.edit + '-outline'}
+              size={35}
+              onPressFunction={() =>
+                this.editContact(
+                  this.props.navigation.getParam('id'),
+                  this.props.navigation.getParam('firstName'),
+                  this.props.navigation.getParam('surname'),
+                  phone,
+                  email,
+                  mediaPath
+                )
+              }
+              buttonStyle={{ marginRight: 15 }}
+            />
+            <PressableIcon
+              iconName={Icons.delete + '-outline'}
+              size={35}
+              onPressFunction={() => this.showAlert(this.props.navigation.getParam('id'))}
+              color="red"
+            />
+          </View>
         </View>
         <View style={contactSummaryStyle.nameTextView}>
-          <PressableIcon
-            iconName={Icons.edit + '-outline'}
-            size={35}
-            onPressFunction={() =>
-              this.editContact(
-                this.props.navigation.getParam('id'),
-                this.props.navigation.getParam('firstName'),
-                this.props.navigation.getParam('surname'),
-                phone,
-                email,
-                mediaPath
-              )
-            }
-          />
           <Text style={{ fontSize: 22 }}>{this.state.name}</Text>
-          <PressableIcon
-            iconName={Icons.delete + '-outline'}
-            size={35}
-            onPressFunction={() => this.showAlert(this.props.navigation.getParam('id'))}
-            color="red"
-          />
         </View>
         <View style={contactSummaryStyle.contactTextRow}>
           <View style={{ paddingLeft: 15 }}>
@@ -221,6 +224,7 @@ export default class ContactSummary extends React.Component {
 
 const contactSummaryStyle = StyleSheet.create({
   thumbnailContainer: {
+    flexDirection: 'row',
     padding: 20,
     alignItems: 'center',
     justifyContent: 'center',
@@ -246,7 +250,7 @@ const contactSummaryStyle = StyleSheet.create({
   nameTextView: {
     alignItems: 'center',
     flexDirection: 'row',
-    justifyContent: 'space-between',
+    justifyContent: 'center',
     paddingTop: 15,
     paddingBottom: 15,
     borderTopWidth: 2,
@@ -276,5 +280,13 @@ const contactSummaryStyle = StyleSheet.create({
 
   iconButton: {
     paddingLeft: 23,
+  },
+
+  deleteEditButtons: {
+    position: 'absolute',
+    right: 0,
+    flexDirection: 'row',
+    alignSelf: 'flex-start',
+    margin: 20,
   },
 });
