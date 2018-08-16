@@ -14,6 +14,12 @@ class General extends React.Component {
 
         return {
             title: 'General' + " " + Moment(diaryDate).format('DD.MM.YYYY'),
+            headerRight: (
+                <TouchableOpacity
+                    onPress={() => navigation.push('generalSummary')}
+                ><Text style={{ padding: 10 }}>Archive</Text>
+                </TouchableOpacity>
+            ),
         }
     };
     // static property called navigationOptions that belongs to all screen components

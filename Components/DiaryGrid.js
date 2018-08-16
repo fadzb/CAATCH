@@ -14,12 +14,11 @@ export const DiaryGrid = (props) => {
                 <DiaryTile onPress={() => props.navigation.push('feelings', {title: props.date})} name='Feelings' iconName={Icons.feelings + '-outline'}/>
             </View>
             <View style={gridStyle.rowContainer}>
-                <DiaryTile name='Medication' iconName={Icons.medication + '-outline'}/>
-                <DiaryTile onPress={() => props.navigation.push('general', {title: props.date})} name='General' iconName={Icons.generalDiary + '-outline'}/>
-            </View>
-            <View style={gridStyle.rowContainer}>
                 <DiaryTile onPress={() => props.navigation.push('spSelection', {title: props.date, type: 'sign'})} name='Warning Sign' iconName={Icons.warningSign + '-outline'}/>
                 <DiaryTile onPress={() => props.navigation.push('spSelection', {title: props.date, type: 'cope'})} name='Coping Strategy' iconName={Icons.copingStrategy + '-outline'}/>
+            </View>
+            <View style={gridStyle.rowContainer}>
+                <DiaryTile onPress={() => props.navigation.push('general', {title: props.date})} name='General' iconName={Icons.generalDiary + '-outline'}/>
             </View>
         </View>
     )
