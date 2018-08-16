@@ -39,13 +39,11 @@ class Skills extends React.Component {
     }
 
     createSession = () => {
-        this.setState({savePressed: true},() => {
-            updateDatabase('Session',
-                [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), this.props.diaryDate],
-                ["dateEntered", "diaryDate"],
-                undefined,
-                (res) => this.handleSave(res.insertId))
-        })
+        updateDatabase('Session',
+            [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), this.props.diaryDate],
+            ["dateEntered", "diaryDate"],
+            undefined,
+            (res) => this.handleSave(res.insertId))
     };
     // when user presses save - create session in DB with date recorded at screen opening
 
@@ -68,13 +66,7 @@ class Skills extends React.Component {
 
     savePrevSelected = (res) => {
         if(res.length !== 0) {
-            this.setState({skills: res.map(sk => {
-                if(sk.rating === 'No') {
-                    return {...sk, rating: 1}
-                } else {
-                    return {...sk, rating: 0}
-                }
-            })}, () => {
+            this.setState({skills: res}, () => {
                 this.setState({historyChecked: true, prevSelected: true})
             })
         } else {
@@ -83,27 +75,12 @@ class Skills extends React.Component {
     };
     // need to keep track of when we checked through callback in order to delay render of flatlist component
 
-    renderItem = ({item}) => (
-        <View style={skillStyle.listContainer}>
-            <SkillRow
-                name= {item.diaryName}
-                info={item.info}
-                index= {item.diaryId}
-                prevSelected={(this.state.skills.filter(sk => sk.diaryId === item.diaryId))[0].rating !== undefined
-                    ? (this.state.skills.filter(sk => sk.diaryId === item.diaryId))[0].rating
-                    : null}
-                savePressed={this.state.savePressed}
-            />
-        </View>
-    );
-    // prevSelected prop contains the history for that day if it was already filled in
-
     handleSave = (sessionId) => {
         this.props.skillRating.forEach(rating => {
             updateDatabase('DiarySession',
                 [sessionId, rating.id, rating.rating],
                 ['sessionId', 'diaryId', 'rating'],
-                () => store.dispatch(resetSkillRating(diaryPrePops.filter(t => t.diaryType === "Skill").map(s => ({id: s.diaryId, rating: 'No'})))))
+                () => store.dispatch(resetSkillRating(diaryPrePops.filter(t => t.diaryType === "Skill").map(s => ({id: s.diaryId, rating: 0})))))
         });
 
         if(this.state.prevSelected) {
@@ -131,44 +108,88 @@ class Skills extends React.Component {
                     <StyleProvider style={getTheme(platform)}>
                         <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
                             <Tab heading={"M"}>
-                                <View style={{flex: 1}}><FlatList
-                                    data={this.state.skills.filter(sk => sk.subType === mindfulness)}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={(item, index) => index.toString()}
-                                />
+                                <View style={{flex: 1}}>
+                                    {this.state.skills.filter(sk => sk.subType === mindfulness).map(skill => {
+                                        return(
+                                            <View key={skill.diaryId} style={{flex : 1}}>
+                                                <SkillRow
+                                                    name= {skill.diaryName}
+                                                    info={skill.info}
+                                                    index= {skill.diaryId}
+                                                    prevSelected={(this.state.skills.filter(sk => sk.diaryId === skill.diaryId))[0].rating !== undefined
+                                                        ? (this.state.skills.filter(sk => sk.diaryId === skill.diaryId))[0].rating
+                                                        : null}
+                                                    savePressed={this.state.savePressed}
+                                                />
+                                            </View>
+                                        )
+                                    })}
                                     <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
                                         <Text style={skillStyle.buttonText}>Save</Text>
                                     </TouchableOpacity>
                                 </View>
                             </Tab>
                             <Tab heading={"IE"}>
-                                <View style={{flex: 1}}><FlatList
-                                    data={this.state.skills.filter(sk => sk.subType === interpersonalEffectiveness)}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={(item, index) => index.toString()}
-                                />
+                                <View style={{flex: 1}}>
+                                    {this.state.skills.filter(sk => sk.subType === interpersonalEffectiveness).map(skill => {
+                                        return(
+                                            <View key={skill.diaryId} style={{flex : 1}}>
+                                                <SkillRow
+                                                    name= {skill.diaryName}
+                                                    info={skill.info}
+                                                    index= {skill.diaryId}
+                                                    prevSelected={(this.state.skills.filter(sk => sk.diaryId === skill.diaryId))[0].rating !== undefined
+                                                        ? (this.state.skills.filter(sk => sk.diaryId === skill.diaryId))[0].rating
+                                                        : null}
+                                                    savePressed={this.state.savePressed}
+                                                />
+                                            </View>
+                                        )
+                                    })}
                                     <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
                                         <Text style={skillStyle.buttonText}>Save</Text>
                                     </TouchableOpacity>
                                 </View>
                             </Tab>
                             <Tab heading={"ER"}>
-                                <View style={{flex: 1}}><FlatList
-                                    data={this.state.skills.filter(sk => sk.subType === emotionRegulation)}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={(item, index) => index.toString()}
-                                />
+                                <View style={{flex: 1}}>
+                                    {this.state.skills.filter(sk => sk.subType === emotionRegulation).map(skill => {
+                                        return(
+                                            <View key={skill.diaryId} style={{flex : 1}}>
+                                                <SkillRow
+                                                    name= {skill.diaryName}
+                                                    info={skill.info}
+                                                    index= {skill.diaryId}
+                                                    prevSelected={(this.state.skills.filter(sk => sk.diaryId === skill.diaryId))[0].rating !== undefined
+                                                        ? (this.state.skills.filter(sk => sk.diaryId === skill.diaryId))[0].rating
+                                                        : null}
+                                                    savePressed={this.state.savePressed}
+                                                />
+                                            </View>
+                                        )
+                                    })}
                                     <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
                                         <Text style={skillStyle.buttonText}>Save</Text>
                                     </TouchableOpacity>
                                 </View>
                             </Tab>
                             <Tab heading={"DT"}>
-                                <View style={{flex: 1}}><FlatList
-                                    data={this.state.skills.filter(sk => sk.subType === distressTolerance)}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={(item, index) => index.toString()}
-                                />
+                                <View style={{flex: 1}}>
+                                    {this.state.skills.filter(sk => sk.subType === distressTolerance).map(skill => {
+                                        return(
+                                            <View key={skill.diaryId} style={{flex : 1}}>
+                                                <SkillRow
+                                                    name= {skill.diaryName}
+                                                    info={skill.info}
+                                                    index= {skill.diaryId}
+                                                    prevSelected={(this.state.skills.filter(sk => sk.diaryId === skill.diaryId))[0].rating !== undefined
+                                                        ? (this.state.skills.filter(sk => sk.diaryId === skill.diaryId))[0].rating
+                                                        : null}
+                                                    savePressed={this.state.savePressed}
+                                                />
+                                            </View>
+                                        )
+                                    })}
                                     <TouchableOpacity style={skillStyle.button} onPress={this.createSession}>
                                         <Text style={skillStyle.buttonText}>Save</Text>
                                     </TouchableOpacity>
@@ -187,7 +208,7 @@ class Skills extends React.Component {
 
 const skillStyle = StyleSheet.create({
     listContainer: {
-        alignSelf: 'stretch'
+        alignSelf: 'stretch',
     },
 
     viewContainer: {

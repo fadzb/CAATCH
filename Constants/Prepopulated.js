@@ -22,7 +22,7 @@ export const getDiaryPrePops = () => {
         d => {
             diaryPrePops = d;
 
-            store.dispatch(resetSkillRating(d.filter(t => t.diaryType === "Skill").map(s => ({id: s.diaryId, rating: 'No'}))))
+            store.dispatch(resetSkillRating(d.filter(t => t.diaryType === "Skill").map(s => ({id: s.diaryId, rating: 0}))))
             store.dispatch(resetFeelingRating(d.filter(t => t.diaryType === "Feeling").map(f => ({id: f.diaryId, rating: 0}))))
         })
 };
