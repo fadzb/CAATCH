@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableHighlight, View, Alert } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, Alert, Switch, Dimensions } from 'react-native';
 import { ButtonGroup } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import store from '../Redux/store';
@@ -12,40 +12,24 @@ export default class SkillRow extends React.Component {
     super(props);
 
     this.state = {
-      selectedIndex: 1, // default to 'No'
+      selectedIndex: false,
     };
   }
 
   componentDidMount() {
     this.setState(
       {
-        selectedIndex: this.props.prevSelected === null ? 1 : this.props.prevSelected,
+        selectedIndex: this.props.prevSelected === null ? false : this.props.prevSelected !== 0,
       },
       () => this.updateIndex(this.state.selectedIndex)
     );
     // set state with previously saved selections, if any, and update global state
   }
 
-  componentWillReceiveProps(nextProps) {
-    const savePressed = nextProps.savePressed;
-
-    if (savePressed !== this.props.savePressed) {
-      let rating;
-
-      if (this.state.selectedIndex === 1) {
-        rating = 'No';
-      } else {
-        rating = 'Yes';
-      }
-
-      store.dispatch(updateSkillRating({ id: this.props.index, rating: rating }));
-      console.log('should be first');
-    }
-  }
-  // listen for new props coming from parent component when save button is pressed and update global store accordingly
-
   updateIndex = (selectedIndex) => {
     this.setState({ selectedIndex });
+
+    store.dispatch(updateSkillRating({ id: this.props.index, rating: selectedIndex ? 1 : 0 }));
   };
   // when user selects Y or N, update global ratings store
 
@@ -57,7 +41,7 @@ export default class SkillRow extends React.Component {
   // alert for displaying skill info
 
   render() {
-    const buttons = ['Yes', 'No'];
+    //const buttons = ['Yes', 'No'];
 
     return (
       <View style={skillRowStyle.container}>
@@ -72,16 +56,10 @@ export default class SkillRow extends React.Component {
               />
               <Text style={skillRowStyle.buttonText}>{this.props.name}</Text>
             </View>
-            <ButtonGroup
-              onPress={this.updateIndex}
-              selectedIndex={this.state.selectedIndex}
-              buttons={buttons}
-              containerStyle={skillRowStyle.buttonContainer}
-              buttonStyle={skillRowStyle.buttonGroup}
-              textStyle={skillRowStyle.buttonGroupText}
-              selectedButtonStyle={skillRowStyle.buttonGroupSelected}
-              selectedTextStyle={skillRowStyle.buttonGroupSelectedText}
-              innerBorderStyle={{ color: 'white' }}
+            <Switch
+              onValueChange={this.updateIndex}
+              value={this.state.selectedIndex}
+              style={skillRowStyle.buttonContainer}
             />
           </View>
         </TouchableHighlight>
@@ -127,14 +105,16 @@ const skillRowStyle = StyleSheet.create({
   rowContainer: {
     flexDirection: 'row',
     alignItems: 'center',
+    justifyContent: 'space-between',
     flex: 1,
     marginTop: 8,
     marginBottom: 8,
   },
 
   buttonContainer: {
-    flex: 1,
-    borderColor: '#007AFF',
+    //flex: 1,
+    //transform: [{ scaleX: 1.4 }, { scaleY: 1.4 }]
+    marginRight: 5,
   },
 
   buttonGroup: {
