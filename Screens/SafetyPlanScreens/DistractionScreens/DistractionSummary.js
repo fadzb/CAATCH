@@ -146,7 +146,7 @@ export default class DistractionSummary extends React.Component {
                                                         this.props.navigation.getParam('name'),
                                                         this.props.navigation.getParam('desc'),
                                                         link)}
-                                                    buttonStyle={{marginRight: 13}}
+                                                    buttonStyle={{marginRight: 20}}
                                                 />
                                                 <PressableIcon
                                                     iconName={Icons.delete + '-outline'}

@@ -112,7 +112,7 @@ export default class SignSummary extends React.Component {
                                                 onPressFunction={() => this.editSign(this.props.navigation.getParam('id'),
                                                     this.props.navigation.getParam('name'),
                                                     this.props.navigation.getParam('desc'))}
-                                                buttonStyle={{marginRight: 13}}
+                                                buttonStyle={{marginRight: 20}}
                                             />
                                             <PressableIcon
                                                 iconName={Icons.delete + '-outline'}
