@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, ActivityIndicator } from 'react-native';
 import CustomMultiPicker from 'react-native-multiple-select-list';
-import { readDatabaseArg, updateDatabase } from '../../Util/DatabaseHelper';
+import { readDatabaseArg, updateDatabase, deleteDatabaseRow } from '../../Util/DatabaseHelper';
 import Moment from 'moment';
 import store from '../../Redux/store';
 
@@ -43,7 +43,7 @@ export default class SafetyPlanSelection extends React.Component {
     const selectedDate = Moment(diaryDate).format('YYYY-MM-DD');
 
     if (safetyPlanType === 'cope') {
-      const columns = 'c.copeId';
+      const columns = 'c.copeId, c.sessionId';
 
       readDatabaseArg(
         columns,
@@ -53,7 +53,7 @@ export default class SafetyPlanSelection extends React.Component {
         " as c inner join Session as s on c.sessionId = s.sessionId where DATE(diaryDate) = '" + selectedDate + "'"
       );
     } else {
-      const columns = 'si.signId';
+      const columns = 'si.signId, si.sessionId';
 
       readDatabaseArg(
         columns,
@@ -68,13 +68,9 @@ export default class SafetyPlanSelection extends React.Component {
 
   setPreviouslyCheckedItems = (results) => {
     if (this.state.type === 'cope') {
-      this.setState({ previouslyCheckedItems: results.map((r) => r.copeId.toString()) }, () =>
-        this.setState({ historyChecked: true })
-      );
+      this.setState({ previouslyCheckedItems: results }, () => this.setState({ historyChecked: true }));
     } else {
-      this.setState({ previouslyCheckedItems: results.map((r) => r.signId.toString()) }, () =>
-        this.setState({ historyChecked: true })
-      );
+      this.setState({ previouslyCheckedItems: results }, () => this.setState({ historyChecked: true }));
     }
   };
 
@@ -118,10 +114,22 @@ export default class SafetyPlanSelection extends React.Component {
       this.state.checkedItems.forEach((t) => {
         updateDatabase('CopeSession', [sessionId, t], ['sessionId', 'copeId']);
       });
+
+      if (this.state.previouslyCheckedItems.length > 0) {
+        this.state.previouslyCheckedItems.forEach((prev) => {
+          deleteDatabaseRow('CopeSession', 'where sessionId = ' + prev.sessionId);
+        });
+      }
     } else {
       this.state.checkedItems.forEach((t) => {
         updateDatabase('SignSession', [sessionId, t], ['sessionId', 'signId']);
       });
+
+      if (this.state.previouslyCheckedItems.length > 0) {
+        this.state.previouslyCheckedItems.forEach((prev) => {
+          deleteDatabaseRow('SignSession', 'where sessionId = ' + prev.sessionId);
+        });
+      }
     }
 
     this.props.navigation.pop();
@@ -147,7 +155,11 @@ export default class SafetyPlanSelection extends React.Component {
                 selectedIconName={'ios-checkmark-circle-outline'}
                 unselectedIconName={'ios-radio-button-off-outline'}
                 search={true}
-                selected={this.state.previouslyCheckedItems}
+                selected={
+                  this.state.type === 'cope'
+                    ? this.state.previouslyCheckedItems.map((r) => r.copeId.toString())
+                    : this.state.previouslyCheckedItems.map((r) => r.signId.toString())
+                }
               />
             </View>
             <TouchableHighlight style={SPSelectionStyle.button} onPress={this.createSession} underlayColor="#99d9f4">
