@@ -1,7 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, ActivityIndicator } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
-import {readDatabaseArg} from "../../Util/DatabaseHelper";
+import {readDatabaseArg, updateDatabase} from "../../Util/DatabaseHelper";
+import Moment from 'moment';
+import store from "../../Redux/store"
 
 export default class SafetyPlanSelection extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -17,7 +19,10 @@ export default class SafetyPlanSelection extends React.Component {
         this.state = {
             items: [],
             checkedItems: [],
-            type: ''
+            previouslyCheckedItems: [],
+            type: '',
+            sessionDate: new Date(),
+            historyChecked: false,
         }
     }
 
@@ -31,15 +36,52 @@ export default class SafetyPlanSelection extends React.Component {
             readDatabaseArg('*', 'WarningSign', this.updateItems, undefined, 'where dateDeleted is NULL')
         }
     }
+    // get safetyplan items based on their type passed down through navigation props
+
+    getPreviouslyCheckedItems = (safetyPlanType) => {
+        const diaryDate = store.getState().diary.date;
+        const selectedDate = Moment(diaryDate).format("YYYY-MM-DD");
+
+        if(safetyPlanType === 'cope') {
+            const columns = "c.copeId";
+
+            readDatabaseArg(columns,
+                "CopeSession",
+                this.setPreviouslyCheckedItems,
+                undefined,
+                " as c inner join Session as s on c.sessionId = s.sessionId where DATE(diaryDate) = '" + selectedDate + "'");
+        } else {
+            const columns = "si.signId";
+
+            readDatabaseArg(columns,
+                "SignSession",
+                this.setPreviouslyCheckedItems,
+                undefined,
+                " as si inner join Session as s on si.sessionId = s.sessionId where DATE(diaryDate) = '" + selectedDate + "'");
+        }
+    };
+    // get previously saved items for selected date
+
+    setPreviouslyCheckedItems = results => {
+        if(this.state.type === 'cope') {
+            this.setState({previouslyCheckedItems: results.map(r => r.copeId.toString())}, () => this.setState({historyChecked: true}))
+        } else {
+            this.setState({previouslyCheckedItems: results.map(r => r.signId.toString())}, () => this.setState({historyChecked: true}))
+        }
+    };
 
     updateItems = (items) => {
-        this.setState({ items: items.map(item => {
-            if(this.state.type === 'cope') {
-                return item.copeName
-            } else {
-                return item.signName
-            }
-        })});
+        const testCope = this.state.type === 'cope';
+        let struct = {};
+
+        if(testCope) {
+            items.forEach(c => struct[c.copeId] = c.copeName)
+        } else {
+            items.forEach(s => struct[s.signId] = s.signName)
+        }
+
+        this.setState({ items: struct },
+            testCope ? this.getPreviouslyCheckedItems('cope') : this.getPreviouslyCheckedItems('sign'));
     };
     // update checklist with items from pre-populated array
 
@@ -50,32 +92,67 @@ export default class SafetyPlanSelection extends React.Component {
     };
     // Updates state everytime option is checked/unchecked
 
+    createSession = () => {
+        updateDatabase('Session',
+            [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), store.getState().diary.date],
+            ["dateEntered", "diaryDate"],
+            undefined,
+            (res) => this.handleSave(res.insertId))
+    };
+    // when user presses save - create session in DB with date recorded at screen opening
+
+    handleSave = (sessionId) => {
+        if(this.state.type ==='cope') {
+            this.state.checkedItems.forEach(t => {
+                updateDatabase('CopeSession',
+                    [sessionId, t],
+                    ['sessionId', 'copeId']
+                )
+            })
+        } else {
+            this.state.checkedItems.forEach(t => {
+                updateDatabase('SignSession',
+                    [sessionId, t],
+                    ['sessionId', 'signId']
+                )
+            })
+        }
+
+        this.props.navigation.pop();
+    };
+
     render() {
         return(
             <View style={SPSelectionStyle.viewContainer}>
-                <View style={{flex: 1}}>
-                    <CustomMultiPicker
-                        options={this.state.items}
-                        multiple={true} //
-                        returnValue={"label"} // label or value
-                        callback={this.getCheckedItems} // callback, array of selected items
-                        rowBackgroundColor={"#fff"}
-                        rowHeight={40}
-                        rowRadius={5}
-                        iconColor={"#00a2dd"}
-                        iconSize={25}
-                        itemStyle={SPSelectionStyle.itemStyle}
-                        selectedIconName={"ios-checkmark-circle-outline"}
-                        unselectedIconName={"ios-radio-button-off-outline"}
-                        search={true}
-                    />
-                </View>
-                <TouchableHighlight
-                    style={SPSelectionStyle.button}
-                    onPress={() => this.props.navigation.navigate('main', {checkedItems: this.state.checkedItems})}
-                    underlayColor='#99d9f4'>
-                    <Text style={SPSelectionStyle.buttonText}>Save</Text>
-                </TouchableHighlight>
+                {this.state.historyChecked ? <View style={{flex: 1}}>
+                    <View style={{flex: 1}}>
+                        <CustomMultiPicker
+                            options={this.state.items}
+                            multiple={true} //
+                            returnValue={this.state.type === 'cope' ? "copeId" : "signId"} // label or value
+                            callback={this.getCheckedItems} // callback, array of selected items
+                            rowBackgroundColor={"#fff"}
+                            rowHeight={40}
+                            rowRadius={5}
+                            iconColor={"#00a2dd"}
+                            iconSize={25}
+                            itemStyle={SPSelectionStyle.itemStyle}
+                            selectedIconName={"ios-checkmark-circle-outline"}
+                            unselectedIconName={"ios-radio-button-off-outline"}
+                            search={true}
+                            selected={this.state.previouslyCheckedItems}
+                        />
+                    </View>
+                    <TouchableHighlight
+                        style={SPSelectionStyle.button}
+                        onPress={this.createSession}
+                        underlayColor='#99d9f4'>
+                        <Text style={SPSelectionStyle.buttonText}>Save</Text>
+                    </TouchableHighlight>
+                </View> :
+                    <View style={{flex: 1, justifyContent: 'center'}}>
+                        <ActivityIndicator size="large" color="#007AFF" />
+                    </View>}
             </View>
         )
     }
