@@ -6,12 +6,14 @@ import { Icons } from '../../Constants/Icon';
 import HomeScreen from '../../Screens/HomeScreen';
 import Schedule from '../../Screens/ScheduleScreens/Schedule';
 import NewSchedule from '../../Screens/ScheduleScreens/NewSchedule';
+import Chart from '../../Screens/StatScreens/Chart';
 
 const HomeStack = createStackNavigator(
   {
     main: HomeScreen,
     schedule: Schedule,
     newSchedule: NewSchedule,
+    chart: Chart,
   },
 
   {
