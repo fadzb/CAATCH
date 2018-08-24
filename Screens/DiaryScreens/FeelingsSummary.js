@@ -67,7 +67,6 @@ export default class FeelingsSummary extends React.Component {
         return (
             <View style={feelingSummaryStyle.viewContainer}>
                 <FlatList
-                    //data={this.props.coping.sort(compareDates)} // comes from mapStateToProps below
                     data={this.state.feelings}
                     renderItem={this.renderItem}
                     keyExtractor={(item, index) => index.toString()}

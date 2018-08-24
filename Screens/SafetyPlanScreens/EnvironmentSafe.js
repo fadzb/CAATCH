@@ -7,7 +7,12 @@ import {PressableIcon} from "../../Components/PressableIcon";
 
 const EnvironmentRow = props => (
     <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flex: 1}}>
-        <View style={environmentStyle.circleView}/>
+        <View style={environmentStyle.circleView}>
+            <Icon
+                name={Icons.dividerArrow}
+                size={20}
+            />
+        </View>
         <View style={{flex: 1, marginLeft: 10, marginRight: 15}}>
             <Text style={{fontSize: 15}}>{props.description}</Text>
         </View>
@@ -115,10 +120,6 @@ const environmentStyle = StyleSheet.create({
         //backgroundColor: 'red'
     },
     circleView: {
-        width: 15,
-        height: 15,
-        borderRadius: 15/2,
-        borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
     },
