@@ -1,28 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, WebView, Dimensions } from 'react-native';
-import { Icons } from '../../Constants/Icon';
-import { LineChart } from 'react-native-chart-kit';
-import Moment from 'moment';
-
+import { StyleSheet, View, Dimensions, Text, ActivityIndicator } from 'react-native';
 import { TabStyles } from '../../Styles/TabStyles';
+import Moment from 'moment';
 import { readDatabaseArg } from '../../Util/DatabaseHelper';
 
-const data = {
-  labels: ['January', 'February', 'March', 'April', 'May', 'June'],
-  datasets: [
-    {
-      data: [0, 3, 1, 5, 4, 2],
-    },
-  ],
-};
+import { VictoryChart, VictoryGroup, VictoryLine, VictoryTheme } from 'victory-native';
 
-const chartConfig = {
-  backgroundGradientFrom: '#fff4e6',
-  backgroundGradientTo: '#ffeacc',
-  color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`,
-};
-
-export default class Chart extends React.Component {
+export default class VicChart extends React.Component {
   static navigationOptions = {
     title: 'Charts',
   };
@@ -37,8 +21,12 @@ export default class Chart extends React.Component {
       sixMonthDate: Moment().subtract(6, 'M').format('YYYY-MM-DD'),
       skillData: [],
       selectedSkill: 'Use Drugs',
-      graphData: { labels: [], datasets: [{ data: [] }] },
+      graphData: [
+        { x: 0, y: 0 },
+        { x: 0, y: 0 },
+      ],
       dateRange: [],
+      graphReady: false,
     };
   }
 
@@ -69,7 +57,7 @@ export default class Chart extends React.Component {
   handleSkillData = (res) => this.setState({ skillData: res }, () => this.transformForGraph(this.state.selectedSkill));
 
   transformForGraph = (selectedSkill) => {
-    let trackGraph = { labels: [], datasets: [{ data: [] }] };
+    let trackGraph = [];
 
     const skillRatings = this.state.skillData
       .filter((sk) => sk.diaryName === selectedSkill)
@@ -77,18 +65,19 @@ export default class Chart extends React.Component {
     const skillDates = skillRatings.map((skr) => skr.diaryDate);
 
     this.state.dateRange.forEach((date) => {
-      trackGraph.labels.push(date);
+      trackGraph.push({ x: date, y: 0 });
 
-      if (!skillDates.includes(date)) {
-        trackGraph.datasets[0].data.push(0);
-      } else {
+      if (skillDates.includes(date)) {
         const trackArr = skillRatings.filter((sk) => sk.diaryDate === date).map((tr) => tr.rating);
 
-        trackGraph.datasets[0].data.push(trackArr.reduce((total, rating) => total + rating) / trackArr.length);
+        const avgRating = trackArr.reduce((total, rating) => total + rating) / trackArr.length;
+        const skillObjIndex = trackGraph.findIndex((e) => e.x === date);
+
+        trackGraph[skillObjIndex].y = avgRating;
       }
     });
 
-    this.setState({ graphData: trackGraph });
+    this.setState({ graphData: trackGraph }, this.setState({ graphReady: true }));
   };
 
   getDateRange = () => {
@@ -107,15 +96,31 @@ export default class Chart extends React.Component {
   render() {
     return (
       <View style={TabStyles.stackContainer}>
-        <LineChart
-          data={this.state.graphData}
-          width={Dimensions.get('window').width}
-          height={Dimensions.get('window').height / 2.5}
-          chartConfig={chartConfig}
-        />
+        {this.state.graphReady ? (
+          <VictoryChart
+            theme={VictoryTheme.material}
+            categories={{
+              y: ['1', '2', '3', '4', '5'],
+              x: this.state.graphData.map((gr) => gr.x),
+            }}
+          >
+            <VictoryLine
+              style={{
+                data: { stroke: '#c43a31', strokeWidth: 3 },
+                parent: { border: '4px solid #ccc' },
+              }}
+              data={this.state.graphData}
+              domain={{ x: [0, 5], y: [0, 5] }}
+            />
+          </VictoryChart>
+        ) : (
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color="#007AFF" />
+          </View>
+        )}
       </View>
     );
   }
 }
 
-const chartStyle = StyleSheet.create({});
+const styles = StyleSheet.create({});
