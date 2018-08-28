@@ -7,28 +7,28 @@ import { VideoThumbnail } from './VideoThumbnail';
 
 // Component used for rows in the touchable rows in the app
 export const SelectionRow = (props) => (
-  <View style={sectionRowStyle.container}>
-    <TouchableHighlight underlayColor="#FDEDEC" style={sectionRowStyle.button} onPress={props.onPress}>
+  <View style={selectionRowStyle.container}>
+    <TouchableHighlight underlayColor="#FDEDEC" style={selectionRowStyle.button} onPress={props.onPress}>
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
         {props.thumbnail !== undefined && <Thumbnail source={props.thumbnail} />}
         {props.videoThumbnail !== undefined && (
           <VideoThumbnail
             source={props.videoThumbnail}
-            containerStyle={sectionRowStyle.videoThumbnailView}
-            videoDisplayStyle={sectionRowStyle.videoDisplay}
+            containerStyle={selectionRowStyle.videoThumbnailView}
+            videoDisplayStyle={selectionRowStyle.videoDisplay}
           />
         )}
         {props.icon !== undefined && (
-          <View style={sectionRowStyle.iconContainer}>
+          <View style={selectionRowStyle.iconContainer}>
             <Icon name={props.icon} size={56} color={props.iconColor} />
           </View>
         )}
         {props.circleView !== undefined && (
-          <View style={sectionRowStyle.circleView}>
+          <View style={selectionRowStyle.circleView}>
             <Text style={{ fontSize: 20 }}>{props.circleView}</Text>
           </View>
         )}
-        <Text style={sectionRowStyle.buttonText}>{props.name}</Text>
+        <Text style={selectionRowStyle.buttonText}>{props.name}</Text>
       </View>
     </TouchableHighlight>
   </View>
@@ -40,7 +40,7 @@ SelectionRow.propTypes = {
 };
 // Defining prop types for this component
 
-const sectionRowStyle = StyleSheet.create({
+const selectionRowStyle = StyleSheet.create({
   button: {
     flex: 1,
     justifyContent: 'space-around',
