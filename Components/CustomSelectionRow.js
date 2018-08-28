@@ -6,40 +6,43 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {VideoThumbnail} from "./VideoThumbnail";
 
 // Component used for rows in the touchable rows in the app
- export const SelectionRow = (props) => (
-        <View style={selectionRowStyle.container}>
-            <TouchableHighlight
-                underlayColor="#FDEDEC"
-                style={selectionRowStyle.button}
-                onPress={props.onPress}>
+export const CustomSelectionRow = (props) => (
+    <View style={customSelectionRowStyle.container}>
+        <TouchableHighlight
+            underlayColor="#FDEDEC"
+            style={customSelectionRowStyle.button}
+            onPress={props.onPress}>
+            <View style={{flex: 1, flexDirection: 'row', justifyContent: "space-between", alignItems: 'center'}}>
                 <View style={{flex: 1, flexDirection: 'row', justifyContent: "flex-start", alignItems: 'center'}}>
                     {props.thumbnail !== undefined && <Thumbnail source={props.thumbnail} />}
                     {props.videoThumbnail !== undefined && <VideoThumbnail
                         source={props.videoThumbnail}
-                        containerStyle={selectionRowStyle.videoThumbnailView}
-                        videoDisplayStyle={selectionRowStyle.videoDisplay}
+                        containerStyle={customSelectionRowStyle.videoThumbnailView}
+                        videoDisplayStyle={customSelectionRowStyle.videoDisplay}
                     />}
-                    {props.icon !== undefined && <View style={selectionRowStyle.iconContainer}><Icon
+                    {props.icon !== undefined && <View style={props.iconContainer}><Icon
                         name={props.icon}
-                        size={56}
+                        size={props.iconSize}
                         color={props.iconColor}
                     /></View>}
-                    {props.circleView !== undefined && <View style={selectionRowStyle.circleView}>
+                    {props.circleView !== undefined && <View style={customSelectionRowStyle.circleView}>
                         <Text style={{fontSize: 20}}>{props.circleView}</Text>
                     </View>}
-                    <Text style={selectionRowStyle.buttonText}>{props.name}</Text>
+                    <Text style={customSelectionRowStyle.buttonText}>{props.name}</Text>
                 </View>
-            </TouchableHighlight>
-        </View>
+                <Text style={{paddingRight: 10, color: '#4d4d4d'}}>{props.selectedText}</Text>
+            </View>
+        </TouchableHighlight>
+    </View>
 );
 
-SelectionRow.propTypes = {
+CustomSelectionRow.propTypes = {
     name: PropTypes.string,
     deleteFunction: PropTypes.func
 };
 // Defining prop types for this component
 
-const selectionRowStyle = StyleSheet.create({
+const customSelectionRowStyle = StyleSheet.create({
     button: {
         flex: 1,
         justifyContent: "space-around",
