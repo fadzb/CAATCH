@@ -32,6 +32,8 @@ import EditCopingStrategy from "../../Screens/SafetyPlanScreens/CopingStrategySc
 import EditDistraction from "../../Screens/SafetyPlanScreens/DistractionScreens/EditDistraction";
 import EditReason from "../../Screens/SafetyPlanScreens/ReasonScreens/EditReason";
 import EditWarningSign from "../../Screens/SafetyPlanScreens/WarningSignScreens/EditWarningSign";
+import DistractionSelection from "../../Screens/SafetyPlanScreens/DistractionScreens/DistractionSelection";
+import RandomSkill from "../../Screens/SafetyPlanScreens/DistractionScreens/RandomSkill";
 
 const PlanStack = createStackNavigator(
     {
@@ -51,6 +53,8 @@ const PlanStack = createStackNavigator(
         newReason: NewReason,
         editReason: EditReason,
         reasonSummary: ReasonSummary,
+        selectDistraction: DistractionSelection,
+        randomSkill: RandomSkill,
         distraction: Distractions,
         newDistraction: NewDistraction,
         editDistraction: EditDistraction,

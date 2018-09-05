@@ -23,10 +23,12 @@ class General extends React.Component {
     };
     // static property called navigationOptions that belongs to all screen components
 
-    componentDidMount() {
-        console.log(store.getState().diary.sleepRating)
+    constructor(props) {
+        super(props);
 
-        console.log(store.getState().diary.moodRating)
+        this.state = {
+            text: ""
+        }
     }
 
     handleTextChange = text => this.setState({text: text});
