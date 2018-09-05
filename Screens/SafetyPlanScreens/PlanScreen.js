@@ -50,7 +50,7 @@ export default class PlanScreen extends React.Component {
           iconSize={50}
           name="Distractions"
           press={this.handleItemPress}
-          screen="distraction"
+          screen="selectDistraction"
         />
         <SafetyPlanSelector
           iconName={Icons.contacts + '-outline'}

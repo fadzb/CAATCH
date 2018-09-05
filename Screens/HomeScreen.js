@@ -18,8 +18,8 @@ export default class HomeScreen extends React.Component {
       <View style={TabStyles.container}>
         <Image
           resizeMode={'cover'}
-          style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height / 3 }}
-          source={require('../Media/Images/HD-Peaceful-Image.jpg')}
+          style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height / 2.8 }}
+          source={require('../Media/Images/lavender.jpg')}
         />
         <View style={homeStyle.tileContainer}>
           <HomeScreenTileRow

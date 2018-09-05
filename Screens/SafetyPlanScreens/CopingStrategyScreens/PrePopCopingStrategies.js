@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import { safetyPlanPrePops } from '../../../Constants/Prepopulated';
+import { SafetyPlanConstants } from '../../../Constants/Constants';
 
 export default class PrePopCopingStrategies extends React.Component {
   static navigationOptions = {
@@ -22,7 +23,9 @@ export default class PrePopCopingStrategies extends React.Component {
   }
 
   updateStrats = (strats) => {
-    this.setState({ strats: strats.filter((item) => item.category === 'CopingStrategy').map((strat) => strat.name) });
+    this.setState({
+      strats: strats.filter((item) => item.category === SafetyPlanConstants.copingStrategy).map((strat) => strat.name),
+    });
   };
   // update checklist with strategies from pre-populated array
 

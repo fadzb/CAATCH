@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import { safetyPlanPrePops } from '../../../Constants/Prepopulated';
+import { SafetyPlanConstants } from '../../../Constants/Constants';
 
 export default class PrePopDistraction extends React.Component {
   static navigationOptions = {
@@ -23,7 +24,9 @@ export default class PrePopDistraction extends React.Component {
 
   updateDistractions = (distractions) => {
     this.setState({
-      distractions: distractions.filter((item) => item.category === 'Distraction').map((distract) => distract.name),
+      distractions: distractions
+        .filter((item) => item.category === SafetyPlanConstants.distraction)
+        .map((distract) => distract.name),
     });
   };
   // update checklist with distractions from pre-populated array
