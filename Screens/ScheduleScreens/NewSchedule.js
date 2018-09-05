@@ -4,7 +4,6 @@ import t from 'tcomb-form-native';
 import { PressableIcon } from '../../Components/PressableIcon';
 import store from '../../Redux/store';
 import { updateCoping, getCoping, updateSchedule, getSchedule } from '../../Redux/actions';
-import Expo from 'expo';
 import { Icons } from '../../Constants/Icon';
 import { CalendarView } from '../../Components/CalendarView';
 import Moment from 'moment';
@@ -76,6 +75,10 @@ export default class NewSchedule extends React.Component {
         toTime: this.props.navigation.getParam('timeTo'),
         fromTimeSelected: false,
         toTimeSelected: false,
+      });
+    } else {
+      this.setState({
+        schDate: store.getState().schedule.date,
       });
     }
   }
