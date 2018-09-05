@@ -40,6 +40,7 @@ export const UPDATE_USAGE = "UPDATE_USAGE";
 //Schedule
 
 export const GET_SCHEDULE = "GET_SCHEDULE";
+export const UPDATE_SCHEDULE_DATE = "UPDATE_SCHEDULE_DATE";
 
 // action creators
 
@@ -55,6 +56,11 @@ export const updateUsage = update => ({
 export const getSchedule = apptList => ({
     type: GET_SCHEDULE,
     payload: apptList
+});
+
+export const updateScheduleDate = date => ({
+    type: UPDATE_SCHEDULE_DATE,
+    payload: date
 });
 
 //SafetyPlan

@@ -3,10 +3,9 @@ import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, KeyboardAv
 import {connect} from 'react-redux'
 import {updateDatabase} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
-import {resetSleepRating} from "../../Redux/actions";
+import {resetSleepRating, resetMoodRating} from "../../Redux/actions";
 import store from "../../Redux/store"
 import ButtonRating from "../../Components/ButtonRating"
-import { KeyboardAwareScrollView } from 'react-native-keyboard-aware-scroll-view'
 
 class General extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -24,12 +23,10 @@ class General extends React.Component {
     };
     // static property called navigationOptions that belongs to all screen components
 
-    constructor(props) {
-        super(props);
+    componentDidMount() {
+        console.log(store.getState().diary.sleepRating)
 
-        this.state = {
-            text: ""
-        }
+        console.log(store.getState().diary.moodRating)
     }
 
     handleTextChange = text => this.setState({text: text});
@@ -62,13 +59,23 @@ class General extends React.Component {
             updateDatabase('DiarySession',
                 [sessionId, notesId, this.state.text],
                 ['sessionId', 'diaryId', 'rating'],
-                () => store.dispatch(resetSleepRating()));
+                () => {
+                    this.resetRatings()
+                });
         }
         //if user inputs general text, update DB
+
+        this.resetRatings();
+        //ensure mood and sleep scales revert to default state
 
         this.props.navigation.pop();
     };
     // accessing global sleep + mood store and state for input and saving to DB
+
+    resetRatings = () => {
+        store.dispatch(resetSleepRating());
+        store.dispatch(resetMoodRating())
+    };
 
     render() {
         return (

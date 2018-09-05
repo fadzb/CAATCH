@@ -3,7 +3,7 @@ import {
     UPDATE_COPING, GET_COPING, UPDATE_SIGN, GET_SIGN, GET_CONTACT, UPDATE_CONTACT, UPDATE_REASON,
     GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE, UPDATE_SKILL_RATING, RESET_SKILL_RATING,
     UPDATE_USAGE, UPDATE_FEELING_RATING, RESET_FEELING_RATING, UPDATE_SLEEP_RATING, RESET_SLEEP_RATING,
-    UPDATE_MOOD_RATING, RESET_MOOD_RATING, UPDATE_SCHEDULE, GET_SCHEDULE
+    UPDATE_MOOD_RATING, RESET_MOOD_RATING, UPDATE_SCHEDULE_DATE, GET_SCHEDULE
 } from "./actions";
 import Moment from 'moment';
 
@@ -156,11 +156,16 @@ const usageReducer = (state = 0, action) => {
 
 //Schedule
 
-const scheduleReducer = (state = {}, action) => {
+const scheduleReducer = (state = {appointments: {}, date: new Date()}, action) => {
     if(action.type === GET_SCHEDULE) {
-        return action.payload;
+        return {...state, appointments: action.payload}
     }
     // used to get the complete appt list from the DB
+
+    if(action.type === UPDATE_SCHEDULE_DATE) {
+        return {...state, date: action.payload}
+    }
+    // used to update agenda date on new day selection
 
     return state
 };
