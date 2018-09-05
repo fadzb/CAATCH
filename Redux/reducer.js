@@ -20,7 +20,7 @@ import {
   RESET_SLEEP_RATING,
   UPDATE_MOOD_RATING,
   RESET_MOOD_RATING,
-  UPDATE_SCHEDULE,
+  UPDATE_SCHEDULE_DATE,
   GET_SCHEDULE,
 } from './actions';
 import Moment from 'moment';
@@ -188,11 +188,16 @@ const usageReducer = (state = 0, action) => {
 
 //Schedule
 
-const scheduleReducer = (state = {}, action) => {
+const scheduleReducer = (state = { appointments: {}, date: new Date() }, action) => {
   if (action.type === GET_SCHEDULE) {
-    return action.payload;
+    return { ...state, appointments: action.payload };
   }
   // used to get the complete appt list from the DB
+
+  if (action.type === UPDATE_SCHEDULE_DATE) {
+    return { ...state, date: action.payload };
+  }
+  // used to update agenda date on new day selection
 
   return state;
 };

@@ -11,17 +11,10 @@ import {
   Dimensions,
   ActivityIndicator,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/Ionicons';
-import Moment from 'moment';
-import { Icons } from '../../Constants/Icon';
-import { DiaryGrid } from '../../Components/DiaryGrid';
 import { Agenda } from 'react-native-calendars';
 import { connect } from 'react-redux';
 import store from '../../Redux/store';
-import { getSchedule } from '../../Redux/actions';
-import { getDiaryPrePops } from '../../Constants/Prepopulated';
-
-import { TabStyles } from '../../Styles/TabStyles';
+import { getSchedule, updateScheduleDate } from '../../Redux/actions';
 import { readDatabase } from '../../Util/DatabaseHelper';
 
 class Schedule extends React.Component {
@@ -84,7 +77,7 @@ class Schedule extends React.Component {
   updateStore = () => {
     store.dispatch(getSchedule(this.state.items));
   };
-  // update resux store with all db rows in Schedule table
+  // update redux store with all db rows in Schedule table
 
   render() {
     return (
@@ -93,9 +86,9 @@ class Schedule extends React.Component {
           <Agenda
             items={this.props.schedule}
             renderItem={this.renderItem}
-            //renderDay={(day, item) => <View />}
             renderEmptyData={this.renderEmptyDate}
             rowHasChanged={this.rowHasChanged}
+            onDayPress={(day) => store.dispatch(updateScheduleDate(day.dateString))}
           />
         ) : (
           <View style={{ flex: 1, justifyContent: 'center' }}>
@@ -180,7 +173,7 @@ const scheduleStyle = StyleSheet.create({
 });
 
 const mapStateToProps = (state) => ({
-  schedule: state.schedule,
+  schedule: state.schedule.appointments,
 });
 // function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
 
