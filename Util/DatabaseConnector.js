@@ -47,10 +47,6 @@ export const checkDB = (callback) => {
                 .catch(err => console.error(err))
         )
         .catch(err => console.error(err));
-
-    //deleteDB();
-    // uncomment above to test deletion of .db file
-
 };
 // function checks if .db file exists and copies pre-populated file if not. Does nothing if exists
 
