@@ -102,7 +102,7 @@ export default class NewReason extends React.Component {
         Expo.Permissions.askAsync(Expo.Permissions.CAMERA)
             .then(response => {
                 if (response.status !== "granted") {
-                    console.error("Camera permission not granted!");
+                    console.log("Camera permission not granted!");
                     return;
                 }
 
