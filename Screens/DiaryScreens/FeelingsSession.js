@@ -29,7 +29,6 @@ export default class FeelingsSession extends React.Component {
         name={item.diaryName}
         rating={Math.round(item.rating) + ' / ' + item.scale}
         onPress={() => console.log('pressed')}
-        circleView={item.diaryName.slice(0, 1).toUpperCase()}
         icon={Icons.dividerArrow}
       />
     </View>

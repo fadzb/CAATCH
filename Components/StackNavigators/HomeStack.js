@@ -7,12 +7,16 @@ import HomeScreen from '../../Screens/HomeScreen';
 import Schedule from '../../Screens/ScheduleScreens/Schedule';
 import NewSchedule from '../../Screens/ScheduleScreens/NewSchedule';
 import VicChart from '../../Screens/StatScreens/VicChart';
+import StatSelection from '../../Screens/StatScreens/StatSelection';
+import Insights from '../../Screens/StatScreens/Insights';
 
 const HomeStack = createStackNavigator(
   {
     main: HomeScreen,
     schedule: Schedule,
     newSchedule: NewSchedule,
+    statSelection: StatSelection,
+    insights: Insights,
     victory: VicChart,
   },
 

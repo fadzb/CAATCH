@@ -1,20 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList, Alert } from 'react-native';
 import { CustomSelectionRow } from '../../../Components/CustomSelectionRow';
-import { Container, Header, Content, Card, CardItem, Text, Button, Left, Body } from 'native-base';
-import { PressableImage } from '../../../Components/PressableImage';
-import { ImageViewer } from '../../../Components/ImageViewer';
-import Moment from 'moment';
-import { Video } from 'expo';
-import { readDatabaseArg, updateDatabaseArgument } from '../../../Util/DatabaseHelper';
-import Icon from 'react-native-vector-icons/Ionicons';
-import { CardListItem } from '../../../Components/CardListItem';
 import { Icons } from '../../../Constants/Icon';
-import { openSafetyPlanItem } from '../../../Util/Usage';
-import { PressableIcon } from '../../../Components/PressableIcon';
-import { FileSystem } from 'expo';
-import { getDistraction } from '../../../Redux/actions';
-import store from '../../../Redux/store';
 import { TabStyles } from '../../../Styles/TabStyles';
 
 export default class DistractionSelection extends React.Component {

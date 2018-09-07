@@ -30,4 +30,6 @@ export const Icons = {
   password: 'ios-lock',
   clock: 'ios-time',
   dividerArrow: 'ios-arrow-forward',
+  insights: 'ios-bulb',
+  charts: 'ios-trending-up',
 };
