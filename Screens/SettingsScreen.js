@@ -7,8 +7,11 @@ import { updateDatabase, readDatabase, updateDatabaseArgument } from '../Util/Da
 import { SettingsSelectionRow } from '../Components/SettingsSelectionRow';
 import { Constants } from 'expo';
 import { PressableIcon } from '../Components/PressableIcon';
+import { updateDbtSetting } from '../Redux/actions';
+import store from '../Redux/store';
 
 import { TabStyles } from '../Styles/TabStyles';
+import { DbTableNames } from '../Constants/Constants';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -22,21 +25,25 @@ export default class SettingsScreen extends React.Component {
     this.state = {
       modalVisible: false,
       switchValue: false,
+      dbtSwitchValue: false,
     };
   }
 
   componentDidMount() {
-    readDatabase('enabled', 'User', this.getSwitchValue);
+    readDatabase('*', 'User', this.getSwitchValues);
+    // get user settings
   }
 
-  getSwitchValue = (dbObject) => {
-    const dbSwitchValue = dbObject[0].enabled;
+  getSwitchValues = (dbObject) => {
+    const switchValue = dbObject[0].enabled;
+    const dbtSwitchValue = dbObject[0].dbt;
 
-    if (dbSwitchValue === 1) {
-      this.setState({ switchValue: true });
-    } else {
-      this.setState({ switchValue: false });
-    }
+    this.setState({
+      switchValue: Boolean(switchValue),
+      dbtSwitchValue: Boolean(dbtSwitchValue),
+    });
+
+    // setting switches based on values in DB
   };
 
   toggleModal = (bool) => {
@@ -71,16 +78,38 @@ export default class SettingsScreen extends React.Component {
     this.setState({ switchValue: false, modalVisible: false });
   };
 
+  handleDbtSwitch = (value) => {
+    this.setState((prevState) => {
+      const newValue = !prevState.dbtSwitchValue;
+      const convertBool = newValue ? 1 : 0;
+
+      updateDatabaseArgument(DbTableNames.user, [convertBool], ['dbt'], 'where userId = 1', undefined, (res) =>
+        store.dispatch(updateDbtSetting(newValue))
+      );
+
+      return { dbtSwitchValue: newValue };
+    });
+  };
+
   render() {
     return (
       <View style={TabStyles.stackContainer}>
-        <View style={{ height: Dimensions.get('window').height / 11, alignSelf: 'stretch' }}>
+        <View style={{ flex: 1, alignSelf: 'stretch' }}>
           <SettingsSelectionRow
+            height={Dimensions.get('window').height / 11}
             name={'Set Passcode'}
             iconName={Icons.password + '-outline'}
             switch={true}
             switchValue={this.state.switchValue}
             handleSwitch={() => this.handleSwitch()}
+          />
+          <SettingsSelectionRow
+            height={Dimensions.get('window').height / 11}
+            name={'DBT'}
+            iconName={Icons.dbt + '-outline'}
+            switch={true}
+            switchValue={this.state.dbtSwitchValue}
+            handleSwitch={() => this.handleDbtSwitch()}
           />
         </View>
         <Modal

@@ -5,7 +5,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export const SettingsSelectionRow = (props) => {
   return (
-    <View style={settingRowStyle.container}>
+    <View style={[settingRowStyle.container, { height: props.height }]}>
       <TouchableHighlight underlayColor="#FDEDEC" style={settingRowStyle.button} onPress={props.onPress}>
         <View style={settingRowStyle.rowContainer}>
           <View style={settingRowStyle.textContainer}>
@@ -30,16 +30,15 @@ SettingsSelectionRow.propTypes = {
 
 const settingRowStyle = StyleSheet.create({
   button: {
-    flex: 1,
     borderBottomWidth: 0.5,
     marginLeft: 10,
     marginRight: 10,
+    flex: 1,
   },
 
   container: {
     alignSelf: 'stretch',
-    justifyContent: 'center',
-    flex: 1,
+    justifyContent: 'flex-start',
   },
   // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
