@@ -44,6 +44,24 @@ export default class NewWarningSign extends React.Component {
     };
   }
 
+  componentWillReceiveProps(nextProps) {
+    const checkedSign = nextProps.navigation.getParam('checkedSigns', null);
+
+    if (checkedSign !== this.props.navigation.getParam('checkedSigns', null)) {
+      if (checkedSign !== null) {
+        this.setState({
+          value: {
+            signName: checkedSign[0],
+            signDesc: '',
+          },
+        });
+      } else {
+        console.log('no sign checked');
+      }
+    }
+  }
+  // listen for new props coming from pre-populated screen and update accordingly
+
   onChange = (value) => {
     this.setState({ value: value });
   };
@@ -100,6 +118,16 @@ export default class NewWarningSign extends React.Component {
       <View style={TabStyles.planContainer}>
         <View style={signStyle.formContainer}>
           <Form ref="form" type={sign} value={this.state.value} onChange={this.onChange} options={options} />
+          <PressableIcon
+            iconName="ios-arrow-dropright-outline"
+            size={25}
+            onPressFunction={() => this.props.navigation.push('prePopSign')}
+            name="Import"
+            buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
+            buttonStyle={signStyle.listButton}
+            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
+            iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
+          />
           <PressableIcon
             iconName="ios-arrow-dropright-outline"
             size={25}

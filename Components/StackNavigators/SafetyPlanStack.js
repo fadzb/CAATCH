@@ -34,6 +34,7 @@ import EditReason from '../../Screens/SafetyPlanScreens/ReasonScreens/EditReason
 import EditWarningSign from '../../Screens/SafetyPlanScreens/WarningSignScreens/EditWarningSign';
 import DistractionSelection from '../../Screens/SafetyPlanScreens/DistractionScreens/DistractionSelection';
 import RandomSkill from '../../Screens/SafetyPlanScreens/DistractionScreens/RandomSkill';
+import PrePopWarningSigns from '../../Screens/SafetyPlanScreens/WarningSignScreens/PrePopWarningSigns';
 
 const PlanStack = createStackNavigator(
   {
@@ -41,6 +42,7 @@ const PlanStack = createStackNavigator(
     warning: WarningSigns,
     newWarning: NewWarningSign,
     editWarning: EditWarningSign,
+    prePopSign: PrePopWarningSigns,
     copingLink: CopingStrategyLink,
     signSummary: SignSummary,
     coping: CopingStrategies,

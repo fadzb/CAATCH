@@ -10,10 +10,10 @@ import { readDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
 import { DbTableNames, UsageFunctionIds } from '../../Constants/Constants';
 
 const safetyPlanElements = [
-  { name: 'Warning Sign', info: 'Feeling Alone (8 views)' },
-  { name: 'Coping Strategy', info: 'Baking (12 views)' },
-  { name: 'Distraction', info: 'Library (4 views)' },
-  { name: 'Reason to Live', info: 'Living 2 (9 views)' },
+  { name: 'Warning Sign', info: 'Feeling Alone (8 views)', icon: Icons.warningSign },
+  { name: 'Coping Strategy', info: 'Baking (12 views)', icon: Icons.copingStrategy },
+  { name: 'Distraction', info: 'Library (4 views)', icon: Icons.distractions },
+  { name: 'Reason to Live', info: 'Living 2 (9 views)', icon: Icons.lifeWorthLiving },
 ];
 
 const InsightRow = (props) => (
@@ -24,7 +24,7 @@ const InsightRow = (props) => (
       </View>
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <Text style={insightsStyle.buttonText}>{props.name}</Text>
-        <View style={{ flex: 1.2, alignItems: 'flex-end' }}>
+        <View style={{ flex: 1, alignItems: 'flex-end' }}>
           <Text style={insightsStyle.ratingText}>{props.selectedText}</Text>
         </View>
       </View>
@@ -57,7 +57,7 @@ export default class Insights extends React.Component {
 
   renderItem = ({ item }) => (
     <View style={insightsStyle.listContainer}>
-      <InsightRow name={item.name} selectedText={item.info} icon={Icons.dividerArrow} />
+      <InsightRow name={item.name} selectedText={item.info} icon={item.icon + '-outline'} />
     </View>
   );
 
@@ -119,11 +119,11 @@ const insightsStyle = StyleSheet.create({
   },
 
   iconContainer: {
-    paddingLeft: 10,
     width: 30,
     height: 30,
     justifyContent: 'center',
     alignItems: 'center',
+    marginLeft: 10,
   },
 
   container: {

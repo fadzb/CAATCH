@@ -15,6 +15,7 @@ import Moment from 'moment';
 import { resetSleepRating, resetMoodRating } from '../../Redux/actions';
 import store from '../../Redux/store';
 import ButtonRating from '../../Components/ButtonRating';
+import { DbTableNames } from '../../Constants/Constants';
 
 class General extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -43,7 +44,7 @@ class General extends React.Component {
 
   createSession = () => {
     updateDatabase(
-      'Session',
+      DbTableNames.session,
       [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), this.props.diaryDate],
       ['dateEntered', 'diaryDate'],
       undefined,
@@ -57,16 +58,29 @@ class General extends React.Component {
     const notesId = 29;
     const moodId = 30;
 
-    updateDatabase('DiarySession', [sessionId, sleepId, this.props.sleepRating], ['sessionId', 'diaryId', 'rating']);
+    updateDatabase(
+      DbTableNames.diarySession,
+      [sessionId, sleepId, this.props.sleepRating],
+      ['sessionId', 'diaryId', 'rating']
+    );
     //update DB for sleep rating
 
-    updateDatabase('DiarySession', [sessionId, moodId, this.props.moodRating], ['sessionId', 'diaryId', 'rating']);
+    updateDatabase(
+      DbTableNames.diarySession,
+      [sessionId, moodId, this.props.moodRating],
+      ['sessionId', 'diaryId', 'rating']
+    );
     //update DB for mood rating
 
     if (this.state.text.length > 0) {
-      updateDatabase('DiarySession', [sessionId, notesId, this.state.text], ['sessionId', 'diaryId', 'rating'], () => {
-        this.resetRatings();
-      });
+      updateDatabase(
+        DbTableNames.diarySession,
+        [sessionId, notesId, this.state.text],
+        ['sessionId', 'diaryId', 'rating'],
+        () => {
+          this.resetRatings();
+        }
+      );
     }
     //if user inputs general text, update DB
 
