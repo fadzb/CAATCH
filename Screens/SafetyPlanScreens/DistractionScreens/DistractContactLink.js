@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import CustomMultiPicker from 'react-native-multiple-select-list';
+import CustomMultiSelectList from '../../../Components/CustomMultiSelectList';
 
 import { readDatabaseArg } from '../../../Util/DatabaseHelper';
 
@@ -53,13 +54,12 @@ export default class DistractContactLink extends React.Component {
   render() {
     return (
       <View style={contactLinkStyle.viewContainer}>
-        <CustomMultiPicker
+        <CustomMultiSelectList
           options={this.state.contacts}
           multiple={true} //
           returnValue={'contactId'} // label or value
           callback={this.getCheckedContacts} // callback, array of selected items
           rowBackgroundColor={'#fff'}
-          rowHeight={40}
           rowRadius={5}
           iconColor={'#00a2dd'}
           iconSize={25}
@@ -93,10 +93,6 @@ const contactLinkStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
     backgroundColor: '#fff',
-  },
-
-  itemStyle: {
-    borderBottomWidth: 3,
   },
   buttonText: {
     fontSize: 18,
