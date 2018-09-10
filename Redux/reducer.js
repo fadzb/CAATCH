@@ -3,7 +3,7 @@ import {
     UPDATE_COPING, GET_COPING, UPDATE_SIGN, GET_SIGN, GET_CONTACT, UPDATE_CONTACT, UPDATE_REASON,
     GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE, UPDATE_SKILL_RATING, RESET_SKILL_RATING,
     UPDATE_USAGE, UPDATE_FEELING_RATING, RESET_FEELING_RATING, UPDATE_SLEEP_RATING, RESET_SLEEP_RATING,
-    UPDATE_MOOD_RATING, RESET_MOOD_RATING, UPDATE_SCHEDULE_DATE, GET_SCHEDULE
+    UPDATE_MOOD_RATING, RESET_MOOD_RATING, UPDATE_SCHEDULE_DATE, GET_SCHEDULE, UPDATE_DBT_SETTING
 } from "./actions";
 import Moment from 'moment';
 
@@ -170,6 +170,17 @@ const scheduleReducer = (state = {appointments: {}, date: new Date()}, action) =
     return state
 };
 
+//Setting
+
+const settingReducer = (state = {dbt: false}, action) => {
+    if(action.type === UPDATE_DBT_SETTING) {
+        return {...state, dbt: action.payload};
+    }
+    // used to update global DBT setting
+
+    return state
+};
+
 const reducer = combineReducers({
     coping: copingReducer,
     sign: signReducer,
@@ -179,6 +190,7 @@ const reducer = combineReducers({
     diary: diaryReducer,
     usage: usageReducer,
     schedule: scheduleReducer,
+    setting: settingReducer,
 });
 // as reducers grow, add to this object
 

@@ -10,15 +10,17 @@ export const DiaryGrid = (props) => {
     return (
         <View style={gridStyle.container}>
             <View style={gridStyle.rowContainer}>
-                <DiaryTile onPress={() => props.navigation.push('skills', {title: props.date})} name='Skills' iconName={Icons.skills + '-outline'}/>
-                <DiaryTile onPress={() => props.navigation.push('feelings', {title: props.date})} name='Feelings' iconName={Icons.feelings + '-outline'}/>
+                <DiaryTile onPress={() => props.navigation.push('general', {title: props.date})} name='General' iconName={Icons.generalDiary + '-outline'}/>
             </View>
             <View style={gridStyle.rowContainer}>
                 <DiaryTile onPress={() => props.navigation.push('spSelection', {title: props.date, type: 'sign'})} name='Warning Sign' iconName={Icons.warningSign + '-outline'}/>
                 <DiaryTile onPress={() => props.navigation.push('spSelection', {title: props.date, type: 'cope'})} name='Coping Strategy' iconName={Icons.copingStrategy + '-outline'}/>
             </View>
             <View style={gridStyle.rowContainer}>
-                <DiaryTile onPress={() => props.navigation.push('general', {title: props.date})} name='General' iconName={Icons.generalDiary + '-outline'}/>
+                {props.dbtEnabled && <View style={gridStyle.rowContainer}>
+                    <DiaryTile onPress={() => props.navigation.push('skills', {title: props.date})} name='Skills' iconName={Icons.skills + '-outline'}/>
+                    <DiaryTile onPress={() => props.navigation.push('feelings', {title: props.date})} name='Feelings' iconName={Icons.feelings + '-outline'}/>
+                </View>}
             </View>
         </View>
     )

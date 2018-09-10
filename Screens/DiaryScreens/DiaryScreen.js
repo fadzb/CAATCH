@@ -56,7 +56,7 @@ class DiaryScreen extends React.Component {
                     </TouchableOpacity>
                 </View>
                 <View style={{flex: 1, alignSelf: 'stretch'}}>
-                    <DiaryGrid navigation={this.props.navigation} date={Moment(this.props.diaryDate).format('LL')}/>
+                    <DiaryGrid dbtEnabled={this.props.settings.dbt} navigation={this.props.navigation} date={Moment(this.props.diaryDate).format('LL')}/>
                 </View>
                 <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={false} onRequestClose={() => this.toggleModal(false)}>
                     <CalendarView
@@ -96,7 +96,8 @@ const diaryStyle = StyleSheet.create({
 });
 
 const mapStateToProps = state => ({
-    diaryDate: state.diary.date
+    diaryDate: state.diary.date,
+    settings: state.setting
 });
 // function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
 

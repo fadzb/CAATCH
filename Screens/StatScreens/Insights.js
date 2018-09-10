@@ -9,11 +9,6 @@ import Icon from "react-native-vector-icons/Ionicons";
 import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
 import {DbPrimaryKeys, DbTableNames, UsageFunctionIds} from "../../Constants/Constants";
 
-const safetyPldanElements = [{name: 'Warning Sign', info: 'Feeling Alone (8 views)', icon: Icons.warningSign},
-    {name: 'Coping Strategy', info: 'Baking (12 views)', icon: Icons.copingStrategy},
-    {name: 'Distraction', info: 'Library (4 views)', icon: Icons.distractions},
-    {name: 'Reason to Live', info: 'Living 2 (9 views)', icon: Icons.lifeWorthLiving}];
-
 const safetyPlanElements = {
     WarningSign: {name: 'Warning Sign', icon: Icons.warningSign},
     CopingStrategy: {name: 'Coping Strategy', icon: Icons.copingStrategy},
@@ -60,14 +55,9 @@ export default class Insights extends React.Component {
     }
 
     componentDidMount() {
-        // Object.values(UsageFunctionIds).forEach(id => {
-        //     readDatabaseArg('tableId, tableName, count(*) as viewCount', DbTableNames.functionUsage, res => this.setState(prevState => ({data: [...prevState.data, {...res[0], functionId: id}]}), () => console.log(this.state.data)), undefined,
-        //         'where functionId = ' + id + ' group by tableId order by count(*) Desc limit 1')
-        // })
-
-        // need to add another column into function usage titled 'columnName' in order to join tables via primaryKey. Maybe another column also for functionType (can go in function table)
-
         readDatabaseArg('*', DbTableNames.functionUsage, res => this.setState({data: [...res]}), this.getMostViewedData, 'as fu inner join ' + DbTableNames.function + ' as f on fu.functionId = f.functionId')
+
+        // retrieving all FunctionUsage data and storing in state
     }
 
     getMostViewedData = () => {
@@ -82,6 +72,7 @@ export default class Insights extends React.Component {
     setViewData = res => {
         this.setState({viewData: res.map(r => ({...r, ...safetyPlanElements[r.tableName]}))}, () => this.setState({dataReady: true}))
     };
+    // combining most viewed SP items with their respective title and icon from const safetyPlanElements. Storing in viewData state
 
     renderItem = ({item}) => (
         <View style={insightsStyle.listContainer}>

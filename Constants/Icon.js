@@ -33,4 +33,5 @@ export const Icons = {
     dividerArrow: 'ios-arrow-forward',
     insights: 'ios-bulb',
     charts: 'ios-trending-up',
+    dbt: 'ios-hand',
 };

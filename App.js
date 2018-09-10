@@ -6,7 +6,7 @@ import {Provider} from 'react-redux'
 import store from './Redux/store'
 import {readDatabase, updateDatabase} from "./Util/DatabaseHelper";
 import Moment from 'moment';
-import {updateUsage} from "./Redux/actions";
+import {updateUsage, updateDbtSetting} from "./Redux/actions";
 import { AppLoading } from 'expo';
 
 import TwitterScreen from "./Screens/TwitterScreen";
@@ -35,16 +35,24 @@ export default class App extends React.Component {
         this.createNewUsage();
         // new usage session added to DB
 
-        this.checkPasscode();
+        this.checkSettings();
     };
 
-    checkPasscode = () => {
-        readDatabase('enabled',
+    checkSettings = () => {
+        readDatabase('*',
             'User',
             (res) => {
                 if(res[0].enabled === 1) {
                     this.setState({passcodeEnabled: true})
                 }
+                // check passcode
+
+                if(res[0].dbt === 1) {
+                    store.dispatch(updateDbtSetting(true))
+                } else {
+                    store.dispatch(updateDbtSetting(false))
+                }
+                // check DBT setting
             },
             () => this.setState({ isReady: true }))
     };
