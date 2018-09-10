@@ -2,7 +2,8 @@
 export const SafetyPlanConstants = {
     distraction: 'Distraction',
     randomSkill: 'RandomSkill',
-    copingStrategy: 'CopingStrategy'
+    copingStrategy: 'CopingStrategy',
+    warningSign: 'WarningSign'
 };
 
 // DB Table Name
@@ -25,6 +26,22 @@ export const DbTableNames = {
     signSession: 'SignSession',
     user: 'User',
     warningSign: 'WarningSign'
+};
+
+// DB Primary Key column names
+export const DbPrimaryKeys = {
+    function: 'functionId',
+    usage: 'usageId',
+    contact: 'contactId',
+    copingStrategy: 'copeId',
+    diary: 'diaryId',
+    distraction: 'distractId',
+    prepopSafetyPlan: 'prepopId',
+    reason: 'reasonId',
+    schedule: 'scheduleId',
+    session: 'sessionId',
+    user: 'userId',
+    warningSign: 'signId'
 };
 
 // Usage function id's

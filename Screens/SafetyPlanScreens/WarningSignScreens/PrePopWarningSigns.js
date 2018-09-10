@@ -3,77 +3,79 @@ import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'r
 import CustomMultiPicker from "react-native-multiple-select-list";
 import {safetyPlanPrePops} from "../../../Constants/Prepopulated";
 import {SafetyPlanConstants} from "../../../Constants/Constants";
+import CustomMultiSelectList from "../../../Components/CustomMultiSelectList"
 
-export default class PrePopCopingStrategies extends React.Component {
+export default class PrePopWarningSigns extends React.Component {
     static navigationOptions = {
-        title: "Select Strategy",
+        title: "Select Sign",
     };
 
     constructor(props) {
         super(props);
 
         this.state = {
-            strats: [],
-            checkedStrats: []
+            signs: [],
+            checkedSigns: []
         }
     }
 
     componentDidMount() {
-        this.updateStrats(safetyPlanPrePops);
+        this.updateSigns(safetyPlanPrePops);
     }
 
-    updateStrats = (strats) => {
-        this.setState({ strats: strats.filter(item => item.category === SafetyPlanConstants.copingStrategy).map(strat => strat.name) });
+    updateSigns = (signs) => {
+        this.setState({ signs: signs.filter(item => item.category === SafetyPlanConstants.warningSign).map(sign => sign.name) });
     };
-    // update checklist with strategies from pre-populated array
+    // update checklist with signs from pre-populated array
 
-    getCheckedStrats = (strats) => {
+    getCheckedSigns = (signs) => {
         this.setState({
-            checkedStrats: strats.filter(s => s !== undefined)
+            checkedSigns: signs.filter(s => s !== undefined)
         });
     };
     // Updates state everytime option is checked/unchecked
 
     render() {
         return(
-            <View style={preCopeStyle.viewContainer}>
+            <View style={preSignStyle.viewContainer}>
                 <View style={{flex: 1, marginBottom: 50}}>
-                    <CustomMultiPicker
-                        options={this.state.strats}
+                    <CustomMultiSelectList
+                        options={this.state.signs}
                         multiple={false} //
                         returnValue={"label"} // label or value
-                        callback={this.getCheckedStrats} // callback, array of selected items
+                        callback={this.getCheckedSigns} // callback, array of selected items
                         rowBackgroundColor={"#fff"}
-                        rowHeight={40}
                         rowRadius={5}
                         iconColor={"#00a2dd"}
                         iconSize={25}
-                        itemStyle={preCopeStyle.itemStyle}
+                        itemStyle={preSignStyle.itemStyle}
                         selectedIconName={"ios-checkmark-circle-outline"}
                         unselectedIconName={"ios-radio-button-off-outline"}
                         search={true}
                     />
                 </View>
                 <TouchableHighlight
-                    style={preCopeStyle.button}
+                    style={preSignStyle.button}
                     onPress={this.props.navigation.getParam('edit')
-                        ? () => this.props.navigation.navigate('editCoping', {checkedStrats: this.state.checkedStrats})
-                        : () => this.props.navigation.navigate('newCoping', {checkedStrats: this.state.checkedStrats})}
+                        ? () => this.props.navigation.navigate('editWarning', {checkedSigns: this.state.checkedSigns})
+                        : () => this.props.navigation.navigate('newWarning', {checkedSigns: this.state.checkedSigns})}
                     underlayColor='#99d9f4'>
-                    <Text style={preCopeStyle.buttonText}>Done</Text>
+                    <Text style={preSignStyle.buttonText}>Done</Text>
                 </TouchableHighlight>
             </View>
         )
     }
 }
 
-const preCopeStyle = StyleSheet.create({
+const preSignStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
         backgroundColor: '#fff',
     },
     itemStyle: {
-        borderBottomWidth: 3
+        //borderBottomWidth: 3,
+        //flex: 1,
+        //marginRight: 30
     },
     buttonText: {
         fontSize: 18,

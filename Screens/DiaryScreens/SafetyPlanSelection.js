@@ -3,7 +3,8 @@ import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, Activity
 import CustomMultiPicker from "react-native-multiple-select-list";
 import {readDatabaseArg, updateDatabase, deleteDatabaseRow} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
-import store from "../../Redux/store"
+import store from "../../Redux/store";
+import {DbTableNames} from "../../Constants/Constants";
 
 export default class SafetyPlanSelection extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -31,9 +32,9 @@ export default class SafetyPlanSelection extends React.Component {
         this.setState({ type: type });
 
         if(type === 'cope') {
-            readDatabaseArg('*', 'CopingStrategy', this.updateItems, undefined, 'where dateDeleted is NULL')
+            readDatabaseArg('*', DbTableNames.copingStrategy, this.updateItems, undefined, 'where dateDeleted is NULL')
         } else {
-            readDatabaseArg('*', 'WarningSign', this.updateItems, undefined, 'where dateDeleted is NULL')
+            readDatabaseArg('*', DbTableNames.warningSign, this.updateItems, undefined, 'where dateDeleted is NULL')
         }
     }
     // get safetyplan items based on their type passed down through navigation props
@@ -46,18 +47,18 @@ export default class SafetyPlanSelection extends React.Component {
             const columns = "c.copeId, c.sessionId";
 
             readDatabaseArg(columns,
-                "CopeSession",
+                DbTableNames.copeSession,
                 this.setPreviouslyCheckedItems,
                 undefined,
-                " as c inner join Session as s on c.sessionId = s.sessionId where DATE(diaryDate) = '" + selectedDate + "'");
+                " as c inner join " + DbTableNames.session + " as s on c.sessionId = s.sessionId where DATE(diaryDate) = '" + selectedDate + "'");
         } else {
             const columns = "si.signId, si.sessionId";
 
             readDatabaseArg(columns,
-                "SignSession",
+                DbTableNames.signSession,
                 this.setPreviouslyCheckedItems,
                 undefined,
-                " as si inner join Session as s on si.sessionId = s.sessionId where DATE(diaryDate) = '" + selectedDate + "'");
+                " as si inner join " + DbTableNames.session + " as s on si.sessionId = s.sessionId where DATE(diaryDate) = '" + selectedDate + "'");
         }
     };
     // get previously saved items for selected date
@@ -93,7 +94,7 @@ export default class SafetyPlanSelection extends React.Component {
     // Updates state everytime option is checked/unchecked
 
     createSession = () => {
-        updateDatabase('Session',
+        updateDatabase(DbTableNames.session,
             [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), store.getState().diary.date],
             ["dateEntered", "diaryDate"],
             undefined,
@@ -104,7 +105,7 @@ export default class SafetyPlanSelection extends React.Component {
     handleSave = (sessionId) => {
         if(this.state.type ==='cope') {
             this.state.checkedItems.forEach(t => {
-                updateDatabase('CopeSession',
+                updateDatabase(DbTableNames.copeSession,
                     [sessionId, t],
                     ['sessionId', 'copeId']
                 )
@@ -112,12 +113,12 @@ export default class SafetyPlanSelection extends React.Component {
 
             if(this.state.previouslyCheckedItems.length > 0) {
                 this.state.previouslyCheckedItems.forEach(prev => {
-                    deleteDatabaseRow('CopeSession', 'where sessionId = ' + prev.sessionId)
+                    deleteDatabaseRow(DbTableNames.copeSession, 'where sessionId = ' + prev.sessionId)
                 })
             }
         } else {
             this.state.checkedItems.forEach(t => {
-                updateDatabase('SignSession',
+                updateDatabase(DbTableNames.signSession,
                     [sessionId, t],
                     ['sessionId', 'signId']
                 )
@@ -125,7 +126,7 @@ export default class SafetyPlanSelection extends React.Component {
 
             if(this.state.previouslyCheckedItems.length > 0) {
                 this.state.previouslyCheckedItems.forEach(prev => {
-                    deleteDatabaseRow('SignSession', 'where sessionId = ' + prev.sessionId)
+                    deleteDatabaseRow(DbTableNames.signSession, 'where sessionId = ' + prev.sessionId)
                 })
             }
         }

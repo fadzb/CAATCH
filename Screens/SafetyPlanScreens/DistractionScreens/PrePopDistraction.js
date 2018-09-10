@@ -37,7 +37,7 @@ export default class PrePopDistraction extends React.Component {
     render() {
         return(
             <View style={preDistractionStyle.viewContainer}>
-                <View style={{flex: 1}}>
+                <View style={{flex: 1, marginBottom: 50}}>
                     <CustomMultiPicker
                         options={this.state.distractions}
                         multiple={false} //

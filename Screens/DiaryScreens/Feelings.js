@@ -7,6 +7,7 @@ import Moment from 'moment';
 import {connect} from 'react-redux'
 import {resetFeelingRating} from "../../Redux/actions";
 import store from "../../Redux/store"
+import {DbTableNames} from "../../Constants/Constants";
 
 class Feelings extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -43,7 +44,7 @@ class Feelings extends React.Component {
     // retrieve feelings array from DB
 
     createSession = () => {
-        updateDatabase('Session',
+        updateDatabase(DbTableNames.session,
             [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), this.props.diaryDate],
             ["dateEntered", "diaryDate"],
             undefined,
@@ -53,7 +54,7 @@ class Feelings extends React.Component {
 
     handleSave = (sessionId) => {
         this.props.feelingRating.forEach(rating => {
-            updateDatabase('DiarySession',
+            updateDatabase(DbTableNames.diarySession,
                 [sessionId, rating.id, rating.rating],
                 ['sessionId', 'diaryId', 'rating'],
                 () => store.dispatch(resetFeelingRating(diaryPrePops.filter(t => t.diaryType === "Feeling").map(f => ({id: f.diaryId, rating: 0})))))

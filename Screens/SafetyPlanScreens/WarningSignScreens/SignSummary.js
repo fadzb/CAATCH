@@ -9,6 +9,7 @@ import {openSafetyPlanItem} from "../../../Util/Usage";
 import {PressableIcon} from "../../../Components/PressableIcon";
 import {getSign} from "../../../Redux/actions";
 import store from "../../../Redux/store"
+import {DbTableNames, UsageFunctionIds, DbPrimaryKeys} from "../../../Constants/Constants";
 
 export default class SignSummary extends React.Component {
 
@@ -29,7 +30,7 @@ export default class SignSummary extends React.Component {
     componentDidMount() {
         this.getCopeLink();
 
-        openSafetyPlanItem(1, "WarningSign", this.props.navigation.getParam('id'));
+        openSafetyPlanItem(UsageFunctionIds.warningSign, DbTableNames.warningSign, this.props.navigation.getParam('id'), DbPrimaryKeys.warningSign);
         // update DB for open sign function
     }
 

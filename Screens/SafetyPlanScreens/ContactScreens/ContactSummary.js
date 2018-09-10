@@ -10,6 +10,7 @@ import {openSafetyPlanItem} from "../../../Util/Usage";
 import {updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
 import {getContact} from "../../../Redux/actions";
 import store from "../../../Redux/store"
+import {DbTableNames, UsageFunctionIds, DbPrimaryKeys} from "../../../Constants/Constants";
 
 
 export default class ContactSummary extends React.Component {
@@ -43,7 +44,7 @@ export default class ContactSummary extends React.Component {
     componentDidMount() {
         this.getName();
 
-        openSafetyPlanItem(5, "Contact", this.props.navigation.getParam('id'))
+        openSafetyPlanItem(UsageFunctionIds.contact, DbTableNames.contact, this.props.navigation.getParam('id'), DbPrimaryKeys.contact)
         // update DB for open contact function
     }
 
