@@ -1,5 +1,9 @@
 // action types
 
+//Settings
+
+export const UPDATE_DBT_SETTING = 'UPDATE_DBT_SETTING';
+
 //SafetyPlan
 
 export const UPDATE_COPING = 'UPDATE_COPING';
@@ -43,6 +47,13 @@ export const GET_SCHEDULE = 'GET_SCHEDULE';
 export const UPDATE_SCHEDULE_DATE = 'UPDATE_SCHEDULE_DATE';
 
 // action creators
+
+//Settings
+
+export const updateDbtSetting = (update) => ({
+  type: UPDATE_DBT_SETTING,
+  payload: update,
+});
 
 //Usage
 

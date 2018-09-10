@@ -22,6 +22,7 @@ import {
   RESET_MOOD_RATING,
   UPDATE_SCHEDULE_DATE,
   GET_SCHEDULE,
+  UPDATE_DBT_SETTING,
 } from './actions';
 import Moment from 'moment';
 
@@ -202,6 +203,17 @@ const scheduleReducer = (state = { appointments: {}, date: new Date() }, action)
   return state;
 };
 
+//Setting
+
+const settingReducer = (state = { dbt: false }, action) => {
+  if (action.type === UPDATE_DBT_SETTING) {
+    return { ...state, dbt: action.payload };
+  }
+  // used to update global DBT setting
+
+  return state;
+};
+
 const reducer = combineReducers({
   coping: copingReducer,
   sign: signReducer,
@@ -211,6 +223,7 @@ const reducer = combineReducers({
   diary: diaryReducer,
   usage: usageReducer,
   schedule: scheduleReducer,
+  setting: settingReducer,
 });
 // as reducers grow, add to this object
 
