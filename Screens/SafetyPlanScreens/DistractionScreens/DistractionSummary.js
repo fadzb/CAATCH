@@ -40,7 +40,8 @@ export default class DistractionSummary extends React.Component {
       UsageFunctionIds.distraction,
       DbTableNames.distraction,
       this.props.navigation.getParam('id'),
-      DbPrimaryKeys.distraction
+      DbPrimaryKeys.distraction,
+      this.props.navigation.getParam('name')
     );
     // update DB for open distraction function
   }

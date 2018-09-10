@@ -36,7 +36,8 @@ export default class StrategySummary extends React.Component {
       UsageFunctionIds.copingStrategy,
       DbTableNames.copingStrategy,
       this.props.navigation.getParam('id'),
-      DbPrimaryKeys.copingStrategy
+      DbPrimaryKeys.copingStrategy,
+      this.props.navigation.getParam('name')
     );
     // update DB for open coping function
   }

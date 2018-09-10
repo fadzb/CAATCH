@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Text, Dimensions, FlatList, SectionList } from 'react-native';
+import { View, StyleSheet, Text, Dimensions, FlatList, SectionList, ActivityIndicator } from 'react-native';
 import { Icons } from '../../Constants/Icon';
 import { TabStyles } from '../../Styles/TabStyles';
 import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
@@ -7,14 +7,22 @@ import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { readDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
-import { DbTableNames, UsageFunctionIds } from '../../Constants/Constants';
+import { DbPrimaryKeys, DbTableNames, UsageFunctionIds } from '../../Constants/Constants';
 
-const safetyPlanElements = [
+const safetyPldanElements = [
   { name: 'Warning Sign', info: 'Feeling Alone (8 views)', icon: Icons.warningSign },
   { name: 'Coping Strategy', info: 'Baking (12 views)', icon: Icons.copingStrategy },
   { name: 'Distraction', info: 'Library (4 views)', icon: Icons.distractions },
   { name: 'Reason to Live', info: 'Living 2 (9 views)', icon: Icons.lifeWorthLiving },
 ];
+
+const safetyPlanElements = {
+  WarningSign: { name: 'Warning Sign', icon: Icons.warningSign },
+  CopingStrategy: { name: 'Coping Strategy', icon: Icons.copingStrategy },
+  Reason: { name: 'Distraction', icon: Icons.distractions },
+  Distraction: { name: 'Reason to Live', icon: Icons.lifeWorthLiving },
+  Contact: { name: 'Contact', icon: Icons.contacts },
+};
 
 const InsightRow = (props) => (
   <View style={insightsStyle.container}>
@@ -44,6 +52,8 @@ export default class Insights extends React.Component {
 
     this.state = {
       data: [],
+      viewData: [],
+      dataReady: false,
     };
   }
 
@@ -52,12 +62,52 @@ export default class Insights extends React.Component {
     //     readDatabaseArg('tableId, tableName, count(*) as viewCount', DbTableNames.functionUsage, res => this.setState(prevState => ({data: [...prevState.data, {...res[0], functionId: id}]}), () => console.log(this.state.data)), undefined,
     //         'where functionId = ' + id + ' group by tableId order by count(*) Desc limit 1')
     // })
+
     // need to add another column into function usage titled 'columnName' in order to join tables via primaryKey. Maybe another column also for functionType (can go in function table)
+
+    readDatabaseArg(
+      '*',
+      DbTableNames.functionUsage,
+      (res) => this.setState({ data: [...res] }),
+      this.getMostViewedData,
+      'as fu inner join ' + DbTableNames.function + ' as f on fu.functionId = f.functionId'
+    );
   }
+
+  getMostViewedData = () => {
+    const columns = 'functionId, tableName, columnName, tableId, idName, max(count) as viewCount';
+    const functionType = '"view"';
+
+    readDatabaseArg(
+      columns,
+      '(select *, count(*) as count from ' +
+        DbTableNames.functionUsage +
+        ' as fu inner join ' +
+        DbTableNames.function +
+        ' as f ' +
+        'on fu.functionId = f.functionId where f.functionType = ' +
+        functionType +
+        ' group by fu.functionId, fu.tableId)',
+      this.setViewData,
+      undefined,
+      'group by ' + DbPrimaryKeys.function
+    );
+  };
+  // complex sql query for retrieving most viewed SP items
+
+  setViewData = (res) => {
+    this.setState({ viewData: res.map((r) => ({ ...r, ...safetyPlanElements[r.tableName] })) }, () =>
+      this.setState({ dataReady: true })
+    );
+  };
 
   renderItem = ({ item }) => (
     <View style={insightsStyle.listContainer}>
-      <InsightRow name={item.name} selectedText={item.info} icon={item.icon + '-outline'} />
+      <InsightRow
+        name={item.name}
+        selectedText={item.idName + ' (' + item.viewCount + ' views)'}
+        icon={item.icon + '-outline'}
+      />
     </View>
   );
 
@@ -73,33 +123,39 @@ export default class Insights extends React.Component {
     const sections = [
       {
         title: 'Most Viewed',
-        data: safetyPlanElements,
+        data: this.state.viewData,
       },
     ];
 
     return (
       <View style={TabStyles.stackContainer}>
-        <Container>
-          <StyleProvider style={getTheme(platform)}>
-            <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
-              <Tab heading={'Safety Plan'}>
-                <View>
-                  <SectionList
-                    renderItem={this.renderItem}
-                    renderSectionHeader={this.renderSectionHeader}
-                    sections={sections}
-                    keyExtractor={(item, index) => index.toString()}
-                  />
-                </View>
-              </Tab>
-              <Tab heading={'Diary'}>
-                <View style={{ flex: 1 }}>
-                  <Text>Todo</Text>
-                </View>
-              </Tab>
-            </Tabs>
-          </StyleProvider>
-        </Container>
+        {this.state.dataReady ? (
+          <Container>
+            <StyleProvider style={getTheme(platform)}>
+              <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
+                <Tab heading={'Safety Plan'}>
+                  <View>
+                    <SectionList
+                      renderItem={this.renderItem}
+                      renderSectionHeader={this.renderSectionHeader}
+                      sections={sections}
+                      keyExtractor={(item, index) => index.toString()}
+                    />
+                  </View>
+                </Tab>
+                <Tab heading={'Diary'}>
+                  <View style={{ flex: 1 }}>
+                    <Text>Todo</Text>
+                  </View>
+                </Tab>
+              </Tabs>
+            </StyleProvider>
+          </Container>
+        ) : (
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color="#007AFF" />
+          </View>
+        )}
       </View>
     );
   }

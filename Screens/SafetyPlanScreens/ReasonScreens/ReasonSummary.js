@@ -36,7 +36,8 @@ export default class ReasonSummary extends React.Component {
       UsageFunctionIds.reason,
       DbTableNames.reason,
       this.props.navigation.getParam('id'),
-      DbPrimaryKeys.reason
+      DbPrimaryKeys.reason,
+      this.props.navigation.getParam('name')
     );
     // update DB for open reason function
   }
