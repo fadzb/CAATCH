@@ -14,6 +14,7 @@ import { PressableIcon } from '../../../Components/PressableIcon';
 import { FileSystem } from 'expo';
 import { getDistraction } from '../../../Redux/actions';
 import store from '../../../Redux/store';
+import { DbTableNames, UsageFunctionIds, DbPrimaryKeys } from '../../../Constants/Constants';
 
 export default class DistractionSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -35,7 +36,12 @@ export default class DistractionSummary extends React.Component {
   componentDidMount() {
     this.getContactLink();
 
-    openSafetyPlanItem(3, 'Distraction', this.props.navigation.getParam('id'));
+    openSafetyPlanItem(
+      UsageFunctionIds.distraction,
+      DbTableNames.distraction,
+      this.props.navigation.getParam('id'),
+      DbPrimaryKeys.distraction
+    );
     // update DB for open distraction function
   }
 

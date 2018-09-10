@@ -39,7 +39,7 @@ export default class PrePopCopingStrategies extends React.Component {
   render() {
     return (
       <View style={preCopeStyle.viewContainer}>
-        <View style={{ flex: 1 }}>
+        <View style={{ flex: 1, marginBottom: 50 }}>
           <CustomMultiPicker
             options={this.state.strats}
             multiple={false} //

@@ -3,90 +3,84 @@ import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'r
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import { safetyPlanPrePops } from '../../../Constants/Prepopulated';
 import { SafetyPlanConstants } from '../../../Constants/Constants';
+import CustomMultiSelectList from '../../../Components/CustomMultiSelectList';
 
-export default class PrePopDistraction extends React.Component {
+export default class PrePopWarningSigns extends React.Component {
   static navigationOptions = {
-    title: 'Select Distraction',
+    title: 'Select Sign',
   };
 
   constructor(props) {
     super(props);
 
     this.state = {
-      distractions: [],
-      checkedDistractions: [],
+      signs: [],
+      checkedSigns: [],
     };
   }
 
   componentDidMount() {
-    this.updateDistractions(safetyPlanPrePops);
+    this.updateSigns(safetyPlanPrePops);
   }
 
-  updateDistractions = (distractions) => {
+  updateSigns = (signs) => {
     this.setState({
-      distractions: distractions
-        .filter((item) => item.category === SafetyPlanConstants.distraction)
-        .map((distract) => distract.name),
+      signs: signs.filter((item) => item.category === SafetyPlanConstants.warningSign).map((sign) => sign.name),
     });
   };
-  // update checklist with distractions from pre-populated array
+  // update checklist with signs from pre-populated array
 
-  getCheckedDistractions = (distractions) => {
+  getCheckedSigns = (signs) => {
     this.setState({
-      checkedDistractions: distractions.filter((dis) => dis !== undefined),
+      checkedSigns: signs.filter((s) => s !== undefined),
     });
   };
   // Updates state everytime option is checked/unchecked
 
   render() {
     return (
-      <View style={preDistractionStyle.viewContainer}>
+      <View style={preSignStyle.viewContainer}>
         <View style={{ flex: 1, marginBottom: 50 }}>
-          <CustomMultiPicker
-            options={this.state.distractions}
+          <CustomMultiSelectList
+            options={this.state.signs}
             multiple={false} //
             returnValue={'label'} // label or value
-            callback={this.getCheckedDistractions} // callback, array of selected items
+            callback={this.getCheckedSigns} // callback, array of selected items
             rowBackgroundColor={'#fff'}
-            rowHeight={40}
             rowRadius={5}
             iconColor={'#00a2dd'}
             iconSize={25}
-            itemStyle={preDistractionStyle.itemStyle}
+            itemStyle={preSignStyle.itemStyle}
             selectedIconName={'ios-checkmark-circle-outline'}
             unselectedIconName={'ios-radio-button-off-outline'}
             search={true}
           />
         </View>
         <TouchableHighlight
-          style={preDistractionStyle.button}
+          style={preSignStyle.button}
           onPress={
             this.props.navigation.getParam('edit')
-              ? () =>
-                  this.props.navigation.navigate('editDistraction', {
-                    checkedDistractions: this.state.checkedDistractions,
-                  })
-              : () =>
-                  this.props.navigation.navigate('newDistraction', {
-                    checkedDistractions: this.state.checkedDistractions,
-                  })
+              ? () => this.props.navigation.navigate('editWarning', { checkedSigns: this.state.checkedSigns })
+              : () => this.props.navigation.navigate('newWarning', { checkedSigns: this.state.checkedSigns })
           }
           underlayColor="#99d9f4"
         >
-          <Text style={preDistractionStyle.buttonText}>Done</Text>
+          <Text style={preSignStyle.buttonText}>Done</Text>
         </TouchableHighlight>
       </View>
     );
   }
 }
 
-const preDistractionStyle = StyleSheet.create({
+const preSignStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
     backgroundColor: '#fff',
   },
   itemStyle: {
-    borderBottomWidth: 3,
+    //borderBottomWidth: 3,
+    //flex: 1,
+    //marginRight: 30
   },
   buttonText: {
     fontSize: 18,

@@ -5,6 +5,7 @@ import { SelectionRow } from '../../Components/SelectionRow';
 import { Icons } from '../../Constants/Icon';
 import store from '../../Redux/store';
 import { readDatabaseArg } from '../../Util/DatabaseHelper';
+import { DbTableNames } from '../../Constants/Constants';
 
 export default class FeelingsSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -32,10 +33,14 @@ export default class FeelingsSummary extends React.Component {
 
     readDatabaseArg(
       columns,
-      'DiarySession',
+      DbTableNames.diarySession,
       this.transformResults,
       undefined,
-      ' as d inner join Session as s on d.sessionId = s.sessionId inner join Diary as di on d.diaryId = di.diaryId' +
+      ' as d inner join ' +
+        DbTableNames.session +
+        ' as s on d.sessionId = s.sessionId inner join ' +
+        DbTableNames.diary +
+        ' as di on d.diaryId = di.diaryId' +
         " where DATE(diaryDate) = '" +
         selectedDate +
         "' and diaryType = 'Feeling'"

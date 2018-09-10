@@ -13,6 +13,7 @@ import { updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseH
 import { FileSystem } from 'expo';
 import { getReason } from '../../../Redux/actions';
 import store from '../../../Redux/store';
+import { DbTableNames, UsageFunctionIds, DbPrimaryKeys } from '../../../Constants/Constants';
 
 export default class ReasonSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -31,7 +32,12 @@ export default class ReasonSummary extends React.Component {
   }
 
   componentDidMount() {
-    openSafetyPlanItem(4, 'Reason', this.props.navigation.getParam('id'));
+    openSafetyPlanItem(
+      UsageFunctionIds.reason,
+      DbTableNames.reason,
+      this.props.navigation.getParam('id'),
+      DbPrimaryKeys.reason
+    );
     // update DB for open reason function
   }
 

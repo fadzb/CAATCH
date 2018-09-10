@@ -20,6 +20,7 @@ import { diaryPrePops } from '../../Constants/Prepopulated';
 import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
+import { DbTableNames } from '../../Constants/Constants';
 
 class Skills extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -50,7 +51,7 @@ class Skills extends React.Component {
 
   createSession = () => {
     updateDatabase(
-      'Session',
+      DbTableNames.session,
       [Moment(this.state.sessionDate).format('YYYY-MM-DD HH:mm:ss.SSS'), this.props.diaryDate],
       ['dateEntered', 'diaryDate'],
       undefined,
@@ -69,10 +70,14 @@ class Skills extends React.Component {
 
     readDatabaseArg(
       columns,
-      'DiarySession',
+      DbTableNames.diarySession,
       this.savePrevSelected,
       undefined,
-      ' as d inner join Session as s on d.sessionId = s.sessionId inner join Diary as di on d.diaryId = di.diaryId' +
+      ' as d inner join ' +
+        DbTableNames.session +
+        ' as s on d.sessionId = s.sessionId inner join ' +
+        DbTableNames.diary +
+        ' as di on d.diaryId = di.diaryId' +
         " where DATE(diaryDate) = '" +
         selectedDate +
         "' and diaryType = 'Skill'"
@@ -93,18 +98,25 @@ class Skills extends React.Component {
 
   handleSave = (sessionId) => {
     this.props.skillRating.forEach((rating) => {
-      updateDatabase('DiarySession', [sessionId, rating.id, rating.rating], ['sessionId', 'diaryId', 'rating'], () =>
-        store.dispatch(
-          resetSkillRating(
-            diaryPrePops.filter((t) => t.diaryType === 'Skill').map((s) => ({ id: s.diaryId, rating: 0 }))
+      updateDatabase(
+        DbTableNames.diarySession,
+        [sessionId, rating.id, rating.rating],
+        ['sessionId', 'diaryId', 'rating'],
+        () =>
+          store.dispatch(
+            resetSkillRating(
+              diaryPrePops.filter((t) => t.diaryType === 'Skill').map((s) => ({ id: s.diaryId, rating: 0 }))
+            )
           )
-        )
       );
     });
 
     if (this.state.prevSelected) {
       this.state.skills.forEach((rating) => {
-        deleteDatabaseRow('DiarySession', 'where diaryId = ' + rating.diaryId + ' and sessionId = ' + rating.sessionId);
+        deleteDatabaseRow(
+          DbTableNames.diarySession,
+          'where diaryId = ' + rating.diaryId + ' and sessionId = ' + rating.sessionId
+        );
       });
     }
 

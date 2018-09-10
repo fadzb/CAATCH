@@ -13,6 +13,7 @@ import { updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseH
 import { FileSystem } from 'expo';
 import { getCoping } from '../../../Redux/actions';
 import store from '../../../Redux/store';
+import { DbTableNames, UsageFunctionIds, DbPrimaryKeys } from '../../../Constants/Constants';
 
 export default class StrategySummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -31,7 +32,12 @@ export default class StrategySummary extends React.Component {
   }
 
   componentDidMount() {
-    openSafetyPlanItem(2, 'CopingStrategy', this.props.navigation.getParam('id'));
+    openSafetyPlanItem(
+      UsageFunctionIds.copingStrategy,
+      DbTableNames.copingStrategy,
+      this.props.navigation.getParam('id'),
+      DbPrimaryKeys.copingStrategy
+    );
     // update DB for open coping function
   }
 
