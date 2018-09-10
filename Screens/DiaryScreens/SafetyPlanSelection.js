@@ -5,6 +5,7 @@ import {readDatabaseArg, updateDatabase, deleteDatabaseRow} from "../../Util/Dat
 import Moment from 'moment';
 import store from "../../Redux/store";
 import {DbTableNames} from "../../Constants/Constants";
+import CustomMultiSelectList from "../../Components/CustomMultiSelectList"
 
 export default class SafetyPlanSelection extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -139,13 +140,12 @@ export default class SafetyPlanSelection extends React.Component {
             <View style={SPSelectionStyle.viewContainer}>
                 {this.state.historyChecked ? <View style={{flex: 1}}>
                     <View style={{flex: 1}}>
-                        <CustomMultiPicker
+                        <CustomMultiSelectList
                             options={this.state.items}
                             multiple={true} //
                             returnValue={this.state.type === 'cope' ? "copeId" : "signId"} // label or value
                             callback={this.getCheckedItems} // callback, array of selected items
                             rowBackgroundColor={"#fff"}
-                            rowHeight={40}
                             rowRadius={5}
                             iconColor={"#00a2dd"}
                             iconSize={25}
@@ -176,9 +176,6 @@ const SPSelectionStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
         backgroundColor: '#fff',
-    },
-    itemStyle: {
-        borderBottomWidth: 3
     },
     buttonText: {
         fontSize: 18,

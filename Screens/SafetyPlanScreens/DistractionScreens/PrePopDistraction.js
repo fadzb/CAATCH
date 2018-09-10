@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'r
 import CustomMultiPicker from "react-native-multiple-select-list";
 import {safetyPlanPrePops} from "../../../Constants/Prepopulated";
 import {SafetyPlanConstants} from "../../../Constants/Constants";
+import CustomMultiSelectList from "../../../Components/CustomMultiSelectList"
 
 export default class PrePopDistraction extends React.Component {
     static navigationOptions = {
@@ -38,13 +39,12 @@ export default class PrePopDistraction extends React.Component {
         return(
             <View style={preDistractionStyle.viewContainer}>
                 <View style={{flex: 1, marginBottom: 50}}>
-                    <CustomMultiPicker
+                    <CustomMultiSelectList
                         options={this.state.distractions}
                         multiple={false} //
                         returnValue={"label"} // label or value
                         callback={this.getCheckedDistractions} // callback, array of selected items
                         rowBackgroundColor={"#fff"}
-                        rowHeight={40}
                         rowRadius={5}
                         iconColor={"#00a2dd"}
                         iconSize={25}
@@ -71,9 +71,6 @@ const preDistractionStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
         backgroundColor: '#fff',
-    },
-    itemStyle: {
-        borderBottomWidth: 3
     },
     buttonText: {
         fontSize: 18,

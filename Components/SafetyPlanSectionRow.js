@@ -72,7 +72,9 @@ export class SafetyPlanSectionRow extends React.Component {
                             {this.props.circleView !== undefined && <View style={sectionRowStyle.circleView}>
                                 <Text style={{fontSize: 20}}>{this.props.circleView}</Text>
                             </View>}
-                            <Text style={sectionRowStyle.buttonText}>{this.props.name}</Text>
+                            <View style={{flex: 1}}>
+                                <Text numberOfLines={2} ellipsizeMode={'tail'} style={sectionRowStyle.buttonText}>{this.props.name}</Text>
+                            </View>
                         </View>
                     </TouchableHighlight>
                 </View>
@@ -94,17 +96,19 @@ const sectionRowStyle = StyleSheet.create({
         borderBottomWidth: 1,
         marginLeft: 30,
         marginRight: 30,
+        paddingTop: 12,
+        paddingBottom: 12,
     },
 
     container: {
         flex: 1,
-        height: 80
+        //height: 80,
     },
     // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
     buttonText: {
         fontSize: 18,
-        paddingLeft: 20
+        paddingLeft: 20,
     },
 
     circleView: {

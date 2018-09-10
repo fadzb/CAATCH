@@ -117,11 +117,11 @@ export default class StrategySummary extends React.Component {
                                 <Left>
                                     <Body>
                                         <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                                            <View>
+                                            <View style={{flex: 4, paddingRight: 9}}>
                                                 <Text>{this.props.navigation.getParam('name')}</Text>
                                                 <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
                                             </View>
-                                            <View style={{flexDirection: 'row'}}>
+                                            <View style={{flexDirection: 'row', flex: 1, justifyContent: 'space-between'}}>
                                                 <PressableIcon
                                                     iconName={Icons.edit + '-outline'}
                                                     size={35}
@@ -129,7 +129,6 @@ export default class StrategySummary extends React.Component {
                                                         this.props.navigation.getParam('name'),
                                                         this.props.navigation.getParam('desc'),
                                                         link)}
-                                                    buttonStyle={{marginRight: 20}}
                                                 />
                                                 <PressableIcon
                                                     iconName={Icons.delete + '-outline'}
