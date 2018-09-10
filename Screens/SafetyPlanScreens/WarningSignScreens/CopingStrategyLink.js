@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
-import CustomMultiPicker from 'react-native-multiple-select-list';
+import CustomMultiSelectList from '../../../Components/CustomMultiSelectList';
 
 import { readDatabaseArg } from '../../../Util/DatabaseHelper';
 
@@ -47,13 +47,12 @@ export default class CopingStrategyLink extends React.Component {
   render() {
     return (
       <View style={copeLinkStyle.viewContainer}>
-        <CustomMultiPicker
+        <CustomMultiSelectList
           options={this.state.copes}
           multiple={true} //
           returnValue={'copeId'} // label or value
           callback={this.getCheckedCopes} // callback, array of selected items
           rowBackgroundColor={'#fff'}
-          rowHeight={40}
           rowRadius={5}
           iconColor={'#00a2dd'}
           search={true}
@@ -89,9 +88,6 @@ const copeLinkStyle = StyleSheet.create({
     backgroundColor: '#fff',
   },
 
-  itemStyle: {
-    borderBottomWidth: 3,
-  },
   buttonText: {
     fontSize: 18,
     color: 'white',
