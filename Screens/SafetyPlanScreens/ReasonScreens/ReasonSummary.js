@@ -34,7 +34,7 @@ export default class ReasonSummary extends React.Component {
     }
 
     componentDidMount() {
-        openSafetyPlanItem(UsageFunctionIds.reason, DbTableNames.reason, this.props.navigation.getParam('id'), DbPrimaryKeys.reason);
+        openSafetyPlanItem(UsageFunctionIds.reason, DbTableNames.reason, this.props.navigation.getParam('id'), DbPrimaryKeys.reason, this.props.navigation.getParam('name'));
         // update DB for open reason function
     }
 

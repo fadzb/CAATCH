@@ -42,9 +42,8 @@ export default class ContactSummary extends React.Component {
     }
 
     componentDidMount() {
-        this.getName();
+        this.getName(() => openSafetyPlanItem(UsageFunctionIds.contact, DbTableNames.contact, this.props.navigation.getParam('id'), DbPrimaryKeys.contact, this.state.name));
 
-        openSafetyPlanItem(UsageFunctionIds.contact, DbTableNames.contact, this.props.navigation.getParam('id'), DbPrimaryKeys.contact)
         // update DB for open contact function
     }
 
@@ -100,14 +99,14 @@ export default class ContactSummary extends React.Component {
         )
     };
 
-    getName = () => {
+    getName = (func) => {
         const firstName = this.props.navigation.getParam('firstName');
         const surname = this.props.navigation.getParam('surname');
 
         if(surname === null) {
-            this.setState({name: firstName})
+            this.setState({name: firstName}, func)
         } else {
-            this.setState({name: firstName + " " + surname})
+            this.setState({name: firstName + " " + surname}, func)
         }
     };
 
