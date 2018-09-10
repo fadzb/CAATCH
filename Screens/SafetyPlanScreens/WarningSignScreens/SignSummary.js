@@ -33,7 +33,8 @@ export default class SignSummary extends React.Component {
       UsageFunctionIds.warningSign,
       DbTableNames.warningSign,
       this.props.navigation.getParam('id'),
-      DbPrimaryKeys.warningSign
+      DbPrimaryKeys.warningSign,
+      this.props.navigation.getParam('name')
     );
     // update DB for open sign function
   }
