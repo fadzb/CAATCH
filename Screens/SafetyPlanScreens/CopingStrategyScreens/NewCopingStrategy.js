@@ -9,6 +9,8 @@ import { Icons } from '../../../Constants/Icon';
 
 import { TabStyles } from '../../../Styles/TabStyles';
 import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
+import { DbTableNames, UsageFunctionIds } from '../../../Constants/Constants';
+import { latestSafetyPlanItem } from '../../../Util/Usage';
 
 const Form = t.form.Form;
 
@@ -94,9 +96,16 @@ export default class NewCopingStrategy extends React.Component {
       this.updateDBMedia(copeId);
     }
 
+    this.updateFunctionUsage(copeId.insertId);
+    // keeping track of new cope entries for 'my stats'
+
     this.refreshDb(this.updateGlobalStrategies);
   };
   // if media was selected -> update that row with path
+
+  updateFunctionUsage = (copeId) => {
+    latestSafetyPlanItem(UsageFunctionIds.latest.copingStrategy, copeId, this.state.value.copeName);
+  };
 
   updateDBMedia = (copeId) => {
     const mediaDirectory = 'SafetyplanMedia/';

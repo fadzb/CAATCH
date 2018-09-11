@@ -46,10 +46,20 @@ export const DbPrimaryKeys = {
 
 // Usage function id's
 export const UsageFunctionIds = {
-  warningSign: 1,
-  copingStrategy: 2,
-  distraction: 3,
-  reason: 4,
-  contact: 5,
-  environment: 6,
+  view: {
+    warningSign: 1,
+    copingStrategy: 2,
+    distraction: 3,
+    reason: 4,
+    contact: 5,
+    environment: 6,
+  },
+  latest: {
+    warningSign: 7,
+    copingStrategy: 8,
+    distraction: 9,
+    reason: 10,
+    contact: 11,
+    environment: 12,
+  },
 };

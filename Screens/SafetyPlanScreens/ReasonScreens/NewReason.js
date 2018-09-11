@@ -9,6 +9,8 @@ import { Icons } from '../../../Constants/Icon';
 
 import { TabStyles } from '../../../Styles/TabStyles';
 import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
+import { DbTableNames, UsageFunctionIds } from '../../../Constants/Constants';
+import { latestSafetyPlanItem } from '../../../Util/Usage';
 
 const Form = t.form.Form;
 
@@ -75,9 +77,16 @@ export default class NewReason extends React.Component {
       this.updateDBMedia(reasonId);
     }
 
+    this.updateFunctionUsage(reasonId.insertId);
+    // keeping track of new reason entries for 'my stats'
+
     this.refreshDb(this.updateGlobalReasons);
   };
   // if media was selected -> update that row with path
+
+  updateFunctionUsage = (reasonId) => {
+    latestSafetyPlanItem(UsageFunctionIds.latest.reason, reasonId, this.state.value.reasonName);
+  };
 
   updateDBMedia = (reasonId) => {
     const mediaDirectory = 'SafetyplanMedia/';

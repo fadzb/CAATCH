@@ -51,7 +51,7 @@ export default class ContactSummary extends React.Component {
   componentDidMount() {
     this.getName(() =>
       openSafetyPlanItem(
-        UsageFunctionIds.contact,
+        UsageFunctionIds.view.contact,
         DbTableNames.contact,
         this.props.navigation.getParam('id'),
         DbPrimaryKeys.contact,
