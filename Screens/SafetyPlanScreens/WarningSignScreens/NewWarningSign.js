@@ -8,6 +8,8 @@ import Expo from 'expo';
 
 import { TabStyles } from '../../../Styles/TabStyles';
 import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
+import { DbTableNames, UsageFunctionIds } from '../../../Constants/Constants';
+import { latestSafetyPlanItem } from '../../../Util/Usage';
 
 const Form = t.form.Form;
 
@@ -89,8 +91,15 @@ export default class NewWarningSign extends React.Component {
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
     );
+
+    this.updateFunctionUsage(signId.insertId);
+    // keeping track of new sign entries for 'my stats'
   };
   // function that checks if any copes were linked and, if yes, updates CopeSignLink table with respective ID's
+
+  updateFunctionUsage = (signId) => {
+    latestSafetyPlanItem(UsageFunctionIds.latest.warningSign, signId, this.state.value.signName);
+  };
 
   onPress = () => {
     const value = this.refs.form.getValue();

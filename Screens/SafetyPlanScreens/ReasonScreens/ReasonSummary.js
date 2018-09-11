@@ -33,7 +33,7 @@ export default class ReasonSummary extends React.Component {
 
   componentDidMount() {
     openSafetyPlanItem(
-      UsageFunctionIds.reason,
+      UsageFunctionIds.view.reason,
       DbTableNames.reason,
       this.props.navigation.getParam('id'),
       DbPrimaryKeys.reason,

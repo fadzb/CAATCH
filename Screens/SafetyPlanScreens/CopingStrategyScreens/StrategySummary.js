@@ -33,7 +33,7 @@ export default class StrategySummary extends React.Component {
 
   componentDidMount() {
     openSafetyPlanItem(
-      UsageFunctionIds.copingStrategy,
+      UsageFunctionIds.view.copingStrategy,
       DbTableNames.copingStrategy,
       this.props.navigation.getParam('id'),
       DbPrimaryKeys.copingStrategy,
