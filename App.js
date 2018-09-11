@@ -9,12 +9,12 @@ import Moment from 'moment';
 import { updateUsage, updateDbtSetting } from './Redux/actions';
 import { AppLoading } from 'expo';
 
-import TwitterScreen from './Screens/TwitterScreen';
 import PlanStack from './Components/StackNavigators/SafetyPlanStack';
 import DiaryStack from './Components/StackNavigators/DiaryStack';
 import SettingsStack from './Components/StackNavigators/SettingsStack';
 import Passcode from './Screens/Passcode';
 import HomeStack from './Components/StackNavigators/HomeStack';
+import CrisisStack from './Components/StackNavigators/CrisisStack';
 
 //Initial Tab screens/stack navs
 
@@ -109,7 +109,7 @@ const TabBar = createBottomTabNavigator(
     Home: HomeStack,
     Plan: PlanStack,
     Diary: DiaryStack,
-    News: TwitterScreen,
+    Crisis: CrisisStack,
     Settings: SettingsStack,
   },
 
