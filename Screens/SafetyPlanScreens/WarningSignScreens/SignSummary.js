@@ -30,7 +30,7 @@ export default class SignSummary extends React.Component {
     componentDidMount() {
         this.getCopeLink();
 
-        openSafetyPlanItem(UsageFunctionIds.warningSign, DbTableNames.warningSign, this.props.navigation.getParam('id'), DbPrimaryKeys.warningSign, this.props.navigation.getParam('name'));
+        openSafetyPlanItem(UsageFunctionIds.view.warningSign, DbTableNames.warningSign, this.props.navigation.getParam('id'), DbPrimaryKeys.warningSign, this.props.navigation.getParam('name'));
         // update DB for open sign function
     }
 

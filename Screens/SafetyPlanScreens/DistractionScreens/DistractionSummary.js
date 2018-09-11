@@ -37,7 +37,7 @@ export default class DistractionSummary extends React.Component {
     componentDidMount() {
         this.getContactLink();
 
-        openSafetyPlanItem(UsageFunctionIds.distraction, DbTableNames.distraction, this.props.navigation.getParam('id'), DbPrimaryKeys.distraction, this.props.navigation.getParam('name'))
+        openSafetyPlanItem(UsageFunctionIds.view.distraction, DbTableNames.distraction, this.props.navigation.getParam('id'), DbPrimaryKeys.distraction, this.props.navigation.getParam('name'))
         // update DB for open distraction function
     }
 

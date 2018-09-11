@@ -9,6 +9,8 @@ import {Icons} from "../../../Constants/Icon";
 
 import {TabStyles} from "../../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
+import {DbTableNames, UsageFunctionIds} from "../../../Constants/Constants";
+import {latestSafetyPlanItem} from "../../../Util/Usage";
 
 const Form = t.form.Form;
 
@@ -100,9 +102,16 @@ export default class NewContact extends React.Component {
             this.updateDBMedia(contactId)
         }
 
+        this.updateFunctionUsage(contactId.insertId);
+        // keeping track of new contact entries for 'my stats'
+
         this.refreshDb(this.updateGlobalContacts);
     };
     // if media was selected -> update that row with path
+
+    updateFunctionUsage = (contactId) => {
+        latestSafetyPlanItem(UsageFunctionIds.latest.contact, contactId, this.state.value.firstName)
+    };
 
     updateDBMedia = contactId => {
 
@@ -185,6 +194,8 @@ export default class NewContact extends React.Component {
             console.log(value);
             updateDatabase("Contact", Object.values(value), Object.keys(value), this.updateContactList(value), this.checkMediaSelected);
             // write the saved values to DB if valid
+
+            //latestSafetyPlanItem(UsageFunctionIds.latest.contact,)
 
             this.props.navigation.pop();
             // pop to contact list once saved

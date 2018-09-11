@@ -42,7 +42,7 @@ export default class ContactSummary extends React.Component {
     }
 
     componentDidMount() {
-        this.getName(() => openSafetyPlanItem(UsageFunctionIds.contact, DbTableNames.contact, this.props.navigation.getParam('id'), DbPrimaryKeys.contact, this.state.name));
+        this.getName(() => openSafetyPlanItem(UsageFunctionIds.view.contact, DbTableNames.contact, this.props.navigation.getParam('id'), DbPrimaryKeys.contact, this.state.name));
 
         // update DB for open contact function
     }

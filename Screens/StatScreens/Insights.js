@@ -28,7 +28,7 @@ const InsightRow = (props) => (
             </View>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                 <Text style={insightsStyle.buttonText}>{props.name}</Text>
-                <View style={{flex: 1, alignItems: 'flex-end'}}>
+                <View style={{flex: .9, alignItems: 'flex-start'}}>
                     <Text style={insightsStyle.ratingText}>{props.selectedText}</Text>
                 </View>
             </View>
@@ -55,13 +55,14 @@ export default class Insights extends React.Component {
     }
 
     componentDidMount() {
-        readDatabaseArg('*', DbTableNames.functionUsage, res => this.setState({data: [...res]}), this.getMostViewedData, 'as fu inner join ' + DbTableNames.function + ' as f on fu.functionId = f.functionId')
+        readDatabaseArg('*', DbTableNames.functionUsage, this.setViewData, this.getMostViewedData,
+            'as fu inner join ' + DbTableNames.function + ' as f on fu.functionId = f.functionId where f.functionType <> "view" and fu.tableId is not NULL')
 
         // retrieving all FunctionUsage data and storing in state
     }
 
     getMostViewedData = () => {
-        const columns = 'functionId, tableName, columnName, tableId, idName, max(count) as viewCount';
+        const columns = 'functionId, functionType, tableName, columnName, tableId, idName, max(count) as viewCount';
         const functionType = '"view"';
 
         readDatabaseArg(columns, '(select *, count(*) as count from ' + DbTableNames.functionUsage + ' as fu inner join ' + DbTableNames.function + ' as f ' +
@@ -70,7 +71,7 @@ export default class Insights extends React.Component {
     // complex sql query for retrieving most viewed SP items
 
     setViewData = res => {
-        this.setState({viewData: res.map(r => ({...r, ...safetyPlanElements[r.tableName]}))}, () => this.setState({dataReady: true}))
+        this.setState(prevState => ({viewData: [...prevState.viewData, ...res.map(r => ({...r, ...safetyPlanElements[r.tableName]}))]}), () => this.setState({dataReady: true}, () => console.log(this.state.viewData)))
     };
     // combining most viewed SP items with their respective title and icon from const safetyPlanElements. Storing in viewData state
 
@@ -78,7 +79,7 @@ export default class Insights extends React.Component {
         <View style={insightsStyle.listContainer}>
             <InsightRow
                 name= {item.name}
-                selectedText={item.idName + ' (' + item.viewCount + ' views)'}
+                selectedText={item.idName + '\n(' + item.viewCount + (item.viewCount > 1 ? ' views)' : ' view)')}
                 icon={item.icon + '-outline'}
             />
         </View>
@@ -91,10 +92,19 @@ export default class Insights extends React.Component {
     render() {
         const NUMBER_OF_TABS = 2;
 
-        const sections = [{
-            title: 'Most Viewed',
-            data: this.state.viewData,
-        }];
+        const insightsByType = this.state.viewData.reduce((obj, data) => {
+            const type = data.functionType;
+
+            return {
+                ...obj,
+                [type]: [...(obj[type] || []), data],
+            }
+        }, {});
+
+        const sections = Object.keys(insightsByType).map(type => ({
+            title: type,
+            data: insightsByType[type],
+        }));
 
         return (
             <View style={TabStyles.stackContainer}>

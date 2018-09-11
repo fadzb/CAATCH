@@ -34,7 +34,7 @@ export default class StrategySummary extends React.Component {
     }
 
     componentDidMount() {
-        openSafetyPlanItem(UsageFunctionIds.copingStrategy, DbTableNames.copingStrategy, this.props.navigation.getParam('id'), DbPrimaryKeys.copingStrategy, this.props.navigation.getParam('name'))
+        openSafetyPlanItem(UsageFunctionIds.view.copingStrategy, DbTableNames.copingStrategy, this.props.navigation.getParam('id'), DbPrimaryKeys.copingStrategy, this.props.navigation.getParam('name'))
         // update DB for open coping function
     }
 

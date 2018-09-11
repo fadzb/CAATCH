@@ -9,6 +9,8 @@ import {Icons} from "../../../Constants/Icon";
 
 import {TabStyles} from "../../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
+import {DbTableNames, UsageFunctionIds} from "../../../Constants/Constants";
+import {latestSafetyPlanItem} from "../../../Util/Usage";
 
 const Form = t.form.Form;
 
@@ -96,9 +98,16 @@ export default class NewDistraction extends React.Component {
 
         this.refreshDb(this.updateGlobalDistractions);
 
+        this.updateFunctionUsage(distractId.insertId);
+        // keeping track of new distract entries for 'my stats'
+
         this.updateLinkDbTable(distractId);
     };
     // if media was selected -> update that row with path
+
+    updateFunctionUsage = (distractId) => {
+        latestSafetyPlanItem(UsageFunctionIds.latest.distraction, distractId, this.state.value.distractName)
+    };
 
     updateLinkDbTable = (distractId) => {
         const checkedContacts = this.props.navigation.getParam('checkedContacts', null);
