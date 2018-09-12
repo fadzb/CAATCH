@@ -17,7 +17,7 @@ import Moment from 'moment';
 import Communications from 'react-native-communications';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import { Icons } from '../../../Constants/Icon';
-import { openSafetyPlanItem } from '../../../Util/Usage';
+import { openSafetyPlanItem, latestSafetyPlanItem } from '../../../Util/Usage';
 import { updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
 import { getContact } from '../../../Redux/actions';
 import store from '../../../Redux/store';
@@ -49,17 +49,18 @@ export default class ContactSummary extends React.Component {
   }
 
   componentDidMount() {
-    this.getName(() =>
+    this.getName(() => {
       openSafetyPlanItem(
-        UsageFunctionIds.view.contact,
+        UsageFunctionIds.mostViewed.contact,
         DbTableNames.contact,
         this.props.navigation.getParam('id'),
         DbPrimaryKeys.contact,
         this.state.name
-      )
-    );
+      );
 
-    // update DB for open contact function
+      latestSafetyPlanItem(UsageFunctionIds.lastViewed.contact, this.props.navigation.getParam('id'), this.state.name);
+    });
+    // update DB for open contact function most view and last view
   }
 
   toggleModal = (bool) => {

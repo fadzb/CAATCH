@@ -6,7 +6,7 @@ import { ImageViewer } from '../../../Components/ImageViewer';
 import Moment from 'moment';
 import { Video } from 'expo';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { openSafetyPlanItem } from '../../../Util/Usage';
+import { openSafetyPlanItem, latestSafetyPlanItem } from '../../../Util/Usage';
 import { Icons } from '../../../Constants/Icon';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import { updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
@@ -33,13 +33,19 @@ export default class ReasonSummary extends React.Component {
 
   componentDidMount() {
     openSafetyPlanItem(
-      UsageFunctionIds.view.reason,
+      UsageFunctionIds.mostViewed.reason,
       DbTableNames.reason,
       this.props.navigation.getParam('id'),
       DbPrimaryKeys.reason,
       this.props.navigation.getParam('name')
     );
-    // update DB for open reason function
+
+    latestSafetyPlanItem(
+      UsageFunctionIds.lastViewed.reason,
+      this.props.navigation.getParam('id'),
+      this.props.navigation.getParam('name')
+    );
+    // update DB for open reason function most and last viewed
   }
 
   toggleModal = (bool) => {

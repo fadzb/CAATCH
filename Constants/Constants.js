@@ -46,7 +46,7 @@ export const DbPrimaryKeys = {
 
 // Usage function id's
 export const UsageFunctionIds = {
-  view: {
+  mostViewed: {
     warningSign: 1,
     copingStrategy: 2,
     distraction: 3,
@@ -54,12 +54,20 @@ export const UsageFunctionIds = {
     contact: 5,
     environment: 6,
   },
-  latest: {
+  lastEntered: {
     warningSign: 7,
     copingStrategy: 8,
     distraction: 9,
     reason: 10,
     contact: 11,
     environment: 12,
+  },
+  lastViewed: {
+    warningSign: 13,
+    copingStrategy: 14,
+    distraction: 15,
+    reason: 16,
+    contact: 17,
+    environment: 18,
   },
 };
