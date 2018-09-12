@@ -106,7 +106,7 @@ export default class NewDistraction extends React.Component {
   // if media was selected -> update that row with path
 
   updateFunctionUsage = (distractId) => {
-    latestSafetyPlanItem(UsageFunctionIds.latest.distraction, distractId, this.state.value.distractName);
+    latestSafetyPlanItem(UsageFunctionIds.lastEntered.distraction, distractId, this.state.value.distractName);
   };
 
   updateLinkDbTable = (distractId) => {

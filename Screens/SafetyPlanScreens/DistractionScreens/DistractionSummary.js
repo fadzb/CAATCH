@@ -9,7 +9,7 @@ import { readDatabaseArg, updateDatabaseArgument } from '../../../Util/DatabaseH
 import Icon from 'react-native-vector-icons/Ionicons';
 import { CardListItem } from '../../../Components/CardListItem';
 import { Icons } from '../../../Constants/Icon';
-import { openSafetyPlanItem } from '../../../Util/Usage';
+import { openSafetyPlanItem, latestSafetyPlanItem } from '../../../Util/Usage';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import { FileSystem } from 'expo';
 import { getDistraction } from '../../../Redux/actions';
@@ -37,13 +37,19 @@ export default class DistractionSummary extends React.Component {
     this.getContactLink();
 
     openSafetyPlanItem(
-      UsageFunctionIds.view.distraction,
+      UsageFunctionIds.mostViewed.distraction,
       DbTableNames.distraction,
       this.props.navigation.getParam('id'),
       DbPrimaryKeys.distraction,
       this.props.navigation.getParam('name')
     );
-    // update DB for open distraction function
+
+    latestSafetyPlanItem(
+      UsageFunctionIds.lastViewed.distraction,
+      this.props.navigation.getParam('id'),
+      this.props.navigation.getParam('name')
+    );
+    // update DB for open distraction function most and last viewed
   }
 
   getContactLink = () => {

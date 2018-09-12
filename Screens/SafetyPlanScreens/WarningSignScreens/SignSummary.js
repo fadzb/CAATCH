@@ -5,7 +5,7 @@ import Moment from 'moment';
 import { CardListItem } from '../../../Components/CardListItem';
 import { readDatabaseArg, updateDatabaseArgument } from '../../../Util/DatabaseHelper';
 import { Icons } from '../../../Constants/Icon';
-import { openSafetyPlanItem } from '../../../Util/Usage';
+import { openSafetyPlanItem, latestSafetyPlanItem } from '../../../Util/Usage';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import { getSign } from '../../../Redux/actions';
 import store from '../../../Redux/store';
@@ -30,13 +30,19 @@ export default class SignSummary extends React.Component {
     this.getCopeLink();
 
     openSafetyPlanItem(
-      UsageFunctionIds.view.warningSign,
+      UsageFunctionIds.mostViewed.warningSign,
       DbTableNames.warningSign,
       this.props.navigation.getParam('id'),
       DbPrimaryKeys.warningSign,
       this.props.navigation.getParam('name')
     );
-    // update DB for open sign function
+
+    latestSafetyPlanItem(
+      UsageFunctionIds.lastViewed.warningSign,
+      this.props.navigation.getParam('id'),
+      this.props.navigation.getParam('name')
+    );
+    // update DB for open sign function most and last viewed
   }
 
   getCopeLink = () => {

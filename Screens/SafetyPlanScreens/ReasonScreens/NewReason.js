@@ -85,7 +85,7 @@ export default class NewReason extends React.Component {
   // if media was selected -> update that row with path
 
   updateFunctionUsage = (reasonId) => {
-    latestSafetyPlanItem(UsageFunctionIds.latest.reason, reasonId, this.state.value.reasonName);
+    latestSafetyPlanItem(UsageFunctionIds.lastEntered.reason, reasonId, this.state.value.reasonName);
   };
 
   updateDBMedia = (reasonId) => {
