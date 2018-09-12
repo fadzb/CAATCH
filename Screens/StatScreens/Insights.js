@@ -126,7 +126,7 @@ export default class Insights extends React.Component {
                         <StyleProvider style={getTheme(platform)}>
                             <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
                                 <Tab heading={"Safety Plan"}>
-                                    <ScrollView>
+                                    <ScrollView style={{paddingTop: 10}}>
                                         <Accordion
                                             sections={sections}
                                             renderHeader={this.renderSectionHeader}
@@ -201,9 +201,11 @@ const insightsStyle = StyleSheet.create({
         paddingVertical: 12,
         backgroundColor: '#f0f0f5',
         borderWidth: .5,
-        marginBottom: 5,
+        marginBottom: 10,
         flexDirection: 'row',
         justifyContent: 'space-between',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginLeft: 10,
+        marginRight: 10,
     }
 });

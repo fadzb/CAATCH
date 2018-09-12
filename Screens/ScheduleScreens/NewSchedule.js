@@ -8,6 +8,7 @@ import {Icons} from "../../Constants/Icon";
 import {CalendarView} from "../../Components/CalendarView";
 import Moment from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import {Permissions, Calendar} from 'expo';
 
 import {TabStyles} from "../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg, deleteDatabaseRow, readDatabase} from "../../Util/DatabaseHelper";
@@ -90,7 +91,9 @@ export default class NewSchedule extends React.Component {
         if(this.state.schDate === '') {
             this.setState({validDate: false})
         } else if(this.state.fromTime === '') {
-            this.setState({validFromTime: false, validDate: true})
+            this.setState({validFromTime: false, validTime: false, validDate: true})
+        } else if(this.state.toTime === '') {
+            this.setState({validTime: false, validFromTime: true})
         } else if(this.state.toTime !== '' && this.state.toTime < this.state.fromTime) {
             this.setState({validTime: false, validFromTime: true})
             // various form validation checks
@@ -101,7 +104,6 @@ export default class NewSchedule extends React.Component {
             const timeFrom = this.state.fromTime;
             const timeTo = this.state.toTime !== '' ? this.state.toTime : null;
 
-
             if(this.props.navigation.getParam('edit')) {
                 // DB update for existing appt's
                 const scheduleId = this.props.navigation.getParam('id');
@@ -110,12 +112,43 @@ export default class NewSchedule extends React.Component {
                     [...Object.keys(value), 'date', 'timeFrom', 'timeTo'], 'where scheduleId = ' + scheduleId,
                     undefined,
                     res => this.getGlobalSchedule());
+
+                // update event
+
             } else {
-                updateDatabase("Schedule", [...Object.values(value), this.state.schDate, timeFrom, timeTo],
-                    [...Object.keys(value), 'date', 'timeFrom', 'timeTo'],
-                    undefined,
-                    res => this.getGlobalSchedule());
-                // write the saved values to DB if valid and update global redux store accordingly
+                //create event and store returned id
+                Permissions.askAsync(Permissions.CALENDAR)
+                    .then(response => {
+                        if (response.status !== "granted") {
+                            console.error("Calendar permission not granted!");
+                            return;
+                        }
+
+                        Expo.DangerZone.Localization.getCurrentTimeZoneAsync().then(timeZone => {
+                            Calendar.createEventAsync(Calendar.DEFAULT, {
+                                title: value.title,
+                                notes: value.description,
+                                startDate: Moment(this.state.schDate).set({
+                                    'hour': timeFrom.substring(0, 2),
+                                    'minute': timeFrom.substring(3, 5),
+                                }).toDate(),
+                                endDate: Moment(this.state.schDate).set({
+                                    'hour': timeTo.substring(0, 2),
+                                    'minute': timeTo.substring(3, 5),
+                                }).toDate(),
+                                timeZone: timeZone
+                            })
+                                .then(id => {
+                                    updateDatabase("Schedule", [...Object.values(value), this.state.schDate, timeFrom, timeTo, id],
+                                        [...Object.keys(value), 'date', 'timeFrom', 'timeTo', 'nativeCalendarId'],
+                                        undefined,
+                                        res => this.getGlobalSchedule());
+                                    // write the saved values to DB if valid and update global redux store accordingly
+                                })
+                                .catch(err => console.log(err))
+                        }).catch(err => console.log(err))
+                    })
+                    .catch(err => console.log(err))
             }
         }
     };
@@ -174,9 +207,9 @@ export default class NewSchedule extends React.Component {
 
     handleTimeSelection = time => {
         if(this.state.fromTimeSelected) {
-            this.setState({fromTime: Moment(time).format('h:mm A')})
+            this.setState({fromTime: Moment(time).format('HH:mm')})
         } else {
-            this.setState({toTime: Moment(time).format('h:mm A')})
+            this.setState({toTime: Moment(time).format('HH:mm')})
         }
 
         this.toggleTimePicker(false)
