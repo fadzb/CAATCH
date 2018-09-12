@@ -92,7 +92,7 @@ export default class NewWarningSign extends React.Component {
     // function that checks if any copes were linked and, if yes, updates CopeSignLink table with respective ID's
 
     updateFunctionUsage = (signId) => {
-        latestSafetyPlanItem(UsageFunctionIds.latest.warningSign, signId, this.state.value.signName)
+        latestSafetyPlanItem(UsageFunctionIds.lastEntered.warningSign, signId, this.state.value.signName)
     };
 
     onPress = () => {

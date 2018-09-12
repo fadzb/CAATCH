@@ -110,7 +110,9 @@ export default class NewContact extends React.Component {
     // if media was selected -> update that row with path
 
     updateFunctionUsage = (contactId) => {
-        latestSafetyPlanItem(UsageFunctionIds.latest.contact, contactId, this.state.value.firstName)
+        const name = this.state.value.surname ? this.state.value.firstName + " " + this.state.value.surname : this.state.value.firstName;
+
+        latestSafetyPlanItem(UsageFunctionIds.lastEntered.contact, contactId, name)
     };
 
     updateDBMedia = contactId => {

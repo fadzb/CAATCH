@@ -104,7 +104,7 @@ export default class NewCopingStrategy extends React.Component {
     // if media was selected -> update that row with path
 
     updateFunctionUsage = (copeId) => {
-        latestSafetyPlanItem(UsageFunctionIds.latest.copingStrategy, copeId, this.state.value.copeName)
+        latestSafetyPlanItem(UsageFunctionIds.lastEntered.copingStrategy, copeId, this.state.value.copeName)
     };
 
     updateDBMedia = copeId => {

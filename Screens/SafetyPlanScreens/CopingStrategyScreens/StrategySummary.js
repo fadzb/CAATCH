@@ -6,7 +6,7 @@ import {ImageViewer} from "../../../Components/ImageViewer";
 import Moment from 'moment';
 import {Video} from 'expo';
 import Icon from "react-native-vector-icons/Ionicons";
-import {openSafetyPlanItem} from "../../../Util/Usage";
+import {openSafetyPlanItem, latestSafetyPlanItem} from "../../../Util/Usage";
 import {Icons} from "../../../Constants/Icon";
 import {PressableIcon} from "../../../Components/PressableIcon";
 import {updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
@@ -34,8 +34,10 @@ export default class StrategySummary extends React.Component {
     }
 
     componentDidMount() {
-        openSafetyPlanItem(UsageFunctionIds.view.copingStrategy, DbTableNames.copingStrategy, this.props.navigation.getParam('id'), DbPrimaryKeys.copingStrategy, this.props.navigation.getParam('name'))
-        // update DB for open coping function
+        openSafetyPlanItem(UsageFunctionIds.mostViewed.copingStrategy, DbTableNames.copingStrategy, this.props.navigation.getParam('id'), DbPrimaryKeys.copingStrategy, this.props.navigation.getParam('name'));
+
+        latestSafetyPlanItem(UsageFunctionIds.lastViewed.copingStrategy, this.props.navigation.getParam('id'), this.props.navigation.getParam('name'))
+        // update DB for open coping function most and last view
     }
 
     toggleModal = bool => {
