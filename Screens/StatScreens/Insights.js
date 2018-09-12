@@ -8,6 +8,7 @@ import {
   SectionList,
   ActivityIndicator,
   TouchableOpacity,
+  ScrollView,
 } from 'react-native';
 import { Icons } from '../../Constants/Icon';
 import { TabStyles } from '../../Styles/TabStyles';
@@ -18,6 +19,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { readDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
 import { DbPrimaryKeys, DbTableNames, UsageFunctionIds } from '../../Constants/Constants';
 import Moment from 'moment';
+import Accordion from 'react-native-collapsible/Accordion';
 
 const safetyPlanElements = {
   WarningSign: { name: 'Warning Sign', icon: Icons.warningSign },
@@ -120,21 +122,23 @@ export default class Insights extends React.Component {
   };
   // combining most SP items with their respective title and icon from const safetyPlanElements. Storing in data state. Second parameter is used for when function is called last so it can indicate that all data is ready
 
-  renderItem = ({ item }) => (
-    <View style={insightsStyle.listContainer}>
-      <InsightRow
-        name={item.name}
-        selectedText={item.idName}
-        selectedTextInfo={item[functionTypeToInfo[item.functionType]]}
-        icon={item.icon + '-outline'}
-        onPress={() => console.log(item)}
-      />
-    </View>
-  );
+  renderItem = (section, _, isActive, sections) =>
+    section.items.map((a, i) => (
+      <View key={i} style={insightsStyle.listContainer}>
+        <InsightRow
+          name={a.name}
+          selectedText={a.idName}
+          selectedTextInfo={a[functionTypeToInfo[a.functionType]]}
+          icon={a.icon + '-outline'}
+          onPress={() => console.log(a)}
+        />
+      </View>
+    ));
 
-  renderSectionHeader = (obj) => (
+  renderSectionHeader = (section, _, isActive) => (
     <View style={insightsStyle.sectionHeader}>
-      <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{obj.section.title}</Text>
+      <Text style={{ fontSize: 18 }}>{section.title}</Text>
+      <Icon name={isActive ? Icons.up + '-outline' : Icons.down + '-outline'} size={25} />
     </View>
   );
 
@@ -143,7 +147,7 @@ export default class Insights extends React.Component {
 
     const sections = [...new Set(this.state.data.map((item) => item.title))].map((title) => ({
       title: title,
-      data: this.state.data.filter((d) => d.title === title),
+      items: this.state.data.filter((d) => d.title === title),
     }));
     // mapping over unique titles and creating object for each with title and data keys
 
@@ -154,14 +158,14 @@ export default class Insights extends React.Component {
             <StyleProvider style={getTheme(platform)}>
               <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
                 <Tab heading={'Safety Plan'}>
-                  <View>
-                    <SectionList
-                      renderItem={this.renderItem}
-                      renderSectionHeader={this.renderSectionHeader}
+                  <ScrollView>
+                    <Accordion
                       sections={sections}
-                      keyExtractor={(item, index) => index.toString()}
+                      renderHeader={this.renderSectionHeader}
+                      renderContent={this.renderItem}
+                      underlayColor={'transparent'}
                     />
-                  </View>
+                  </ScrollView>
                 </Tab>
                 <Tab heading={'Diary'}>
                   <View style={{ flex: 1 }}>
@@ -225,11 +229,15 @@ const insightsStyle = StyleSheet.create({
   },
 
   sectionHeader: {
-    flex: 1,
-    alignItems: 'stretch',
+    alignSelf: 'stretch',
     paddingLeft: 15,
     paddingRight: 15,
-    paddingVertical: 7.5,
-    backgroundColor: '#e1e1ea',
+    paddingVertical: 12,
+    backgroundColor: '#f0f0f5',
+    borderWidth: 0.5,
+    marginBottom: 5,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   },
 });

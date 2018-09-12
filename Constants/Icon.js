@@ -33,4 +33,6 @@ export const Icons = {
   insights: 'ios-bulb',
   charts: 'ios-trending-up',
   dbt: 'ios-hand',
+  up: 'ios-arrow-dropup',
+  down: 'ios-arrow-dropdown',
 };
