@@ -51,6 +51,7 @@ class Schedule extends React.Component {
               description: sch.description,
               timeFrom: sch.timeFrom,
               timeTo: sch.timeTo,
+              nativeId: sch.nativeCalendarId,
             },
           ];
         } else {
@@ -61,6 +62,7 @@ class Schedule extends React.Component {
             description: sch.description,
             timeFrom: sch.timeFrom,
             timeTo: sch.timeTo,
+            nativeId: sch.nativeCalendarId,
           });
         }
       });

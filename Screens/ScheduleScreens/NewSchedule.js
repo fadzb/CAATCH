@@ -101,6 +101,8 @@ export default class NewSchedule extends React.Component {
       this.setState({ validTime: false, validFromTime: true });
     } else if (this.state.toTime !== '' && this.state.toTime < this.state.fromTime) {
       this.setState({ validTime: false, validFromTime: true });
+    } else if (!value) {
+      this.setState({ validTime: true, validFromTime: true });
       // various form validation checks
     } else if (value) {
       // if validation fails, value will be null
@@ -112,17 +114,50 @@ export default class NewSchedule extends React.Component {
       if (this.props.navigation.getParam('edit')) {
         // DB update for existing appt's
         const scheduleId = this.props.navigation.getParam('id');
+        const nativeId = this.props.navigation.getParam('nativeId');
 
-        updateDatabaseArgument(
-          'Schedule',
-          [...Object.values(value), this.state.schDate, timeFrom, timeTo],
-          [...Object.keys(value), 'date', 'timeFrom', 'timeTo'],
-          'where scheduleId = ' + scheduleId,
-          undefined,
-          (res) => this.getGlobalSchedule()
-        );
+        Permissions.askAsync(Permissions.CALENDAR)
+          .then((response) => {
+            if (response.status !== 'granted') {
+              console.error('Calendar permission not granted!');
+              return;
+            }
 
-        // update event
+            Expo.DangerZone.Localization.getCurrentTimeZoneAsync()
+              .then((timeZone) => {
+                Calendar.updateEventAsync(nativeId, {
+                  title: value.title,
+                  notes: value.description,
+                  startDate: Moment(this.state.schDate)
+                    .set({
+                      hour: timeFrom.substring(0, 2),
+                      minute: timeFrom.substring(3, 5),
+                    })
+                    .toDate(),
+                  endDate: Moment(this.state.schDate)
+                    .set({
+                      hour: timeTo.substring(0, 2),
+                      minute: timeTo.substring(3, 5),
+                    })
+                    .toDate(),
+                  timeZone: timeZone,
+                })
+                  .then(() => {
+                    updateDatabaseArgument(
+                      'Schedule',
+                      [...Object.values(value), this.state.schDate, timeFrom, timeTo],
+                      [...Object.keys(value), 'date', 'timeFrom', 'timeTo'],
+                      'where scheduleId = ' + scheduleId,
+                      undefined,
+                      (res) => this.getGlobalSchedule()
+                    );
+                    // update the saved values in DB if valid and update global redux store accordingly
+                  })
+                  .catch((err) => console.log(err));
+              })
+              .catch((err) => console.log(err));
+          })
+          .catch((err) => console.log(err));
       } else {
         //create event and store returned id
         Permissions.askAsync(Permissions.CALENDAR)
@@ -154,7 +189,7 @@ export default class NewSchedule extends React.Component {
                   .then((id) => {
                     updateDatabase(
                       'Schedule',
-                      [...Object.values(value), this.state.schDate, timeFrom, timeTo, id],
+                      [...Object.values(value), this.state.schDate, timeFrom, timeTo, id.toString()],
                       [...Object.keys(value), 'date', 'timeFrom', 'timeTo', 'nativeCalendarId'],
                       undefined,
                       (res) => this.getGlobalSchedule()
@@ -184,6 +219,7 @@ export default class NewSchedule extends React.Component {
               description: sch.description,
               timeFrom: sch.timeFrom,
               timeTo: sch.timeTo,
+              nativeId: sch.nativeCalendarId,
             },
           ];
         } else {
@@ -194,6 +230,7 @@ export default class NewSchedule extends React.Component {
             description: sch.description,
             timeFrom: sch.timeFrom,
             timeTo: sch.timeTo,
+            nativeId: sch.nativeCalendarId,
           });
         }
       });
@@ -246,8 +283,23 @@ export default class NewSchedule extends React.Component {
 
   deleteAppointment = () => {
     const scheduleId = this.props.navigation.getParam('id');
+    const nativeId = this.props.navigation.getParam('nativeId');
 
-    deleteDatabaseRow('Schedule', 'where scheduleId = ' + scheduleId, this.getGlobalSchedule);
+    // to remove from device calendar and app DB
+    Permissions.askAsync(Permissions.CALENDAR)
+      .then((response) => {
+        if (response.status !== 'granted') {
+          console.error('Calendar permission not granted!');
+          return;
+        }
+
+        Calendar.deleteEventAsync(nativeId)
+          .then(() => {
+            deleteDatabaseRow('Schedule', 'where scheduleId = ' + scheduleId, this.getGlobalSchedule);
+          })
+          .catch((err) => console.log(err));
+      })
+      .catch((err) => console.log(err));
   };
 
   render() {
