@@ -41,7 +41,8 @@ class Schedule extends React.Component {
                             title: sch.title,
                             description: sch.description,
                             timeFrom: sch.timeFrom,
-                            timeTo: sch.timeTo
+                            timeTo: sch.timeTo,
+                            nativeId: sch.nativeCalendarId
                         }]
                     } else {
                         resultItems[sch.date].push({
@@ -50,7 +51,8 @@ class Schedule extends React.Component {
                             title: sch.title,
                             description: sch.description,
                             timeFrom: sch.timeFrom,
-                            timeTo: sch.timeTo
+                            timeTo: sch.timeTo,
+                            nativeId: sch.nativeCalendarId
                         })
                     }
                 });
