@@ -36,4 +36,5 @@ export const Icons = {
     dbt: 'ios-hand',
     up: 'ios-arrow-dropup',
     down: 'ios-arrow-dropdown',
+    whatsapp: 'logo-whatsapp',
 };
