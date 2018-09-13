@@ -141,6 +141,8 @@ export default class ContactSummary extends React.Component {
     const phone = this.props.navigation.getParam('phone');
     const email = this.props.navigation.getParam('email');
 
+    const iconSize = Dimensions.get('window').height / 16;
+
     return (
       <View style={{ flex: 1, backgroundColor: 'white' }}>
         <View style={contactSummaryStyle.thumbnailContainer}>
@@ -183,22 +185,28 @@ export default class ContactSummary extends React.Component {
           <Text style={{ fontSize: 22 }}>{this.state.name}</Text>
         </View>
         <View style={contactSummaryStyle.contactTextRow}>
-          <View style={{ paddingLeft: 15 }}>
+          <View style={{ flex: 0.55, paddingLeft: 10 }}>
             <Text style={{ paddingBottom: 5, fontSize: 16, color: '#808080' }}>Mobile</Text>
             <Text style={{ fontSize: 16 }}>{phone}</Text>
           </View>
           <View style={contactSummaryStyle.contactButtonsView}>
             <PressableIcon
               iconName={Icons.contacts + '-outline'}
-              size={50}
+              size={iconSize}
               onPressFunction={() => Communications.phonecall(phone, true)}
-              buttonStyle={contactSummaryStyle.iconButton}
             />
             <PressableIcon
               iconName={Icons.message + '-outline'}
-              size={50}
+              size={iconSize}
               onPressFunction={() => Communications.text(phone, '')}
-              buttonStyle={contactSummaryStyle.iconButton}
+            />
+            <PressableIcon
+              iconName={Icons.whatsapp}
+              size={iconSize}
+              color={'#4FCE5D'}
+              onPressFunction={() =>
+                Linking.openURL('whatsapp://send?text=&phone=' + phone).catch((err) => console.log(err))
+              }
             />
           </View>
         </View>
@@ -208,12 +216,11 @@ export default class ContactSummary extends React.Component {
               <Text style={{ paddingBottom: 5, fontSize: 16, color: '#808080' }}>Email</Text>
               <Text style={{ fontSize: 16 }}>{email}</Text>
             </View>
-            <View style={contactSummaryStyle.contactButtonsView}>
+            <View style={contactSummaryStyle.emailContactButtonsView}>
               <PressableIcon
                 iconName={Icons.email + '-outline'}
-                size={50}
+                size={iconSize}
                 onPressFunction={() => Communications.email([email], null, null, null, null)}
-                buttonStyle={contactSummaryStyle.iconButton}
               />
             </View>
           </View>
@@ -282,13 +289,20 @@ const contactSummaryStyle = StyleSheet.create({
 
   contactButtonsView: {
     flexDirection: 'row',
-    flex: 1,
-    justifyContent: 'flex-end',
-    paddingRight: 20,
+    flex: 0.45,
+    justifyContent: 'space-between',
+    paddingRight: 10,
+    alignItems: 'center',
+    paddingLeft: 10,
   },
 
-  iconButton: {
-    paddingLeft: 23,
+  emailContactButtonsView: {
+    flexDirection: 'row',
+    justifyContent: 'flex-end',
+    paddingRight: 10,
+    alignItems: 'center',
+    paddingLeft: 10,
+    flex: 1,
   },
 
   deleteEditButtons: {
