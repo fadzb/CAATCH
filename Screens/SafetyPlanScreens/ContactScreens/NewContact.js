@@ -6,6 +6,7 @@ import store from '../../../Redux/store';
 import { updateContact, getContact } from '../../../Redux/actions';
 import Expo from 'expo';
 import { Icons } from '../../../Constants/Icon';
+import { ButtonGroup } from 'react-native-elements';
 
 import { TabStyles } from '../../../Styles/TabStyles';
 import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
@@ -58,6 +59,7 @@ export default class NewContact extends React.Component {
       value: null,
       selectedMediaUri: '',
       selectedMediaName: '',
+      type: 0,
     };
   }
 
@@ -80,6 +82,11 @@ export default class NewContact extends React.Component {
     }
   }
   // listen for new props coming from phone contacts screen and update accordingly
+
+  updateType = (selectedIndex) => {
+    this.setState({ type: selectedIndex });
+  };
+  // for updating contact type button group
 
   onChange = (value) => {
     this.setState({ value: value });
@@ -193,9 +200,9 @@ export default class NewContact extends React.Component {
       console.log(value);
       updateDatabase(
         'Contact',
-        Object.values(value),
-        Object.keys(value),
-        this.updateContactList(value),
+        [...Object.values(value), this.state.type === 0 ? 'Personal' : 'Professional'],
+        [...Object.keys(value), 'contactType'],
+        this.updateContactList({ ...value, contactType: this.state.type === 0 ? 'Personal' : 'Professional' }),
         this.checkMediaSelected
       );
       // write the saved values to DB if valid
@@ -224,10 +231,19 @@ export default class NewContact extends React.Component {
   // media that retrieves all (providing less than 10000 contacts!) contacts from phones directory
 
   render() {
+    const buttons = ['Personal', 'Professional'];
+    const selectedType = this.state.type;
+
     return (
       <View style={TabStyles.planContainer}>
         <View style={contactStyle.formContainer}>
           <Form ref="form" type={contact} value={this.state.value} onChange={this.onChange} options={options} />
+          <ButtonGroup
+            onPress={this.updateType}
+            selectedIndex={selectedType}
+            buttons={buttons}
+            containerStyle={{ height: 36, marginBottom: 20 }}
+          />
           <PressableIcon
             iconName="ios-arrow-dropright-outline"
             size={25}
