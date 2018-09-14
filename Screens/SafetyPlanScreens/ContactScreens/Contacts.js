@@ -35,7 +35,7 @@ class Contacts extends React.Component {
         // dispatching total list of contacts from DB to global redux store
     };
 
-    editContact = (id, firstName, surname, phone, email, image) => {
+    editContact = (id, firstName, surname, phone, email, image, contactType) => {
         this.props.navigation.push('editContact', {
             id: id,
             firstName: firstName,
@@ -43,6 +43,7 @@ class Contacts extends React.Component {
             phone: phone,
             email: email,
             image: image,
+            contactType: contactType,
         });
     };
 
@@ -63,7 +64,7 @@ class Contacts extends React.Component {
         )
     };
 
-    summaryNav = (id, firstName, surname, phone, email, image, date) => {
+    summaryNav = (id, firstName, surname, phone, email, image, date, contactType) => {
         this.props.navigation.push('contactSummary', {
             id: id,
             firstName: firstName,
@@ -71,7 +72,8 @@ class Contacts extends React.Component {
             phone: phone,
             email: email,
             image: image,
-            date: date
+            date: date,
+            contactType: contactType,
         });
     };
 
@@ -92,9 +94,9 @@ class Contacts extends React.Component {
         <View style={contactsStyle.listContainer}>
             <SafetyPlanSectionRow
                 name= {item.firstName + `${item.surname !== null ? ' ' + item.surname : ''}`}
-                onPress={() => this.summaryNav(item.contactId, item.firstName, item.surname, item.phone, item.email, item.image, item.dateEntered)}
+                onPress={() => this.summaryNav(item.contactId, item.firstName, item.surname, item.phone, item.email, item.image, item.dateEntered, item.contactType)}
                 deleteFunction={() => this.showAlert(item.contactId)}
-                editFunction={() => this.editContact(item.contactId, item.firstName, item.surname, item.phone, item.email, item.image)}
+                editFunction={() => this.editContact(item.contactId, item.firstName, item.surname, item.phone, item.email, item.image, item.contactType)}
                 thumbnail={item.image === null ? undefined : {uri: item.image}}
                 circleView={item.image === null ? item.firstName.slice(0,1).toUpperCase() : undefined}
             />
@@ -114,7 +116,7 @@ class Contacts extends React.Component {
     render() {
         const sections =  [
             {
-                title: 'Personal',
+                title: 'My Network',
                 data: this.props.contact.sort(this.compareNames).filter(contact => contact.contactType === "Personal")
             },
             {

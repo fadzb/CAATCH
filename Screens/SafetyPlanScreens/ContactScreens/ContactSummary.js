@@ -69,7 +69,7 @@ export default class ContactSummary extends React.Component {
         // dispatching total list of contacts from DB to global redux store
     };
 
-    editContact = (id, firstName, surname, phone, email, image) => {
+    editContact = (id, firstName, surname, phone, email, image, contactType) => {
         this.props.navigation.push('editContact', {
             id: id,
             firstName: firstName,
@@ -77,6 +77,7 @@ export default class ContactSummary extends React.Component {
             phone: phone,
             email: email,
             image: image,
+            contactType: contactType
         });
     };
 
@@ -119,6 +120,7 @@ export default class ContactSummary extends React.Component {
 
         const phone = this.props.navigation.getParam('phone');
         const email = this.props.navigation.getParam('email');
+        const contactType = this.props.navigation.getParam('contactType');
 
         const iconSize = Dimensions.get('window').height / 16;
 
@@ -140,7 +142,8 @@ export default class ContactSummary extends React.Component {
                                 this.props.navigation.getParam('surname'),
                                 phone,
                                 email,
-                                mediaPath)}
+                                mediaPath,
+                                contactType)}
                             buttonStyle={{marginRight: 15}}
                         />
                         <PressableIcon
