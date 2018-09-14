@@ -24,7 +24,7 @@ import Accordion from 'react-native-collapsible/Accordion';
 const safetyPlanElements = {
   WarningSign: { name: 'Warning Sign', icon: Icons.warningSign },
   CopingStrategy: { name: 'Coping Strategy', icon: Icons.copingStrategy },
-  Distraction: { name: 'Distraction', icon: Icons.distractions },
+  Distraction: { name: 'Things to Do', icon: Icons.distractions },
   Reason: { name: 'Reason to Live', icon: Icons.lifeWorthLiving },
   Contact: { name: 'Contact', icon: Icons.contacts },
 };

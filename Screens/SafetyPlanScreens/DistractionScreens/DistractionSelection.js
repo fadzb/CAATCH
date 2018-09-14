@@ -19,7 +19,7 @@ import { SafetyPlanSectionRow } from '../../../Components/SafetyPlanSectionRow';
 export default class DistractionSelection extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Distractions',
+      title: 'Things to Do',
     };
   };
 
@@ -40,7 +40,7 @@ export default class DistractionSelection extends React.Component {
           </View>
           <View style={distractSelectionStyle.listContainer}>
             <SafetyPlanSectionRow
-              name="Random Skill"
+              name="Distraction"
               onPress={() => this.props.navigation.push('randomSkill')}
               icon={Icons.dividerArrow + '-outline'}
             />
