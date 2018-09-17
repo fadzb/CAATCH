@@ -26,6 +26,7 @@ export const DbTableNames = {
   signSession: 'SignSession',
   user: 'User',
   warningSign: 'WarningSign',
+  environment: 'Environment',
 };
 
 // DB Primary Key column names
@@ -42,6 +43,7 @@ export const DbPrimaryKeys = {
   session: 'sessionId',
   user: 'userId',
   warningSign: 'signId',
+  environment: 'environmentId',
 };
 
 // Usage function id's
