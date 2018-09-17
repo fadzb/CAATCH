@@ -38,16 +38,16 @@ const functionTypeToInfo = {
 const InsightRow = (props) => (
   <View style={insightsStyle.container}>
     <TouchableOpacity onPress={props.onPress}>
-      <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
-        <View style={insightsStyle.iconContainer}>
-          <Icon name={props.icon} size={30} color={props.iconColor} />
-        </View>
-        <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
-          <Text style={insightsStyle.buttonText}>{props.name}</Text>
-          <View style={{ flex: 0.9, alignItems: 'flex-start' }}>
-            <Text style={insightsStyle.ratingText}>{props.selectedText}</Text>
-            <Text style={insightsStyle.ratingTextInfo}>{props.selectedTextInfo}</Text>
+      <View>
+        <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
+          <View style={insightsStyle.iconContainer}>
+            <Icon name={props.icon} size={30} color={props.iconColor} />
           </View>
+          <Text style={insightsStyle.buttonText}>{props.name}</Text>
+        </View>
+        <View style={{ marginLeft: 10 }}>
+          <Text style={insightsStyle.ratingText}>{props.selectedText}</Text>
+          <Text style={insightsStyle.ratingTextInfo}>{props.selectedTextInfo}</Text>
         </View>
       </View>
     </TouchableOpacity>
@@ -127,8 +127,8 @@ export default class Insights extends React.Component {
       <View key={i} style={insightsStyle.listContainer}>
         <InsightRow
           name={a.name}
-          selectedText={a.idName}
-          selectedTextInfo={a[functionTypeToInfo[a.functionType]]}
+          selectedText={a[functionTypeToInfo[a.functionType]]}
+          selectedTextInfo={a.idName}
           icon={a.icon + '-outline'}
           onPress={() => console.log(a)}
         />
@@ -193,16 +193,14 @@ const insightsStyle = StyleSheet.create({
   },
 
   ratingText: {
-    fontSize: 14,
-    paddingRight: 10,
+    fontSize: 16,
     color: '#4d4d4d',
-    paddingBottom: 4,
+    paddingBottom: 5,
     fontWeight: 'bold',
   },
 
   ratingTextInfo: {
-    fontSize: 14,
-    paddingRight: 10,
+    fontSize: 16,
     color: '#4d4d4d',
   },
 
