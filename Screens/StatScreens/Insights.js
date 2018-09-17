@@ -27,23 +27,21 @@ const functionTypeToInfo = {
 
 const InsightRow = (props) => (
     <View style={insightsStyle.container}>
-        <TouchableOpacity onPress={props.onPress}>
-            <View>
-                <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 8}}>
-                    <View style={insightsStyle.iconContainer}>
-                        <Icon
-                            name={props.icon}
-                            size={30}
-                            color={props.iconColor}/>
-                    </View>
-                    <Text style={insightsStyle.buttonText}>{props.name}</Text>
+        <View>
+            <View style={{flexDirection: 'row', alignItems: 'center', marginBottom: 8}}>
+                <View style={insightsStyle.iconContainer}>
+                    <Icon
+                        name={props.icon}
+                        size={30}
+                        color={props.iconColor}/>
                 </View>
-                <View style={{marginLeft: 10}}>
-                    <Text style={insightsStyle.ratingText}>{props.selectedText}</Text>
-                    <Text style={insightsStyle.ratingTextInfo}>{props.selectedTextInfo}</Text>
-                </View>
+                <Text style={insightsStyle.buttonText}>{props.name}</Text>
             </View>
-        </TouchableOpacity>
+            <View style={{marginLeft: 15}}>
+                <Text style={insightsStyle.ratingText}>{props.selectedText}</Text>
+                <Text style={insightsStyle.ratingTextInfo}>{props.selectedTextInfo}</Text>
+            </View>
+        </View>
     </View>
 );
 
@@ -60,7 +58,9 @@ export default class Insights extends React.Component {
 
         this.state = {
             data: [],
-            dataReady: false
+            dataReady: false,
+            diaryDataReady: false,
+            diaryData: []
         }
     }
 
@@ -69,7 +69,40 @@ export default class Insights extends React.Component {
             'as fu inner join ' + DbTableNames.function + ' as f on fu.functionId = f.functionId where f.functionType <> "mostViewed" and fu.tableId is not NULL')
 
         // retrieving all NOT mostViewed FunctionUsage data and storing in state
+
+        const columns = "s.diaryDate, ds.rating, d.diaryName";
+        const today = Moment().format("YYYY-MM-DD");
+        const weekAgo = Moment().subtract(6,'d').format('YYYY-MM-DD');
+
+        readDatabaseArg(columns,
+            DbTableNames.diarySession,
+            this.setDiaryData,
+            undefined,
+            " as ds inner join " + DbTableNames.diary + " as d on ds.diaryId = d.diaryId inner join " + DbTableNames.session + " as s on ds.sessionId = s.sessionId" +
+            " where DATE(diaryDate) between Date('" + weekAgo + "') and Date('" + today + "') and diaryType = 'General'");
+        // retrieving general diary data i.e. sleep and mood scale
     }
+
+    setDiaryData = res => {
+        const resultArr = [];
+
+        const diaryNames = [...new Set(res.map(f => f.diaryName))];
+
+        diaryNames.forEach(di => {
+            const ratingArr = res.filter(r => r.diaryName === di).map(t => t.rating);
+
+            resultArr.push({diaryName: di, type: 'Average Rating', rating: ratingArr.reduce((a,b) => a + b, 0) / ratingArr.length});
+            // average rating last 7 days
+
+            resultArr.push({diaryName: di, type: 'Max Rating', rating: Math.max(...ratingArr)});
+            // max rating last 7 days
+
+            resultArr.push({diaryName: di, type: 'Min Rating', rating: Math.min(...ratingArr)})
+            // min rating last 7 days
+        });
+
+        this.setState({diaryData: resultArr});
+    };
 
     getMostViewedData = () => {
         const columns = 'functionId, functionType, title, tableName, columnName, tableId, idName, max(count) as viewCount';
@@ -89,13 +122,35 @@ export default class Insights extends React.Component {
     renderItem = (section, _, isActive, sections) => (
         section.items.map((a, i) => (
             <View key={i} style={insightsStyle.listContainer}>
-                <InsightRow
-                    name={a.name}
-                    selectedText={a[functionTypeToInfo[a.functionType]]}
-                    selectedTextInfo={a.idName}
-                    icon={a.icon + '-outline'}
-                    onPress={() => console.log(a)}
-                />
+                {a.functionType !== 'mostViewed' ?
+                    <InsightRow
+                        name={a.name}
+                        selectedText={a[functionTypeToInfo[a.functionType]]}
+                        selectedTextInfo={a.idName}
+                        icon={a.icon + '-outline'}
+                        onPress={() => console.log(a)}
+                    /> :
+                    <InsightRow
+                        name={a.name}
+                        selectedText={a[functionTypeToInfo[a.functionType]] + (a.viewCount === 1 ? " View" : " Views")}
+                        selectedTextInfo={a.idName}
+                        icon={a.icon + '-outline'}
+                        onPress={() => console.log(a)}
+                    />
+                }
+            </View>
+        ))
+    );
+
+    renderDiaryItem = (section, _, isActive, sections) => (
+        section.items.map((a, i) => (
+            <View key={i} style={insightsStyle.listContainer}>
+                <View style={insightsStyle.container}>
+                    <View style={{paddingLeft: 10}}>
+                        <Text style={insightsStyle.ratingText}>{a.type}</Text>
+                        <Text style={insightsStyle.ratingTextInfo}>{a.rating}</Text>
+                    </View>
+                </View>
             </View>
         ))
     );
@@ -119,6 +174,12 @@ export default class Insights extends React.Component {
         }));
         // mapping over unique titles and creating object for each with title and data keys
 
+        const diarySections = [...new Set(this.state.diaryData.map(item => item.diaryName))].map(name => ({
+            title: name,
+            items: this.state.diaryData.filter(d => d.diaryName === name),
+        }));
+        // mapping over unique titles and creating object for each with title and data keys
+
         return (
             <View style={TabStyles.stackContainer}>
                 {this.state.dataReady ?
@@ -126,7 +187,7 @@ export default class Insights extends React.Component {
                         <StyleProvider style={getTheme(platform)}>
                             <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
                                 <Tab heading={"Safety Plan"}>
-                                    <ScrollView style={{paddingTop: 10}}>
+                                    <ScrollView style={{marginTop: 10}}>
                                         <Accordion
                                             sections={sections}
                                             renderHeader={this.renderSectionHeader}
@@ -136,9 +197,14 @@ export default class Insights extends React.Component {
                                     </ScrollView>
                                 </Tab>
                                 <Tab heading={"Diary"}>
-                                    <View style={{flex: 1}}>
-                                        <Text>Todo</Text>
-                                    </View>
+                                    <ScrollView style={{marginTop: 10}}>
+                                        <Accordion
+                                            sections={diarySections}
+                                            renderHeader={this.renderSectionHeader}
+                                            renderContent={this.renderDiaryItem}
+                                            underlayColor={'transparent'}
+                                        />
+                                    </ScrollView>
                                 </Tab>
                             </Tabs>
                         </StyleProvider>
@@ -184,8 +250,8 @@ const insightsStyle = StyleSheet.create({
         borderBottomWidth: 1,
         marginLeft: 10,
         marginRight: 10,
-        paddingTop: 20,
-        paddingBottom: 20,
+        paddingTop: 15,
+        paddingBottom: 15,
     },
 
     listContainer: {
@@ -199,7 +265,7 @@ const insightsStyle = StyleSheet.create({
         paddingVertical: 12,
         backgroundColor: '#f0f0f5',
         borderWidth: .5,
-        marginBottom: 10,
+        marginBottom: 5,
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
