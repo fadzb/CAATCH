@@ -273,14 +273,14 @@ const insightsStyle = StyleSheet.create({
   },
 
   ratingText: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#4d4d4d',
     paddingBottom: 5,
     fontWeight: 'bold',
   },
 
   ratingTextInfo: {
-    fontSize: 16,
+    fontSize: 15,
     color: '#4d4d4d',
   },
 
@@ -310,7 +310,7 @@ const insightsStyle = StyleSheet.create({
     alignSelf: 'stretch',
     paddingLeft: 15,
     paddingRight: 15,
-    paddingVertical: 12,
+    paddingVertical: 8,
     backgroundColor: '#f0f0f5',
     borderWidth: 0.5,
     marginBottom: 5,
