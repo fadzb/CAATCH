@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableHighlight, ScrollView } from 'react-native';
 import t from 'tcomb-form-native';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import store from '../../../Redux/store';
@@ -235,7 +235,7 @@ export default class NewContact extends React.Component {
     const selectedType = this.state.type;
 
     return (
-      <View style={TabStyles.planContainer}>
+      <View style={[TabStyles.planContainer, { justifyContent: 'space-evenly' }]}>
         <View style={contactStyle.formContainer}>
           <Form ref="form" type={contact} value={this.state.value} onChange={this.onChange} options={options} />
           <ButtonGroup
@@ -289,13 +289,14 @@ const contactStyle = StyleSheet.create({
     borderColor: '#48BBEC',
     borderWidth: 1,
     borderRadius: 8,
-    marginBottom: 10,
-    marginTop: 10,
+    //marginBottom: 10,
+    marginTop: 5,
     alignSelf: 'stretch',
     justifyContent: 'center',
   },
   formContainer: {
-    margin: 40,
+    marginTop: 20,
+    marginHorizontal: 40,
   },
   iconButton: {
     alignItems: 'center',
