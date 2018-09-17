@@ -37,5 +37,6 @@ export const Icons = {
     up: 'ios-arrow-dropup',
     down: 'ios-arrow-dropdown',
     whatsapp: 'logo-whatsapp',
-    location: 'ios-navigate'
+    location: 'ios-navigate',
+    add: 'ios-add-circle',
 };

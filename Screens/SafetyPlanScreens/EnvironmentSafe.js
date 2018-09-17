@@ -1,96 +1,108 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Dimensions, ScrollView, Alert } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, Dimensions, FlatList, Alert } from 'react-native';
 import {TabStyles} from "../../Styles/TabStyles";
 import {Icons} from "../../Constants/Icon";
 import Icon from "react-native-vector-icons/Ionicons";
-import {PressableIcon} from "../../Components/PressableIcon";
-
-const EnvironmentRow = props => (
-    <View style={{flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', flex: 1}}>
-        <View style={environmentStyle.circleView}>
-            <Icon
-                name={Icons.dividerArrow}
-                size={20}
-            />
-        </View>
-        <View style={{flex: 1, marginLeft: 10, marginRight: 15}}>
-            <Text style={{fontSize: 15}}>{props.description}</Text>
-        </View>
-        <View style={{width: 22}}>
-            {props.info !== "" && <PressableIcon
-                iconName={Icons.info + '-outline'}
-                size={25}
-                onPressFunction={props.infoFunction}
-                color='#007AFF'
-            />}
-        </View>
-    </View>
-);
-
-const EnvironmentData = [
-    {
-        description: "Removing or putting away items that you might be likely to use if you were thinking of killing yourself",
-        info: "‘When I am feeling suicidal, I will ask my mother to hide away anything I could use to kill myself’"
-    },
-    {
-        description: "Avoiding situations where you are likely to access these items",
-        info: ""
-    },
-    {
-        description: "Leaving a room or a location where you do not feel safe",
-        info: "‘When I feel suicidal, I will leave my house and go to a place where there are people around, like a shopping centre, restaurant or library to distract myself’"
-    },
-    {
-        description: "Telling someone that you are thinking of taking your own life",
-        info: ""
-    },
-    {
-        description: "Telling someone if you are thinking of switching suicide method",
-        info: ""
-    },
-];
+import {readDatabaseArg, updateDatabase, updateDatabaseArgument} from "../../Util/DatabaseHelper";
+import {DbTableNames} from "../../Constants/Constants";
+import {compareDates} from "../../Util/Compare";
+import EnvironmentRow from "../../Components/EnvironmentRow";
+import Moment from 'moment'
 
 export default class EnvironmentSafe extends React.Component {
     static navigationOptions = {
         title: "Make the Environment Safe"
     };
 
-    infoAlert = info => {
+    constructor(props) {
+        super(props);
+
+        this.state = {
+            data: [],
+            text: '',
+            inputHidden: true
+        }
+    }
+
+    componentDidMount() {
+        this.getStepsFromDb();
+    }
+    
+    getStepsFromDb = (callback) => {
+        readDatabaseArg('*', DbTableNames.environment, res => this.setState({data: res}), callback, 'where dateDeleted is NULL')
+    };
+
+    renderItem = ({item}) => (
+        <View style={environmentStyle.listContainer}>
+            <EnvironmentRow
+                description={item.environmentName}
+                deleteFunction={() => this.showAlert(item.environmentId)}
+            />
+        </View>
+    );
+
+    handleSave = () => {
+        updateDatabase(DbTableNames.environment, [this.state.text], ['environmentName'], undefined,
+                res => this.setState(prevState => ({data: [{environmentName: prevState.text, dateEntered: new Date(), environmentId: res.insertId}, ...prevState.data], inputHidden: !prevState.inputHidden, text: ''})))
+    };
+
+    deleteStep = id => {
+        updateDatabaseArgument(DbTableNames.environment, [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where environmentId = " + id, () => this.getStepsFromDb(undefined))
+    };
+
+    showAlert = (id) => {
         Alert.alert(
-            'For Example',
-            info,
+            'Delete Step',
+            'Are you sure you want to delete this step?',
             [
-                {text: 'OK', onPress: () => console.log('OK pressed')},
+                {text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel'},
+                {text: 'Delete', onPress: () => this.deleteStep(id), style: 'destructive'},
             ],
             { cancelable: false }
         )
     };
-    // alert for displaying skill info
 
     render() {
         return(
             <View style={TabStyles.stackContainer}>
-                <View style={{flex: 1, paddingLeft: 15, paddingRight: 15}}>
-                    <View style={environmentStyle.iconContainer}>
-                        <Icon
-                            name={Icons.environmentSafe + '-outline'}
-                            size={Dimensions.get('window').width / 6}
-                        />
-                    </View>
+                <View style={{flex: 1, marginHorizontal: 10}}>
                     <Text style={environmentStyle.headTextStyle}>These are some steps that you can take to keep your environment safe</Text>
-                    <View style={{marginTop: 10, flex: 1}}>
-                        {EnvironmentData.map((ed, i) => {
-                            return (
-                                <View key={i} style={environmentStyle.environmentRow}>
-                                    <EnvironmentRow
-                                        description={ed.description}
-                                        info={ed.info}
-                                        infoFunction={() => this.infoAlert(ed.info)}
+                    <View style={{flexDirection: 'row', alignItems: 'center', marginTop: 20}}>
+                        {!this.state.inputHidden &&
+                        <TextInput
+                            style={{height: 40, borderColor: 'gray', borderWidth: 1, padding: 2, flex: 1, marginRight: 15}}
+                            onChangeText={(text) => this.setState({text})}
+                            value={this.state.text}
+                            placeholder={'Please enter custom steps here'}
+                        />
+                        }
+                        <View style={{justifyContent: 'center', alignItems: (this.state.inputHidden ? 'center' : 'flex-end'), flex: (this.state.inputHidden ? 1 : undefined)}}>
+                            {this.state.inputHidden ? <Icon
+                                name={Icons.edit + '-outline'}
+                                size={45}
+                                onPress={() => this.setState(prevState => ({inputHidden: !prevState.inputHidden}))}
+                            /> :
+                            <View style={{flexDirection: 'row', marginRight: 5}}>
+                                <View style={{paddingRight: 15}}>
+                                    <Icon
+                                        name={Icons.environmentSafe + '-outline'}
+                                        size={40}
+                                        onPress={this.handleSave}
                                     />
                                 </View>
-                            )
-                        })}
+                                <Icon
+                                    name={Icons.closeModal + '-outline'}
+                                    size={40}
+                                    onPress={() => this.setState(prevState => ({inputHidden: !prevState.inputHidden}))}
+                                />
+                            </View>}
+                        </View>
                     </View>
+                    <FlatList
+                        data={this.state.data.sort(compareDates)}
+                        renderItem={this.renderItem}
+                        keyExtractor={(item, index) => index.toString()}
+                    />
                 </View>
             </View>
         )
@@ -109,8 +121,9 @@ const environmentStyle = StyleSheet.create({
     },
     headTextStyle: {
         textAlign: 'center',
-        fontSize: 15,
-        fontWeight: 'bold'
+        fontSize: 17,
+        fontWeight: 'bold',
+        marginTop: 30
     },
     textContainer: {
         borderBottomWidth: 1,
@@ -119,13 +132,4 @@ const environmentStyle = StyleSheet.create({
         justifyContent: 'center',
         //backgroundColor: 'red'
     },
-    circleView: {
-        justifyContent: 'center',
-        alignItems: 'center',
-    },
-    environmentRow: {
-        flex: 1,
-        //borderWidth: 1,
-        //justifyContent: 'center'
-    }
 });
