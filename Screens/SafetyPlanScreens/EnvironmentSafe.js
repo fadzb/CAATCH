@@ -1,5 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Dimensions, FlatList, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  Dimensions,
+  FlatList,
+  Alert,
+  ActivityIndicator,
+} from 'react-native';
 import { TabStyles } from '../../Styles/TabStyles';
 import { Icons } from '../../Constants/Icon';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -22,11 +32,12 @@ export default class EnvironmentSafe extends React.Component {
       text: '',
       inputHidden: true,
       invalidText: false,
+      dataReady: false,
     };
   }
 
   componentDidMount() {
-    this.getStepsFromDb();
+    this.getStepsFromDb(() => this.setState({ dataReady: true }));
   }
 
   getStepsFromDb = (callback) => {
@@ -143,11 +154,17 @@ export default class EnvironmentSafe extends React.Component {
               )}
             </View>
           </View>
-          <FlatList
-            data={this.state.data.sort(compareDates)}
-            renderItem={this.renderItem}
-            keyExtractor={(item, index) => index.toString()}
-          />
+          {this.state.dataReady ? (
+            <FlatList
+              data={this.state.data.sort(compareDates)}
+              renderItem={this.renderItem}
+              keyExtractor={(item, index) => index.toString()}
+            />
+          ) : (
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <ActivityIndicator size="large" color="#007AFF" />
+            </View>
+          )}
         </View>
       </View>
     );
