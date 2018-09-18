@@ -39,4 +39,5 @@ export const Icons = {
     whatsapp: 'logo-whatsapp',
     location: 'ios-navigate',
     add: 'ios-add-circle',
+    compare: 'ios-git-compare',
 };
