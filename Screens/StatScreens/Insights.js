@@ -117,7 +117,7 @@ export default class Insights extends React.Component {
       resultArr.push({
         diaryName: di,
         type: 'Average Rating',
-        rating: ratingArr.reduce((a, b) => a + b, 0) / ratingArr.length,
+        rating: Number.parseFloat(ratingArr.reduce((a, b) => a + b, 0) / ratingArr.length).toFixed(2),
       });
       // average rating last 7 days
 
