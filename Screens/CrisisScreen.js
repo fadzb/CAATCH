@@ -10,20 +10,17 @@ import {TabStyles} from "../Styles/TabStyles";
 const width = Dimensions.get('window').width;
 const samaritansNum = '116123';
 
-const iconSize = width / 7;
+const iconSize = width / 5;
 
 const CrisisTile = props => (
-    <View style={crisisStyle.tileView}>
-        <View style={crisisStyle.header}>
-            <Text style={{fontSize: 25}}>{props.header}</Text>
-        </View>
+    <View style={{height: Dimensions.get('window').height / 3.5}}>
         <TouchableOpacity onPress={props.onPress} style={crisisStyle.button}>
+            <Text style={{fontSize: 25, paddingBottom: 20}}>{props.buttonHeader}</Text>
             <Icon
                 name={props.iconName}
                 size={props.size}
                 color={props.color}
             />
-            <Text style={{fontSize: 25, paddingLeft: 20}}>{props.buttonHeader}</Text>
         </TouchableOpacity>
     </View>
 );
@@ -47,15 +44,13 @@ export default class CrisisScreen extends React.Component {
                     <CrisisTile
                         iconName={Icons.contacts + '-outline'}
                         size={iconSize}
-                        header={'Samaritans'}
-                        buttonHeader={'Call'}
+                        buttonHeader={'Call Samaritans'}
                         onPress={() => Communications.phonecall(samaritansNum, true)}
                     />
                     <CrisisTile
                         iconName={Icons.location + '-outline'}
                         size={iconSize}
-                        header={'Find Urgent Care'}
-                        buttonHeader={'Maps'}
+                        buttonHeader={'Find Urgent Care'}
                         onPress={this.goToMaps}
                     />
                 </View>
@@ -69,7 +64,7 @@ const crisisStyle = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-evenly',
         alignSelf: 'stretch',
-        marginTop: 25
+        marginHorizontal: 30
     },
 
     tileView: {
@@ -92,7 +87,6 @@ const crisisStyle = StyleSheet.create({
     },
 
     button: {
-        flexDirection: 'row',
         flex: 1,
         borderWidth: 2,
         paddingVertical: 20,

@@ -91,7 +91,7 @@ export default class Insights extends React.Component {
         diaryNames.forEach(di => {
             const ratingArr = res.filter(r => r.diaryName === di).map(t => t.rating);
 
-            resultArr.push({diaryName: di, type: 'Average Rating', rating: ratingArr.reduce((a,b) => a + b, 0) / ratingArr.length});
+            resultArr.push({diaryName: di, type: 'Average Rating', rating: Number.parseFloat(ratingArr.reduce((a,b) => a + b, 0) / ratingArr.length).toFixed(2)});
             // average rating last 7 days
 
             resultArr.push({diaryName: di, type: 'Max Rating', rating: Math.max(...ratingArr)});
