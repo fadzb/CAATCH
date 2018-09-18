@@ -6,7 +6,7 @@ import { readDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
 import CustomMultiPicker from 'react-native-multiple-select-list';
 import { CustomSelectionRow } from '../../Components/CustomSelectionRow';
 import { Icons } from '../../Constants/Icon';
-import { VictoryChart, VictoryGroup, VictoryLine, VictoryTheme, VictoryAxis } from 'victory-native';
+import { VictoryChart, VictoryLegend, VictoryLine, VictoryTheme, VictoryAxis } from 'victory-native';
 import { PressableIcon } from '../../Components/PressableIcon';
 
 const timeFrames = {
@@ -42,18 +42,26 @@ export default class VicChart extends React.Component {
       diaryData: [],
       oldDiaryData: [],
       selectedDiaryItem: 'Use Drugs',
+      compareDiaryItem: 'None',
       graphData: [
+        { x: 0, y: 0 },
+        { x: 0, y: 0 },
+      ],
+      compareGraphData: [
         { x: 0, y: 0 },
         { x: 0, y: 0 },
       ],
       dateRange: [],
       graphReady: false,
       modalVisible: false,
-      selectedTimeFrame: 'Past 7 days',
+      selectedTimeFrame: periods.week,
       diaryList: {},
+      compareDiaryList: {},
       timeFrameSelected: false,
-      checkedItemTime: '',
-      checkedItemDiary: '',
+      comparisonSelected: false,
+      checkedItemTime: periods.week,
+      checkedItemDiary: 'Use Drugs',
+      checkedItemCompare: 'None',
     };
   }
 
@@ -67,10 +75,33 @@ export default class VicChart extends React.Component {
     readDatabase('*', 'Diary', (res) => {
       let list = {};
 
-      res
-        .filter((di) => di.diaryType !== 'Skill' && di.diaryName !== 'Notes')
-        .forEach((d, i) => (list[i] = d.diaryName));
-      this.setState({ diaryList: list });
+      const scaleList = res.filter((di) => di.diaryType !== 'Skill' && di.diaryName !== 'Notes');
+
+      scaleList.forEach((d, i) => (list[i] = d.diaryName));
+
+      let compareList = {};
+
+      scaleList.forEach((d, i) => {
+        if (d.diaryName === USED_SKILLS) {
+          compareList[d.diaryName] = { '0': 'None' };
+        } else {
+          compareList[d.diaryName] = scaleList
+            .filter((t) => t.diaryType === d.diaryType)
+            .reduce((obj, r, i) => {
+              if (Object.keys(obj).length === 0) {
+                obj['0'] = 'None';
+              }
+
+              if (r.diaryName !== d.diaryName && r.diaryName !== USED_SKILLS) {
+                obj = { ...obj, [i + 1]: r.diaryName };
+              }
+
+              return obj;
+            }, {});
+        }
+      });
+
+      this.setState({ diaryList: list, compareDiaryList: compareList });
     });
   };
   // List of diary items available for analysis in line chart form
@@ -127,16 +158,22 @@ export default class VicChart extends React.Component {
     });
   };
 
-  transformForGraph = (selectedDiaryItem, timeRange, cache) => {
+  transformForGraph = (selectedDiaryItem, timeRange, cache, callback) => {
     if (!cache) {
-      this.getDateRange(timeRange, () => this.transformFunction(selectedDiaryItem));
+      this.getDateRange(timeRange, () => {
+        this.transformFunction(selectedDiaryItem, 'graphData');
+
+        if (callback) {
+          callback();
+        }
+      });
     } else {
-      this.transformFunction(selectedDiaryItem);
+      this.transformFunction(selectedDiaryItem, 'graphData');
     }
   };
   // Only call getDateRange function if a new time period has been selected i.e. not for when just changing diary item
 
-  transformFunction = (selectedDiaryItem) => {
+  transformFunction = (selectedDiaryItem, updateState) => {
     let trackGraph = [];
 
     if (this.state.selectedTimeFrame === periods.week || this.state.selectedTimeFrame === periods.month) {
@@ -165,7 +202,7 @@ export default class VicChart extends React.Component {
       });
 
       this.setState(
-        { graphData: trackGraph.map((tr) => ({ ...tr, x: Moment(tr.x).format('DD/MM') })) },
+        { [updateState]: trackGraph.map((tr) => ({ ...tr, x: Moment(tr.x).format('DD/MM') })) },
         this.setState({ graphReady: true })
       );
 
@@ -193,7 +230,7 @@ export default class VicChart extends React.Component {
         }
       });
 
-      this.setState({ graphData: trackGraph }, this.setState({ graphReady: true }));
+      this.setState({ [updateState]: trackGraph }, this.setState({ graphReady: true }));
 
       // function for mapping old(6 - 12 months) diary data for chart analysis
     }
@@ -236,6 +273,10 @@ export default class VicChart extends React.Component {
       this.setState({
         checkedItemTime: item[0],
       });
+    } else if (this.state.comparisonSelected) {
+      this.setState({
+        checkedItemCompare: item[0],
+      });
     } else {
       this.setState({
         checkedItemDiary: item[0],
@@ -247,26 +288,44 @@ export default class VicChart extends React.Component {
   handleModalClose = () => {
     this.toggleModal(false);
 
-    this.setState({ timeFrameSelected: false });
+    this.setState({ timeFrameSelected: false, comparisonSelected: false });
   };
 
   handleFinalSelection = () => {
-    if (this.state.checkedItemTime) {
-      this.setState({ selectedTimeFrame: this.state.checkedItemTime, graphReady: false }, () => {
+    if (this.state.checkedItemCompare !== this.state.compareDiaryItem) {
+      this.setState({ compareDiaryItem: this.state.checkedItemCompare }, () => {
+        this.transformFunction(this.state.compareDiaryItem, 'compareGraphData');
+      });
+    }
+
+    if (this.state.checkedItemTime !== this.state.selectedTimeFrame) {
+      this.setState({ selectedTimeFrame: this.state.checkedItemTime }, () => {
         if (this.state.checkedItemTime === periods.week) {
-          this.transformForGraph(this.state.selectedDiaryItem, periods.week);
+          this.transformForGraph(this.state.selectedDiaryItem, periods.week, false, () =>
+            this.transformFunction(this.state.compareDiaryItem, 'compareGraphData')
+          );
         } else if (this.state.checkedItemTime === periods.month) {
-          this.transformForGraph(this.state.selectedDiaryItem, periods.month);
+          this.transformForGraph(this.state.selectedDiaryItem, periods.month, false, () =>
+            this.transformFunction(this.state.compareDiaryItem, 'compareGraphData')
+          );
         } else if (this.state.checkedItemTime === periods.sixMonth) {
-          this.transformForGraph(this.state.selectedDiaryItem, periods.sixMonth);
+          this.transformForGraph(this.state.selectedDiaryItem, periods.sixMonth, false, () =>
+            this.transformFunction(this.state.compareDiaryItem, 'compareGraphData')
+          );
         } else {
-          this.transformForGraph(this.state.selectedDiaryItem, periods.year);
+          this.transformForGraph(this.state.selectedDiaryItem, periods.year, false, () =>
+            this.transformFunction(this.state.compareDiaryItem, 'compareGraphData')
+          );
         }
       });
     }
 
-    if (this.state.checkedItemDiary) {
-      this.setState({ selectedDiaryItem: this.state.checkedItemDiary });
+    if (this.state.checkedItemDiary !== this.state.selectedDiaryItem) {
+      this.setState({
+        selectedDiaryItem: this.state.checkedItemDiary,
+        compareDiaryItem: 'None',
+        checkedItemCompare: 'None',
+      });
 
       this.transformForGraph(this.state.checkedItemDiary, this.state.selectedTimeFrame, true);
     }
@@ -275,10 +334,10 @@ export default class VicChart extends React.Component {
   };
   // call the transformGraph function based on what options have been selected
 
-  getYDomain = () => {
-    if (this.state.selectedDiaryItem === USED_SKILLS) {
+  getYDomain = (diaryItem) => {
+    if (diaryItem === USED_SKILLS) {
       return [0, 7];
-    } else if (this.state.selectedDiaryItem === SLEEP_SCALE || this.state.selectedDiaryItem === MOOD_SCALE) {
+    } else if (diaryItem === SLEEP_SCALE || diaryItem === MOOD_SCALE) {
       return [1, 5];
     } else {
       return [0, 5];
@@ -307,6 +366,19 @@ export default class VicChart extends React.Component {
                 x: this.state.graphData.map((gr) => gr.x),
               }}
             >
+              {/*<VictoryLegend x={125} y={50}*/}
+              {/*title="Legend"*/}
+              {/*centerTitle*/}
+              {/*orientation="horizontal"*/}
+              {/*//gutter={20}*/}
+              {/*//borderPadding={20}*/}
+              {/*style={{ border: { stroke: "black" }, title: {fontSize: 20 } }}*/}
+              {/*data={[*/}
+              {/*{ name: "One", symbol: { fill: "tomato", type: "star" } },*/}
+              {/*{ name: "Two", symbol: { fill: "orange" } },*/}
+              {/*{ name: "Three", symbol: { fill: "gold" } }*/}
+              {/*]}*/}
+              {/*/>*/}
               <VictoryAxis fixLabelOverlap={true} />
               <VictoryAxis dependentAxis fixLabelOverlap={true} />
               <VictoryLine
@@ -314,8 +386,17 @@ export default class VicChart extends React.Component {
                   data: { stroke: '#c43a31', strokeWidth: 1.5 },
                 }}
                 data={this.state.graphData}
-                domain={{ y: this.getYDomain() }}
+                domain={{ y: this.getYDomain(this.state.selectedDiaryItem) }}
               />
+              {this.state.compareDiaryItem !== 'None' && (
+                <VictoryLine
+                  style={{
+                    data: { stroke: 'blue', strokeWidth: 1.5 },
+                  }}
+                  data={this.state.compareGraphData}
+                  //domain={{y: this.getYDomain(this.state.selectedDiaryItem)}}
+                />
+              )}
             </VictoryChart>
             <View style={{ height: Dimensions.get('window').height / 5 }}>
               <CustomSelectionRow
@@ -333,6 +414,14 @@ export default class VicChart extends React.Component {
                 iconContainer={chartStyle.iconContainer}
                 selectedText={this.state.selectedTimeFrame}
                 onPress={() => this.setState({ timeFrameSelected: true }, () => this.toggleModal(true))}
+              />
+              <CustomSelectionRow
+                name="Compare"
+                icon={Icons.compare + '-outline'}
+                iconSize={Dimensions.get('window').height / 20}
+                iconContainer={chartStyle.iconContainer}
+                selectedText={this.state.compareDiaryItem}
+                onPress={() => this.setState({ comparisonSelected: true }, () => this.toggleModal(true))}
               />
             </View>
             <Modal
@@ -352,7 +441,13 @@ export default class VicChart extends React.Component {
                 </View>
                 <View>
                   <CustomMultiPicker
-                    options={this.state.timeFrameSelected ? periods : this.state.diaryList}
+                    options={
+                      this.state.timeFrameSelected
+                        ? periods
+                        : this.state.comparisonSelected
+                        ? this.state.compareDiaryList[this.state.selectedDiaryItem]
+                        : this.state.diaryList
+                    }
                     multiple={false} //
                     returnValue={'label'} // label or value
                     callback={this.handleSelection} // callback, array of selected items
@@ -370,6 +465,8 @@ export default class VicChart extends React.Component {
                         ? this.state.checkedItem
                         : this.state.timeFrameSelected
                         ? this.state.selectedTimeFrame
+                        : this.state.comparisonSelected
+                        ? this.state.compareDiaryItem
                         : this.state.selectedDiaryItem
                     }
                   />
