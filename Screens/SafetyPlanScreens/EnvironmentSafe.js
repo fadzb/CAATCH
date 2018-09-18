@@ -21,6 +21,7 @@ export default class EnvironmentSafe extends React.Component {
       data: [],
       text: '',
       inputHidden: true,
+      invalidText: false,
     };
   }
 
@@ -45,17 +46,27 @@ export default class EnvironmentSafe extends React.Component {
   );
 
   handleSave = () => {
-    updateDatabase(DbTableNames.environment, [this.state.text], ['environmentName'], undefined, (res) =>
-      this.setState((prevState) => ({
-        data: [
-          { environmentName: prevState.text, dateEntered: new Date(), environmentId: res.insertId },
-          ...prevState.data,
-        ],
-        inputHidden: !prevState.inputHidden,
-        text: '',
-      }))
-    );
+    if (!this.state.text) {
+      this.setState({ invalidText: true });
+    } else {
+      updateDatabase(DbTableNames.environment, [this.state.text], ['environmentName'], undefined, (res) =>
+        this.setState((prevState) => ({
+          data: [
+            {
+              environmentName: prevState.text,
+              dateEntered: new Date(),
+              environmentId: res.insertId,
+            },
+            ...prevState.data,
+          ],
+          inputHidden: !prevState.inputHidden,
+          text: '',
+          invalidText: false,
+        }))
+      );
+    }
   };
+  // checks if text is a truthy value and, if yes, updates DB and state with new step
 
   deleteStep = (id) => {
     updateDatabaseArgument(
@@ -89,10 +100,18 @@ export default class EnvironmentSafe extends React.Component {
           <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 20 }}>
             {!this.state.inputHidden && (
               <TextInput
-                style={{ height: 40, borderColor: 'gray', borderWidth: 1, padding: 2, flex: 1, marginRight: 15 }}
+                style={{
+                  height: 40,
+                  borderColor: this.state.invalidText ? '#a94442' : 'gray',
+                  borderWidth: 1,
+                  paddingLeft: 5,
+                  flex: 1,
+                  marginRight: 15,
+                }}
                 onChangeText={(text) => this.setState({ text })}
                 value={this.state.text}
                 placeholder={'Please enter custom steps here'}
+                underlineColorAndroid={'transparent'}
               />
             )}
             <View
@@ -105,7 +124,7 @@ export default class EnvironmentSafe extends React.Component {
               {this.state.inputHidden ? (
                 <Icon
                   name={Icons.edit + '-outline'}
-                  size={45}
+                  size={40}
                   onPress={() => this.setState((prevState) => ({ inputHidden: !prevState.inputHidden }))}
                 />
               ) : (
@@ -116,7 +135,9 @@ export default class EnvironmentSafe extends React.Component {
                   <Icon
                     name={Icons.closeModal + '-outline'}
                     size={40}
-                    onPress={() => this.setState((prevState) => ({ inputHidden: !prevState.inputHidden }))}
+                    onPress={() =>
+                      this.setState((prevState) => ({ inputHidden: !prevState.inputHidden, invalidText: false }))
+                    }
                   />
                 </View>
               )}
@@ -147,7 +168,7 @@ const environmentStyle = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     fontWeight: 'bold',
-    marginTop: 30,
+    marginTop: 20,
   },
   textContainer: {
     borderBottomWidth: 1,

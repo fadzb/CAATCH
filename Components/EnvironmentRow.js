@@ -14,7 +14,7 @@ export default class EnvironmentRow extends React.Component {
   };
 
   rightButtons = [
-    <View style={{ flex: 1, justifyContent: 'center' }}>
+    <View style={{ flex: 1, justifyContent: 'center', paddingLeft: 20 }}>
       <PressableIcon iconName={Icons.delete + '-outline'} size={35} onPressFunction={this.onPressDelete} color="red" />
     </View>,
   ];
