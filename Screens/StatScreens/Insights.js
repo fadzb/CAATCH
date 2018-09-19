@@ -121,10 +121,18 @@ export default class Insights extends React.Component {
       });
       // average rating last 7 days
 
-      resultArr.push({ diaryName: di, type: 'Max Rating', rating: Math.max(...ratingArr) });
+      resultArr.push({
+        diaryName: di,
+        type: 'Max Rating',
+        rating: Number.parseFloat(Math.max(...ratingArr)).toFixed(2),
+      });
       // max rating last 7 days
 
-      resultArr.push({ diaryName: di, type: 'Min Rating', rating: Math.min(...ratingArr) });
+      resultArr.push({
+        diaryName: di,
+        type: 'Min Rating',
+        rating: Number.parseFloat(Math.min(...ratingArr)).toFixed(2),
+      });
       // min rating last 7 days
     });
 
