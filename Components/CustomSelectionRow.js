@@ -30,7 +30,7 @@ export const CustomSelectionRow = (props) => (
                     </View>}
                     <Text style={customSelectionRowStyle.buttonText}>{props.name}</Text>
                 </View>
-                <Text style={{paddingRight: 10, color: '#4d4d4d'}}>{props.selectedText}</Text>
+                <Text style={[{paddingRight: 10, color: '#4d4d4d'}, props.selectedTextStyle]}>{props.selectedText}</Text>
             </View>
         </TouchableHighlight>
     </View>

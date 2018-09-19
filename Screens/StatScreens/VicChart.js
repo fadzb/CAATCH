@@ -6,7 +6,7 @@ import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
 import CustomMultiPicker from "react-native-multiple-select-list";
 import {CustomSelectionRow} from "../../Components/CustomSelectionRow";
 import {Icons} from "../../Constants/Icon";
-import { VictoryChart, VictoryLegend, VictoryLine, VictoryTheme, VictoryAxis } from 'victory-native';
+import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis } from 'victory-native';
 import {PressableIcon} from "../../Components/PressableIcon";
 
 const timeFrames = {
@@ -328,19 +328,6 @@ export default class VicChart extends React.Component {
                             x: this.state.graphData.map(gr => gr.x)
                         }}
                     >
-                        {/*<VictoryLegend x={125} y={50}*/}
-                                       {/*title="Legend"*/}
-                                       {/*centerTitle*/}
-                                       {/*orientation="horizontal"*/}
-                                       {/*//gutter={20}*/}
-                                       {/*//borderPadding={20}*/}
-                                       {/*style={{ border: { stroke: "black" }, title: {fontSize: 20 } }}*/}
-                                       {/*data={[*/}
-                                           {/*{ name: "One", symbol: { fill: "tomato", type: "star" } },*/}
-                                           {/*{ name: "Two", symbol: { fill: "orange" } },*/}
-                                           {/*{ name: "Three", symbol: { fill: "gold" } }*/}
-                                       {/*]}*/}
-                        {/*/>*/}
                         <VictoryAxis
                             fixLabelOverlap={true}
                         />
@@ -353,16 +340,25 @@ export default class VicChart extends React.Component {
                             }}
                             data={this.state.graphData}
                             domain={{y: this.getYDomain(this.state.selectedDiaryItem)}}
+                            animate={{
+                                onExit: {
+                                    duration: 0,
+                                }
+                            }}
                         />
                         {this.state.compareDiaryItem !== 'None' && <VictoryLine
                             style={{
                                 data: { stroke: "blue", strokeWidth: 1.5 },
                             }}
                             data={this.state.compareGraphData}
-                            //domain={{y: this.getYDomain(this.state.selectedDiaryItem)}}
+                            animate={{
+                                onExit: {
+                                    duration: 0,
+                                }
+                            }}
                         />}
                     </VictoryChart>
-                    <View style={{height: Dimensions.get('window').height / 5}}>
+                    <View style={{height: Dimensions.get('window').height - 500}}>
                         <CustomSelectionRow
                             name="Diary Item"
                             icon={Icons.diary + '-outline'}
@@ -370,6 +366,7 @@ export default class VicChart extends React.Component {
                             iconContainer={chartStyle.iconContainer}
                             selectedText={this.state.selectedDiaryItem}
                             onPress={() => this.toggleModal(true)}
+                            selectedTextStyle={{color: "#c43a31"}}
                         />
                         <CustomSelectionRow
                             name="Time Frame"
@@ -386,6 +383,7 @@ export default class VicChart extends React.Component {
                             iconContainer={chartStyle.iconContainer}
                             selectedText={this.state.compareDiaryItem}
                             onPress={() => this.setState({comparisonSelected: true}, () => this.toggleModal(true))}
+                            selectedTextStyle={{color: (this.state.compareDiaryItem === 'None' ? '#4d4d4d' : "blue")}}
                         />
                     </View>
                     <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={false} onRequestClose={this.handleModalClose}>

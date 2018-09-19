@@ -94,10 +94,10 @@ export default class Insights extends React.Component {
             resultArr.push({diaryName: di, type: 'Average Rating', rating: Number.parseFloat(ratingArr.reduce((a,b) => a + b, 0) / ratingArr.length).toFixed(2)});
             // average rating last 7 days
 
-            resultArr.push({diaryName: di, type: 'Max Rating', rating: Math.max(...ratingArr)});
+            resultArr.push({diaryName: di, type: 'Max Rating', rating: Number.parseFloat(Math.max(...ratingArr)).toFixed(2)});
             // max rating last 7 days
 
-            resultArr.push({diaryName: di, type: 'Min Rating', rating: Math.min(...ratingArr)})
+            resultArr.push({diaryName: di, type: 'Min Rating', rating: Number.parseFloat(Math.min(...ratingArr)).toFixed(2)})
             // min rating last 7 days
         });
 
