@@ -31,6 +31,7 @@ export default class HomeScreen extends React.Component {
             onPress2={() => this.props.navigation.navigate('schedule')}
             third={true}
             name3="Reports"
+            onPress3={() => this.props.navigation.navigate('reports')}
             iconName3={Icons.report + '-outline'}
           />
           <HomeScreenTileRow
