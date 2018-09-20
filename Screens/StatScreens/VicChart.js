@@ -322,6 +322,7 @@ export default class VicChart extends React.Component {
                 {this.state.graphReady ?
                 <View>
                     <VictoryChart
+                        height={Dimensions.get('window').height * .57}
                         theme={VictoryTheme.material}
                         categories={{
                             y: this.getYCategorey(),
@@ -358,7 +359,7 @@ export default class VicChart extends React.Component {
                             }}
                         />}
                     </VictoryChart>
-                    <View style={{height: Dimensions.get('window').height - 500}}>
+                    <View style={{flex: 1, marginBottom: 10}}>
                         <CustomSelectionRow
                             name="Diary Item"
                             icon={Icons.diary + '-outline'}
@@ -367,6 +368,7 @@ export default class VicChart extends React.Component {
                             selectedText={this.state.selectedDiaryItem}
                             onPress={() => this.toggleModal(true)}
                             selectedTextStyle={{color: "#c43a31"}}
+                            nameStyle={{fontSize: Dimensions.get('window').height / 38}}
                         />
                         <CustomSelectionRow
                             name="Time Frame"
@@ -375,6 +377,7 @@ export default class VicChart extends React.Component {
                             iconContainer={chartStyle.iconContainer}
                             selectedText={this.state.selectedTimeFrame}
                             onPress={() => this.setState({timeFrameSelected: true}, () => this.toggleModal(true))}
+                            nameStyle={{fontSize: Dimensions.get('window').height / 38}}
                         />
                         <CustomSelectionRow
                             name="Compare"
@@ -384,6 +387,7 @@ export default class VicChart extends React.Component {
                             selectedText={this.state.compareDiaryItem}
                             onPress={() => this.setState({comparisonSelected: true}, () => this.toggleModal(true))}
                             selectedTextStyle={{color: (this.state.compareDiaryItem === 'None' ? '#4d4d4d' : "blue")}}
+                            nameStyle={{fontSize: Dimensions.get('window').height / 38}}
                         />
                     </View>
                     <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={false} onRequestClose={this.handleModalClose}>

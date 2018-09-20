@@ -28,7 +28,7 @@ export const CustomSelectionRow = (props) => (
                     {props.circleView !== undefined && <View style={customSelectionRowStyle.circleView}>
                         <Text style={{fontSize: 20}}>{props.circleView}</Text>
                     </View>}
-                    <Text style={customSelectionRowStyle.buttonText}>{props.name}</Text>
+                    <Text style={[customSelectionRowStyle.buttonText, props.nameStyle]}>{props.name}</Text>
                 </View>
                 <Text style={[{paddingRight: 10, color: '#4d4d4d'}, props.selectedTextStyle]}>{props.selectedText}</Text>
             </View>

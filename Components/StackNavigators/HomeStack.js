@@ -9,6 +9,8 @@ import NewSchedule from "../../Screens/ScheduleScreens/NewSchedule";
 import VicChart from "../../Screens/StatScreens/VicChart";
 import StatSelection from "../../Screens/StatScreens/StatSelection";
 import Insights from "../../Screens/StatScreens/Insights";
+import Reports from "../../Screens/ReportScreens/Reports";
+import Pdf from "../../Screens/ReportScreens/Pdf";
 
 const HomeStack = createStackNavigator(
     {
@@ -17,7 +19,9 @@ const HomeStack = createStackNavigator(
         newSchedule: NewSchedule,
         statSelection: StatSelection,
         insights: Insights,
-        victory: VicChart
+        victory: VicChart,
+        reports: Reports,
+        pdf: Pdf
     },
 
     {
