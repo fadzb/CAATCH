@@ -42,12 +42,14 @@
     "react-native-pin-code": "^0.4.1",
     "react-native-scalable-image": "^0.4.0",
     "react-native-slider": "^0.11.0",
+    "react-native-snap-carousel": "^3.7.4",
     "react-native-snap-slider": "^0.3.0",
     "react-native-swipeable": "^0.6.0",
     "react-native-vector-icons": "^4.6.0",
     "react-navigation": "^2.2.0",
     "react-redux": "^5.0.7",
     "redux": "^4.0.0",
+    "rn-pdf-reader-js": "git+https://github.com/ColinKrist/rn-pdf-reader-js.git#PR/zoomAndPanSuggestion",
     "tcomb-form-native": "^0.6.14",
     "victory-native": "^30.1.0"
   }
