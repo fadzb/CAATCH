@@ -9,6 +9,7 @@ import {
   FlatList,
   Alert,
   ActivityIndicator,
+  TouchableOpacity,
 } from 'react-native';
 import { TabStyles } from '../../Styles/TabStyles';
 import { Icons } from '../../Constants/Icon';
@@ -20,8 +21,16 @@ import EnvironmentRow from '../../Components/EnvironmentRow';
 import Moment from 'moment';
 
 export default class EnvironmentSafe extends React.Component {
-  static navigationOptions = {
-    title: 'Make the Environment Safe',
+  static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+    return {
+      title: 'Make the Environment Safe',
+      headerRight: (
+        <TouchableOpacity onPress={() => params.handleThis()}>
+          <Text style={{ padding: 10 }}>New +</Text>
+        </TouchableOpacity>
+      ),
+    };
   };
 
   constructor(props) {
@@ -37,6 +46,10 @@ export default class EnvironmentSafe extends React.Component {
   }
 
   componentDidMount() {
+    this.props.navigation.setParams({
+      handleThis: this.newStep,
+    });
+
     this.getStepsFromDb(() => this.setState({ dataReady: true }));
   }
 
@@ -89,6 +102,10 @@ export default class EnvironmentSafe extends React.Component {
     );
   };
 
+  newStep = () => {
+    this.setState((prevState) => ({ inputHidden: !prevState.inputHidden }));
+  };
+
   showAlert = (id) => {
     Alert.alert(
       'Delete Step',
@@ -105,6 +122,9 @@ export default class EnvironmentSafe extends React.Component {
     return (
       <View style={TabStyles.stackContainer}>
         <View style={{ flex: 1, marginHorizontal: 10 }}>
+          <View style={environmentStyle.iconContainer}>
+            <Icon name={Icons.environmentSafe + '-outline'} size={Dimensions.get('window').width / 6} />
+          </View>
           <Text style={environmentStyle.headTextStyle}>
             These are some steps that you can take to keep your environment safe
           </Text>
@@ -132,16 +152,10 @@ export default class EnvironmentSafe extends React.Component {
                 flex: this.state.inputHidden ? 1 : undefined,
               }}
             >
-              {this.state.inputHidden ? (
-                <Icon
-                  name={Icons.edit + '-outline'}
-                  size={40}
-                  onPress={() => this.setState((prevState) => ({ inputHidden: !prevState.inputHidden }))}
-                />
-              ) : (
+              {!this.state.inputHidden && (
                 <View style={{ flexDirection: 'row', marginRight: 5 }}>
                   <View style={{ paddingRight: 15 }}>
-                    <Icon name={Icons.environmentSafe + '-outline'} size={40} onPress={this.handleSave} />
+                    <Icon name={Icons.tick} size={40} onPress={this.handleSave} />
                   </View>
                   <Icon
                     name={Icons.closeModal + '-outline'}
@@ -185,7 +199,7 @@ const environmentStyle = StyleSheet.create({
     textAlign: 'center',
     fontSize: 17,
     fontWeight: 'bold',
-    marginTop: 20,
+    marginTop: 10,
   },
   textContainer: {
     borderBottomWidth: 1,
