@@ -112,26 +112,29 @@ export default class Insights extends React.Component {
     const diaryNames = [...new Set(res.map((f) => f.diaryName))];
 
     diaryNames.forEach((di) => {
-      const ratingArr = res.filter((r) => r.diaryName === di).map((t) => t.rating);
+      const ratingObj = res.filter((r) => r.diaryName === di);
+      const ratingArr = ratingObj.map((t) => t.rating);
 
-      resultArr.push({
-        diaryName: di,
-        type: 'Average Rating',
-        rating: Number.parseFloat(ratingArr.reduce((a, b) => a + b, 0) / ratingArr.length).toFixed(2),
-      });
+      const avg = Number.parseFloat(ratingArr.reduce((a, b) => a + b, 0) / ratingArr.length).toFixed(2);
+      const max = Number.parseFloat(Math.max(...ratingArr)).toFixed(2);
+      const min = Number.parseFloat(Math.min(...ratingArr)).toFixed(2);
+
+      resultArr.push({ diaryName: di, type: 'Average Rating', rating: avg });
       // average rating last 7 days
 
       resultArr.push({
         diaryName: di,
         type: 'Max Rating',
-        rating: Number.parseFloat(Math.max(...ratingArr)).toFixed(2),
+        rating: max,
+        date: ratingObj.find((f) => Number.parseFloat(f.rating).toFixed(2) === max).diaryDate,
       });
       // max rating last 7 days
 
       resultArr.push({
         diaryName: di,
         type: 'Min Rating',
-        rating: Number.parseFloat(Math.min(...ratingArr)).toFixed(2),
+        rating: min,
+        date: ratingObj.find((f) => Number.parseFloat(f.rating).toFixed(2) === min).diaryDate,
       });
       // min rating last 7 days
     });
@@ -186,7 +189,6 @@ export default class Insights extends React.Component {
             selectedText={a[functionTypeToInfo[a.functionType]]}
             selectedTextInfo={a.idName}
             icon={a.icon + '-outline'}
-            onPress={() => console.log(a)}
           />
         ) : (
           <InsightRow
@@ -194,7 +196,6 @@ export default class Insights extends React.Component {
             selectedText={a[functionTypeToInfo[a.functionType]] + (a.viewCount === 1 ? ' View' : ' Views')}
             selectedTextInfo={a.idName}
             icon={a.icon + '-outline'}
-            onPress={() => console.log(a)}
           />
         )}
       </View>
@@ -208,6 +209,11 @@ export default class Insights extends React.Component {
             <Text style={insightsStyle.ratingText}>{a.type}</Text>
             <Text style={insightsStyle.ratingTextInfo}>{a.rating}</Text>
           </View>
+          {a.type !== 'Average Rating' && (
+            <View style={{ paddingRight: 10, justifyContent: 'center' }}>
+              <Text style={insightsStyle.ratingTextInfo}>{Moment(a.date).format('DD.MM.YYYY')}</Text>
+            </View>
+          )}
         </View>
       </View>
     ));
@@ -302,12 +308,13 @@ const insightsStyle = StyleSheet.create({
 
   container: {
     flex: 1,
-    justifyContent: 'space-around',
     borderBottomWidth: 1,
     marginLeft: 10,
     marginRight: 10,
     paddingTop: 15,
     paddingBottom: 15,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
   },
 
   listContainer: {
