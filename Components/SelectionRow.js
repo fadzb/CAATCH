@@ -56,7 +56,7 @@ const selectionRowStyle = StyleSheet.create({
   // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
   buttonText: {
-    fontSize: 18,
+    fontSize: 16,
     paddingLeft: 20,
   },
 

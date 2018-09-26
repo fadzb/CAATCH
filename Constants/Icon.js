@@ -40,4 +40,5 @@ export const Icons = {
   add: 'ios-add-circle',
   compare: 'ios-git-compare',
   tick: 'ios-checkmark',
+  print: 'ios-print',
 };
