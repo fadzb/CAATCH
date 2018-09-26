@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, ActivityIndicator, TouchableOpacity } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
 import {readDatabaseArg, updateDatabase, deleteDatabaseRow} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
@@ -11,6 +11,12 @@ export default class SafetyPlanSelection extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
             title: navigation.getParam('title'),
+            headerRight: (
+                <TouchableOpacity
+                    onPress={() => navigation.push('spSummary', {type: navigation.getParam('type')})}
+                ><Text style={{ padding: 10 }}>Archive</Text>
+                </TouchableOpacity>
+            ),
         }
     };
     // static property called navigationOptions that belongs to all screen components
@@ -21,10 +27,8 @@ export default class SafetyPlanSelection extends React.Component {
         this.state = {
             items: [],
             checkedItems: [],
-            previouslyCheckedItems: [],
             type: '',
             sessionDate: new Date(),
-            historyChecked: false,
         }
     }
 
@@ -40,38 +44,6 @@ export default class SafetyPlanSelection extends React.Component {
     }
     // get safetyplan items based on their type passed down through navigation props
 
-    getPreviouslyCheckedItems = (safetyPlanType) => {
-        const diaryDate = store.getState().diary.date;
-        const selectedDate = Moment(diaryDate).format("YYYY-MM-DD");
-
-        if(safetyPlanType === 'cope') {
-            const columns = "c.copeId, c.sessionId";
-
-            readDatabaseArg(columns,
-                DbTableNames.copeSession,
-                this.setPreviouslyCheckedItems,
-                undefined,
-                " as c inner join " + DbTableNames.session + " as s on c.sessionId = s.sessionId where DATE(diaryDate) = '" + selectedDate + "'");
-        } else {
-            const columns = "si.signId, si.sessionId";
-
-            readDatabaseArg(columns,
-                DbTableNames.signSession,
-                this.setPreviouslyCheckedItems,
-                undefined,
-                " as si inner join " + DbTableNames.session + " as s on si.sessionId = s.sessionId where DATE(diaryDate) = '" + selectedDate + "'");
-        }
-    };
-    // get previously saved items for selected date
-
-    setPreviouslyCheckedItems = results => {
-        if(this.state.type === 'cope') {
-            this.setState({previouslyCheckedItems: results} , () => this.setState({historyChecked: true}))
-        } else {
-            this.setState({previouslyCheckedItems: results}, () => this.setState({historyChecked: true}))
-        }
-    };
-
     updateItems = (items) => {
         const testCope = this.state.type === 'cope';
         let struct = {};
@@ -82,8 +54,7 @@ export default class SafetyPlanSelection extends React.Component {
             items.forEach(s => struct[s.signId] = s.signName)
         }
 
-        this.setState({ items: struct },
-            testCope ? this.getPreviouslyCheckedItems('cope') : this.getPreviouslyCheckedItems('sign'));
+        this.setState({ items: struct });
     };
     // update checklist with items from pre-populated array
 
@@ -111,12 +82,6 @@ export default class SafetyPlanSelection extends React.Component {
                     ['sessionId', 'copeId']
                 )
             });
-
-            if(this.state.previouslyCheckedItems.length > 0) {
-                this.state.previouslyCheckedItems.forEach(prev => {
-                    deleteDatabaseRow(DbTableNames.copeSession, 'where sessionId = ' + prev.sessionId)
-                })
-            }
         } else {
             this.state.checkedItems.forEach(t => {
                 updateDatabase(DbTableNames.signSession,
@@ -124,12 +89,6 @@ export default class SafetyPlanSelection extends React.Component {
                     ['sessionId', 'signId']
                 )
             });
-
-            if(this.state.previouslyCheckedItems.length > 0) {
-                this.state.previouslyCheckedItems.forEach(prev => {
-                    deleteDatabaseRow(DbTableNames.signSession, 'where sessionId = ' + prev.sessionId)
-                })
-            }
         }
 
         this.props.navigation.pop();
@@ -138,7 +97,7 @@ export default class SafetyPlanSelection extends React.Component {
     render() {
         return(
             <View style={SPSelectionStyle.viewContainer}>
-                {this.state.historyChecked ? <View style={{flex: 1}}>
+                <View style={{flex: 1}}>
                     <View style={{flex: 1}}>
                         <CustomMultiSelectList
                             options={this.state.items}
@@ -153,8 +112,6 @@ export default class SafetyPlanSelection extends React.Component {
                             selectedIconName={"ios-checkmark-circle-outline"}
                             unselectedIconName={"ios-radio-button-off-outline"}
                             search={true}
-                            selected={this.state.type === 'cope' ? this.state.previouslyCheckedItems.map(r => r.copeId.toString())
-                            : this.state.previouslyCheckedItems.map(r => r.signId.toString())}
                         />
                     </View>
                     <TouchableHighlight
@@ -163,10 +120,7 @@ export default class SafetyPlanSelection extends React.Component {
                         underlayColor='#99d9f4'>
                         <Text style={SPSelectionStyle.buttonText}>Save</Text>
                     </TouchableHighlight>
-                </View> :
-                    <View style={{flex: 1, justifyContent: 'center'}}>
-                        <ActivityIndicator size="large" color="#007AFF" />
-                    </View>}
+                </View>
             </View>
         )
     }

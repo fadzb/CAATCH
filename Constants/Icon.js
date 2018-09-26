@@ -40,5 +40,6 @@ export const Icons = {
     location: 'ios-navigate',
     add: 'ios-add-circle',
     compare: 'ios-git-compare',
-    tick: 'ios-checkmark'
+    tick: 'ios-checkmark',
+    print: 'ios-print',
 };
