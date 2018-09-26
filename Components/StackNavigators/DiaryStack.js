@@ -13,6 +13,8 @@ import FeelingsSummary from '../../Screens/DiaryScreens/FeelingsSummary';
 import FeelingsSession from '../../Screens/DiaryScreens/FeelingsSession';
 import GeneralSummary from '../../Screens/DiaryScreens/GeneralSummary';
 import GeneralSession from '../../Screens/DiaryScreens/GeneralSession';
+import SafetyPlanSummary from '../../Screens/DiaryScreens/SafetyPlanSummary';
+import SafetyPlanSession from '../../Screens/DiaryScreens/SafetyPlanSession';
 
 const DiaryStack = createStackNavigator(
   {
@@ -25,6 +27,8 @@ const DiaryStack = createStackNavigator(
     generalSummary: GeneralSummary,
     generalSession: GeneralSession,
     spSelection: SafetyPlanSelection,
+    spSummary: SafetyPlanSummary,
+    spSession: SafetyPlanSession,
   },
 
   {
