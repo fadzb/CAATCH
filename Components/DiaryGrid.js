@@ -18,12 +18,12 @@ export const DiaryGrid = (props) => {
       </View>
       <View style={gridStyle.rowContainer}>
         <DiaryTile
-          onPress={() => props.navigation.push('spSelection', { title: props.date, type: 'sign' })}
+          onPress={() => props.navigation.push('spSelection', { title: 'Signs', type: 'sign' })}
           name="Warning Sign"
           iconName={Icons.warningSign + '-outline'}
         />
         <DiaryTile
-          onPress={() => props.navigation.push('spSelection', { title: props.date, type: 'cope' })}
+          onPress={() => props.navigation.push('spSelection', { title: 'Strategies', type: 'cope' })}
           name="Coping Strategy"
           iconName={Icons.copingStrategy + '-outline'}
         />

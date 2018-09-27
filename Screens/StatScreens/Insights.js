@@ -288,7 +288,6 @@ const insightsStyle = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     paddingLeft: 10,
-    flex: 1,
   },
 
   ratingText: {
