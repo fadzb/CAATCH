@@ -6,11 +6,12 @@ import { connect } from 'react-redux';
 import { getContact } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import Moment from 'moment';
+import { SectionHeader } from '../../../Constants/Constants';
 
 class Contacts extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Contacts',
+      title: SectionHeader.contacts,
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newContact')}>
           <Text style={{ padding: 10 }}>New +</Text>

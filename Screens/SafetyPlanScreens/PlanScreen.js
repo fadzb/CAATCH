@@ -5,10 +5,11 @@ import { getPrePops } from '../../Constants/Prepopulated';
 import { TabStyles } from '../../Styles/TabStyles';
 import { SafetyPlanSelector } from '../../Components/SafetyPlanSelector';
 import { Icons } from '../../Constants/Icon';
+import { SectionHeader } from '../../Constants/Constants';
 
 export default class PlanScreen extends React.Component {
   static navigationOptions = {
-    title: 'Safety Plan',
+    title: SectionHeader.plan,
   };
 
   componentDidMount() {
@@ -27,14 +28,14 @@ export default class PlanScreen extends React.Component {
         <SafetyPlanSelector
           iconName={Icons.warningSign + '-outline'}
           iconSize={50}
-          name="Warning Signs"
+          name={SectionHeader.signs}
           press={this.handleItemPress}
           screen="warning"
         />
         <SafetyPlanSelector
           iconName={Icons.copingStrategy + '-outline'}
           iconSize={50}
-          name="Coping Strategies"
+          name={SectionHeader.strategies}
           press={this.handleItemPress}
           screen="coping"
         />
@@ -55,7 +56,7 @@ export default class PlanScreen extends React.Component {
         <SafetyPlanSelector
           iconName={Icons.contacts + '-outline'}
           iconSize={50}
-          name="Contacts"
+          name={SectionHeader.contacts}
           press={this.handleItemPress}
           screen="contact"
         />

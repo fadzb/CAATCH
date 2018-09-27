@@ -51,7 +51,7 @@ export default class Reports extends React.Component {
   updateReport = () => {
     this.setState({ loading: true });
 
-    fetch('http://192.168.0.101:3000/pdf', {
+    fetch('http://localhost:3000/pdf', {
       method: 'POST',
       headers: {
         Accept: 'application/json',

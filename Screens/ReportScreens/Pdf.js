@@ -15,7 +15,7 @@ export default class Pdf extends React.Component {
             size={30}
             onPress={() => {
               Expo.DangerZone.Print.printAsync({
-                uri: 'http://192.168.0.101:3000/pdf',
+                uri: 'http://localhost:3000/pdf',
               })
                 .then((res) => console.log(res))
                 .catch((err) => console.log(err));
@@ -33,7 +33,7 @@ export default class Pdf extends React.Component {
   render() {
     return (
       <View style={pdfStyle.container}>
-        <PDFReader source={{ uri: 'http://192.168.0.101:3000/pdf' }} />
+        <PDFReader source={{ uri: 'http://localhost:3000/pdf' }} />
       </View>
     );
   }
