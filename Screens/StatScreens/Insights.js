@@ -101,7 +101,7 @@ export default class Insights extends React.Component {
         weekAgo +
         "') and Date('" +
         today +
-        "') and diaryType = 'General'"
+        "') and diaryType = 'General' and diaryName <> 'Notes'"
     );
     // retrieving general diary data i.e. sleep and mood scale
   }
@@ -258,6 +258,11 @@ export default class Insights extends React.Component {
                 </Tab>
                 <Tab heading={'Diary'}>
                   <ScrollView style={{ marginTop: 10 }}>
+                    {this.state.diaryData.length !== 0 && (
+                      <View style={{ marginHorizontal: 10, marginBottom: 10 }}>
+                        <Text style={{ fontSize: 18 }}>Past 7 days</Text>
+                      </View>
+                    )}
                     <Accordion
                       sections={diarySections}
                       renderHeader={this.renderSectionHeader}

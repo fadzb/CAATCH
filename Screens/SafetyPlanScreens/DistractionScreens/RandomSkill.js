@@ -1,8 +1,10 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Text, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Dimensions, Text, TouchableOpacity, Button } from 'react-native';
 import { safetyPlanPrePops } from '../../../Constants/Prepopulated';
 import { TabStyles } from '../../../Styles/TabStyles';
 import { SafetyPlanConstants } from '../../../Constants/Constants';
+import Carousel from 'react-native-snap-carousel';
+import Icon from 'react-native-vector-icons/Ionicons';
 
 export default class RandomSkill extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -16,8 +18,8 @@ export default class RandomSkill extends React.Component {
 
     this.state = {
       skills: [],
-      text: '',
-      unseenSkills: [],
+      text: {},
+      randomSkills: [],
     };
   }
 
@@ -26,40 +28,40 @@ export default class RandomSkill extends React.Component {
   }
 
   updateSkills = (skills) => {
-    this.setState(
-      { skills: skills.filter((item) => item.category === SafetyPlanConstants.randomSkill).map((skill) => skill.name) },
-      () => {
-        this.setState({ unseenSkills: [...this.state.skills] }, this.populateText);
-      }
-    );
+    this.setState({ skills: skills.filter((item) => item.category === SafetyPlanConstants.randomSkill) }, () => {
+      this.setState({ randomSkills: [...this.state.skills].sort(() => 0.5 - Math.random()) });
+    });
   };
-  // update checklist with random skills from pre-populated array
+  // update checklist with random skills from pre-populated array. Sort array in random order and set as randomSkills state
 
-  populateText = () => {
-    const maxIndex = this.state.unseenSkills.length - 1;
-
-    if (maxIndex !== 0) {
-      const randIndex = Math.round(Math.random() * maxIndex);
-
-      this.setState({ text: this.state.unseenSkills[randIndex] }, () =>
-        this.setState((prevState) => ({ unseenSkills: prevState.unseenSkills.filter((sk, i) => i !== randIndex) }))
-      );
-    } else {
-      this.setState({ text: this.state.unseenSkills[0] }, () =>
-        this.setState({ unseenSkills: [...this.state.skills] })
-      );
-    }
-  };
-  // remove skill at random index from unseenSkills array for next button press. When unseen array is empty re-populate with elements from skills array
+  renderItem = ({ item, index }) => (
+    <View
+      style={{
+        flex: 1,
+        borderWidth: 2,
+        borderRadius: 10,
+        justifyContent: 'space-evenly',
+        alignItems: 'center',
+        marginVertical: 70,
+        paddingVertical: 20,
+      }}
+    >
+      <Icon name={item.icon} size={80} />
+      <Text style={{ paddingHorizontal: 25, fontSize: 18, textAlign: 'center' }}>{item.name}</Text>
+    </View>
+  );
 
   render() {
     return (
       <View style={TabStyles.stackContainer}>
-        <View style={{ flex: 1, justifyContent: 'center' }}>
-          <TouchableOpacity style={randomSkillStyle.button} onPress={this.populateText}>
-            <Text style={randomSkillStyle.skillText}>{this.state.text}</Text>
-          </TouchableOpacity>
-        </View>
+        <Carousel
+          //ref={'carousel'}
+          data={this.state.randomSkills}
+          renderItem={this.renderItem}
+          sliderWidth={Dimensions.get('window').width}
+          itemWidth={Dimensions.get('window').width * 0.7}
+          removeClippedSubviews={false}
+        />
       </View>
     );
   }
