@@ -9,11 +9,12 @@ import Moment from 'moment';
 import { FileSystem } from 'expo';
 import { Icons } from '../../../Constants/Icon';
 import { compareDates } from '../../../Util/Compare';
+import { SectionHeader } from '../../../Constants/Constants';
 
 class CopingStrategies extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Coping Strategies',
+      title: SectionHeader.strategies,
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newCoping')}>
           <Text style={{ padding: 10 }}>New +</Text>
