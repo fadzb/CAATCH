@@ -66,7 +66,7 @@ export default class Insights extends React.Component {
 
     componentDidMount() {
         readDatabaseArg('fu.*, f.functionId, f.functionName, f.functionType, f.title', DbTableNames.functionUsage, res => this.setData(res, false), this.getMostViewedData,
-            'as fu inner join ' + DbTableNames.function + ' as f on fu.functionId = f.functionId where f.functionType <> "mostViewed" and fu.tableId is not NULL')
+            'as fu inner join ' + DbTableNames.function + ' as f on fu.functionId = f.functionId where f.functionType <> "mostViewed" and fu.tableId is not NULL');
 
         // retrieving all NOT mostViewed FunctionUsage data and storing in state
 
@@ -79,7 +79,7 @@ export default class Insights extends React.Component {
             this.setDiaryData,
             undefined,
             " as ds inner join " + DbTableNames.diary + " as d on ds.diaryId = d.diaryId inner join " + DbTableNames.session + " as s on ds.sessionId = s.sessionId" +
-            " where DATE(diaryDate) between Date('" + weekAgo + "') and Date('" + today + "') and diaryType = 'General'");
+            " where DATE(diaryDate) between Date('" + weekAgo + "') and Date('" + today + "') and diaryType = 'General' and diaryName <> 'Notes'");
         // retrieving general diary data i.e. sleep and mood scale
     }
 
@@ -204,6 +204,9 @@ export default class Insights extends React.Component {
                                 </Tab>
                                 <Tab heading={"Diary"}>
                                     <ScrollView style={{marginTop: 10}}>
+                                        {this.state.diaryData.length !== 0 && <View style={{marginHorizontal: 10, marginBottom: 10}}>
+                                            <Text style={{fontSize: 18}}>Past 7 days</Text>
+                                        </View>}
                                         <Accordion
                                             sections={diarySections}
                                             renderHeader={this.renderSectionHeader}

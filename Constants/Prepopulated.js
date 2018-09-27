@@ -9,7 +9,7 @@ import {resetFeelingRating, resetSkillRating} from "../Redux/actions";
 export const getPrePops = () => {
     readDatabase('*',
         'PrepopSafetyPlan',
-        p => safetyPlanPrePops = p.map(t => ({name: t.prepopName, category: t.prepopCategory})))
+        p => safetyPlanPrePops = p.map(t => ({name: t.prepopName, category: t.prepopCategory, icon: t.icon})))
 };
 
 export let safetyPlanPrePops = [];
