@@ -8,11 +8,12 @@ import store from "../../../Redux/store"
 import Moment from 'moment';
 import {Icons} from "../../../Constants/Icon";
 import {compareDates} from "../../../Util/Compare";
+import {SectionHeader} from "../../../Constants/Constants";
 
 class WarningSigns extends React.Component {
     static navigationOptions = ({ navigation }) => {
         return {
-            title: "Warning Signs",
+            title: SectionHeader.signs,
             headerRight: (
                 <TouchableOpacity
                     onPress={() => navigation.push('newWarning')}

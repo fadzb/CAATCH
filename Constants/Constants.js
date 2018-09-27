@@ -46,6 +46,17 @@ export const DbPrimaryKeys = {
     environment: 'environmentId'
 };
 
+// Section Headers
+export const SectionHeader = {
+    plan: 'My Safety Plan',
+    diary: 'My Diary',
+    stats: 'My Stats',
+    signs: 'My Warning Signs',
+    strategies: 'My Coping Strategies',
+    contacts: 'My Contacts',
+    shortPlan: 'My Plan'
+};
+
 // Usage function id's
 export const UsageFunctionIds = {
     mostViewed: {

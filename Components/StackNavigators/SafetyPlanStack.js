@@ -35,6 +35,7 @@ import EditWarningSign from "../../Screens/SafetyPlanScreens/WarningSignScreens/
 import DistractionSelection from "../../Screens/SafetyPlanScreens/DistractionScreens/DistractionSelection";
 import RandomSkill from "../../Screens/SafetyPlanScreens/DistractionScreens/RandomSkill";
 import PrePopWarningSigns from "../../Screens/SafetyPlanScreens/WarningSignScreens/PrePopWarningSigns";
+import {SectionHeader} from "../../Constants/Constants";
 
 const PlanStack = createStackNavigator(
     {
@@ -86,6 +87,7 @@ PlanStack.navigationOptions = {
             color={tintColor}
         />
     ),
+    title: SectionHeader.shortPlan
 };
 // setting tab icon of PlanStack to SP icon
 

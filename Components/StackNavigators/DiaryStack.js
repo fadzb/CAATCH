@@ -15,6 +15,7 @@ import GeneralSummary from "../../Screens/DiaryScreens/GeneralSummary";
 import GeneralSession from "../../Screens/DiaryScreens/GeneralSession";
 import SafetyPlanSummary from "../../Screens/DiaryScreens/SafetyPlanSummary";
 import SafetyPlanSession from "../../Screens/DiaryScreens/SafetyPlanSession";
+import {SectionHeader} from "../../Constants/Constants";
 
 const DiaryStack = createStackNavigator(
     {
@@ -46,6 +47,7 @@ DiaryStack.navigationOptions = {
             color={tintColor}
         />
     ),
+    title: SectionHeader.diary
 };
 // setting tab icon of DiaryStack to diary icon
 

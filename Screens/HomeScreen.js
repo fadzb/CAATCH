@@ -5,6 +5,7 @@ import {Icons} from "../Constants/Icon";
 
 import {TabStyles} from "../Styles/TabStyles";
 import {HomeScreenTileRow} from "../Components/HomeScreenTileRow";
+import {SectionHeader} from "../Constants/Constants";
 
 export default class HomeScreen extends React.Component {
     static navigationOptions = {
@@ -21,7 +22,7 @@ export default class HomeScreen extends React.Component {
                        source={require("../Media/Images/lavender.jpg")} />
                 <View style={homeStyle.tileContainer}>
                     <HomeScreenTileRow
-                        name1="My Stats"
+                        name1={SectionHeader.stats}
                         iconName1= {Icons.stats + "-outline"}
                         onPress1={() => this.props.navigation.navigate('statSelection')}
                         name2="Schedule"
@@ -33,10 +34,10 @@ export default class HomeScreen extends React.Component {
                         iconName3= {Icons.report + "-outline"}
                     />
                     <HomeScreenTileRow
-                        name2="Diary"
+                        name2={SectionHeader.diary}
                         iconName2= {Icons.diary + "-outline"}
                         onPress2={() => this.props.navigation.navigate('Diary')}
-                        name1="Plan"
+                        name1={SectionHeader.shortPlan}
                         iconName1= {Icons.plan + "-outline"}
                         onPress1={() => this.props.navigation.navigate('Plan')}
                     />

@@ -11,10 +11,11 @@ import {updateDate} from "../../Redux/actions";
 import {getDiaryPrePops} from "../../Constants/Prepopulated";
 
 import {TabStyles} from "../../Styles/TabStyles";
+import {SectionHeader} from "../../Constants/Constants";
 
 class DiaryScreen extends React.Component {
     static navigationOptions = {
-        title: "Diary"
+        title: SectionHeader.diary
     };
     // static property called navigationOptions that belongs to all screen components
 
