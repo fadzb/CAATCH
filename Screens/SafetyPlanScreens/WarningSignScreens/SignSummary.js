@@ -193,7 +193,7 @@ const signSummaryStyle = StyleSheet.create({
         alignSelf: 'stretch',
         padding: 5,
         borderRadius: 7,
-        marginTop: 10
+        marginTop: 25
     }
 
 });

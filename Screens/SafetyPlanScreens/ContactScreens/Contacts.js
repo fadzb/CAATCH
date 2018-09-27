@@ -121,11 +121,11 @@ class Contacts extends React.Component {
                 data: this.props.contact.sort(this.compareNames).filter(contact => contact.contactType === "Personal")
             },
             {
-                title: 'Agencies',
+                title: 'Professional',
                 data: this.props.contact.sort(this.compareNames).filter(contact => contact.contactType === "Professional")
             }
         ];
-        // section headers and data from personal/agency split
+        // section headers and data from personal/rofessional split
 
         return (
             <View style={contactsStyle.viewContainer}>

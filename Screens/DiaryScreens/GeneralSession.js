@@ -82,7 +82,7 @@ const GeneralNote = props => (
                     color={props.iconColor}/>
             </View>
             <View style={{flex: 1}}>
-                <View style={{flex: 1, paddingRight: 10}}>
+                <View style={{flex: 1, paddingRight: 10, justifyContent: 'center'}}>
                     <Text style={generalSessionStyle.buttonText}>{props.rating}</Text>
                 </View>
             </View>

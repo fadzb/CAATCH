@@ -248,7 +248,7 @@ const distractSummaryStyle = StyleSheet.create({
     textLinkView: {
         flexDirection: 'row',
         alignItems: 'center',
-        paddingTop: 5
+        paddingTop: 20
     },
 
     text: {
