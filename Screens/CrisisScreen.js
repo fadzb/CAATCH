@@ -1,5 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, WebView, Dimensions, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  WebView,
+  Dimensions,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import { Icons } from '../Constants/Icon';
 import Communications from 'react-native-communications';
 import openMap from 'react-native-open-maps';
@@ -29,7 +39,7 @@ export default class CrisisScreen extends React.Component {
   // static property called navigationOptions that belongs to all screen components
 
   goToMaps = () => {
-    openMap({ query: 'Urgent Care' });
+    openMap({ query: Platform.OS === 'ios' ? 'Hospitals' : 'Urgent Care' });
   };
   // opens native map app with 'urgent care' as search
 

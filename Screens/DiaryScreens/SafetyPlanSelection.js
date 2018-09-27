@@ -18,8 +18,10 @@ import CustomMultiSelectList from '../../Components/CustomMultiSelectList';
 
 export default class SafetyPlanSelection extends React.Component {
   static navigationOptions = ({ navigation }) => {
+    const diaryDate = store.getState().diary.date;
+
     return {
-      title: navigation.getParam('title'),
+      title: navigation.getParam('title') + ' ' + Moment(diaryDate).format('DD.MM.YYYY'),
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('spSummary', { type: navigation.getParam('type') })}>
           <Text style={{ padding: 10 }}>Archive</Text>
