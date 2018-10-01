@@ -2,6 +2,8 @@ import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View, Switch } from 'react-native';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
+import { PressableIcon } from './PressableIcon';
+import { Icons } from '../Constants/Icon';
 
 export const SettingsSelectionRow = (props) => {
   return (
@@ -12,7 +14,19 @@ export const SettingsSelectionRow = (props) => {
             <Icon name={props.iconName} size={30} />
             <Text style={settingRowStyle.buttonText}>{props.name}</Text>
           </View>
-          <View>{props.switch && <Switch value={props.switchValue} onValueChange={props.handleSwitch} />}</View>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            {props.info && (
+              <View style={{ marginRight: 15 }}>
+                <PressableIcon
+                  iconName={Icons.info + '-outline'}
+                  size={25}
+                  onPressFunction={props.infoAlert}
+                  color="#007AFF"
+                />
+              </View>
+            )}
+            {props.switch && <Switch value={props.switchValue} onValueChange={props.handleSwitch} />}
+          </View>
         </View>
       </TouchableHighlight>
     </View>
