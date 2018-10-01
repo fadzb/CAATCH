@@ -6,13 +6,14 @@ import { Icons } from '../../Constants/Icon';
 import store from '../../Redux/store';
 import { readDatabaseArg } from '../../Util/DatabaseHelper';
 import { DbTableNames } from '../../Constants/Constants';
+import { connect } from 'react-redux';
+import { updateDate } from '../../Redux/actions';
+import { DateChanger } from '../../Components/DateChanger';
 
 export default class GeneralSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
-    const diaryDate = store.getState().diary.date;
-
     return {
-      title: 'Archive' + ' ' + Moment(diaryDate).format('DD.MM.YYYY'),
+      title: 'Archive',
     };
   };
 
@@ -21,10 +22,35 @@ export default class GeneralSummary extends React.Component {
 
     this.state = {
       general: [],
+      originalDate: store.getState().diary.date,
     };
   }
 
+  componentWillUnmount() {
+    store.dispatch(updateDate(Moment(this.state.originalDate)));
+  }
+  // set global diary date to original dat on back press
+
   componentDidMount() {
+    this.getArchive();
+  }
+  // query DB for previous general sessions on this date
+
+  backDay = () => {
+    const newDate = Moment(store.getState().diary.date).subtract(1, 'd').format('YYYY-MM-DD HH:mm:ss.SSS');
+
+    store.dispatch(updateDate(Moment(newDate)));
+    this.getArchive();
+  };
+
+  forwardDay = () => {
+    const newDate = Moment(store.getState().diary.date).add(1, 'd').format('YYYY-MM-DD HH:mm:ss.SSS');
+
+    store.dispatch(updateDate(Moment(newDate)));
+    this.getArchive();
+  };
+
+  getArchive = () => {
     const diaryDate = store.getState().diary.date;
 
     const selectedDate = Moment(diaryDate).format('YYYY-MM-DD');
@@ -45,8 +71,7 @@ export default class GeneralSummary extends React.Component {
         selectedDate +
         "' and diaryType = 'General'"
     );
-  }
-  // query DB for previous general sessions on this date
+  };
 
   transformResults = (res) => {
     let resultObj = {};
@@ -76,8 +101,12 @@ export default class GeneralSummary extends React.Component {
   render() {
     return (
       <View style={generalSummaryStyle.viewContainer}>
+        <DateChanger
+          title={Moment(store.getState().diary.date).format('LL')}
+          forwardFunction={this.forwardDay}
+          backFunction={this.backDay}
+        />
         <FlatList
-          //data={this.props.coping.sort(compareDates)} // comes from mapStateToProps below
           data={this.state.general}
           renderItem={this.renderItem}
           keyExtractor={(item, index) => index.toString()}

@@ -6,13 +6,13 @@ import { Icons } from '../../Constants/Icon';
 import store from '../../Redux/store';
 import { readDatabaseArg } from '../../Util/DatabaseHelper';
 import { DbTableNames } from '../../Constants/Constants';
+import { DateChanger } from '../../Components/DateChanger';
+import { updateDate } from '../../Redux/actions';
 
 export default class SafetyPlanSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
-    const diaryDate = store.getState().diary.date;
-
     return {
-      title: 'Archive' + ' ' + Moment(diaryDate).format('DD.MM.YYYY'),
+      title: 'Archive',
     };
   };
 
@@ -22,10 +22,35 @@ export default class SafetyPlanSummary extends React.Component {
     this.state = {
       safetyPlanItem: [],
       type: this.props.navigation.getParam('type'),
+      originalDate: store.getState().diary.date,
     };
   }
 
+  componentWillUnmount() {
+    store.dispatch(updateDate(Moment(this.state.originalDate)));
+  }
+  // set global diary date to original dat on back press
+
   componentDidMount() {
+    this.getArchive();
+  }
+  // query DB for previous sp sessions on this date
+
+  backDay = () => {
+    const newDate = Moment(store.getState().diary.date).subtract(1, 'd').format('YYYY-MM-DD HH:mm:ss.SSS');
+
+    store.dispatch(updateDate(Moment(newDate)));
+    this.getArchive();
+  };
+
+  forwardDay = () => {
+    const newDate = Moment(store.getState().diary.date).add(1, 'd').format('YYYY-MM-DD HH:mm:ss.SSS');
+
+    store.dispatch(updateDate(Moment(newDate)));
+    this.getArchive();
+  };
+
+  getArchive = () => {
     const type = this.props.navigation.getParam('type');
 
     const diaryDate = store.getState().diary.date;
@@ -66,8 +91,7 @@ export default class SafetyPlanSummary extends React.Component {
           "'"
       );
     }
-  }
-  // query DB for previous sp sessions on this date
+  };
 
   transformResults = (res) => {
     let resultObj = {};
@@ -97,6 +121,11 @@ export default class SafetyPlanSummary extends React.Component {
   render() {
     return (
       <View style={spSummaryStyle.viewContainer}>
+        <DateChanger
+          title={Moment(store.getState().diary.date).format('LL')}
+          forwardFunction={this.forwardDay}
+          backFunction={this.backDay}
+        />
         <FlatList
           data={this.state.safetyPlanItem}
           renderItem={this.renderItem}
