@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Modal, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, Modal, Dimensions, Alert } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Icons } from '../Constants/Icon';
 import PINCode from '@haskkor/react-native-pincode';
@@ -12,6 +12,9 @@ import store from '../Redux/store';
 
 import { TabStyles } from '../Styles/TabStyles';
 import { DbTableNames } from '../Constants/Constants';
+
+const DBT =
+  'Dialectical Behaviour Therapy (DBT) is a treatment programme aimed at helping people with ongoing difficulties managing intense emotions';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -91,6 +94,11 @@ export default class SettingsScreen extends React.Component {
     });
   };
 
+  infoAlert = () => {
+    Alert.alert('DBT', DBT, [{ text: 'OK', onPress: () => console.log('OK pressed') }], { cancelable: false });
+  };
+  // alert for displaying skill info
+
   render() {
     return (
       <View style={TabStyles.stackContainer}>
@@ -110,6 +118,8 @@ export default class SettingsScreen extends React.Component {
             switch={true}
             switchValue={this.state.dbtSwitchValue}
             handleSwitch={() => this.handleDbtSwitch()}
+            info={true}
+            infoAlert={this.infoAlert}
           />
         </View>
         <Modal

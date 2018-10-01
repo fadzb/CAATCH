@@ -42,7 +42,7 @@ const options = {
 
 export default class NewDistraction extends React.Component {
   static navigationOptions = {
-    title: 'New Distraction',
+    title: 'New Thing',
   };
 
   constructor(props) {

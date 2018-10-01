@@ -13,7 +13,7 @@ import { compareDates } from '../../../Util/Compare';
 class Distractions extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Custom',
+      title: 'My Things',
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newDistraction')}>
           <Text style={{ padding: 10 }}>New +</Text>

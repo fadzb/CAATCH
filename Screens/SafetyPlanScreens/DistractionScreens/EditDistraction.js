@@ -45,7 +45,7 @@ const options = {
 
 export default class EditDistraction extends React.Component {
   static navigationOptions = {
-    title: 'Edit Distraction',
+    title: 'Edit Thing',
   };
 
   constructor(props) {

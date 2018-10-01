@@ -1,5 +1,18 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, SectionList, TouchableOpacity, Alert } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  SectionList,
+  TouchableOpacity,
+  Alert,
+  FlatList,
+} from 'react-native';
+import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
+import getTheme from '../../../native-base-theme/components';
+import platform from '../../../native-base-theme/variables/platform';
 import { readDatabaseArg, updateDatabaseArgument } from '../../../Util/DatabaseHelper';
 import { SafetyPlanSectionRow } from '../../../Components/SafetyPlanSectionRow';
 import { connect } from 'react-redux';
@@ -137,37 +150,35 @@ class Contacts extends React.Component {
     </View>
   );
 
-  renderSectionHeader = (obj) => {
-    if (obj.section.data.length !== 0) {
-      return (
-        <View style={contactsStyle.sectionHeader}>
-          <Text style={{ fontSize: 18, fontWeight: 'bold' }}>{obj.section.title}</Text>
-        </View>
-      );
-    }
-  };
-
   render() {
-    const sections = [
-      {
-        title: 'My Network',
-        data: this.props.contact.sort(this.compareNames).filter((contact) => contact.contactType === 'Personal'),
-      },
-      {
-        title: 'Professional',
-        data: this.props.contact.sort(this.compareNames).filter((contact) => contact.contactType === 'Professional'),
-      },
-    ];
-    // section headers and data from personal/rofessional split
+    const NUMBER_OF_TABS = 2;
 
     return (
       <View style={contactsStyle.viewContainer}>
-        <SectionList
-          renderItem={this.renderItem}
-          renderSectionHeader={this.renderSectionHeader}
-          sections={sections}
-          keyExtractor={(item, index) => index.toString()}
-        />
+        <Container>
+          <StyleProvider style={getTheme(platform)}>
+            <Tabs locked={true} prerenderingSiblingsNumber={NUMBER_OF_TABS}>
+              <Tab heading={'My Network'}>
+                <FlatList
+                  data={this.props.contact
+                    .sort(this.compareNames)
+                    .filter((contact) => contact.contactType === 'Personal')}
+                  renderItem={this.renderItem}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              </Tab>
+              <Tab heading={'Professional'}>
+                <FlatList
+                  data={this.props.contact
+                    .sort(this.compareNames)
+                    .filter((contact) => contact.contactType === 'Professional')}
+                  renderItem={this.renderItem}
+                  keyExtractor={(item, index) => index.toString()}
+                />
+              </Tab>
+            </Tabs>
+          </StyleProvider>
+        </Container>
       </View>
     );
   }
