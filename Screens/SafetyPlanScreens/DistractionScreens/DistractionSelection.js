@@ -21,14 +21,14 @@ export default class DistractionSelection extends React.Component {
             <View style={TabStyles.stackContainer}>
                 <View style={{height: Dimensions.get('window').height / 5, alignSelf: 'stretch'}}>
                     <CustomSelectionRow
-                        name="Custom"
+                        name="My Things"
                         icon={Icons.dividerArrow + '-outline'}
                         iconSize={Dimensions.get('window').height / 20}
                         iconContainer={distractSelectionStyle.iconContainer}
                         onPress={() => this.props.navigation.push('distraction')}
                     />
                     <CustomSelectionRow
-                        name="Distraction"
+                        name="My Distractions"
                         icon={Icons.dividerArrow + '-outline'}
                         iconSize={Dimensions.get('window').height / 20}
                         iconContainer={distractSelectionStyle.iconContainer}

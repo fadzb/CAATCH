@@ -10,7 +10,7 @@ export default class RandomSkill extends React.Component {
 
     static navigationOptions = ({ navigation }) => {
         return {
-            title: 'Distraction',
+            title: 'My Distractions',
         }
     };
 
