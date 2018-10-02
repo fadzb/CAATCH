@@ -43,4 +43,5 @@ export const Icons = {
   tick: 'ios-checkmark',
   print: 'ios-print',
   notifications: 'ios-notifications',
+  helpers: 'ios-people',
 };

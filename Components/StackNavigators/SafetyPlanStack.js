@@ -36,6 +36,11 @@ import DistractionSelection from '../../Screens/SafetyPlanScreens/DistractionScr
 import RandomSkill from '../../Screens/SafetyPlanScreens/DistractionScreens/RandomSkill';
 import PrePopWarningSigns from '../../Screens/SafetyPlanScreens/WarningSignScreens/PrePopWarningSigns';
 import { SectionHeader } from '../../Constants/Constants';
+import Helper from '../../Screens/SafetyPlanScreens/HelperScreens/Helper';
+import NewHelper from '../../Screens/SafetyPlanScreens/HelperScreens/NewHelper';
+import ContactList from '../../Screens/SafetyPlanScreens/HelperScreens/ContactList';
+import HelperSummary from '../../Screens/SafetyPlanScreens/HelperScreens/HelperSummary';
+import EditHelper from '../../Screens/SafetyPlanScreens/HelperScreens/EditHelper';
 
 const PlanStack = createStackNavigator(
   {
@@ -70,6 +75,11 @@ const PlanStack = createStackNavigator(
     phoneContacts: PhoneContacts,
     contactSummary: ContactSummary,
     environment: EnvironmentSafe,
+    helper: Helper,
+    newHelper: NewHelper,
+    contactList: ContactList,
+    helperSummary: HelperSummary,
+    editHelper: EditHelper,
   },
 
   {
