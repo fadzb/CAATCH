@@ -8,6 +8,7 @@ import { connect } from 'react-redux';
 import { resetFeelingRating } from '../../Redux/actions';
 import store from '../../Redux/store';
 import { DbTableNames } from '../../Constants/Constants';
+import { updateNotifications } from '../../Util/Notifications';
 
 class Feelings extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -67,6 +68,8 @@ class Feelings extends React.Component {
           )
       );
     });
+
+    updateNotifications();
 
     this.props.navigation.pop();
   };

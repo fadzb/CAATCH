@@ -1,16 +1,24 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import PropTypes from 'prop-types';
 import { Icons } from '../Constants/Icon';
-
-import Icon from 'react-native-vector-icons/Ionicons';
+import { PressableIcon } from './PressableIcon';
 
 export const DateChanger = (props) => {
   return (
     <View style={dateStyle.header}>
-      <Icon name={Icons.dividerArrowBack} size={25} onPress={props.backFunction} />
+      <PressableIcon
+        iconName={Icons.dividerArrowBack}
+        size={30}
+        onPressFunction={props.backFunction}
+        buttonStyle={{ paddingHorizontal: 10 }}
+      />
       <Text style={{ fontSize: 16 }}>{props.title}</Text>
-      <Icon name={Icons.dividerArrow} size={25} onPress={props.forwardFunction} />
+      <PressableIcon
+        iconName={Icons.dividerArrow}
+        size={30}
+        onPressFunction={props.forwardFunction}
+        buttonStyle={{ paddingHorizontal: 10 }}
+      />
     </View>
   );
 };

@@ -189,7 +189,7 @@ const usageReducer = (state = 0, action) => {
 
 //Schedule
 
-const scheduleReducer = (state = { appointments: {}, date: new Date() }, action) => {
+const scheduleReducer = (state = { appointments: {}, date: Moment().format('YYYY-MM-DD') }, action) => {
   if (action.type === GET_SCHEDULE) {
     return { ...state, appointments: action.payload };
   }
