@@ -7,6 +7,7 @@ import {resetSleepRating, resetMoodRating} from "../../Redux/actions";
 import store from "../../Redux/store"
 import ButtonRating from "../../Components/ButtonRating"
 import {DbTableNames} from "../../Constants/Constants";
+import {updateNotifications} from "../../Util/Notifications";
 
 class General extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -70,6 +71,8 @@ class General extends React.Component {
 
         this.resetRatings();
         //ensure mood and sleep scales revert to default state
+
+        updateNotifications();
 
         this.props.navigation.pop();
     };

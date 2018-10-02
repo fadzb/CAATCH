@@ -21,7 +21,7 @@ export const SettingsSelectionRow = props => {
                         <Text style={settingRowStyle.buttonText}>{props.name}</Text>
                     </View>
                     <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                        {props.info && <View style={{marginRight: 15}}><PressableIcon
+                        {props.info && <View style={{marginRight: 10}}><PressableIcon
                             iconName={Icons.info + '-outline'}
                             size={25}
                             onPressFunction={props.infoAlert}

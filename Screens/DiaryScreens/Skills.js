@@ -11,6 +11,7 @@ import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from
 import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
 import {DbTableNames} from "../../Constants/Constants";
+import {updateNotifications} from "../../Util/Notifications";
 
 class Skills extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -89,6 +90,8 @@ class Skills extends React.Component {
                 deleteDatabaseRow(DbTableNames.diarySession, 'where diaryId = ' + rating.diaryId + ' and sessionId = ' + rating.sessionId)
             })
         }
+
+        updateNotifications();
 
         this.props.navigation.pop();
     };

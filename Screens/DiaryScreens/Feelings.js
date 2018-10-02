@@ -8,6 +8,7 @@ import {connect} from 'react-redux'
 import {resetFeelingRating} from "../../Redux/actions";
 import store from "../../Redux/store"
 import {DbTableNames} from "../../Constants/Constants";
+import {updateNotifications} from "../../Util/Notifications";
 
 class Feelings extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -59,6 +60,8 @@ class Feelings extends React.Component {
                 ['sessionId', 'diaryId', 'rating'],
                 () => store.dispatch(resetFeelingRating(diaryPrePops.filter(t => t.diaryType === "Feeling").map(f => ({id: f.diaryId, rating: 0})))))
         });
+
+        updateNotifications();
 
         this.props.navigation.pop();
     };

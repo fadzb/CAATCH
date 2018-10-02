@@ -1,14 +1,16 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Modal, Dimensions, Alert } from 'react-native';
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { Toast } from 'native-base';
 import {Icons} from "../Constants/Icon";
 import PINCode from '@haskkor/react-native-pincode'
-import {updateDatabase, readDatabase, updateDatabaseArgument} from "../Util/DatabaseHelper";
+import {updateDatabase, readDatabase, updateDatabaseArgument, readDatabaseArg} from "../Util/DatabaseHelper";
 import {SettingsSelectionRow} from "../Components/SettingsSelectionRow";
 import { Constants } from 'expo';
 import {PressableIcon} from "../Components/PressableIcon";
 import {updateDbtSetting} from "../Redux/actions";
 import store from "../Redux/store"
+import Moment from 'moment'
 
 import {TabStyles} from "../Styles/TabStyles";
 import {DbTableNames} from "../Constants/Constants";
@@ -27,7 +29,8 @@ export default class SettingsScreen extends React.Component {
         this.state = {
             modalVisible: false,
             switchValue: false,
-            dbtSwitchValue: false
+            dbtSwitchValue: false,
+            notificationSwitchValue: false
         }
     }
 
@@ -39,10 +42,12 @@ export default class SettingsScreen extends React.Component {
     getSwitchValues = dbObject => {
         const switchValue = dbObject[0].enabled;
         const dbtSwitchValue = dbObject[0].dbt;
+        const notificationSwitchValue = dbObject[0].notifications;
 
         this.setState({
             switchValue: Boolean(switchValue),
-            dbtSwitchValue: Boolean(dbtSwitchValue)
+            dbtSwitchValue: Boolean(dbtSwitchValue),
+            notificationSwitchValue: Boolean(notificationSwitchValue)
         });
 
         // setting switches based on values in DB
@@ -89,6 +94,108 @@ export default class SettingsScreen extends React.Component {
         })
     };
 
+    handleNotificationSwitch = value => {
+        if(!this.state.notificationSwitchValue) {
+            Expo.Permissions.askAsync(Expo.Permissions.USER_FACING_NOTIFICATIONS)
+                .then(response => {
+                    if (response.status !== "granted") {
+                        console.log("Notification permission not granted!");
+
+                        Toast.show({
+                            text: 'Allow app notifications in device settings!',
+                            //buttonText: 'Okay',
+                            duration: 2000,
+                            style: { marginBottom: 50 }
+                        });
+
+                        return;
+                    }
+
+                    this.toggleNotification(this.checkDiaryEntriesForToday)
+                })
+        } else {
+            Expo.Notifications.cancelAllScheduledNotificationsAsync();
+
+            this.toggleNotification()
+        }
+
+        // if switched to on, check if notification permissions granted. If yes, toggle the switch and run the checkDiaryEntriesForToday function. Show Toast if not
+    };
+
+    checkDiaryEntriesForToday = () => {
+        const diaryDate = store.getState().diary.date;
+        const selectedDate = Moment(diaryDate).format("YYYY-MM-DD");
+
+        readDatabaseArg('diaryDate',
+            DbTableNames.session,
+            this.sendNotification,
+            undefined,
+            " where DATE(diaryDate) = '" + selectedDate + "'");
+    };
+    // check if and diary entries recorded for today's date
+
+    sendNotification = (res) => {
+        const localNotification = {
+            title: 'Diary Reminder',
+            body: "Don't forget to update your diary today!" ,
+            android: {
+                sound: true,
+            },
+            ios: {
+                sound: true,
+            },
+        };
+
+        // create local notification object
+
+        let noteTime = new Date();
+        noteTime.setHours(9, 0, 0);
+
+        // set today note time to 9am
+
+        let tomorrowNoteTime = new Date();
+        tomorrowNoteTime.setHours(9, 0, 0);
+        tomorrowNoteTime.setDate(tomorrowNoteTime.getDate() + 1);
+
+        // set tomorrow note time to 9am
+
+        let schedulingOptions = {};
+
+        if(res.length === 0) {
+            const now = new Date();
+
+            if(now > noteTime) {
+                schedulingOptions = {time: tomorrowNoteTime, repeat: 'day'}
+            } else {
+                schedulingOptions = {time: noteTime, repeat: 'day'}
+            }
+            // if no entries set notification to go off today at 9am. Or if later than 9 am , set for tomorrow at same time
+
+        } else {
+            schedulingOptions = {time: tomorrowNoteTime, repeat: 'day'}
+        }
+        // if entries do exist for today, set for tomorrow
+
+        // repeat daily
+
+        Expo.Notifications.scheduleLocalNotificationAsync(
+            localNotification,
+            schedulingOptions
+        ).then(res => console.log(res));
+    };
+
+    toggleNotification = (callback) => {
+        this.setState(prevState => {
+            const newValue = !prevState.notificationSwitchValue;
+            const convertBool = newValue ? 1 : 0;
+
+            updateDatabaseArgument(DbTableNames.user, [convertBool], ['notifications'], 'where userId = 1');
+
+            return {notificationSwitchValue: newValue}
+        }, callback)
+    };
+    // toggle notification switch
+
     infoAlert = () => {
         Alert.alert(
             'DBT',
@@ -122,6 +229,14 @@ export default class SettingsScreen extends React.Component {
                         handleSwitch={() => this.handleDbtSwitch()}
                         info={true}
                         infoAlert={this.infoAlert}
+                    />
+                    <SettingsSelectionRow
+                        height={Dimensions.get('window').height / 11}
+                        name={'Notifications'}
+                        iconName={Icons.notifications + "-outline"}
+                        switch={true}
+                        switchValue={this.state.notificationSwitchValue}
+                        handleSwitch={() => this.handleNotificationSwitch()}
                     />
                 </View>
                 <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={false} onRequestClose={() => this.toggleModal(false)}>

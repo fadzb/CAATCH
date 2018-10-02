@@ -8,6 +8,7 @@ import {readDatabase, updateDatabase} from "./Util/DatabaseHelper";
 import Moment from 'moment';
 import {updateUsage, updateDbtSetting} from "./Redux/actions";
 import { AppLoading } from 'expo';
+import { Root } from "native-base";
 
 import PlanStack from "./Components/StackNavigators/SafetyPlanStack";
 import DiaryStack from "./Components/StackNavigators/DiaryStack"
@@ -36,6 +37,11 @@ export default class App extends React.Component {
         // new usage session added to DB
 
         this.checkSettings();
+
+        Expo.Font.loadAsync({
+            Roboto: require("native-base/Fonts/Roboto.ttf"),
+            Roboto_medium: require("native-base/Fonts/Roboto_medium.ttf"),
+        })
     };
 
     checkSettings = () => {
@@ -89,7 +95,9 @@ export default class App extends React.Component {
         if (this.state.passcodeEnabled) {
             return (
                 <Provider store={store}>
-                    <SwitchNav/>
+                    <Root>
+                        <SwitchNav/>
+                    </Root>
                 </Provider>
             );
         }
@@ -97,7 +105,9 @@ export default class App extends React.Component {
 
         return (
             <Provider store={store}>
-                <TabBar/>
+                <Root>
+                    <TabBar/>
+                </Root>
             </Provider>
         )
     }
