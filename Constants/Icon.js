@@ -43,5 +43,6 @@ export const Icons = {
     compare: 'ios-git-compare',
     tick: 'ios-checkmark',
     print: 'ios-print',
-    notifications: 'ios-notifications'
+    notifications: 'ios-notifications',
+    helpers: 'ios-people'
 };

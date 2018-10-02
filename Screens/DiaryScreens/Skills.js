@@ -10,7 +10,7 @@ import {diaryPrePops} from "../../Constants/Prepopulated";
 import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
-import {DbTableNames} from "../../Constants/Constants";
+import {DbTableNames, SectionHeader} from "../../Constants/Constants";
 import {updateNotifications} from "../../Util/Notifications";
 
 class Skills extends React.Component {
@@ -18,7 +18,7 @@ class Skills extends React.Component {
         const diaryDate = store.getState().diary.date;
 
         return {
-            title: 'Skills' + " " + Moment(diaryDate).format('DD.MM.YYYY'),
+            title: SectionHeader.skills + " " + Moment(diaryDate).format('DD.MM.YYYY'),
         }
     };
 

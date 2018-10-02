@@ -5,6 +5,7 @@ import {DiaryTile} from "./DiaryTile";
 import {Icons} from "../Constants/Icon";
 
 import Icon from "react-native-vector-icons/Ionicons";
+import {SectionHeader} from "../Constants/Constants";
 
 export const DiaryGrid = (props) => {
     return (
@@ -18,8 +19,8 @@ export const DiaryGrid = (props) => {
             </View>
             <View style={gridStyle.rowContainer}>
                 {props.dbtEnabled && <View style={gridStyle.rowContainer}>
-                    <DiaryTile onPress={() => props.navigation.push('skills', {title: props.date})} name='Skills' iconName={Icons.skills + '-outline'}/>
-                    <DiaryTile onPress={() => props.navigation.push('feelings', {title: props.date})} name='Feelings' iconName={Icons.feelings + '-outline'}/>
+                    <DiaryTile onPress={() => props.navigation.push('skills', {title: props.date})} name={SectionHeader.skills} iconName={Icons.skills + '-outline'}/>
+                    <DiaryTile onPress={() => props.navigation.push('feelings', {title: props.date})} name={SectionHeader.info} iconName={Icons.feelings + '-outline'}/>
                 </View>}
             </View>
         </View>

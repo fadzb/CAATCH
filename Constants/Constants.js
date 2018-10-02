@@ -26,7 +26,8 @@ export const DbTableNames = {
     signSession: 'SignSession',
     user: 'User',
     warningSign: 'WarningSign',
-    environment: 'Environment'
+    environment: 'Environment',
+    helper: 'Helper'
 };
 
 // DB Primary Key column names
@@ -43,7 +44,8 @@ export const DbPrimaryKeys = {
     session: 'sessionId',
     user: 'userId',
     warningSign: 'signId',
-    environment: 'environmentId'
+    environment: 'environmentId',
+    helper: 'helperId'
 };
 
 // Section Headers
@@ -54,7 +56,10 @@ export const SectionHeader = {
     signs: 'My Warning Signs',
     strategies: 'My Coping Strategies',
     contacts: 'My Contacts',
-    shortPlan: 'My Plan'
+    shortPlan: 'My Plan',
+    skills: 'DBT Skills',
+    info: 'DBT Info',
+    helpers: 'My Helpers'
 };
 
 // Usage function id's
@@ -65,7 +70,8 @@ export const UsageFunctionIds = {
         distraction: 3,
         reason: 4,
         contact: 5,
-        environment: 6
+        environment: 6,
+        helper: 19,
     },
     lastEntered: {
         warningSign: 7,
@@ -73,7 +79,8 @@ export const UsageFunctionIds = {
         distraction: 9,
         reason: 10,
         contact: 11,
-        environment: 12
+        environment: 12,
+        helper: 20,
     },
     lastViewed: {
         warningSign: 13,
@@ -81,6 +88,7 @@ export const UsageFunctionIds = {
         distraction: 15,
         reason: 16,
         contact: 17,
-        environment: 18
+        environment: 18,
+        helper: 21
     }
 };

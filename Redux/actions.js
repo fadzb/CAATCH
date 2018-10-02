@@ -18,6 +18,9 @@ export const GET_CONTACT = "GET_CONTACT";
 export const UPDATE_REASON = "UPDATE_REASON";
 export const GET_REASON = "GET_REASON";
 
+export const UPDATE_HELPER = "UPDATE_HELPER";
+export const GET_HELPER = "GET_HELPER";
+
 export const UPDATE_DISTRACTION = "UPDATE_DISTRACTION";
 export const GET_DISTRACTION = "GET_DISTRACTION";
 
@@ -117,6 +120,17 @@ export const updateReason = update => ({
 export const getReason = reasonList => ({
     type: GET_REASON,
     payload: reasonList
+});
+
+
+export const updateHelper = update => ({
+    type: UPDATE_HELPER,
+    payload: update
+});
+
+export const getHelper = helperList => ({
+    type: GET_HELPER,
+    payload: helperList
 });
 
 

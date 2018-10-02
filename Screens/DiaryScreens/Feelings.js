@@ -7,7 +7,7 @@ import Moment from 'moment';
 import {connect} from 'react-redux'
 import {resetFeelingRating} from "../../Redux/actions";
 import store from "../../Redux/store"
-import {DbTableNames} from "../../Constants/Constants";
+import {DbTableNames, SectionHeader} from "../../Constants/Constants";
 import {updateNotifications} from "../../Util/Notifications";
 
 class Feelings extends React.Component {
@@ -15,7 +15,7 @@ class Feelings extends React.Component {
         const diaryDate = store.getState().diary.date;
 
         return {
-            title: 'Feelings' + " " + Moment(diaryDate).format('DD.MM.YYYY'),
+            title: SectionHeader.info + " " + Moment(diaryDate).format('DD.MM.YYYY'),
             headerRight: (
                 <TouchableOpacity
                     onPress={() => navigation.push('feelingsSummary')}
