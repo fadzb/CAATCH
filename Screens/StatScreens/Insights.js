@@ -27,6 +27,7 @@ const safetyPlanElements = {
   Distraction: { name: 'Things to Do', icon: Icons.distractions },
   Reason: { name: 'Reason to Live', icon: Icons.lifeWorthLiving },
   Contact: { name: 'Contact', icon: Icons.contacts },
+  Helper: { name: 'Helper', icon: Icons.helpers },
 };
 
 const functionTypeToInfo = {
