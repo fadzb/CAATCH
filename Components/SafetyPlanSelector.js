@@ -49,7 +49,7 @@ const selectorStyle = StyleSheet.create({
   // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
   buttonText: {
-    fontSize: 20,
+    fontSize: 18,
   },
 
   textContainer: {

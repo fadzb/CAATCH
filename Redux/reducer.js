@@ -23,6 +23,8 @@ import {
   UPDATE_SCHEDULE_DATE,
   GET_SCHEDULE,
   UPDATE_DBT_SETTING,
+  UPDATE_HELPER,
+  GET_HELPER,
 } from './actions';
 import Moment from 'moment';
 
@@ -80,6 +82,20 @@ const reasonReducer = (state = [], action) => {
     return action.payload;
   }
   // used to get the complete contact list from the DB
+
+  return state;
+};
+
+const helperReducer = (state = [], action) => {
+  if (action.type === UPDATE_HELPER) {
+    return [...state, action.payload];
+  }
+  // used for when a new helper is added
+
+  if (action.type === GET_HELPER) {
+    return action.payload;
+  }
+  // used to get the complete helper list from the DB
 
   return state;
 };
@@ -224,6 +240,7 @@ const reducer = combineReducers({
   usage: usageReducer,
   schedule: scheduleReducer,
   setting: settingReducer,
+  helper: helperReducer,
 });
 // as reducers grow, add to this object
 
