@@ -15,6 +15,7 @@ import Moment from 'moment';
 import store from '../../Redux/store';
 import { DbTableNames } from '../../Constants/Constants';
 import CustomMultiSelectList from '../../Components/CustomMultiSelectList';
+import { updateNotifications } from '../../Util/Notifications';
 
 export default class SafetyPlanSelection extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -96,6 +97,8 @@ export default class SafetyPlanSelection extends React.Component {
         updateDatabase(DbTableNames.signSession, [sessionId, t], ['sessionId', 'signId']);
       });
     }
+
+    updateNotifications();
 
     this.props.navigation.pop();
   };

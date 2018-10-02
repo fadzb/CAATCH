@@ -16,7 +16,7 @@ export const SettingsSelectionRow = (props) => {
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {props.info && (
-              <View style={{ marginRight: 15 }}>
+              <View style={{ marginRight: 10 }}>
                 <PressableIcon
                   iconName={Icons.info + '-outline'}
                   size={25}
