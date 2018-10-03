@@ -6,7 +6,7 @@ import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
 import CustomMultiPicker from "react-native-multiple-select-list";
 import {CustomSelectionRow} from "../../Components/CustomSelectionRow";
 import {Icons} from "../../Constants/Icon";
-import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis } from 'victory-native';
+import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis, VictoryGroup, VictoryScatter } from 'victory-native';
 import {PressableIcon} from "../../Components/PressableIcon";
 
 const timeFrames = {
@@ -335,29 +335,45 @@ export default class VicChart extends React.Component {
                         <VictoryAxis dependentAxis
                             fixLabelOverlap={true}
                         />
-                        <VictoryLine
-                            style={{
-                                data: { stroke: "#c43a31", strokeWidth: 1.5 },
-                            }}
-                            data={this.state.graphData}
-                            domain={{y: this.getYDomain(this.state.selectedDiaryItem)}}
-                            animate={{
-                                onExit: {
-                                    duration: 0,
-                                }
-                            }}
-                        />
-                        {this.state.compareDiaryItem !== 'None' && <VictoryLine
-                            style={{
-                                data: { stroke: "blue", strokeWidth: 1.5 },
-                            }}
-                            data={this.state.compareGraphData}
-                            animate={{
-                                onExit: {
-                                    duration: 0,
-                                }
-                            }}
-                        />}
+                        <VictoryGroup data={this.state.graphData}
+                                      domain={{y: this.getYDomain(this.state.selectedDiaryItem)}}
+                                      >
+                            <VictoryLine
+                                style={{
+                                    data: { stroke: "#c43a31", strokeWidth: 1.5 },
+                                }}
+                                animate={{
+                                    onExit: {
+                                        duration: 0,
+                                    }
+                                }}
+                                interpolation="monotoneX"
+                                // interpolation="natural"
+                            />
+                            <VictoryScatter
+                                style={{ data: { fill: "#c43a31" } }}
+                                size={2}
+                            />
+                        </VictoryGroup>
+                        {this.state.compareDiaryItem !== 'None' &&
+                        <VictoryGroup data={this.state.compareGraphData}>
+                            <VictoryLine
+                                style={{
+                                    data: { stroke: "blue", strokeWidth: 1.5 },
+                                }}
+                                animate={{
+                                    onExit: {
+                                        duration: 0,
+                                    }
+                                }}
+                                interpolation="monotoneX"
+                                // interpolation="natural"
+                            />
+                            <VictoryScatter
+                                style={{ data: { fill: "blue" } }}
+                                size={2}
+                            />
+                        </VictoryGroup>}
                     </VictoryChart>
                     <View style={{flex: 1, marginBottom: 10}}>
                         <CustomSelectionRow
