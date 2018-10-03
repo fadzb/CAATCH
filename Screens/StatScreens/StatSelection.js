@@ -18,13 +18,20 @@ export default class StatSelection extends React.Component {
   render() {
     return (
       <View style={TabStyles.stackContainer}>
-        <View style={{ height: Dimensions.get('window').height / 5, alignSelf: 'stretch' }}>
+        <View style={{ height: (Dimensions.get('window').height / 11) * 3, alignSelf: 'stretch' }}>
           <CustomSelectionRow
-            name="Charts"
+            name="Charts - Feelings"
             icon={Icons.charts + '-outline'}
             iconSize={Dimensions.get('window').height / 20}
             iconContainer={statSelectionStyle.iconContainer}
             onPress={() => this.props.navigation.push('victory')}
+          />
+          <CustomSelectionRow
+            name="Charts - DBT Skills"
+            icon={Icons.charts + '-outline'}
+            iconSize={Dimensions.get('window').height / 20}
+            iconContainer={statSelectionStyle.iconContainer}
+            onPress={() => this.props.navigation.push('vicSkills')}
           />
           <CustomSelectionRow
             name="Insights"
