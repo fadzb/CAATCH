@@ -100,8 +100,6 @@ export default class VicSkillsChart extends React.Component {
   };
 
   handleSelection = (item) => {
-    console.log(item);
-
     if (this.state.timeFrameSelected) {
       this.setState({
         checkedItemTime: item[0],
@@ -148,8 +146,6 @@ export default class VicSkillsChart extends React.Component {
   };
 
   getXDomain = () => {
-    console.log(this.state.graphData);
-
     const maxRatingSum = Math.max(...this.state.graphData.map((a) => a.y));
 
     if (this.state.graphData.length === 0 || maxRatingSum === 0) {
@@ -173,7 +169,8 @@ export default class VicSkillsChart extends React.Component {
             <VictoryChart
               height={Dimensions.get('window').height * 0.55}
               theme={VictoryTheme.material}
-              padding={{ left: 80, top: 50, right: 30, bottom: 50 }}
+              domainPadding={10}
+              padding={{ left: 80, top: 35, right: 30, bottom: 35 }}
               domain={{ x: this.state.xDomain }}
               categories={
                 this.state.graphData.length === 0 && {
@@ -196,10 +193,13 @@ export default class VicSkillsChart extends React.Component {
               />
               <VictoryBar
                 horizontal
-                style={{
-                  data: { stroke: '#c43a31', strokeWidth: 1.5 },
-                }}
+                style={{ data: { fill: '#c43a31', fillOpacity: 0.8 } }}
                 data={this.state.graphData}
+                animate={{
+                  onExit: {
+                    duration: 0,
+                  },
+                }}
               />
             </VictoryChart>
             <View style={{ height: Dimensions.get('window').height * 0.2 }}>
