@@ -368,7 +368,7 @@ export default class VicChart extends React.Component {
                             selectedText={this.state.selectedDiaryItem}
                             onPress={() => this.toggleModal(true)}
                             selectedTextStyle={{color: "#c43a31"}}
-                            nameStyle={{fontSize: Dimensions.get('window').height / 38}}
+                            nameStyle={{fontSize: 16}}
                         />
                         <CustomSelectionRow
                             name="Time Frame"
@@ -377,7 +377,7 @@ export default class VicChart extends React.Component {
                             iconContainer={chartStyle.iconContainer}
                             selectedText={this.state.selectedTimeFrame}
                             onPress={() => this.setState({timeFrameSelected: true}, () => this.toggleModal(true))}
-                            nameStyle={{fontSize: Dimensions.get('window').height / 38}}
+                            nameStyle={{fontSize: 16}}
                         />
                         <CustomSelectionRow
                             name="Compare"
@@ -387,7 +387,7 @@ export default class VicChart extends React.Component {
                             selectedText={this.state.compareDiaryItem}
                             onPress={() => this.setState({comparisonSelected: true}, () => this.toggleModal(true))}
                             selectedTextStyle={{color: (this.state.compareDiaryItem === 'None' ? '#4d4d4d' : "blue")}}
-                            nameStyle={{fontSize: Dimensions.get('window').height / 38}}
+                            nameStyle={{fontSize: 16}}
                         />
                     </View>
                     <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={false} onRequestClose={this.handleModalClose}>

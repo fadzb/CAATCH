@@ -11,6 +11,7 @@ import StatSelection from "../../Screens/StatScreens/StatSelection";
 import Insights from "../../Screens/StatScreens/Insights";
 import Reports from "../../Screens/ReportScreens/Reports";
 import Pdf from "../../Screens/ReportScreens/Pdf";
+import VicSkillsChart from "../../Screens/StatScreens/VicSkillsChart";
 
 const HomeStack = createStackNavigator(
     {
@@ -20,6 +21,7 @@ const HomeStack = createStackNavigator(
         statSelection: StatSelection,
         insights: Insights,
         victory: VicChart,
+        vicSkills: VicSkillsChart,
         reports: Reports,
         pdf: Pdf
     },
