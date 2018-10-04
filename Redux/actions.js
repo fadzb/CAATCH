@@ -3,6 +3,7 @@
 //Settings
 
 export const UPDATE_DBT_SETTING = 'UPDATE_DBT_SETTING';
+export const UPDATE_EMAIL = 'UPDATE_EMAIL';
 
 //SafetyPlan
 
@@ -55,6 +56,11 @@ export const UPDATE_SCHEDULE_DATE = 'UPDATE_SCHEDULE_DATE';
 
 export const updateDbtSetting = (update) => ({
   type: UPDATE_DBT_SETTING,
+  payload: update,
+});
+
+export const updateEmail = (update) => ({
+  type: UPDATE_EMAIL,
   payload: update,
 });
 

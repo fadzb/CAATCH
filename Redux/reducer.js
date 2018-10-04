@@ -25,6 +25,7 @@ import {
   UPDATE_DBT_SETTING,
   UPDATE_HELPER,
   GET_HELPER,
+  UPDATE_EMAIL,
 } from './actions';
 import Moment from 'moment';
 
@@ -221,11 +222,16 @@ const scheduleReducer = (state = { appointments: {}, date: Moment().format('YYYY
 
 //Setting
 
-const settingReducer = (state = { dbt: false }, action) => {
+const settingReducer = (state = { dbt: false, email: 'None' }, action) => {
   if (action.type === UPDATE_DBT_SETTING) {
     return { ...state, dbt: action.payload };
   }
   // used to update global DBT setting
+
+  if (action.type === UPDATE_EMAIL) {
+    return { ...state, email: action.payload };
+  }
+  // used to update global backup email setting
 
   return state;
 };

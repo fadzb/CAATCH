@@ -2,18 +2,19 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Modal, Dimensions, Alert } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Toast } from 'native-base';
-import { Icons } from '../Constants/Icon';
+import { Icons } from '../../Constants/Icon';
 import PINCode from '@haskkor/react-native-pincode';
-import { updateDatabase, readDatabase, updateDatabaseArgument, readDatabaseArg } from '../Util/DatabaseHelper';
-import { SettingsSelectionRow } from '../Components/SettingsSelectionRow';
+import { updateDatabase, readDatabase, updateDatabaseArgument, readDatabaseArg } from '../../Util/DatabaseHelper';
+import { SettingsSelectionRow } from '../../Components/SettingsSelectionRow';
 import { Constants } from 'expo';
-import { PressableIcon } from '../Components/PressableIcon';
-import { updateDbtSetting } from '../Redux/actions';
-import store from '../Redux/store';
+import { PressableIcon } from '../../Components/PressableIcon';
+import { updateDbtSetting } from '../../Redux/actions';
+import store from '../../Redux/store';
 import Moment from 'moment';
+import { updateEmail } from '../../Redux/actions';
 
-import { TabStyles } from '../Styles/TabStyles';
-import { DbTableNames } from '../Constants/Constants';
+import { TabStyles } from '../../Styles/TabStyles';
+import { DbTableNames } from '../../Constants/Constants';
 
 const DBT =
   'Dialectical Behaviour Therapy (DBT) is a treatment programme aimed at helping people with ongoing difficulties managing intense emotions';
@@ -52,6 +53,13 @@ export default class SettingsScreen extends React.Component {
     });
 
     // setting switches based on values in DB
+
+    const email = dbObject[0].email;
+
+    if (email) {
+      store.dispatch(updateEmail(email));
+    }
+    // if email already saved in db, dispatch saved email to redux store
   };
 
   toggleModal = (bool) => {
@@ -234,6 +242,13 @@ export default class SettingsScreen extends React.Component {
             switch={true}
             switchValue={this.state.notificationSwitchValue}
             handleSwitch={() => this.handleNotificationSwitch()}
+          />
+          <SettingsSelectionRow
+            height={Dimensions.get('window').height / 11}
+            name={'Backup and Restore'}
+            iconName={Icons.backup + '-outline'}
+            arrow={true}
+            onPress={() => this.props.navigation.push('backupRestore')}
           />
         </View>
         <Modal

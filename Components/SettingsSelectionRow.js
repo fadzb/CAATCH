@@ -11,7 +11,9 @@ export const SettingsSelectionRow = (props) => {
       <TouchableHighlight underlayColor="#FDEDEC" style={settingRowStyle.button} onPress={props.onPress}>
         <View style={settingRowStyle.rowContainer}>
           <View style={settingRowStyle.textContainer}>
-            <Icon name={props.iconName} size={30} />
+            <View style={{ width: 30 }}>
+              <Icon name={props.iconName} size={30} />
+            </View>
             <Text style={settingRowStyle.buttonText}>{props.name}</Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
@@ -26,6 +28,11 @@ export const SettingsSelectionRow = (props) => {
               </View>
             )}
             {props.switch && <Switch value={props.switchValue} onValueChange={props.handleSwitch} />}
+            {props.arrow && (
+              <View style={{ paddingRight: 15 }}>
+                <Icon name={Icons.dividerArrow} size={25} />
+              </View>
+            )}
           </View>
         </View>
       </TouchableHighlight>
