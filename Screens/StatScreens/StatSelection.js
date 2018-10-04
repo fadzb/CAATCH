@@ -23,21 +23,21 @@ export default class StatSelection extends React.Component {
                     <CustomSelectionRow
                         name="Charts - Feelings"
                         icon={Icons.charts + '-outline'}
-                        iconSize={Dimensions.get('window').height / 20}
+                        iconSize={30}
                         iconContainer={statSelectionStyle.iconContainer}
                         onPress={() => this.props.navigation.push('victory')}
                     />
                     <CustomSelectionRow
                         name="Charts - DBT Skills"
                         icon={Icons.charts + '-outline'}
-                        iconSize={Dimensions.get('window').height / 20}
+                        iconSize={30}
                         iconContainer={statSelectionStyle.iconContainer}
                         onPress={() => this.props.navigation.push('vicSkills')}
                     />
                     <CustomSelectionRow
                         name="Insights"
                         icon={Icons.insights + '-outline'}
-                        iconSize={Dimensions.get('window').height / 20}
+                        iconSize={30}
                         iconContainer={statSelectionStyle.iconContainer}
                         onPress={() => this.props.navigation.push('insights')}
                     />

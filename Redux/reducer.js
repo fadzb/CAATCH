@@ -4,7 +4,7 @@ import {
     GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE, UPDATE_SKILL_RATING, RESET_SKILL_RATING,
     UPDATE_USAGE, UPDATE_FEELING_RATING, RESET_FEELING_RATING, UPDATE_SLEEP_RATING, RESET_SLEEP_RATING,
     UPDATE_MOOD_RATING, RESET_MOOD_RATING, UPDATE_SCHEDULE_DATE, GET_SCHEDULE, UPDATE_DBT_SETTING, UPDATE_HELPER,
-    GET_HELPER
+    GET_HELPER, UPDATE_EMAIL
 } from "./actions";
 import Moment from 'moment';
 
@@ -187,11 +187,16 @@ const scheduleReducer = (state = {appointments: {}, date: Moment().format('YYYY-
 
 //Setting
 
-const settingReducer = (state = {dbt: false}, action) => {
+const settingReducer = (state = {dbt: false, email: 'None'}, action) => {
     if(action.type === UPDATE_DBT_SETTING) {
         return {...state, dbt: action.payload};
     }
     // used to update global DBT setting
+
+    if(action.type === UPDATE_EMAIL) {
+        return {...state, email: action.payload};
+    }
+    // used to update global backup email setting
 
     return state
 };

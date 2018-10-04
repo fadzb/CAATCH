@@ -4,11 +4,13 @@ import { createStackNavigator } from 'react-navigation';
 import Ionicons from "react-native-vector-icons/Ionicons";
 import {Icons} from "../../Constants/Icon";
 
-import SettingsScreen from "../../Screens/SettingsScreen";
+import SettingsScreen from "../../Screens/SettingsScreens/SettingsScreen";
+import BackupRestoreSelection from "../../Screens/SettingsScreens/BackupRestoreSelection";
 
 const SettingsStack = createStackNavigator(
     {
         main: SettingsScreen,
+        backupRestore: BackupRestoreSelection
     },
 
     {
