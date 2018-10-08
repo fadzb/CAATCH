@@ -116,9 +116,10 @@ export default class NewHelper extends React.Component {
           />
           <TextInput
             style={[helperStyle.respInput, this.state.validResp ? {} : { borderColor: '#a94442' }]}
-            placeholder={'Responsibility'}
+            placeholder={'How they can help me'}
             value={this.state.resp}
             onChangeText={(text) => this.setState({ resp: text })}
+            underlineColorAndroid={'transparent'}
           />
           <TouchableHighlight style={helperStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
             <Text style={helperStyle.buttonText}>Save</Text>

@@ -25,6 +25,8 @@ import {
   UPDATE_DBT_SETTING,
   UPDATE_HELPER,
   GET_HELPER,
+  UPDATE_EMAIL,
+  NEW_FEELING,
 } from './actions';
 import Moment from 'moment';
 
@@ -163,6 +165,10 @@ const diaryReducer = (
     };
   }
   // used for when a new feeling rating is recorded
+
+  if (action.type === NEW_FEELING) {
+    return { ...state, feelingRating: [...state.feelingRating, action.payload] };
+  }
 
   if (action.type === RESET_FEELING_RATING) {
     return { ...state, feelingRating: action.payload };
