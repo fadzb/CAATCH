@@ -4,7 +4,7 @@ import {
     GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE, UPDATE_SKILL_RATING, RESET_SKILL_RATING,
     UPDATE_USAGE, UPDATE_FEELING_RATING, RESET_FEELING_RATING, UPDATE_SLEEP_RATING, RESET_SLEEP_RATING,
     UPDATE_MOOD_RATING, RESET_MOOD_RATING, UPDATE_SCHEDULE_DATE, GET_SCHEDULE, UPDATE_DBT_SETTING, UPDATE_HELPER,
-    GET_HELPER, UPDATE_EMAIL
+    GET_HELPER, UPDATE_EMAIL, NEW_FEELING
 } from "./actions";
 import Moment from 'moment';
 
@@ -129,6 +129,10 @@ const diaryReducer = (state = {moodRating: 3, sleepRating: 3, feelingRating: [],
         })}
     }
     // used for when a new feeling rating is recorded
+
+    if(action.type === NEW_FEELING) {
+        return {...state, feelingRating: [...state.feelingRating, action.payload]}
+    }
 
     if(action.type === RESET_FEELING_RATING) {
         return {...state, feelingRating: action.payload};

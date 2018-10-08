@@ -9,6 +9,9 @@ import {resetFeelingRating} from "../../Redux/actions";
 import store from "../../Redux/store"
 import {DbTableNames, SectionHeader} from "../../Constants/Constants";
 import {updateNotifications} from "../../Util/Notifications";
+import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
+import getTheme from '../../native-base-theme/components';
+import platform from '../../native-base-theme/variables/platform';
 
 class Feelings extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -35,14 +38,26 @@ class Feelings extends React.Component {
         }
     }
 
+    componentWillReceiveProps(nextProps) {
+        const newFeeling = nextProps.navigation.getParam('newFeeling', null);
+
+        if(newFeeling !== this.props.navigation.getParam('newFeeling', null)) {
+            if (newFeeling !== null) {
+                this.getFeelings()
+            } else {
+                console.log("no feeling added");
+            }
+        }
+    }
+    // listen for new props coming from pre-populated screen and update accordingly
+
     componentDidMount() {
-        this.getFeelings(diaryPrePops);
+        this.getFeelings()
     }
 
-    getFeelings = feelingItem => {
-        this.setState({ feelings: feelingItem.filter(f => f.diaryType === "Feeling") })
+    getFeelings = () => {
+        this.setState({ feelings: diaryPrePops.filter(f => f.diaryType === "Feeling") })
     };
-    // retrieve feelings array from DB
 
     createSession = () => {
         updateDatabase(DbTableNames.session,
@@ -79,16 +94,60 @@ class Feelings extends React.Component {
     // prevSelected prop contains the history for that day if it was already filled in
 
     render() {
+        const urges = 1;
+        const feelings = 2;
+        const usedSkills = 3;
+
+        const NUMBER_OF_TABS = 3;
+
         return (
             <View style={feelingStyle.viewContainer}>
-                <FlatList
-                    data={this.state.feelings}
-                    renderItem={this.renderItem}
-                    keyExtractor={(item, index) => index.toString()}
-                />
-                <TouchableOpacity style={feelingStyle.button} onPress={this.createSession}>
-                    <Text style={feelingStyle.buttonText}>Save</Text>
-                </TouchableOpacity>
+                <Container>
+                    <StyleProvider style={getTheme(platform)}>
+                        <Tabs locked={true} prerenderingSiblingsNumber={NUMBER_OF_TABS}>
+                            <Tab heading={"Urges"}>
+                                <FlatList
+                                    data={this.state.feelings.filter(f => f.subType === urges)}
+                                    renderItem={this.renderItem}
+                                    keyExtractor={(item, index) => index.toString()}
+                                />
+                                <View style={feelingStyle.twoButtonContainer}>
+                                    <TouchableOpacity style={feelingStyle.buttonsNew} onPress={() => this.props.navigation.push('newUrge', {subType: urges})}>
+                                        <Text style={feelingStyle.buttonNewText}>New</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={feelingStyle.buttons} onPress={this.createSession}>
+                                        <Text style={feelingStyle.buttonText}>Save</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </Tab>
+                            <Tab heading={"Feelings"}>
+                                <FlatList
+                                    data={this.state.feelings.filter(f => f.subType === feelings)}
+                                    renderItem={this.renderItem}
+                                    keyExtractor={(item, index) => index.toString()}
+                                />
+                                <View style={feelingStyle.twoButtonContainer}>
+                                    <TouchableOpacity style={feelingStyle.buttonsNew} onPress={() => console.log('saving ...')}>
+                                        <Text style={feelingStyle.buttonNewText}>New</Text>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={feelingStyle.buttons} onPress={this.createSession}>
+                                        <Text style={feelingStyle.buttonText}>Save</Text>
+                                    </TouchableOpacity>
+                                </View>
+                            </Tab>
+                            <Tab heading={"Used Skills"}>
+                                <FlatList
+                                    data={this.state.feelings.filter(f => f.subType === usedSkills)}
+                                    renderItem={this.renderItem}
+                                    keyExtractor={(item, index) => index.toString()}
+                                />
+                                <TouchableOpacity style={feelingStyle.button} onPress={this.createSession}>
+                                    <Text style={feelingStyle.buttonText}>Save</Text>
+                                </TouchableOpacity>
+                            </Tab>
+                        </Tabs>
+                    </StyleProvider>
+                </Container>
             </View>
         );
     }
@@ -121,6 +180,36 @@ const feelingStyle = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'center',
     },
+    buttons: {
+        height: 36,
+        flex: 1,
+        backgroundColor: '#fff',
+        borderColor: '#007AFF',
+        borderWidth: 1,
+        borderRadius: 8,
+        justifyContent: 'center',
+        marginHorizontal: 5
+    },
+    buttonNewText: {
+        fontSize: 18,
+        color: 'white',
+        alignSelf: 'center',
+    },
+    buttonsNew: {
+        height: 36,
+        flex: 1,
+        backgroundColor: '#007AFF',
+        borderColor: '#007AFF',
+        borderWidth: 1,
+        borderRadius: 8,
+        justifyContent: 'center',
+        marginHorizontal: 5
+    },
+    twoButtonContainer: {
+        flexDirection: 'row',
+        marginHorizontal: 15,
+        marginVertical: 5
+    }
 });
 
 

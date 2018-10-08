@@ -416,23 +416,25 @@ export default class VicChart extends React.Component {
                                     onPressFunction={this.handleModalClose}
                                 />
                             </View>
-                            <View>
-                                <CustomMultiPicker
-                                    options={this.state.timeFrameSelected ? periods : (this.state.comparisonSelected ? this.state.compareDiaryList[this.state.selectedDiaryItem] : this.state.diaryList)}
-                                    multiple={false} //
-                                    returnValue={"label"} // label or value
-                                    callback={this.handleSelection} // callback, array of selected items
-                                    rowBackgroundColor={"#fff"}
-                                    rowHeight={40}
-                                    rowRadius={5}
-                                    iconColor={"#00a2dd"}
-                                    iconSize={25}
-                                    itemStyle={chartStyle.itemStyle}
-                                    selectedIconName={"ios-checkmark-circle-outline"}
-                                    unselectedIconName={"ios-radio-button-off-outline"}
-                                    search={true}
-                                    selected={this.state.checkedItem ? this.state.checkedItem : (this.state.timeFrameSelected ? this.state.selectedTimeFrame : (this.state.comparisonSelected ? this.state.compareDiaryItem : this.state.selectedDiaryItem))}
-                                />
+                            <View style={{flex: 1}}>
+                                <View style={{flex: 1, marginBottom: 50}}>
+                                    <CustomMultiPicker
+                                        options={this.state.timeFrameSelected ? periods : (this.state.comparisonSelected ? this.state.compareDiaryList[this.state.selectedDiaryItem] : this.state.diaryList)}
+                                        multiple={false} //
+                                        returnValue={"label"} // label or value
+                                        callback={this.handleSelection} // callback, array of selected items
+                                        rowBackgroundColor={"#fff"}
+                                        rowHeight={40}
+                                        rowRadius={5}
+                                        iconColor={"#00a2dd"}
+                                        iconSize={25}
+                                        itemStyle={chartStyle.itemStyle}
+                                        selectedIconName={"ios-checkmark-circle-outline"}
+                                        unselectedIconName={"ios-radio-button-off-outline"}
+                                        search={true}
+                                        selected={this.state.checkedItem ? this.state.checkedItem : (this.state.timeFrameSelected ? this.state.selectedTimeFrame : (this.state.comparisonSelected ? this.state.compareDiaryItem : this.state.selectedDiaryItem))}
+                                    />
+                                </View>
                                 <TouchableHighlight
                                     style={chartStyle.button}
                                     onPress={this.handleFinalSelection}

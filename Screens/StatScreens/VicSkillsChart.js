@@ -212,23 +212,25 @@ export default class VicSkillsChart extends React.Component {
                                         onPressFunction={this.handleModalClose}
                                     />
                                 </View>
-                                <View>
-                                    <CustomMultiPicker
-                                        options={this.state.timeFrameSelected ? periods : skillTypes}
-                                        multiple={false} //
-                                        returnValue={this.state.timeFrameSelected ? "label" : "id"} // label or value
-                                        callback={this.handleSelection} // callback, array of selected items
-                                        rowBackgroundColor={"#fff"}
-                                        rowHeight={40}
-                                        rowRadius={5}
-                                        iconColor={"#00a2dd"}
-                                        iconSize={25}
-                                        itemStyle={chartStyle.itemStyle}
-                                        selectedIconName={"ios-checkmark-circle-outline"}
-                                        unselectedIconName={"ios-radio-button-off-outline"}
-                                        search={true}
-                                        selected={this.state.timeFrameSelected ? this.state.selectedTimeFrame : this.state.selectedSkillCategory.toString()}
-                                    />
+                                <View style={{flex: 1}}>
+                                    <View style={{flex: 1, marginBottom: 50}}>
+                                        <CustomMultiPicker
+                                            options={this.state.timeFrameSelected ? periods : skillTypes}
+                                            multiple={false} //
+                                            returnValue={this.state.timeFrameSelected ? "label" : "id"} // label or value
+                                            callback={this.handleSelection} // callback, array of selected items
+                                            rowBackgroundColor={"#fff"}
+                                            rowHeight={40}
+                                            rowRadius={5}
+                                            iconColor={"#00a2dd"}
+                                            iconSize={25}
+                                            itemStyle={chartStyle.itemStyle}
+                                            selectedIconName={"ios-checkmark-circle-outline"}
+                                            unselectedIconName={"ios-radio-button-off-outline"}
+                                            search={true}
+                                            selected={this.state.timeFrameSelected ? this.state.selectedTimeFrame : this.state.selectedSkillCategory.toString()}
+                                        />
+                                    </View>
                                     <TouchableHighlight
                                         style={chartStyle.button}
                                         onPress={this.handleFinalSelection}
