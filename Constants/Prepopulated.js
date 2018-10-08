@@ -1,6 +1,6 @@
 // function for retrieving Pre-populated Content from DB
 
-import { readDatabase } from '../Util/DatabaseHelper';
+import { readDatabase, readDatabaseArg } from '../Util/DatabaseHelper';
 import store from '../Redux/store';
 import { resetFeelingRating, resetSkillRating } from '../Redux/actions';
 
@@ -28,6 +28,14 @@ export const getDiaryPrePops = () => {
     store.dispatch(
       resetFeelingRating(d.filter((t) => t.diaryType === 'Feeling').map((f) => ({ id: f.diaryId, rating: 0 })))
     );
+  });
+};
+
+export const updateDiaryPrePops = (func) => {
+  readDatabase('*', 'Diary', (d) => {
+    diaryPrePops = d;
+
+    func();
   });
 };
 
