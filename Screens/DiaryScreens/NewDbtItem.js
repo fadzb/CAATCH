@@ -1,16 +1,11 @@
 import React from 'react';
 import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
 import t from 'tcomb-form-native';
-import { PressableIcon } from '../../Components/PressableIcon';
 import store from '../../Redux/store';
-import { updateReason, getReason, newFeeling } from '../../Redux/actions';
-import Expo from 'expo';
-import { Icons } from '../../Constants/Icon';
 
 import { TabStyles } from '../../Styles/TabStyles';
-import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../Util/DatabaseHelper';
+import { updateDatabase } from '../../Util/DatabaseHelper';
 import { DbTableNames, UsageFunctionIds } from '../../Constants/Constants';
-import { latestSafetyPlanItem } from '../../Util/Usage';
 import { updateDiaryPrePops } from '../../Constants/Prepopulated';
 
 const Form = t.form.Form;
@@ -35,9 +30,13 @@ const options = {
 };
 // for customizing form UI
 
-export default class NewUrge extends React.Component {
-  static navigationOptions = {
-    title: 'New Urge',
+export default class NewDbtItem extends React.Component {
+  static navigationOptions = ({ navigation }) => {
+    const subType = navigation.getParam('subType');
+
+    return {
+      title: `New ${subType === 1 ? 'Urge' : 'Feeling'}`,
+    };
   };
 
   constructor(props) {
@@ -61,8 +60,8 @@ export default class NewUrge extends React.Component {
       console.log(value);
       updateDatabase(
         DbTableNames.diary,
-        [...Object.values(value), this.props.navigation.getParam('subType'), 'Feeling', 5],
-        [...Object.keys(value), 'subType', 'diaryType', 'scale'],
+        [...Object.values(value), this.props.navigation.getParam('subType'), 'Feeling', 5, 1],
+        [...Object.keys(value), 'subType', 'diaryType', 'scale', 'deletable'],
         () =>
           updateDiaryPrePops(() => {
             this.props.navigation.navigate('feelings', { newFeeling: value.diaryName });
@@ -76,10 +75,10 @@ export default class NewUrge extends React.Component {
   render() {
     return (
       <View style={TabStyles.planContainer}>
-        <View style={urgeStyle.formContainer}>
+        <View style={dbtItemStyle.formContainer}>
           <Form ref="form" type={reason} value={this.state.value} onChange={this.onChange} options={options} />
-          <TouchableHighlight style={urgeStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
-            <Text style={urgeStyle.buttonText}>Save</Text>
+          <TouchableHighlight style={dbtItemStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
+            <Text style={dbtItemStyle.buttonText}>Save</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -87,7 +86,7 @@ export default class NewUrge extends React.Component {
   }
 }
 
-const urgeStyle = StyleSheet.create({
+const dbtItemStyle = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     color: 'white',
