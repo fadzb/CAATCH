@@ -73,14 +73,22 @@ export default class FeelingRow extends React.Component {
     render() {
         return (
             <View style={feelingRowStyle.viewContainer}>
-                <View style={{flexDirection: 'row', alignItems: 'center', paddingBottom: 10,}}>
-                    <PressableIcon
-                        iconName={Icons.info + '-outline'}
-                        size={25}
-                        onPressFunction={this.infoAlert}
-                        color='#007AFF'
-                    />
-                    <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
+                <View style={{flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 7}}>
+                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                        <PressableIcon
+                            iconName={Icons.info + '-outline'}
+                            size={25}
+                            onPressFunction={this.infoAlert}
+                            color='#007AFF'
+                        />
+                        <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
+                    </View>
+                    {this.props.feeling.deletable && <PressableIcon
+                        iconName={Icons.delete + '-outline'}
+                        size={30}
+                        onPressFunction={this.props.deleteFunction}
+                        color='red'
+                    />}
                 </View>
                 <View onLayout={this.onLayout} ref="slider">
                     <TouchableWithoutFeedback onPressIn={this.tapSliderHandler}>
@@ -108,8 +116,7 @@ const sliderMargin = 15;
 const feelingRowStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        paddingTop: 15,
-        paddingBottom: 15,
+        paddingVertical: 10,
         borderBottomWidth: .5,
         marginLeft: sliderMargin,
         marginRight: sliderMargin,

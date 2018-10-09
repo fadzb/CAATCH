@@ -1,8 +1,8 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList } from 'react-native';
-import {diaryPrePops} from "../../Constants/Prepopulated";
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert } from 'react-native';
+import {diaryPrePops, updateDiaryPrePops} from "../../Constants/Prepopulated";
 import FeelingRow from '../../Components/FeelingRow'
-import {updateDatabase} from "../../Util/DatabaseHelper";
+import {deleteDatabaseRow, updateDatabase} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
 import {connect} from 'react-redux'
 import {resetFeelingRating} from "../../Redux/actions";
@@ -82,11 +82,30 @@ class Feelings extends React.Component {
     };
     // iterate through global rating store for feelings and save in DB
 
+    deleteDbtItem = id => {
+        deleteDatabaseRow(DbTableNames.diary, 'where diaryId = ' + id, res => {
+            updateDiaryPrePops(this.getFeelings)
+        })
+    };
+
+    showAlert = (id) => {
+        Alert.alert(
+            'Delete DBT Item',
+            'Are you sure you want to delete this DBT Item?',
+            [
+                {text: 'Cancel', onPress: () => console.log('Cancelled'), style: 'cancel'},
+                {text: 'Delete', onPress: () => this.deleteDbtItem(id), style: 'destructive'},
+            ],
+            { cancelable: false }
+        )
+    };
+
     renderItem = ({item}) => {
         return (
             <View style={feelingStyle.listContainer}>
                 <FeelingRow
                     feeling={item}
+                    deleteFunction={() => this.showAlert(item.diaryId)}
                 />
             </View>
         )
@@ -112,7 +131,7 @@ class Feelings extends React.Component {
                                     keyExtractor={(item, index) => index.toString()}
                                 />
                                 <View style={feelingStyle.twoButtonContainer}>
-                                    <TouchableOpacity style={feelingStyle.buttonsNew} onPress={() => this.props.navigation.push('newUrge', {subType: urges})}>
+                                    <TouchableOpacity style={feelingStyle.buttonsNew} onPress={() => this.props.navigation.push('newDbtItem', {subType: urges})}>
                                         <Text style={feelingStyle.buttonNewText}>New</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={feelingStyle.buttons} onPress={this.createSession}>
@@ -127,7 +146,7 @@ class Feelings extends React.Component {
                                     keyExtractor={(item, index) => index.toString()}
                                 />
                                 <View style={feelingStyle.twoButtonContainer}>
-                                    <TouchableOpacity style={feelingStyle.buttonsNew} onPress={() => console.log('saving ...')}>
+                                    <TouchableOpacity style={feelingStyle.buttonsNew} onPress={() => this.props.navigation.push('newDbtItem', {subType: feelings})}>
                                         <Text style={feelingStyle.buttonNewText}>New</Text>
                                     </TouchableOpacity>
                                     <TouchableOpacity style={feelingStyle.buttons} onPress={this.createSession}>
