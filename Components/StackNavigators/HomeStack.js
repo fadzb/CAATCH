@@ -12,6 +12,11 @@ import Insights from "../../Screens/StatScreens/Insights";
 import Reports from "../../Screens/ReportScreens/Reports";
 import Pdf from "../../Screens/ReportScreens/Pdf";
 import VicSkillsChart from "../../Screens/StatScreens/VicSkillsChart";
+import Goals from "../../Screens/GoalScreens/Goals";
+import NewGoal from "../../Screens/GoalScreens/NewGoal";
+import DiaryItemList from "../../Screens/GoalScreens/DiaryItemList";
+import GoalSummary from "../../Screens/GoalScreens/GoalSummary";
+import EditGoal from "../../Screens/GoalScreens/EditGoal";
 
 const HomeStack = createStackNavigator(
     {
@@ -23,7 +28,12 @@ const HomeStack = createStackNavigator(
         victory: VicChart,
         vicSkills: VicSkillsChart,
         reports: Reports,
-        pdf: Pdf
+        pdf: Pdf,
+        goals: Goals,
+        newGoal: NewGoal,
+        diaryItemList: DiaryItemList,
+        goalSummary: GoalSummary,
+        editGoal: EditGoal
     },
 
     {

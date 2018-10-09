@@ -90,7 +90,10 @@ export default class HelperSummary extends React.Component {
                                             <PressableIcon
                                                 iconName={Icons.edit + '-outline'}
                                                 size={35}
-                                                onPressFunction={() => this.editHelper(c,)}
+                                                onPressFunction={() => this.editHelper(this.props.navigation.getParam('id'),
+                                                    this.props.navigation.getParam('name'),
+                                                    this.props.navigation.getParam('responsibility'),
+                                                    this.props.navigation.getParam('contactId'))}
                                             />
                                             <PressableIcon
                                                 iconName={Icons.delete + '-outline'}

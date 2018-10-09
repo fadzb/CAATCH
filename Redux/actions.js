@@ -46,6 +46,11 @@ export const RESET_MOOD_RATING = "RESET_MOOD_RATING";
 
 export const UPDATE_USAGE = "UPDATE_USAGE";
 
+//Goals
+
+export const UPDATE_GOAL = "UPDATE_GOAL";
+export const GET_GOAL = "GET_GOAL";
+
 //Schedule
 
 export const GET_SCHEDULE = "GET_SCHEDULE";
@@ -70,6 +75,18 @@ export const updateEmail = update => ({
 export const updateUsage = update => ({
     type: UPDATE_USAGE,
     payload: update
+});
+
+//Goals
+
+export const updateGoal = update => ({
+    type: UPDATE_GOAL,
+    payload: update
+});
+
+export const getGoal = goalList => ({
+    type: GET_GOAL,
+    payload: goalList
 });
 
 //Schedule

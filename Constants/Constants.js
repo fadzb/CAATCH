@@ -27,7 +27,8 @@ export const DbTableNames = {
     user: 'User',
     warningSign: 'WarningSign',
     environment: 'Environment',
-    helper: 'Helper'
+    helper: 'Helper',
+    goal: 'Goal'
 };
 
 // DB Primary Key column names
@@ -59,7 +60,8 @@ export const SectionHeader = {
     shortPlan: 'My Plan',
     skills: 'DBT Skills',
     info: 'DBT Info',
-    helpers: 'My Helpers'
+    helpers: 'My Helpers',
+    goals: 'My Goals'
 };
 
 // Usage function id's
