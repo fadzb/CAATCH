@@ -81,7 +81,7 @@ export default class FeelingRow extends React.Component {
             />
             <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
           </View>
-          {this.props.feeling.deletable && (
+          {this.props.feeling.deletable === 1 && (
             <PressableIcon
               iconName={Icons.delete + '-outline'}
               size={30}
@@ -124,7 +124,7 @@ const feelingRowStyle = StyleSheet.create({
     marginRight: sliderMargin,
   },
   text: {
-    paddingLeft: 5,
+    paddingLeft: 10,
     fontSize: 15,
   },
   labelContainer: {

@@ -12,12 +12,14 @@ import { updateDbtSetting } from '../../Redux/actions';
 import store from '../../Redux/store';
 import Moment from 'moment';
 import { updateEmail } from '../../Redux/actions';
+import DateTimePicker from 'react-native-modal-datetime-picker';
 
 import { TabStyles } from '../../Styles/TabStyles';
 import { DbTableNames } from '../../Constants/Constants';
 
 const DBT =
   'Dialectical Behaviour Therapy (DBT) is a treatment programme aimed at helping people with ongoing difficulties managing intense emotions';
+const NOTIFICATIONS = 'Select a time to receive a diary reminder at every day. Switch off to cancel all notifications';
 
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
@@ -33,6 +35,8 @@ export default class SettingsScreen extends React.Component {
       switchValue: false,
       dbtSwitchValue: false,
       notificationSwitchValue: false,
+      timePickerVisible: false,
+      notificationTime: '',
     };
   }
 
@@ -46,10 +50,14 @@ export default class SettingsScreen extends React.Component {
     const dbtSwitchValue = dbObject[0].dbt;
     const notificationSwitchValue = dbObject[0].notifications;
 
+    const notificationTimestamp = dbObject[0].notificationTime;
+    const notificationTime = notificationTimestamp ? Moment(notificationTimestamp).format('HH:mm') : '';
+
     this.setState({
       switchValue: Boolean(switchValue),
       dbtSwitchValue: Boolean(dbtSwitchValue),
       notificationSwitchValue: Boolean(notificationSwitchValue),
+      notificationTime: notificationTime,
     });
 
     // setting switches based on values in DB
@@ -123,7 +131,9 @@ export default class SettingsScreen extends React.Component {
           return;
         }
 
-        this.toggleNotification(this.checkDiaryEntriesForToday);
+        this.toggleTimePicker(true);
+
+        // this.toggleNotification(this.checkDiaryEntriesForToday)
       });
     } else {
       Expo.Notifications.cancelAllScheduledNotificationsAsync();
@@ -134,21 +144,21 @@ export default class SettingsScreen extends React.Component {
     // if switched to on, check if notification permissions granted. If yes, toggle the switch and run the checkDiaryEntriesForToday function. Show Toast if not
   };
 
-  checkDiaryEntriesForToday = () => {
+  checkDiaryEntriesForToday = (time) => {
     const diaryDate = store.getState().diary.date;
     const selectedDate = Moment(diaryDate).format('YYYY-MM-DD');
 
     readDatabaseArg(
       'diaryDate',
       DbTableNames.session,
-      this.sendNotification,
+      (res) => this.sendNotification(res, time),
       undefined,
       " where DATE(diaryDate) = '" + selectedDate + "'"
     );
   };
   // check if and diary entries recorded for today's date
 
-  sendNotification = (res) => {
+  sendNotification = (res, time) => {
     const localNotification = {
       title: 'Diary Reminder',
       body: "Don't forget to update your diary today!",
@@ -162,13 +172,7 @@ export default class SettingsScreen extends React.Component {
 
     // create local notification object
 
-    let noteTime = new Date();
-    noteTime.setHours(9, 0, 0);
-
-    // set today note time to 9am
-
-    let tomorrowNoteTime = new Date();
-    tomorrowNoteTime.setHours(9, 0, 0);
+    let tomorrowNoteTime = new Date(time.getTime());
     tomorrowNoteTime.setDate(tomorrowNoteTime.getDate() + 1);
 
     // set tomorrow note time to 9am
@@ -178,10 +182,10 @@ export default class SettingsScreen extends React.Component {
     if (res.length === 0) {
       const now = new Date();
 
-      if (now > noteTime) {
+      if (now > time) {
         schedulingOptions = { time: tomorrowNoteTime, repeat: 'day' };
       } else {
-        schedulingOptions = { time: noteTime, repeat: 'day' };
+        schedulingOptions = { time: time, repeat: 'day' };
       }
       // if no entries set notification to go off today at 9am. Or if later than 9 am , set for tomorrow at same time
     } else {
@@ -196,22 +200,50 @@ export default class SettingsScreen extends React.Component {
     );
   };
 
-  toggleNotification = (callback) => {
+  toggleNotification = (time, callback) => {
     this.setState((prevState) => {
       const newValue = !prevState.notificationSwitchValue;
       const convertBool = newValue ? 1 : 0;
 
-      updateDatabaseArgument(DbTableNames.user, [convertBool], ['notifications'], 'where userId = 1');
+      if (newValue) {
+        updateDatabaseArgument(
+          DbTableNames.user,
+          [convertBool, time],
+          ['notifications', 'notificationTime'],
+          'where userId = 1'
+        );
 
-      return { notificationSwitchValue: newValue };
+        return { notificationSwitchValue: newValue };
+      } else {
+        updateDatabaseArgument(
+          DbTableNames.user,
+          [convertBool, null],
+          ['notifications', 'notificationTime'],
+          'where userId = 1'
+        );
+
+        return { notificationSwitchValue: newValue, notificationTime: '' };
+      }
     }, callback);
   };
   // toggle notification switch
 
-  infoAlert = () => {
-    Alert.alert('DBT', DBT, [{ text: 'OK', onPress: () => console.log('OK pressed') }], { cancelable: false });
+  infoAlert = (title, body) => {
+    Alert.alert(title, body, [{ text: 'OK', onPress: () => console.log('OK pressed') }], { cancelable: false });
   };
   // alert for displaying skill info
+
+  toggleTimePicker = (bool) => {
+    this.setState({ timePickerVisible: bool });
+  };
+
+  handleTimeSelection = (time) => {
+    this.toggleTimePicker(false);
+
+    this.setState({ notificationTime: Moment(time).format('HH:mm') });
+
+    this.toggleNotification(time, () => this.checkDiaryEntriesForToday(time));
+  };
 
   render() {
     return (
@@ -233,7 +265,7 @@ export default class SettingsScreen extends React.Component {
             switchValue={this.state.dbtSwitchValue}
             handleSwitch={() => this.handleDbtSwitch()}
             info={true}
-            infoAlert={this.infoAlert}
+            infoAlert={() => this.infoAlert('DBT', DBT)}
           />
           <SettingsSelectionRow
             height={Dimensions.get('window').height / 11}
@@ -242,6 +274,16 @@ export default class SettingsScreen extends React.Component {
             switch={true}
             switchValue={this.state.notificationSwitchValue}
             handleSwitch={() => this.handleNotificationSwitch()}
+            info={true}
+            infoAlert={() =>
+              this.infoAlert(
+                'Notifications',
+                NOTIFICATIONS +
+                  (this.state.notificationTime !== ''
+                    ? '\n\nCurrent recurring notification time: ' + this.state.notificationTime
+                    : '')
+              )
+            }
           />
           <SettingsSelectionRow
             height={Dimensions.get('window').height / 11}
@@ -251,6 +293,14 @@ export default class SettingsScreen extends React.Component {
             onPress={() => this.props.navigation.push('backupRestore')}
           />
         </View>
+        <DateTimePicker
+          isVisible={this.state.timePickerVisible}
+          mode={'time'}
+          onCancel={() => this.toggleTimePicker(false)}
+          titleIOS={'Select a reminder time'}
+          onConfirm={this.handleTimeSelection}
+          is24Hour={false}
+        />
         <Modal
           animationType={'slide'}
           visible={this.state.modalVisible}
