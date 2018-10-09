@@ -71,14 +71,24 @@ export default class FeelingRow extends React.Component {
   render() {
     return (
       <View style={feelingRowStyle.viewContainer}>
-        <View style={{ flexDirection: 'row', alignItems: 'center', paddingBottom: 10 }}>
-          <PressableIcon
-            iconName={Icons.info + '-outline'}
-            size={25}
-            onPressFunction={this.infoAlert}
-            color="#007AFF"
-          />
-          <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
+        <View style={{ flexDirection: 'row', alignItems: 'center', justifyContent: 'space-between', paddingBottom: 7 }}>
+          <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <PressableIcon
+              iconName={Icons.info + '-outline'}
+              size={25}
+              onPressFunction={this.infoAlert}
+              color="#007AFF"
+            />
+            <Text style={feelingRowStyle.text}>{this.props.feeling.diaryName}</Text>
+          </View>
+          {this.props.feeling.deletable === 1 && (
+            <PressableIcon
+              iconName={Icons.delete + '-outline'}
+              size={30}
+              onPressFunction={this.props.deleteFunction}
+              color="red"
+            />
+          )}
         </View>
         <View onLayout={this.onLayout} ref="slider">
           <TouchableWithoutFeedback onPressIn={this.tapSliderHandler}>
@@ -115,7 +125,7 @@ const feelingRowStyle = StyleSheet.create({
     marginRight: sliderMargin,
   },
   text: {
-    paddingLeft: 5,
+    paddingLeft: 10,
     fontSize: 15,
   },
   labelContainer: {

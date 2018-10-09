@@ -7,25 +7,12 @@ import PINCode from '@haskkor/react-native-pincode'
 import {updateDatabase, readDatabase, updateDatabaseArgument, readDatabaseArg} from "../../Util/DatabaseHelper";
 import {SettingsSelectionRow} from "../../Components/SettingsSelectionRow";
 import { Constants } from 'expo';
-import {PressableIcon} from "../../Components/PressableIcon";
-import {updateDbtSetting, updateWallpaper} from "../../Redux/actions";
-import store from "../../Redux/store"
-import Moment from 'moment'
-import {updateEmail} from "../../Redux/actions";
+import { PressableIcon } from '../../Components/PressableIcon';
+import { updateDbtSetting } from '../../Redux/actions';
+import store from '../../Redux/store';
+import Moment from 'moment';
+import { updateEmail } from '../../Redux/actions';
 import DateTimePicker from 'react-native-modal-datetime-picker';
-import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
-import getTheme from '../../native-base-theme/components';
-import platform from '../../native-base-theme/variables/platform';
-import CustomMultiPicker from "react-native-multiple-select-list";
-import CustomMultiSelectList from "../../Components/CustomMultiSelectList"
-
-import {AppColors, TabStyles} from "../../Styles/TabStyles";
-import {AppName, DbTableNames} from "../../Constants/Constants";
-
-const DBT = 'Dialectical Behaviour Therapy (DBT) is a treatment programme aimed at helping people with ongoing difficulties managing intense emotions';
-const NOTIFICATIONS = 'Select a time to receive a diary reminder at every day. Switch off to cancel all notifications';
-
-const gridUnit = 16;
 
 export default class SettingsScreen extends React.Component {
     static navigationOptions = {
@@ -51,37 +38,26 @@ export default class SettingsScreen extends React.Component {
         }
     }
 
-    componentDidMount() {
-        readDatabase('*', DbTableNames.user, this.getSwitchValues);
-        // get user settings
-    }
+const DBT =
+  'Dialectical Behaviour Therapy (DBT) is a treatment programme aimed at helping people with ongoing difficulties managing intense emotions';
+const NOTIFICATIONS = 'Select a time to receive a diary reminder at every day. Switch off to cancel all notifications';
 
-    getSwitchValues = dbObject => {
-        const switchValue = dbObject[0].enabled;
-        const dbtSwitchValue = dbObject[0].dbt;
-        const notificationSwitchValue = dbObject[0].notifications;
-        const wallpaperSwitchValue = dbObject[0].wallpaper;
+export default class SettingsScreen extends React.Component {
+  static navigationOptions = {
+    title: 'Settings',
+  };
+  // static property called navigationOptions that belongs to all screen components
 
-        const notificationTimestamp = dbObject[0].notificationTime;
-        const notificationTime = notificationTimestamp ? Moment(notificationTimestamp).format('HH:mm') : '';
+  constructor(props) {
+    super(props);
 
-        this.setState({
-            switchValue: Boolean(switchValue),
-            dbtSwitchValue: Boolean(dbtSwitchValue),
-            notificationSwitchValue: Boolean(notificationSwitchValue),
-            notificationTime: notificationTime,
-            wallpaperSwitchValue: Boolean(wallpaperSwitchValue)
-        }, () => this.setState({dataReady: true}));
-
-        // setting switches based on values in DB
-
-
-        const email = dbObject[0].email;
-
-        if(email) {
-            store.dispatch(updateEmail(email))
-        }
-        // if email already saved in db, dispatch saved email to redux store
+    this.state = {
+      modalVisible: false,
+      switchValue: false,
+      dbtSwitchValue: false,
+      notificationSwitchValue: false,
+      timePickerVisible: false,
+      notificationTime: '',
     };
 
     toggleModal = bool => {
@@ -110,9 +86,15 @@ export default class SettingsScreen extends React.Component {
         },() => this.toggleModal(this.state.switchValue));
     };
 
-    handleCancelModal = () => {
-        this.setState({switchValue: false, modalVisible: false})
-    };
+    const notificationTimestamp = dbObject[0].notificationTime;
+    const notificationTime = notificationTimestamp ? Moment(notificationTimestamp).format('HH:mm') : '';
+
+    this.setState({
+      switchValue: Boolean(switchValue),
+      dbtSwitchValue: Boolean(dbtSwitchValue),
+      notificationSwitchValue: Boolean(notificationSwitchValue),
+      notificationTime: notificationTime,
+    });
 
     handleDbtSwitch = value => {
         this.setState(prevState => {
@@ -393,8 +375,41 @@ export default class SettingsScreen extends React.Component {
             ' inner join ' + DbTableNames.session + ' as s on s.sessionId = ss.sessionId union all select c.copeId, c.copeName, cs.dateEntered, s.sessionId, s.diaryDate, "Coping Strategy" as type from ' + DbTableNames.copingStrategy + ' as c inner join ' + DbTableNames.copeSession + '' +
             ' as cs on cs.copeId = c.copeId inner join ' + DbTableNames.session + ' as s on s.sessionId = cs.sessionId');
 
+        this.toggleTimePicker(true);
+
+        // this.toggleNotification(this.checkDiaryEntriesForToday)
+      });
+    } else {
+      Expo.Notifications.cancelAllScheduledNotificationsAsync();
 
 
+    // if switched to on, check if notification permissions granted. If yes, toggle the switch and run the checkDiaryEntriesForToday function. Show Toast if not
+  };
+
+  checkDiaryEntriesForToday = (time) => {
+    const diaryDate = store.getState().diary.date;
+    const selectedDate = Moment(diaryDate).format('YYYY-MM-DD');
+
+    readDatabaseArg(
+      'diaryDate',
+      DbTableNames.session,
+      (res) => this.sendNotification(res, time),
+      undefined,
+      " where DATE(diaryDate) = '" + selectedDate + "'"
+    );
+  };
+  // check if and diary entries recorded for today's date
+
+  sendNotification = (res, time) => {
+    const localNotification = {
+      title: 'Diary Reminder',
+      body: "Don't forget to update your diary today!",
+      android: {
+        sound: true,
+      },
+      ios: {
+        sound: true,
+      },
     };
 
     getEmailRecipients = () => {
@@ -403,17 +418,8 @@ export default class SettingsScreen extends React.Component {
         readDatabase('email', DbTableNames.user, res => {
             if(res[0].email) {
 
-                emailArr.push(res[0].email);
-
-                readDatabaseArg('email', DbTableNames.contact, res => {
-                    res.forEach(r => {
-                        if(r.email) {
-                            emailArr.push(r.email)
-                        }
-                    });
-
-                    this.setState({emailRecipients: emailArr.reduce((obj, email, i) => {
-                        obj[(i + 1).toString()] = email;
+    let tomorrowNoteTime = new Date(time.getTime());
+    tomorrowNoteTime.setDate(tomorrowNoteTime.getDate() + 1);
 
                         return obj
                     }, {})}, () => this.setState({emailModalVisible: true}))
@@ -430,213 +436,143 @@ export default class SettingsScreen extends React.Component {
                     this.setState({emailRecipients: emailArr.reduce((obj, email, i) => {
                         obj[(i + 1).toString()] = email;
 
-                        return obj
-                    }, {})}, () => this.setState({emailModalVisible: true}))
-
-                }, undefined, 'where dateDeleted is NULL and helper = 1')
-            }
-        });
-    };
-    // reading user and helper db tables for email info (have restricted email recipients to user or helper)
-
-    handleEmailModalClose = () => {
-        this.setState({emailModalVisible: false})
-    };
-
-    handleEmailSelection = email => this.setState({selectedRecipients: email.filter(e => e !== undefined)});
-    // update selectedRecipients state when new email is selected in multi picker list
-
-    handleFinalEmailSelection = () => {
-        if(this.state.selectedRecipients.length > 0) {
-            this.getCsvData();
-        } else {
-            this.notSelectedAlert()
-        }
-    };
-    // open email interface with ratings csv attached
-
-    notSelectedAlert = () => {
-        Alert.alert(
-            'Email Not Selected',
-            'Please select and email address from the list',
-            [
-                {text: 'OK', onPress: () => console.log('OK pressed')},
-            ],
-            { cancelable: false }
-        )
-    };
-
-    csvInfoAlert = () => {
-        Alert.alert(
-            'Recipients',
-            'Recipient list is populated with user email address and Helper email addresses.\n\nUser email address can be set in Backup and Restore setting menu',
-            [
-                {text: 'OK', onPress: () => console.log('OK pressed')},
-            ],
-            { cancelable: false }
-        )
-    };
-    // alert for displaying recipient info
-
-    render() {
-        const NUMBER_OF_TABS = 2;
-
-        return (
-            <View style={TabStyles.stackContainer}>{this.state.dataReady ?
-                <Container>
-                    <StyleProvider style={getTheme(platform)}>
-                        <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
-                            <Tab heading={"General"}>
-                                <View style={{flex: 1, alignSelf: 'stretch'}}>
-                                    <SettingsSelectionRow
-                                        height={Dimensions.get('window').height / 11}
-                                        name={'Set Passcode'}
-                                        iconName={Icons.password + "-outline"}
-                                        switch={true}
-                                        switchValue={this.state.switchValue}
-                                        handleSwitch={() => this.handleSwitch()}
-                                    />
-                                    <SettingsSelectionRow
-                                        height={Dimensions.get('window').height / 11}
-                                        name={'Set Wallpaper'}
-                                        iconName={Icons.image + "-outline"}
-                                        switch={true}
-                                        switchValue={this.state.wallpaperSwitchValue}
-                                        handleSwitch={() => this.captureMedia()}
-                                    />
-                                    <SettingsSelectionRow
-                                        height={Dimensions.get('window').height / 11}
-                                        name={'Notifications'}
-                                        iconName={Icons.notifications + "-outline"}
-                                        switch={true}
-                                        switchValue={this.state.notificationSwitchValue}
-                                        handleSwitch={() => this.handleNotificationSwitch()}
-                                        info={true}
-                                        infoAlert={() => this.infoAlert('Notifications', NOTIFICATIONS + (this.state.notificationTime !== '' ? '\n\nCurrent recurring notification time: ' + this.state.notificationTime : ''))}
-                                    />
-                                    <SettingsSelectionRow
-                                        height={Dimensions.get('window').height / 11}
-                                        name={'Export App Data'}
-                                        iconName={Icons.export + '-outline'}
-                                        arrow={true}
-                                        onPress={this.getEmailRecipients}
-                                    />
-                                    <SettingsSelectionRow
-                                        height={Dimensions.get('window').height / 11}
-                                        name={'Backup and Restore'}
-                                        iconName={Icons.backup + "-outline"}
-                                        arrow={true}
-                                        onPress={() => this.props.navigation.push('backupRestore')}
-                                    />
-                                    <SettingsSelectionRow
-                                        height={Dimensions.get('window').height / 11}
-                                        name={'About'}
-                                        iconName={Icons.info + "-outline"}
-                                        arrow={true}
-                                        onPress={() => this.props.navigation.push('about')}
-                                    />
-                                </View>
-                            </Tab>
-                            <Tab heading={"Clinical"}>
-                                <View style={{flex: 1, alignSelf: 'stretch'}}>
-                                    <SettingsSelectionRow
-                                        height={Dimensions.get('window').height / 11}
-                                        name={'DBT'}
-                                        iconName={Icons.dbt + "-outline"}
-                                        switch={true}
-                                        switchValue={this.state.dbtSwitchValue}
-                                        handleSwitch={() => this.handleDbtSwitch()}
-                                        info={true}
-                                        infoAlert={() => this.infoAlert('DBT', DBT)}
-                                    />
-                                </View>
-                            </Tab>
-                        </Tabs>
-                    </StyleProvider>
-                </Container>
-                : <View style={{flex: 1, justifyContent: 'center'}}>
-                    <ActivityIndicator size="large" color="#007AFF" />
-                </View>}
-
-                <DateTimePicker
-                    isVisible={this.state.timePickerVisible}
-                    mode={'time'}
-                    onCancel={() => this.toggleTimePicker(false)}
-                    titleIOS={"Select a reminder time"}
-                    onConfirm={this.handleTimeSelection}
-                    is24Hour={false}
-                />
-                <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={false} onRequestClose={() => this.toggleModal(false)}>
-                    <PressableIcon
-                        size={45}
-                        iconName={Icons.closeModal}
-                        color="black"
-                        onPressFunction={this.handleCancelModal}
-                        buttonStyle={{padding: 20}}
-                    />
-                    <PINCode
-                        status={'choose'}
-                        storePin={this.handlePinStore}
-                        handleResultEnterPin
-                        colorPassword={AppColors.orange}
-                        numbersButtonOverlayColor={AppColors.orange}
-                        stylePinCodeButtonNumber={AppColors.blue}
-                        stylePinCodeColorTitle={AppColors.blue}
-                        stylePinCodeButtonCircle={{alignItems: 'center', justifyContent: 'center', width: gridUnit * 4, height: gridUnit * 4, backgroundColor: 'white', borderRadius: gridUnit * 2, borderWidth: 1, borderColor: AppColors.orange}}
-                        stylePinCodeDeleteButtonColorHideUnderlay={AppColors.blue}
-                        stylePinCodeDeleteButtonColorShowUnderlay={AppColors.orange}
-                        stylePinCodeColorSubtitle={AppColors.orange}
-                    />
-                </Modal>
-                <Modal visible={this.state.emailModalVisible} transparent={false} onRequestClose={this.handleEmailModalClose}>
-                    <View style={{flex: 1}}>
-                        <View style={{flexDirection: 'row'}}>
-                            <View style={settingsStyle.closeButton}>
-                                <PressableIcon
-                                    size={45}
-                                    iconName={Icons.closeModal}
-                                    color={AppColors.blue}
-                                    onPressFunction={this.handleEmailModalClose}
-                                />
-                            </View>
-                            <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: Expo.Constants.statusBarHeight, justifyContent: 'center'}}>
-                                <Text style={{color: AppColors.blue, paddingRight: 5}}>Select Recipient(s)</Text>
-                                <PressableIcon
-                                    iconName={Icons.info + '-outline'}
-                                    size={25}
-                                    onPressFunction={this.csvInfoAlert}
-                                    color='#007AFF'
-                                />
-                            </View>
-                        </View>
-                        <View style={{flex: 1}}>
-                            <View style={{flex: 1, marginBottom: 50}}>
-                                <CustomMultiSelectList
-                                    options={this.state.emailRecipients}
-                                    multiple={true} //
-                                    returnValue={"label"} // label or value
-                                    callback={this.handleEmailSelection} // callback, array of selected items
-                                    rowBackgroundColor={"#fff"}
-                                    rowHeight={40}
-                                    rowRadius={5}
-                                    iconSize={25}
-                                    selectedIconName={"ios-checkmark-circle-outline"}
-                                    unselectedIconName={"ios-radio-button-off-outline"}
-                                    search={true}
-                                />
-                            </View>
-                            <TouchableHighlight
-                                style={settingsStyle.button}
-                                onPress={this.handleFinalEmailSelection}
-                                underlayColor='#99d9f4'>
-                                <Text style={settingsStyle.buttonText}>Done</Text>
-                            </TouchableHighlight>
-                        </View>
-                    </View>
-                </Modal>
-            </View>
-        );
+      if (now > time) {
+        schedulingOptions = { time: tomorrowNoteTime, repeat: 'day' };
+      } else {
+        schedulingOptions = { time: time, repeat: 'day' };
+      }
+      // if no entries set notification to go off today at 9am. Or if later than 9 am , set for tomorrow at same time
+    } else {
+      schedulingOptions = { time: tomorrowNoteTime, repeat: 'day' };
     }
+    // if entries do exist for today, set for tomorrow
+
+    // repeat daily
+
+    Expo.Notifications.scheduleLocalNotificationAsync(localNotification, schedulingOptions).then((res) =>
+      console.log(res)
+    );
+  };
+
+  toggleNotification = (time, callback) => {
+    this.setState((prevState) => {
+      const newValue = !prevState.notificationSwitchValue;
+      const convertBool = newValue ? 1 : 0;
+
+      if (newValue) {
+        updateDatabaseArgument(
+          DbTableNames.user,
+          [convertBool, time],
+          ['notifications', 'notificationTime'],
+          'where userId = 1'
+        );
+
+        return { notificationSwitchValue: newValue };
+      } else {
+        updateDatabaseArgument(
+          DbTableNames.user,
+          [convertBool, null],
+          ['notifications', 'notificationTime'],
+          'where userId = 1'
+        );
+
+        return { notificationSwitchValue: newValue, notificationTime: '' };
+      }
+    }, callback);
+  };
+  // toggle notification switch
+
+  infoAlert = (title, body) => {
+    Alert.alert(title, body, [{ text: 'OK', onPress: () => console.log('OK pressed') }], { cancelable: false });
+  };
+  // alert for displaying skill info
+
+  toggleTimePicker = (bool) => {
+    this.setState({ timePickerVisible: bool });
+  };
+
+  handleTimeSelection = (time) => {
+    this.toggleTimePicker(false);
+
+    this.setState({ notificationTime: Moment(time).format('HH:mm') });
+
+    this.toggleNotification(time, () => this.checkDiaryEntriesForToday(time));
+  };
+
+  render() {
+    return (
+      <View style={TabStyles.stackContainer}>
+        <View style={{ flex: 1, alignSelf: 'stretch' }}>
+          <SettingsSelectionRow
+            height={Dimensions.get('window').height / 11}
+            name={'Set Passcode'}
+            iconName={Icons.password + '-outline'}
+            switch={true}
+            switchValue={this.state.switchValue}
+            handleSwitch={() => this.handleSwitch()}
+          />
+          <SettingsSelectionRow
+            height={Dimensions.get('window').height / 11}
+            name={'DBT'}
+            iconName={Icons.dbt + '-outline'}
+            switch={true}
+            switchValue={this.state.dbtSwitchValue}
+            handleSwitch={() => this.handleDbtSwitch()}
+            info={true}
+            infoAlert={() => this.infoAlert('DBT', DBT)}
+          />
+          <SettingsSelectionRow
+            height={Dimensions.get('window').height / 11}
+            name={'Notifications'}
+            iconName={Icons.notifications + '-outline'}
+            switch={true}
+            switchValue={this.state.notificationSwitchValue}
+            handleSwitch={() => this.handleNotificationSwitch()}
+            info={true}
+            infoAlert={() =>
+              this.infoAlert(
+                'Notifications',
+                NOTIFICATIONS +
+                  (this.state.notificationTime !== ''
+                    ? '\n\nCurrent recurring notification time: ' + this.state.notificationTime
+                    : '')
+              )
+            }
+          />
+          <SettingsSelectionRow
+            height={Dimensions.get('window').height / 11}
+            name={'Backup and Restore'}
+            iconName={Icons.backup + '-outline'}
+            arrow={true}
+            onPress={() => this.props.navigation.push('backupRestore')}
+          />
+        </View>
+        <DateTimePicker
+          isVisible={this.state.timePickerVisible}
+          mode={'time'}
+          onCancel={() => this.toggleTimePicker(false)}
+          titleIOS={'Select a reminder time'}
+          onConfirm={this.handleTimeSelection}
+          is24Hour={false}
+        />
+        <Modal
+          animationType={'slide'}
+          visible={this.state.modalVisible}
+          transparent={false}
+          onRequestClose={() => this.toggleModal(false)}
+        >
+          <PressableIcon
+            size={45}
+            iconName={Icons.closeModal}
+            color="black"
+            onPressFunction={this.handleCancelModal}
+            buttonStyle={{ padding: 20 }}
+          />
+          <PINCode status={'choose'} storePin={this.handlePinStore} handleResultEnterPin />
+        </Modal>
+      </View>
+    );
+  }
 }
 
 const settingsStyle = StyleSheet.create({

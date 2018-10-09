@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight, Platform } from 'react-native';
-import t from 'tcomb-form-native'
-import store from "../../Redux/store"
-import {newFeeling} from "../../Redux/actions";
-import {AppColors, TabStyles} from "../../Styles/TabStyles";
-import {updateDatabase} from "../../Util/DatabaseHelper";
-import {DbTableNames, UsageFunctionIds} from "../../Constants/Constants";
-import {updateDiaryPrePops} from "../../Constants/Prepopulated";
+import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
+import t from 'tcomb-form-native';
+import store from '../../Redux/store';
+import { newFeeling } from '../../Redux/actions';
+import { TabStyles } from '../../Styles/TabStyles';
+import { updateDatabase } from '../../Util/DatabaseHelper';
+import { DbTableNames, UsageFunctionIds } from '../../Constants/Constants';
+import { updateDiaryPrePops } from '../../Constants/Prepopulated';
 
 const Form = t.form.Form;
 
