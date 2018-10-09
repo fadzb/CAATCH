@@ -42,6 +42,10 @@ export default class HomeScreen extends React.Component {
             name1={SectionHeader.shortPlan}
             iconName1={Icons.plan + '-outline'}
             onPress1={() => this.props.navigation.navigate('Plan')}
+            third={true}
+            name3={SectionHeader.goals}
+            onPress3={() => this.props.navigation.navigate('goals')}
+            iconName3={Icons.goals + '-outline'}
           />
         </View>
       </View>
