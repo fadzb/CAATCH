@@ -9,7 +9,7 @@ export const updateNotifications = () => {
             // check if notifications have been enabled in settings table
 
             Expo.Notifications.cancelAllScheduledNotificationsAsync()
-                .then(res => {
+                .then(data => {
                     const localNotification = {
                         title: 'Diary Reminder',
                         body: "Don't forget to update your diary today!" ,
@@ -21,8 +21,9 @@ export const updateNotifications = () => {
                         },
                     };
 
-                    let tomorrowNoteTime = new Date();
-                    tomorrowNoteTime.setHours(9, 0, 0);
+                    const notificationTime = new Date(res[0].notificationTime);
+
+                    let tomorrowNoteTime = new Date(notificationTime.getTime());
                     tomorrowNoteTime.setDate(tomorrowNoteTime.getDate() + 1);
 
                     const schedulingOptions = {time: tomorrowNoteTime, repeat: 'day'};
