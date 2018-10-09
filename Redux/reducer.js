@@ -27,6 +27,8 @@ import {
   GET_HELPER,
   UPDATE_EMAIL,
   NEW_FEELING,
+  UPDATE_GOAL,
+  GET_GOAL,
 } from './actions';
 import Moment from 'moment';
 
@@ -209,6 +211,22 @@ const usageReducer = (state = 0, action) => {
   return state;
 };
 
+//Goals
+
+const goalReducer = (state = [], action) => {
+  if (action.type === UPDATE_GOAL) {
+    return [...state, action.payload];
+  }
+  // used for when a new goal is added
+
+  if (action.type === GET_GOAL) {
+    return action.payload;
+  }
+  // used to get the complete goal list from the DB
+
+  return state;
+};
+
 //Schedule
 
 const scheduleReducer = (state = { appointments: {}, date: Moment().format('YYYY-MM-DD') }, action) => {
@@ -252,6 +270,7 @@ const reducer = combineReducers({
   schedule: scheduleReducer,
   setting: settingReducer,
   helper: helperReducer,
+  goal: goalReducer,
 });
 // as reducers grow, add to this object
 

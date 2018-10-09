@@ -10,9 +10,9 @@ export const HomeScreenTile = (props) => {
   return (
     <View style={tileStyle.container}>
       <TouchableHighlight underlayColor="#FDEDEC" style={tileStyle.button} onPress={props.onPress}>
-        <View style={{ alignItems: 'center' }}>
+        <View style={{ alignItems: 'center', justifyContent: 'space-evenly', flex: 1 }}>
           <Text style={tileStyle.buttonText}>{props.name}</Text>
-          <Icon name={props.iconName} size={90} />
+          <Icon name={props.iconName} size={65} />
         </View>
       </TouchableHighlight>
     </View>
@@ -29,7 +29,7 @@ HomeScreenTile.propTypes = {
 const tileStyle = StyleSheet.create({
   button: {
     flex: 1,
-    justifyContent: 'space-around',
+    //justifyContent: "space-around",
     alignItems: 'center',
     borderWidth: 1,
     borderRadius: 7,
@@ -44,7 +44,7 @@ const tileStyle = StyleSheet.create({
   // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
   buttonText: {
-    fontSize: 18,
-    paddingBottom: 10,
+    fontSize: 16,
+    //paddingBottom: 20
   },
 });

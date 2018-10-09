@@ -28,6 +28,7 @@ export const DbTableNames = {
   warningSign: 'WarningSign',
   environment: 'Environment',
   helper: 'Helper',
+  goal: 'Goal',
 };
 
 // DB Primary Key column names
@@ -60,6 +61,7 @@ export const SectionHeader = {
   skills: 'DBT Skills',
   info: 'DBT Info',
   helpers: 'My Helpers',
+  goals: 'My Goals',
 };
 
 // Usage function id's
