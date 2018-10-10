@@ -104,7 +104,7 @@ export default class NewGoal extends React.Component {
 
     if (this.state.diaryItem === 'Diary Item') {
       this.setState({ validDiaryItem: false });
-    } else if (!this.state.selectedRating || this.state.selectedRating === 'Target Rating') {
+    } else if (this.state.selectedRating === null || this.state.selectedRating === 'Target Rating') {
       this.setState({ validRating: false, validDiaryItem: true });
     } else {
       this.setState({ validDiaryItem: true, validRating: true });
@@ -155,15 +155,18 @@ export default class NewGoal extends React.Component {
             hideIcon={true}
             disabled={this.state.diaryItem === 'Diary Item'}
           >
-            <View style={[goalStyle.listButton, { justifyContent: 'center' }]}>
+            <View
+              style={[
+                goalStyle.listButton,
+                { justifyContent: 'center' },
+                this.state.validRating ? {} : { borderColor: '#a94442' },
+              ]}
+            >
               <Text style={{ paddingLeft: 7, fontSize: 17 }}>
-                {!this.state.selectedRating ? 'Target Rating' : this.state.selectedRating}
+                {this.state.selectedRating === null ? 'Target Rating' : this.state.selectedRating}
               </Text>
             </View>
           </RNPickerSelect>
-          {!this.state.validRating && (
-            <Text style={{ marginBottom: 15, color: 'red' }}>Please select a target rating</Text>
-          )}
           <Form ref="form" type={goal} value={this.state.value} onChange={this.onChange} options={options} />
           <TouchableHighlight style={goalStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
             <Text style={goalStyle.buttonText}>Save</Text>
