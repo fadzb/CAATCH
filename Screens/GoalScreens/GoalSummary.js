@@ -63,8 +63,6 @@ export default class GoalSummary extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.props.navigation.getParam('diaryId'));
-
     this.getDiaryData();
   }
 
@@ -73,7 +71,7 @@ export default class GoalSummary extends React.Component {
   };
 
   getDiaryData = () => {
-    const columns = 's.diaryDate, ds.rating, d.diaryName';
+    const columns = 's.diaryDate, ds.rating, d.diaryName, d.defaultRating, d.minRating';
     const today = Moment().format('YYYY-MM-DD');
 
     readDatabaseArg(
@@ -111,12 +109,12 @@ export default class GoalSummary extends React.Component {
     this.state.dateRange.forEach((date) => {
       trackGraph.push({
         x: date,
-        y: diaryId === 28 || diaryId === 29 ? 3 : 0,
+        y: this.props.navigation.getParam('defaultRating'),
       });
 
       goalArr.push({
         x: date,
-        y: this.props.navigation.getParam('rating'),
+        y: Number(this.props.navigation.getParam('rating')),
       });
 
       if (diaryDates.includes(date)) {
@@ -219,23 +217,20 @@ export default class GoalSummary extends React.Component {
     );
   };
 
-  getYDomain = (diaryItem) => {
-    if (diaryItem === USED_SKILLS) {
-      return [0, 7];
-    } else if (diaryItem === SLEEP_SCALE || diaryItem === MOOD_SCALE) {
-      return [1, 5];
-    } else {
-      return [0, 5];
-    }
+  getYDomain = () => {
+    return [this.props.navigation.getParam('minRating'), this.props.navigation.getParam('scale')];
   };
   // setting the min and max values expected for each type of diary item
 
   getYCategorey = () => {
-    if (this.state.selectedDiaryItem === USED_SKILLS) {
-      return ['1', '2', '3', '4', '5', '6', '7'];
-    } else {
-      return ['1', '2', '3', '4', '5'];
+    const scale = this.props.navigation.getParam('scale');
+    let categoryArr = [];
+
+    for (let i = 1; i <= scale; i++) {
+      categoryArr.push(i.toString());
     }
+
+    return categoryArr;
   };
   // setting Y axis labels for various diary types
 
@@ -245,85 +240,87 @@ export default class GoalSummary extends React.Component {
         {this.state.graphReady ? (
           <Container style={goalSummaryStyle.viewContainer}>
             <Content>
-              <Card>
-                <CardItem>
-                  <Left>
-                    <Body>
-                      <View style={{ flexDirection: 'row', justifyContent: 'space-between' }}>
-                        <View style={{ flex: 4, paddingRight: 9 }}>
-                          <Text>{this.props.navigation.getParam('name')}</Text>
-                          <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
-                        </View>
-                        <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
-                          <PressableIcon
-                            iconName={Icons.edit + '-outline'}
-                            size={35}
-                            onPressFunction={() =>
-                              this.editGoal(
-                                this.props.navigation.getParam('id'),
-                                this.props.navigation.getParam('name'),
-                                this.props.navigation.getParam('desc'),
-                                this.props.navigation.getParam('rating'),
-                                this.props.navigation.getParam('diaryId'),
-                                this.props.navigation.getParam('diaryName')
-                              )
-                            }
-                          />
-                          <PressableIcon
-                            iconName={Icons.delete + '-outline'}
-                            size={35}
-                            onPressFunction={() => this.showAlert(this.props.navigation.getParam('id'))}
-                            color="red"
-                          />
-                        </View>
-                      </View>
-                    </Body>
-                  </Left>
-                </CardItem>
-                <CardItem>
-                  <Body>
-                    <View style={{ flex: 1, alignItems: 'center' }}>
-                      <VictoryChart
-                        height={Dimensions.get('window').height * 0.57}
-                        theme={VictoryTheme.material}
-                        categories={{
-                          y: this.getYCategorey(),
-                          x: this.state.graphData.map((gr) => gr.x),
-                        }}
-                        //padding={{ left: 10, right: 10, top: 50, bottom: 50 }}
-                      >
-                        <VictoryAxis fixLabelOverlap={true} />
-                        <VictoryAxis dependentAxis fixLabelOverlap={true} />
-                        <VictoryGroup
-                          data={this.state.graphData}
-                          domain={{ y: this.getYDomain(this.state.selectedDiaryItem) }}
-                        >
-                          <VictoryLine
-                            style={{
-                              data: { stroke: '#c43a31', strokeWidth: 1.5 },
-                            }}
-                            animate={{
-                              onExit: {
-                                duration: 0,
-                              },
-                            }}
-                            interpolation="monotoneX"
-                            // interpolation="natural"
-                          />
-                          <VictoryScatter style={{ data: { fill: '#c43a31' } }} size={2} />
-                        </VictoryGroup>
-                        <VictoryLine
-                          data={this.state.goalArray}
-                          style={{
-                            data: { stroke: 'blue', strokeWidth: 1.5 },
-                          }}
-                        />
-                      </VictoryChart>
+              <Left>
+                <Body>
+                  <View
+                    style={{
+                      flexDirection: 'row',
+                      justifyContent: 'space-between',
+                      marginHorizontal: 20,
+                      marginTop: 20,
+                    }}
+                  >
+                    <View style={{ flex: 4, paddingRight: 9 }}>
+                      <Text>{this.props.navigation.getParam('name')}</Text>
+                      <Text note>{this.formatDate(this.props.navigation.getParam('date'))}</Text>
                     </View>
-                    <Text style={goalSummaryStyle.text}>{this.props.navigation.getParam('desc')}</Text>
-                  </Body>
-                </CardItem>
-              </Card>
+                    <View style={{ flexDirection: 'row', flex: 1, justifyContent: 'space-between' }}>
+                      <PressableIcon
+                        iconName={Icons.edit + '-outline'}
+                        size={35}
+                        onPressFunction={() =>
+                          this.editGoal(
+                            this.props.navigation.getParam('id'),
+                            this.props.navigation.getParam('name'),
+                            this.props.navigation.getParam('desc'),
+                            this.props.navigation.getParam('rating'),
+                            this.props.navigation.getParam('diaryId'),
+                            this.props.navigation.getParam('diaryName')
+                          )
+                        }
+                      />
+                      <PressableIcon
+                        iconName={Icons.delete + '-outline'}
+                        size={35}
+                        onPressFunction={() => this.showAlert(this.props.navigation.getParam('id'))}
+                        color="red"
+                      />
+                    </View>
+                  </View>
+                </Body>
+              </Left>
+              <Body>
+                <VictoryChart
+                  height={Dimensions.get('window').height * 0.57}
+                  theme={VictoryTheme.material}
+                  categories={{
+                    y: this.getYCategorey(),
+                    x: this.state.graphData.map((gr) => gr.x),
+                  }}
+                >
+                  <VictoryAxis fixLabelOverlap={true} />
+                  <VictoryAxis dependentAxis fixLabelOverlap={true} />
+                  <VictoryGroup data={this.state.graphData} domain={{ y: this.getYDomain() }}>
+                    <VictoryLine
+                      style={{
+                        data: { stroke: '#c43a31', strokeWidth: 1.5 },
+                      }}
+                      animate={{
+                        onExit: {
+                          duration: 0,
+                        },
+                      }}
+                      interpolation="monotoneX"
+                      // interpolation="natural"
+                    />
+                    <VictoryScatter style={{ data: { fill: '#c43a31' } }} size={2} />
+                  </VictoryGroup>
+                  <VictoryLine
+                    data={this.state.goalArray}
+                    style={{
+                      data: { stroke: 'blue', strokeWidth: 2.5 },
+                    }}
+                  />
+                </VictoryChart>
+                <View style={{ alignSelf: 'flex-start', flex: 1, marginHorizontal: 20 }}>
+                  <Text style={goalSummaryStyle.text}>
+                    Target Rating:{' '}
+                    <Text style={{ color: 'blue', fontWeight: 'bold' }}>
+                      {this.props.navigation.getParam('rating')}
+                    </Text>
+                  </Text>
+                </View>
+              </Body>
             </Content>
           </Container>
         ) : (
@@ -343,7 +340,7 @@ const goalSummaryStyle = StyleSheet.create({
   },
 
   text: {
-    paddingTop: 10,
+    paddingTop: 20,
   },
 
   urlText: {

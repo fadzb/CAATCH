@@ -35,7 +35,7 @@ class Goals extends React.Component {
 
   getCompleteList = () => {
     readDatabaseArg(
-      'g.*, d.diaryName, d.diaryId, d.scale',
+      'g.*, d.diaryName, d.diaryId, d.scale, d.defaultRating, d.minRating',
       DbTableNames.goal,
       this.updateGoals,
       () => console.log('DB read success'),
@@ -74,7 +74,7 @@ class Goals extends React.Component {
     );
   };
 
-  summaryNav = (id, diaryId, diaryName, name, desc, rating, date) => {
+  summaryNav = (id, diaryId, diaryName, name, desc, rating, date, defaultRating, minRating, scale) => {
     this.props.navigation.push('goalSummary', {
       id: id,
       diaryId: diaryId,
@@ -83,6 +83,9 @@ class Goals extends React.Component {
       desc: desc,
       rating: rating,
       date: date,
+      defaultRating: defaultRating,
+      minRating: minRating,
+      scale: scale,
     });
   };
 
@@ -98,7 +101,10 @@ class Goals extends React.Component {
             item.goalName,
             item.goalDescription,
             item.rating,
-            item.dateEntered
+            item.dateEntered,
+            item.defaultRating,
+            item.minRating,
+            item.scale
           )
         }
         deleteFunction={() => this.showAlert(item.goalId)}
