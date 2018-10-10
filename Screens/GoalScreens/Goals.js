@@ -35,7 +35,7 @@ class Goals extends React.Component {
     };
 
     getCompleteList = () => {
-        readDatabaseArg("g.*, d.diaryName, d.diaryId, d.scale", DbTableNames.goal, this.updateGoals, () => console.log("DB read success"), ' as g inner join ' + DbTableNames.diary + ' as d' +
+        readDatabaseArg("g.*, d.diaryName, d.diaryId, d.scale, d.defaultRating, d.minRating", DbTableNames.goal, this.updateGoals, () => console.log("DB read success"), ' as g inner join ' + DbTableNames.diary + ' as d' +
             ' on g.diaryId = d.diaryId');
     };
     // fetching all goals that do not have a deleted date
@@ -71,7 +71,7 @@ class Goals extends React.Component {
         )
     };
 
-    summaryNav = (id, diaryId, diaryName, name, desc, rating, date) => {
+    summaryNav = (id, diaryId, diaryName, name, desc, rating, date, defaultRating, minRating, scale) => {
         this.props.navigation.push('goalSummary', {
             id: id,
             diaryId: diaryId,
@@ -80,6 +80,9 @@ class Goals extends React.Component {
             desc: desc,
             rating: rating,
             date: date,
+            defaultRating: defaultRating,
+            minRating: minRating,
+            scale: scale
         });
     };
 
@@ -87,7 +90,7 @@ class Goals extends React.Component {
         <View style={goalStyle.listContainer}>
             <SafetyPlanSectionRow
                 name= {item.goalName}
-                onPress={() => this.summaryNav(item.goalId, item.diaryId, item.diaryName, item.goalName, item.goalDescription, item.rating, item.dateEntered)}
+                onPress={() => this.summaryNav(item.goalId, item.diaryId, item.diaryName, item.goalName, item.goalDescription, item.rating, item.dateEntered, item.defaultRating, item.minRating, item.scale)}
                 deleteFunction={() => this.showAlert(item.goalId)}
                 editFunction={() => this.editGoal(item.goalId, item.goalName, item.goalDescription, item.rating, item.diaryId, item.diaryName)}
                 icon={Icons.goals + '-outline'}
