@@ -67,7 +67,15 @@ export default class DiaryItemList extends React.Component {
                 <TouchableHighlight
                     style={diaryItemStyle.button}
                     onPress={this.props.navigation.getParam('edit')
-                        ? () => this.props.navigation.navigate('editGoal', {checkedItem: {diaryId: Number(this.state.checkedItems[0]), diaryName: this.state.diaryItems[this.state.checkedItems[0]]}})
+                        ? () => {
+                            const selectedObject = this.state.diaryList.find(di => di.diaryId === Number(this.state.checkedItems[0]));
+
+                            this.props.navigation.navigate('editGoal', {
+                                checkedItem: {
+                                    diaryId: Number(this.state.checkedItems[0]), diaryScale: selectedObject.scale, minRating: selectedObject.minRating, diaryName: this.state.diaryItems[this.state.checkedItems[0]]
+                                }
+                            })
+                        }
                         : () => {
                             const selectedObject = this.state.diaryList.find(di => di.diaryId === Number(this.state.checkedItems[0]));
 

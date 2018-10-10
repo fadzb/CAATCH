@@ -1,17 +1,23 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert, ActivityIndicator } from 'react-native';
 import {diaryPrePops, updateDiaryPrePops} from "../../Constants/Prepopulated";
 import FeelingRow from '../../Components/FeelingRow'
-import {deleteDatabaseRow, updateDatabase} from "../../Util/DatabaseHelper";
+import {deleteDatabaseRow, updateDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
 import {connect} from 'react-redux'
-import {resetFeelingRating} from "../../Redux/actions";
+import {resetFeelingRating, updateFeelingRating} from "../../Redux/actions";
 import store from "../../Redux/store"
-import {DbTableNames, SectionHeader} from "../../Constants/Constants";
+import {DbTableNames, DiaryId, SectionHeader, UsedSkillRating} from "../../Constants/Constants";
 import {updateNotifications} from "../../Util/Notifications";
 import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
+import RNPickerSelect from 'react-native-picker-select';
+import {Icons} from "../../Constants/Icon";
+import Icon from 'react-native-vector-icons/Ionicons'
+import {PressableIcon} from "../../Components/PressableIcon";
+
+const USED_SKILLS = 'Used Skills';
 
 class Feelings extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -35,6 +41,9 @@ class Feelings extends React.Component {
         this.state = {
             feelings: [],
             sessionDate: new Date(),
+            usedSkillRating: 'Select Rating...',
+            usedSkill: {},
+            dataReady: false
         }
     }
 
@@ -56,7 +65,9 @@ class Feelings extends React.Component {
     }
 
     getFeelings = () => {
-        this.setState({ feelings: diaryPrePops.filter(f => f.diaryType === "Feeling") })
+        readDatabaseArg('*', DbTableNames.diary, res => this.setState({feelings: res}, () => {
+            this.setState({usedSkill: this.state.feelings.filter(fe => fe.diaryId === DiaryId.usedSkills)[0]}, () => this.setState({dataReady: true}))
+        }), undefined, 'where diaryType = "Feeling"');
     };
 
     createSession = () => {
@@ -112,6 +123,28 @@ class Feelings extends React.Component {
     };
     // prevSelected prop contains the history for that day if it was already filled in
 
+    createRatingArr = (min, max) => {
+        let ratingArr = [];
+
+        for(let i = min; i <= max; i++) {
+            ratingArr.push({label: i.toString() + '. ' + UsedSkillRating[i], value: i})
+        }
+
+        return ratingArr;
+    };
+
+    infoAlert = () => {
+        Alert.alert(
+            USED_SKILLS,
+            this.state.usedSkill.info,
+            [
+                {text: 'OK', onPress: () => console.log('OK pressed')},
+            ],
+            { cancelable: false }
+        )
+    };
+    // alert for displaying feeling info
+
     render() {
         const urges = 1;
         const feelings = 2;
@@ -121,7 +154,7 @@ class Feelings extends React.Component {
 
         return (
             <View style={feelingStyle.viewContainer}>
-                <Container>
+                {this.state.dataReady ? <Container>
                     <StyleProvider style={getTheme(platform)}>
                         <Tabs locked={true} prerenderingSiblingsNumber={NUMBER_OF_TABS}>
                             <Tab heading={"Urges"}>
@@ -155,18 +188,60 @@ class Feelings extends React.Component {
                                 </View>
                             </Tab>
                             <Tab heading={"Used Skills"}>
-                                <FlatList
-                                    data={this.state.feelings.filter(f => f.subType === usedSkills)}
-                                    renderItem={this.renderItem}
-                                    keyExtractor={(item, index) => index.toString()}
-                                />
+                                <View style={{flex: 1, marginHorizontal: 15, marginTop: 10}}>
+                                    <View style={{flexDirection: 'row', alignItems: 'center', paddingBottom: 15}}>
+                                        <PressableIcon
+                                            iconName={Icons.info + '-outline'}
+                                            size={25}
+                                            onPressFunction={this.infoAlert}
+                                            color='#007AFF'
+                                        />
+                                        <Text style={{paddingLeft: 10, fontSize: 15}}>{USED_SKILLS}</Text>
+                                    </View>
+                                    <RNPickerSelect
+                                        placeholder={{
+                                            label: 'Select Rating...',
+                                            value: null,
+                                        }}
+                                        items={this.createRatingArr(this.state.usedSkill.minRating, this.state.usedSkill.scale)}
+                                        onValueChange={(value) => {
+                                            if(value !== null) {
+                                                this.setState({usedSkillRating: value + '. ' + UsedSkillRating[value]});
+
+                                                store.dispatch(updateFeelingRating({
+                                                    id: this.state.usedSkill.diaryId,
+                                                    rating: value
+                                                }))
+                                            } else {
+                                                this.setState({usedSkillRating: value});
+
+                                                store.dispatch(updateFeelingRating({
+                                                    id: this.state.usedSkill.diaryId,
+                                                    rating: 0
+                                                }))
+                                            }
+                                        }}
+                                        hideIcon={true}
+                                    >
+                                        <View style={[feelingStyle.listButton, {justifyContent: 'space-between', height: 50, flexDirection: 'row', alignItems: 'center', paddingHorizontal: 7}]}>
+                                            <Text style={{fontSize: 14, color: '#4d4d4d'}}>{this.state.usedSkillRating === null ? 'Select Rating...' : this.state.usedSkillRating}</Text>
+                                            <Icon
+                                                name={Icons.down}
+                                                size={30}
+                                                color={'#4d4d4d'}
+                                            />
+                                        </View>
+                                    </RNPickerSelect>
+                                </View>
                                 <TouchableOpacity style={feelingStyle.button} onPress={this.createSession}>
                                     <Text style={feelingStyle.buttonText}>Save</Text>
                                 </TouchableOpacity>
                             </Tab>
                         </Tabs>
                     </StyleProvider>
-                </Container>
+                </Container> : <View style={{flex: 1, justifyContent: 'center'}}>
+                    <ActivityIndicator size="large" color="#007AFF" />
+                </View>}
             </View>
         );
     }
@@ -228,7 +303,17 @@ const feelingStyle = StyleSheet.create({
         flexDirection: 'row',
         marginHorizontal: 15,
         marginVertical: 5
-    }
+    },
+    listButton: {
+        height: 50,
+        borderWidth: 1,
+        borderRadius: 4,
+        marginBottom: 15,
+        justifyContent: 'space-between',
+        flexDirection: 'row',
+        alignItems: 'center',
+        paddingHorizontal: 7
+    },
 });
 
 

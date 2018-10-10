@@ -40,14 +40,17 @@ class Goals extends React.Component {
     };
     // fetching all goals that do not have a deleted date
 
-    editGoal = (id, name, desc, rating, diaryId, diaryName) => {
+    editGoal = (id, name, desc, rating, diaryId, diaryName, minRating, defaultRating, scale) => {
         this.props.navigation.push('editGoal', {
             id: id,
             name: name,
             desc: desc,
             rating: rating,
             diaryId: diaryId,
-            diaryName: diaryName
+            diaryName: diaryName,
+            minRating: minRating,
+            defaultRating: defaultRating,
+            scale: scale
         });
     };
 
@@ -92,7 +95,7 @@ class Goals extends React.Component {
                 name= {item.goalName}
                 onPress={() => this.summaryNav(item.goalId, item.diaryId, item.diaryName, item.goalName, item.goalDescription, item.rating, item.dateEntered, item.defaultRating, item.minRating, item.scale)}
                 deleteFunction={() => this.showAlert(item.goalId)}
-                editFunction={() => this.editGoal(item.goalId, item.goalName, item.goalDescription, item.rating, item.diaryId, item.diaryName)}
+                editFunction={() => this.editGoal(item.goalId, item.goalName, item.goalDescription, item.rating, item.diaryId, item.diaryName, item.defaultRating, item.minRating, item.scale)}
                 icon={Icons.goals + '-outline'}
             />
         </View>

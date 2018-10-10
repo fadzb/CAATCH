@@ -158,14 +158,17 @@ export default class GoalSummary extends React.Component {
         // dispatching total list of goal names from DB to global redux store
     };
 
-    editGoal = (id, name, desc, rating, diaryId, diaryName) => {
+    editGoal = (id, name, desc, rating, diaryId, diaryName, minRating, defaultRating, scale) => {
         this.props.navigation.push('editGoal', {
             id: id,
             name: name,
             desc: desc,
             rating: rating,
             diaryId: diaryId,
-            diaryName: diaryName
+            diaryName: diaryName,
+            minRating: minRating,
+            defaultRating: defaultRating,
+            scale: scale
         });
     };
 
@@ -230,7 +233,11 @@ export default class GoalSummary extends React.Component {
                                             this.props.navigation.getParam('desc'),
                                             this.props.navigation.getParam('rating'),
                                             this.props.navigation.getParam('diaryId'),
-                                            this.props.navigation.getParam('diaryName'))}
+                                            this.props.navigation.getParam('diaryName'),
+                                            this.props.navigation.getParam('minRating'),
+                                            this.props.navigation.getParam('defaultRating'),
+                                            this.props.navigation.getParam('scale')
+                                        )}
                                     />
                                     <PressableIcon
                                         iconName={Icons.delete + '-outline'}
