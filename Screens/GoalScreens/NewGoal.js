@@ -8,12 +8,12 @@ import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../U
 import { DbTableNames, UsageFunctionIds } from '../../Constants/Constants';
 import { latestSafetyPlanItem } from '../../Util/Usage';
 import t from 'tcomb-form-native';
+import RNPickerSelect from 'react-native-picker-select';
 
 const Form = t.form.Form;
 
 const goal = t.struct({
   goalName: t.String,
-  rating: t.Number,
   goalDescription: t.maybe(t.String),
 });
 // data structure for values to be capture in form below
@@ -22,10 +22,6 @@ const options = {
   fields: {
     goalName: {
       placeholder: 'Goal Name',
-      auto: 'none',
-    },
-    rating: {
-      placeholder: 'Desired rating',
       auto: 'none',
     },
     goalDescription: {
@@ -48,6 +44,9 @@ export default class NewGoal extends React.Component {
       value: null,
       diaryItem: 'Diary Item',
       validDiaryItem: true,
+      ratings: [],
+      selectedRating: 'Target Rating',
+      validRating: true,
     };
   }
 
@@ -58,6 +57,7 @@ export default class NewGoal extends React.Component {
       if (checkedItem !== null) {
         this.setState({
           diaryItem: checkedItem.diaryName,
+          ratings: [...this.createRatingArr(checkedItem.minRating, checkedItem.diaryScale)],
         });
       } else {
         console.log('no item checked');
@@ -66,6 +66,16 @@ export default class NewGoal extends React.Component {
   }
   // listen for new props coming from pre-populated screen and update accordingly
 
+  createRatingArr = (min, max) => {
+    let ratingArr = [];
+
+    for (let i = min; i <= max; i++) {
+      ratingArr.push({ label: i.toString(), value: i });
+    }
+
+    return ratingArr;
+  };
+
   updateGoalList = (goal) => {
     store.dispatch(updateGoal(goal));
     // dispatching new Goal name to global redux store
@@ -73,7 +83,7 @@ export default class NewGoal extends React.Component {
 
   refreshDb = (func) => {
     readDatabaseArg(
-      'g.*, d.diaryName, d.diaryId, d.scale',
+      'g.*, d.diaryName, d.diaryId, d.scale, d.minRating, d.defaultRating',
       DbTableNames.goal,
       func,
       () => console.log('DB read success'),
@@ -94,16 +104,18 @@ export default class NewGoal extends React.Component {
 
     if (this.state.diaryItem === 'Diary Item') {
       this.setState({ validDiaryItem: false });
+    } else if (!this.state.selectedRating || this.state.selectedRating === 'Target Rating') {
+      this.setState({ validRating: false, validDiaryItem: true });
     } else {
-      this.setState({ validDiaryItem: true });
+      this.setState({ validDiaryItem: true, validRating: true });
 
       if (value) {
         // if validation fails, value will be null
         console.log(value);
         updateDatabase(
           DbTableNames.goal,
-          [...Object.values(value), this.props.navigation.getParam('checkedItem').diaryId],
-          [...Object.keys(value), 'diaryId'],
+          [...Object.values(value), this.props.navigation.getParam('checkedItem').diaryId, this.state.selectedRating],
+          [...Object.keys(value), 'diaryId', 'rating'],
           undefined,
           this.postSaveFunctions
         );
@@ -129,6 +141,29 @@ export default class NewGoal extends React.Component {
             textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
             iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
           />
+          <RNPickerSelect
+            placeholder={{
+              label: 'Target Rating',
+              value: null,
+            }}
+            items={this.state.ratings}
+            onValueChange={(value) => {
+              this.setState({
+                selectedRating: value,
+              });
+            }}
+            hideIcon={true}
+            disabled={this.state.diaryItem === 'Diary Item'}
+          >
+            <View style={[goalStyle.listButton, { justifyContent: 'center' }]}>
+              <Text style={{ paddingLeft: 7, fontSize: 17 }}>
+                {!this.state.selectedRating ? 'Target Rating' : this.state.selectedRating}
+              </Text>
+            </View>
+          </RNPickerSelect>
+          {!this.state.validRating && (
+            <Text style={{ marginBottom: 15, color: 'red' }}>Please select a target rating</Text>
+          )}
           <Form ref="form" type={goal} value={this.state.value} onChange={this.onChange} options={options} />
           <TouchableHighlight style={goalStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
             <Text style={goalStyle.buttonText}>Save</Text>
@@ -138,6 +173,17 @@ export default class NewGoal extends React.Component {
     );
   }
 }
+
+const pickerStyle = {
+  inputIOS: {
+    flex: 1,
+  },
+  inputAndroid: {
+    flex: 1,
+    backgroundColor: 'red',
+  },
+  underline: { borderTopWidth: 0 },
+};
 
 const goalStyle = StyleSheet.create({
   buttonText: {

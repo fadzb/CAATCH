@@ -92,6 +92,7 @@ export default class DiaryItemList extends React.Component {
                     checkedItem: {
                       diaryId: Number(this.state.checkedItems[0]),
                       diaryScale: selectedObject.scale,
+                      minRating: selectedObject.minRating,
                       diaryName: this.state.diaryItems[this.state.checkedItems[0]],
                     },
                   });
