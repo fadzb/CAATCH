@@ -94,3 +94,20 @@ export const UsageFunctionIds = {
     helper: 21,
   },
 };
+
+// Diary ID's
+export const DiaryId = {
+  usedSkills: 27,
+};
+
+// Used Skill Rating
+export const UsedSkillRating = [
+  'Not thought about or used',
+  'Thought about, not used, didn’t want to',
+  'Thought about, not used, wanted to',
+  'Tried but couldn’t use them',
+  'Tried, could do them but they didn’t help',
+  'Tried, could use them, helped',
+  'Didn’t try, used them, didn’t help',
+  'Didn’t try, used them, helped',
+];
