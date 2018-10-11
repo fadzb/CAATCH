@@ -97,7 +97,11 @@ export const UsageFunctionIds = {
 
 // Diary ID's
 export const DiaryId = {
-    usedSkills: 27
+    usedSkills: 27,
+    notes: 29,
+    sleep: 28,
+    mood: 30,
+    steps: 47
 };
 
 // Used Skill Rating

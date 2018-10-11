@@ -6,7 +6,7 @@ import Moment from 'moment';
 import {resetSleepRating, resetMoodRating} from "../../Redux/actions";
 import store from "../../Redux/store"
 import ButtonRating from "../../Components/ButtonRating"
-import {DbTableNames} from "../../Constants/Constants";
+import {DbTableNames, DiaryId} from "../../Constants/Constants";
 import {updateNotifications} from "../../Util/Notifications";
 import {PressableIcon} from "../../Components/PressableIcon";
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -38,6 +38,7 @@ class General extends React.Component {
 
         this.state = {
             text: "",
+            stepText: "",
             keyboardViewHeight: 0,
             nonGeneralViewHeight: 0
         }
@@ -55,27 +56,27 @@ class General extends React.Component {
     // when user presses save - create session in DB with date recorded at screen opening
 
     handleSave = (sessionId) => {
-        const sleepId = 28;
-        const notesId = 29;
-        const moodId = 30;
-
         updateDatabase(DbTableNames.diarySession,
-            [sessionId, sleepId, this.props.sleepRating],
+            [sessionId, DiaryId.sleep, this.props.sleepRating],
             ['sessionId', 'diaryId', 'rating']);
         //update DB for sleep rating
 
         updateDatabase(DbTableNames.diarySession,
-            [sessionId, moodId, this.props.moodRating],
+            [sessionId, DiaryId.mood, this.props.moodRating],
             ['sessionId', 'diaryId', 'rating']);
         //update DB for mood rating
 
+        if(this.state.stepText.length > 0) {
+            updateDatabase(DbTableNames.diarySession,
+                [sessionId, DiaryId.steps, this.state.stepText],
+                ['sessionId', 'diaryId', 'rating'])
+        }
+        //if user inputs step text, update DB
+
         if(this.state.text.length > 0) {
             updateDatabase(DbTableNames.diarySession,
-                [sessionId, notesId, this.state.text],
-                ['sessionId', 'diaryId', 'rating'],
-                () => {
-                    this.resetRatings()
-                });
+                [sessionId, DiaryId.notes, this.state.text],
+                ['sessionId', 'diaryId', 'rating']);
         }
         //if user inputs general text, update DB
 
@@ -119,8 +120,8 @@ class General extends React.Component {
 
     render() {
         return (
-            <ScrollView scrollEnabled={false} contentContainerStyle={generalStyle.listContainer}>
-                <View style={{flex: 1}} onLayout={this.onLayoutKeyboard}>
+            <View style={generalStyle.listContainer}>
+                <ScrollView keyboardShouldPersistTaps="handled" scrollEnabled={false} contentContainerStyle={{flex: 1}} onLayout={this.onLayoutKeyboard}>
                     <KeyboardAvoidingView keyboardVerticalOffset={70} style={{flex: 1}} behavior={'position'}>
                         <View onLayout={this.onLayout}>
                             <View style={generalStyle.sleep}>
@@ -137,8 +138,9 @@ class General extends React.Component {
                                         placeholder={'Enter step count'}
                                         style={{paddingVertical: 7, paddingLeft: 15, flex: 1}}
                                         placeholderTextColor="black"
-                                        keyboardType={'number-pad'}
+                                        keyboardType={'phone-pad'}
                                         underlineColorAndroid='transparent'
+                                        onChangeText={text => this.setState({stepText: text})}
                                     />
                                     <Icon
                                         name={Icons.steps + '-outline'}
@@ -168,13 +170,13 @@ class General extends React.Component {
                             />
                         </View>
                     </KeyboardAvoidingView>
-                </View>
+                </ScrollView>
                 <View style={{marginTop: 10}}>
                     <TouchableOpacity style={generalStyle.button} onPress={this.createSession}>
                         <Text style={generalStyle.buttonText}>Save</Text>
                     </TouchableOpacity>
                 </View>
-            </ScrollView>
+            </View>
         );
     }
 }

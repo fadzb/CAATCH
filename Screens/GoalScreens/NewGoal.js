@@ -46,7 +46,7 @@ export default class NewGoal extends React.Component {
             validDiaryItem: true,
             ratings: [],
             selectedRating: 'Target Rating',
-            validRating: true
+            validRating: true,
         }
     }
 
@@ -57,7 +57,8 @@ export default class NewGoal extends React.Component {
             if (checkedItem !== null) {
                 this.setState({
                     diaryItem: checkedItem.diaryName,
-                    ratings: [...this.createRatingArr(checkedItem.minRating, checkedItem.diaryScale)]
+                    ratings: [...this.createRatingArr(checkedItem.minRating, checkedItem.diaryScale)],
+                    selectedRating: 'Target Rating'
                 })
             } else {
                 console.log("no item checked");
@@ -132,7 +133,7 @@ export default class NewGoal extends React.Component {
                         textStyle={{alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6}}
                         iconStyle={{alignSelf: 'center', flex: 1, alignItems: 'center'}}
                     />
-                    <RNPickerSelect
+                    {this.state.diaryItem !== 'Steps' && this.state.diaryItem !== 'Diary Item' && <RNPickerSelect
                         placeholder={{
                             label: 'Target Rating',
                             value: null,
@@ -149,7 +150,16 @@ export default class NewGoal extends React.Component {
                         <View style={[goalStyle.listButton, {justifyContent: 'center'}, this.state.validRating ? {} : {borderColor: '#a94442'}]}>
                             <Text style={{paddingLeft: 7, fontSize: 17}}>{this.state.selectedRating === null ? 'Target Rating' : this.state.selectedRating}</Text>
                         </View>
-                    </RNPickerSelect>
+                    </RNPickerSelect>}
+                    {this.state.diaryItem === 'Steps' && <View style={[goalStyle.listButton, {justifyContent: 'center', backgroundColor: 'white'}, this.state.validRating ? {} : {borderColor: '#a94442'}]}>
+                        <TextInput
+                            placeholder={'Target Steps'}
+                            style={{paddingLeft: 7, fontSize: 17}}
+                            underlineColorAndroid='transparent'
+                            keyboardType={'phone-pad'}
+                            onChangeText={text => this.setState({selectedRating: text})}
+                        />
+                    </View>}
                     <Form
                         ref="form"
                         type={goal}

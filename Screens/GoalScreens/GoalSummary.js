@@ -9,7 +9,7 @@ import {openSafetyPlanItem, latestSafetyPlanItem} from "../../Util/Usage";
 import {PressableIcon} from "../../Components/PressableIcon";
 import {getGoal, getHelper} from "../../Redux/actions";
 import store from "../../Redux/store"
-import {DbTableNames, UsageFunctionIds, DbPrimaryKeys} from "../../Constants/Constants";
+import {DbTableNames, UsageFunctionIds, DbPrimaryKeys, DiaryId} from "../../Constants/Constants";
 import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis, VictoryGroup, VictoryScatter } from 'victory-native';
 
 const timeFrames = {
@@ -107,7 +107,7 @@ export default class GoalSummary extends React.Component {
                 const avgRating = trackArr.reduce((total, rating) => total + rating) / trackArr.length;
                 const diaryObjIndex = trackGraph.findIndex(e => e.x === date);
 
-                trackGraph[diaryObjIndex].y = avgRating
+                trackGraph[diaryObjIndex].y = (diaryId === DiaryId.steps ? Math.max(...trackArr) : avgRating)
             }
         });
 
@@ -254,7 +254,7 @@ export default class GoalSummary extends React.Component {
                                 height={Dimensions.get('window').height * .57}
                                 theme={VictoryTheme.material}
                                 categories={{
-                                    y: this.getYCategorey(),
+                                    [this.props.navigation.getParam('scale') !== 'Undetermined' && 'y']: this.getYCategorey(),
                                     x: this.state.graphData.map(gr => gr.x)
                                 }}
                             >
@@ -263,9 +263,10 @@ export default class GoalSummary extends React.Component {
                                 />
                                 <VictoryAxis dependentAxis
                                              fixLabelOverlap={true}
+                                             tickFormat={(t) => this.props.navigation.getParam('diaryId') === DiaryId.steps ? `${t / 1000}k` : t}
                                 />
                                 <VictoryGroup data={this.state.graphData}
-                                              domain={{y: this.getYDomain()}}
+                                              domain={{[this.props.navigation.getParam('scale') !== 'Undetermined' && 'y']: this.getYDomain()}}
                                 >
                                     <VictoryLine
                                         style={{
@@ -292,7 +293,7 @@ export default class GoalSummary extends React.Component {
                                 />
                             </VictoryChart>
                             <View style={{alignSelf: 'flex-start', flex: 1, marginHorizontal: 20}}>
-                                <Text style={goalSummaryStyle.text}>Target Rating: <Text style={{color: 'blue', fontWeight: 'bold'}}>{this.props.navigation.getParam('rating')}</Text></Text>
+                                <Text style={goalSummaryStyle.text}>{this.props.navigation.getParam('diaryId') === DiaryId.steps ? 'Target Steps: ' : 'Target Rating: '}<Text style={{color: 'blue', fontWeight: 'bold'}}>{this.props.navigation.getParam('rating')}</Text></Text>
                             </View>
                         </Body>
                     </Content>
