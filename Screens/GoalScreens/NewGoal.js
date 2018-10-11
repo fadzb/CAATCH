@@ -58,6 +58,7 @@ export default class NewGoal extends React.Component {
         this.setState({
           diaryItem: checkedItem.diaryName,
           ratings: [...this.createRatingArr(checkedItem.minRating, checkedItem.diaryScale)],
+          selectedRating: 'Target Rating',
         });
       } else {
         console.log('no item checked');
@@ -141,32 +142,51 @@ export default class NewGoal extends React.Component {
             textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
             iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
           />
-          <RNPickerSelect
-            placeholder={{
-              label: 'Target Rating',
-              value: null,
-            }}
-            items={this.state.ratings}
-            onValueChange={(value) => {
-              this.setState({
-                selectedRating: value,
-              });
-            }}
-            hideIcon={true}
-            disabled={this.state.diaryItem === 'Diary Item'}
-          >
+          {this.state.diaryItem !== 'Steps' && this.state.diaryItem !== 'Diary Item' && (
+            <RNPickerSelect
+              placeholder={{
+                label: 'Target Rating',
+                value: null,
+              }}
+              items={this.state.ratings}
+              onValueChange={(value) => {
+                this.setState({
+                  selectedRating: value,
+                });
+              }}
+              hideIcon={true}
+              disabled={this.state.diaryItem === 'Diary Item'}
+            >
+              <View
+                style={[
+                  goalStyle.listButton,
+                  { justifyContent: 'center' },
+                  this.state.validRating ? {} : { borderColor: '#a94442' },
+                ]}
+              >
+                <Text style={{ paddingLeft: 7, fontSize: 17 }}>
+                  {this.state.selectedRating === null ? 'Target Rating' : this.state.selectedRating}
+                </Text>
+              </View>
+            </RNPickerSelect>
+          )}
+          {this.state.diaryItem === 'Steps' && (
             <View
               style={[
                 goalStyle.listButton,
-                { justifyContent: 'center' },
+                { justifyContent: 'center', backgroundColor: 'white' },
                 this.state.validRating ? {} : { borderColor: '#a94442' },
               ]}
             >
-              <Text style={{ paddingLeft: 7, fontSize: 17 }}>
-                {this.state.selectedRating === null ? 'Target Rating' : this.state.selectedRating}
-              </Text>
+              <TextInput
+                placeholder={'Target Steps'}
+                style={{ paddingLeft: 7, fontSize: 17 }}
+                underlineColorAndroid="transparent"
+                keyboardType={'phone-pad'}
+                onChangeText={(text) => this.setState({ selectedRating: text })}
+              />
             </View>
-          </RNPickerSelect>
+          )}
           <Form ref="form" type={goal} value={this.state.value} onChange={this.onChange} options={options} />
           <TouchableHighlight style={goalStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
             <Text style={goalStyle.buttonText}>Save</Text>

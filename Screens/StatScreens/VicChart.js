@@ -25,9 +25,16 @@ const periods = {
 };
 // String representations of above selections
 
+const stepPeriods = {
+  week: 'Past 7 days',
+  month: 'Past 30 days',
+};
+// String representations of above selections
+
 const USED_SKILLS = 'Used Skills';
 const SLEEP_SCALE = 'Sleep Scale';
 const MOOD_SCALE = 'Mood Scale';
+const STEPS = 'Steps';
 
 export default class VicChart extends React.Component {
   static navigationOptions = {
@@ -82,7 +89,7 @@ export default class VicChart extends React.Component {
       let compareList = {};
 
       scaleList.forEach((d, i) => {
-        if (d.diaryName === USED_SKILLS) {
+        if (d.diaryName === USED_SKILLS || d.diaryName === STEPS) {
           compareList[d.diaryName] = { '0': 'None' };
         } else {
           compareList[d.diaryName] = scaleList
@@ -92,7 +99,7 @@ export default class VicChart extends React.Component {
                 obj['0'] = 'None';
               }
 
-              if (r.diaryName !== d.diaryName && r.diaryName !== USED_SKILLS) {
+              if (r.diaryName !== d.diaryName && r.diaryName !== USED_SKILLS && r.diaryName !== STEPS) {
                 obj = { ...obj, [i + 1]: r.diaryName };
               }
 
@@ -197,7 +204,7 @@ export default class VicChart extends React.Component {
           const avgRating = trackArr.reduce((total, rating) => total + rating) / trackArr.length;
           const diaryObjIndex = trackGraph.findIndex((e) => e.x === date);
 
-          trackGraph[diaryObjIndex].y = avgRating;
+          trackGraph[diaryObjIndex].y = selectedDiaryItem === STEPS ? Math.max(...trackArr) : avgRating;
         }
       });
 
@@ -363,13 +370,28 @@ export default class VicChart extends React.Component {
               height={Dimensions.get('window').height * 0.57}
               theme={VictoryTheme.material}
               categories={{
-                y: this.getYCategorey(),
+                [this.state.selectedDiaryItem !== STEPS && 'y']: this.getYCategorey(),
                 x: this.state.graphData.map((gr) => gr.x),
               }}
             >
               <VictoryAxis fixLabelOverlap={true} />
-              <VictoryAxis dependentAxis fixLabelOverlap={true} />
-              <VictoryGroup data={this.state.graphData} domain={{ y: this.getYDomain(this.state.selectedDiaryItem) }}>
+              <VictoryAxis
+                dependentAxis
+                fixLabelOverlap={true}
+                tickFormat={(t) => {
+                  if (t > 1000) {
+                    return `${t / 1000}k`;
+                  } else {
+                    return t;
+                  }
+                }}
+              />
+              <VictoryGroup
+                data={this.state.graphData}
+                domain={{
+                  [this.state.selectedDiaryItem !== STEPS && 'y']: this.getYDomain(this.state.selectedDiaryItem),
+                }}
+              >
                 <VictoryLine
                   style={{
                     data: { stroke: '#c43a31', strokeWidth: 1.5 },
