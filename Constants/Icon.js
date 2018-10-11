@@ -46,5 +46,6 @@ export const Icons = {
     notifications: 'ios-notifications',
     helpers: 'ios-people',
     backup: 'ios-cloud-done',
-    goals: 'ios-trophy'
+    goals: 'ios-trophy',
+    steps: 'ios-walk',
 };

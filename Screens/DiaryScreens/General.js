@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, KeyboardAvoidingView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, KeyboardAvoidingView, Dimensions, Alert, ScrollView } from 'react-native';
 import {connect} from 'react-redux'
 import {updateDatabase} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
@@ -8,6 +8,14 @@ import store from "../../Redux/store"
 import ButtonRating from "../../Components/ButtonRating"
 import {DbTableNames} from "../../Constants/Constants";
 import {updateNotifications} from "../../Util/Notifications";
+import {PressableIcon} from "../../Components/PressableIcon";
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Icons} from "../../Constants/Icon";
+
+const steps = {
+    title: 'Steps',
+    body: 'Enter the step count that appears on your pedometer'
+};
 
 class General extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -29,7 +37,9 @@ class General extends React.Component {
         super(props);
 
         this.state = {
-            text: ""
+            text: "",
+            keyboardViewHeight: 0,
+            nonGeneralViewHeight: 0
         }
     }
 
@@ -83,37 +93,88 @@ class General extends React.Component {
         store.dispatch(resetMoodRating())
     };
 
+    infoAlert = () => {
+        Alert.alert(
+            steps.title,
+            steps.body,
+            [
+                {text: 'OK', onPress: () => console.log('OK pressed')},
+            ],
+            { cancelable: false }
+        )
+    };
+    // alert for displaying steps info
+
+    onLayoutKeyboard = (e) => {
+        this.setState({
+            keyboardViewHeight: e.nativeEvent.layout.height,
+        })
+    };
+
+    onLayout = (e) => {
+        this.setState({
+            nonGeneralViewHeight: e.nativeEvent.layout.height,
+        })
+    };
+
     render() {
         return (
-            <View style={generalStyle.listContainer}>
-                <KeyboardAvoidingView style={{flex: 1}} behavior={'position'}>
-                    <View style={generalStyle.sleep}>
-                        <ButtonRating
-                            title='Mood Scale'
-                        />
-                        <ButtonRating
-                            title='Sleep Scale'
-                        />
-                    </View>
-                    <View style={{marginTop: 10, marginLeft: 15, marginRight: 15}}>
-                        <Text style={{fontWeight: 'bold', fontSize: 16, paddingBottom: 15}}>General Notes</Text>
-                        <TextInput
-                            multiline={true}
-                            style={{backgroundColor: '#f0f0f5', height: Dimensions.get('window').height / 4, borderRadius: 7, borderWidth: 1, padding: 15, paddingBottom: 15, paddingTop: 15, textAlignVertical: "top"}}
-                            placeholder="User can enter personal thoughts and notes here"
-                            placeholderTextColor="black"
-                            underlineColorAndroid='transparent'
-                            value={this.state.text}
-                            onChangeText={this.handleTextChange}
-                        />
-                    </View>
-                    <View style={{marginTop: 10}}>
-                        <TouchableOpacity style={generalStyle.button} onPress={this.createSession}>
-                            <Text style={generalStyle.buttonText}>Save</Text>
-                        </TouchableOpacity>
-                    </View>
-                </KeyboardAvoidingView>
-            </View>
+            <ScrollView scrollEnabled={false} contentContainerStyle={generalStyle.listContainer}>
+                <View style={{flex: 1}} onLayout={this.onLayoutKeyboard}>
+                    <KeyboardAvoidingView keyboardVerticalOffset={70} style={{flex: 1}} behavior={'position'}>
+                        <View onLayout={this.onLayout}>
+                            <View style={generalStyle.sleep}>
+                                <ButtonRating
+                                    title='Mood Scale'
+                                />
+                                <ButtonRating
+                                    title='Sleep Scale'
+                                />
+                            </View>
+                            <View style={{flexDirection: 'row', marginTop: 10, marginBottom: 25, alignItems: 'center', marginRight: 15}}>
+                                <View style={generalStyle.stepStyle}>
+                                    <TextInput
+                                        placeholder={'Enter step count'}
+                                        style={{paddingVertical: 7, paddingLeft: 15, flex: 1}}
+                                        placeholderTextColor="black"
+                                        keyboardType={'number-pad'}
+                                        underlineColorAndroid='transparent'
+                                    />
+                                    <Icon
+                                        name={Icons.steps + '-outline'}
+                                        size={30}
+                                    />
+                                </View>
+                                <View>
+                                    <Icon
+                                        name={Icons.info + '-outline'}
+                                        size={30}
+                                        onPress={this.infoAlert}
+                                        color='#007AFF'
+                                    />
+                                </View>
+                            </View>
+                        </View>
+                        <View style={{marginLeft: 15, marginRight: 15}}>
+                            {/*<Text style={{fontWeight: 'bold', fontSize: 16, paddingBottom: 15}}>General Notes</Text>*/}
+                            <TextInput
+                                multiline={true}
+                                style={{backgroundColor: '#f0f0f5', height: (this.state.keyboardViewHeight - this.state.nonGeneralViewHeight), borderRadius: 7, borderWidth: 1, padding: 15, paddingBottom: 15, paddingTop: 15, textAlignVertical: "top"}}
+                                placeholder="Enter daily personal thoughts / notes here"
+                                placeholderTextColor="black"
+                                underlineColorAndroid='transparent'
+                                value={this.state.text}
+                                onChangeText={this.handleTextChange}
+                            />
+                        </View>
+                    </KeyboardAvoidingView>
+                </View>
+                <View style={{marginTop: 10}}>
+                    <TouchableOpacity style={generalStyle.button} onPress={this.createSession}>
+                        <Text style={generalStyle.buttonText}>Save</Text>
+                    </TouchableOpacity>
+                </View>
+            </ScrollView>
         );
     }
 }
@@ -150,6 +211,16 @@ const generalStyle = StyleSheet.create({
         alignSelf: 'stretch',
         justifyContent: 'center',
     },
+    stepStyle: {
+        flexDirection: 'row',
+        borderWidth: 1,
+        borderRadius: 7,
+        marginHorizontal: 15,
+        flex: .6,
+        paddingRight: 15,
+        alignItems: 'center',
+        backgroundColor: '#f0f0f5'
+    }
 });
 
 const mapStateToProps = state => ({
