@@ -62,6 +62,6 @@ const buttonRatingStyle = StyleSheet.create({
   headText: {
     fontSize: 16,
     fontWeight: 'bold',
-    paddingBottom: 10,
+    paddingBottom: 5,
   },
 });
