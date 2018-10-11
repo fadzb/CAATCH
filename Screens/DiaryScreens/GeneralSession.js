@@ -4,6 +4,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import Moment from 'moment';
 import store from '../../Redux/store';
 import { Icons } from '../../Constants/Icon';
+import { DiaryId } from '../../Constants/Constants';
 
 export default class GeneralSession extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -28,7 +29,7 @@ export default class GeneralSession extends React.Component {
       {item.diaryName !== 'Notes' ? (
         <GeneralRow
           name={item.diaryName}
-          rating={Math.round(item.rating) + ' / ' + item.scale}
+          rating={Math.round(item.rating) + (item.diaryId === DiaryId.steps ? '' : ' / ' + item.scale)}
           circleView={item.diaryName.slice(0, 1).toUpperCase()}
           icon={Icons.dividerArrow}
         />
