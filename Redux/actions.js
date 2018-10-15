@@ -1,5 +1,9 @@
 // action types
 
+//App state
+
+export const UPDATE_APP_STATE = 'UPDATE_APP_STATE';
+
 //Settings
 
 export const UPDATE_DBT_SETTING = 'UPDATE_DBT_SETTING';
@@ -99,6 +103,13 @@ export const getSchedule = (apptList) => ({
 export const updateScheduleDate = (date) => ({
   type: UPDATE_SCHEDULE_DATE,
   payload: date,
+});
+
+//App state
+
+export const updateAppState = (update) => ({
+  type: UPDATE_APP_STATE,
+  payload: update,
 });
 
 //SafetyPlan
