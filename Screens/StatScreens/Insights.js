@@ -10,6 +10,7 @@ import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
 import {DbPrimaryKeys, DbTableNames, UsageFunctionIds} from "../../Constants/Constants";
 import Moment from 'moment';
 import Accordion from 'react-native-collapsible/Accordion';
+import UsageOverview from './UsageOverview'
 
 const safetyPlanElements = {
     WarningSign: {name: 'Warning Sign', icon: Icons.warningSign},
@@ -97,13 +98,13 @@ export default class Insights extends React.Component {
             const max = Number.parseFloat(Math.max(...ratingArr)).toFixed(2);
             const min = Number.parseFloat(Math.min(...ratingArr)).toFixed(2);
 
-            resultArr.push({diaryName: di, type: 'Average Rating', rating: avg});
+            resultArr.push({diaryName: di, type: 'Average ' + (di === 'Steps' ? di : 'Rating'), rating: avg});
             // average rating last 7 days
 
-            resultArr.push({diaryName: di, type: 'Max Rating', rating: max, date: ratingObj.find(f => Number.parseFloat(f.rating).toFixed(2) === max).diaryDate});
+            resultArr.push({diaryName: di, type: 'Max ' + (di === 'Steps' ? di : 'Rating'), rating: max, date: ratingObj.find(f => Number.parseFloat(f.rating).toFixed(2) === max).diaryDate});
             // max rating last 7 days
 
-            resultArr.push({diaryName: di, type: 'Min Rating', rating: min, date: ratingObj.find(f => Number.parseFloat(f.rating).toFixed(2) === min).diaryDate})
+            resultArr.push({diaryName: di, type: 'Min ' + (di === 'Steps' ? di : 'Rating'), rating: min, date: ratingObj.find(f => Number.parseFloat(f.rating).toFixed(2) === min).diaryDate})
             // min rating last 7 days
         });
 
@@ -154,7 +155,7 @@ export default class Insights extends React.Component {
                         <Text style={insightsStyle.ratingText}>{a.type}</Text>
                         <Text style={insightsStyle.ratingTextInfo}>{a.rating}</Text>
                     </View>
-                    {a.type !== 'Average Rating' && <View style={{paddingRight: 10, justifyContent: 'center'}}>
+                    {!a.type.includes('Average') && <View style={{paddingRight: 10, justifyContent: 'center'}}>
                         <Text style={insightsStyle.ratingTextInfo}>{Moment(a.date).format('DD.MM.YYYY')}</Text>
                     </View>}
                 </View>
@@ -173,7 +174,7 @@ export default class Insights extends React.Component {
     );
 
     render() {
-        const NUMBER_OF_TABS = 2;
+        const NUMBER_OF_TABS = 3;
 
         const sections = [...new Set(this.state.data.map(item => item.title))].map(title => ({
             title: title,
@@ -215,6 +216,9 @@ export default class Insights extends React.Component {
                                             underlayColor={'transparent'}
                                         />
                                     </ScrollView>
+                                </Tab>
+                                <Tab heading={"Overview"}>
+                                    <UsageOverview/>
                                 </Tab>
                             </Tabs>
                         </StyleProvider>
