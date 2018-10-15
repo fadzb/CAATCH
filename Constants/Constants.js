@@ -92,6 +92,13 @@ export const UsageFunctionIds = {
         contact: 17,
         environment: 18,
         helper: 21
+    },
+    session: {
+        Home: 22,
+        Plan: 23,
+        Diary: 24,
+        Crisis: 25,
+        Settings: 26
     }
 };
 

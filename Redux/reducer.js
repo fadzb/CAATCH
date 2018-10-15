@@ -4,7 +4,7 @@ import {
     GET_REASON, GET_DISTRACTION, UPDATE_DISTRACTION, UPDATE_DATE, UPDATE_SKILL_RATING, RESET_SKILL_RATING,
     UPDATE_USAGE, UPDATE_FEELING_RATING, RESET_FEELING_RATING, UPDATE_SLEEP_RATING, RESET_SLEEP_RATING,
     UPDATE_MOOD_RATING, RESET_MOOD_RATING, UPDATE_SCHEDULE_DATE, GET_SCHEDULE, UPDATE_DBT_SETTING, UPDATE_HELPER,
-    GET_HELPER, UPDATE_EMAIL, NEW_FEELING, UPDATE_GOAL, GET_GOAL
+    GET_HELPER, UPDATE_EMAIL, NEW_FEELING, UPDATE_GOAL, GET_GOAL, UPDATE_APP_STATE
 } from "./actions";
 import Moment from 'moment';
 
@@ -221,6 +221,17 @@ const settingReducer = (state = {dbt: false, email: 'None'}, action) => {
     return state
 };
 
+//App state
+
+const appReducer = (state = 'active', action) => {
+    if(action.type === UPDATE_APP_STATE) {
+        return action.payload;
+    }
+    // used to update global app state
+
+    return state
+};
+
 const reducer = combineReducers({
     coping: copingReducer,
     sign: signReducer,
@@ -232,7 +243,8 @@ const reducer = combineReducers({
     schedule: scheduleReducer,
     setting: settingReducer,
     helper: helperReducer,
-    goal: goalReducer
+    goal: goalReducer,
+    app: appReducer,
 });
 // as reducers grow, add to this object
 

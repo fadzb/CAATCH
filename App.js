@@ -6,9 +6,10 @@ import {Provider} from 'react-redux'
 import store from './Redux/store'
 import {readDatabase, updateDatabase} from "./Util/DatabaseHelper";
 import Moment from 'moment';
-import {updateUsage, updateDbtSetting} from "./Redux/actions";
+import {updateUsage, updateDbtSetting, updateAppState} from "./Redux/actions";
 import { AppLoading } from 'expo';
 import { Root } from "native-base";
+import {AppState, Text} from 'react-native'
 
 import PlanStack from "./Components/StackNavigators/SafetyPlanStack";
 import DiaryStack from "./Components/StackNavigators/DiaryStack"
@@ -16,6 +17,7 @@ import SettingsStack from "./Components/StackNavigators/SettingsStack";
 import Passcode from "./Screens/Passcode";
 import HomeStack from "./Components/StackNavigators/HomeStack";
 import CrisisStack from "./Components/StackNavigators/CrisisStack";
+import {DbTableNames, UsageFunctionIds} from "./Constants/Constants";
 
 //Initial Tab screens/stack navs
 
@@ -25,8 +27,19 @@ export default class App extends React.Component {
 
         this.state = {
             isReady: false,
-            passcodeEnabled: false
+            passcodeEnabled: false,
+            currentTab: '',
+            startTime: '',
+            endTime: ''
         }
+    }
+
+    componentDidMount() {
+        AppState.addEventListener('change', this.handleAppStateChange);
+    }
+
+    componentWillUnmount() {
+        AppState.removeEventListener('change', this._handleAppStateChange);
     }
 
     postCheckDbFunctions = () => {
@@ -50,6 +63,8 @@ export default class App extends React.Component {
             (res) => {
                 if(res[0].enabled === 1) {
                     this.setState({passcodeEnabled: true})
+                } else {
+                    this.setState({currentTab: 'Home', startTime: new Date().getTime()})
                 }
                 // check passcode
 
@@ -79,6 +94,44 @@ export default class App extends React.Component {
         //Return promise here for home screen media so it is loaded during splash screen
     };
 
+    handleAppStateChange = (nextAppState) => {
+        if (store.getState().app.match(/inactive|background/) && nextAppState === 'active') {
+            this.setState({
+                startTime: new Date().getTime()
+            });
+
+            // if app goes from inactive/background to active, reset start time state
+        } else if(store.getState().app === 'active' && (nextAppState === 'background' || nextAppState === 'inactive')) {
+            updateDatabase(DbTableNames.functionUsage, [UsageFunctionIds.session[this.state.currentTab], store.getState().usage, (new Date().getTime() - this.state.startTime)],
+                ['functionId', 'usageId', 'functionValue']);
+
+            // if app goes from active to inactive/background, push session time record to DB
+        }
+    };
+
+    handleTabChange = tab => {
+        this.setState(prevState => {
+            const prevTab = prevState.currentTab;
+
+            if(prevTab) {
+                updateDatabase(DbTableNames.functionUsage, [UsageFunctionIds.session[prevTab], store.getState().usage, (new Date().getTime() - this.state.startTime)],
+                    ['functionId', 'usageId', 'functionValue'], undefined, res => {
+                        this.setState({
+                            currentTab: tab,
+                            startTime: new Date().getTime()
+                        })
+                    });
+            } else {
+                return {
+                    currentTab: tab,
+                    startTime: new Date().getTime()
+                }
+            }
+        })
+    };
+
+    // when moving between tabs, record time of session to DB and reset start time and currentTab states
+
     render() {
         if (!this.state.isReady) {
             return (
@@ -96,7 +149,16 @@ export default class App extends React.Component {
             return (
                 <Provider store={store}>
                     <Root>
-                        <SwitchNav/>
+                        <SwitchNav
+                            onNavigationStateChange={(prevState, currentState) => {
+                                const currentScreen = getActiveRouteNamePasscode(currentState);
+                                const prevScreen = getActiveRouteNamePasscode(prevState);
+
+                                if (prevScreen !== currentScreen) {
+                                    this.handleTabChange(currentScreen)
+                                }
+                            }}
+                        />
                     </Root>
                 </Provider>
             );
@@ -105,8 +167,17 @@ export default class App extends React.Component {
 
         return (
             <Provider store={store}>
-                <Root>
-                    <TabBar/>
+                <Root >
+                    <TabBar
+                        onNavigationStateChange={(prevState, currentState) => {
+                            const currentScreen = getActiveRouteName(currentState);
+                            const prevScreen = getActiveRouteName(prevState);
+
+                            if (prevScreen !== currentScreen) {
+                                this.handleTabChange(currentScreen)
+                            }
+                        }}
+                    />
                 </Root>
             </Provider>
         )
@@ -137,3 +208,28 @@ const SwitchNav = createSwitchNavigator(
         main: TabBar
     }
 );
+
+function getActiveRouteName(navigationState) {
+    if (!navigationState) {
+        return null;
+    }
+    const route = navigationState.routes[navigationState.index];
+    // dive into nested navigators
+    // console.log(navigationState)
+
+    return route.routeName;
+}
+
+function getActiveRouteNamePasscode(navigationState) {
+    if (!navigationState) {
+        return null;
+    }
+
+    if(navigationState.index === 1) {
+        const allRoutes = navigationState.routes[navigationState.index];
+
+        const route = allRoutes.routes[allRoutes.index];
+
+        return route.routeName;
+    }
+}
