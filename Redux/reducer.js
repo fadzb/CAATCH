@@ -29,6 +29,7 @@ import {
   NEW_FEELING,
   UPDATE_GOAL,
   GET_GOAL,
+  UPDATE_APP_STATE,
 } from './actions';
 import Moment from 'moment';
 
@@ -254,6 +255,17 @@ const settingReducer = (state = { dbt: false }, action) => {
   return state;
 };
 
+//App state
+
+const appReducer = (state = 'active', action) => {
+  if (action.type === UPDATE_APP_STATE) {
+    return action.payload;
+  }
+  // used to update global app state
+
+  return state;
+};
+
 const reducer = combineReducers({
   coping: copingReducer,
   sign: signReducer,
@@ -266,6 +278,7 @@ const reducer = combineReducers({
   setting: settingReducer,
   helper: helperReducer,
   goal: goalReducer,
+  app: appReducer,
 });
 // as reducers grow, add to this object
 
