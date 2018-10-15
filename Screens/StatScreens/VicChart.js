@@ -370,7 +370,9 @@ export default class VicChart extends React.Component {
               height={Dimensions.get('window').height * 0.57}
               theme={VictoryTheme.material}
               categories={{
-                [this.state.selectedDiaryItem !== STEPS && 'y']: this.getYCategorey(),
+                [(this.state.selectedDiaryItem !== STEPS ||
+                  this.state.graphData.reduce((acc, g) => acc + g.y, 0) === 0) &&
+                'y']: this.getYCategorey(),
                 x: this.state.graphData.map((gr) => gr.x),
               }}
             >
