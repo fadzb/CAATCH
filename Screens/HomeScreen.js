@@ -22,18 +22,6 @@ export default class HomeScreen extends React.Component {
                        source={require("../Media/Images/lavender.jpg")} />
                 <View style={homeStyle.tileContainer}>
                     <HomeScreenTileRow
-                        name1={SectionHeader.stats}
-                        iconName1= {Icons.stats + "-outline"}
-                        onPress1={() => this.props.navigation.navigate('statSelection')}
-                        name2="Schedule"
-                        iconName2= {Icons.calendar + "-outline"}
-                        onPress2={() => this.props.navigation.navigate('schedule')}
-                        third={true}
-                        name3="Reports"
-                        onPress3={() => this.props.navigation.navigate('reports')}
-                        iconName3= {Icons.report + "-outline"}
-                    />
-                    <HomeScreenTileRow
                         name2={SectionHeader.diary}
                         iconName2= {Icons.diary + "-outline"}
                         onPress2={() => this.props.navigation.navigate('Diary')}
@@ -41,9 +29,21 @@ export default class HomeScreen extends React.Component {
                         iconName1= {Icons.plan + "-outline"}
                         onPress1={() => this.props.navigation.navigate('Plan')}
                         third={true}
-                        name3={SectionHeader.goals}
-                        onPress3={() => this.props.navigation.navigate('goals')}
-                        iconName3= {Icons.goals + "-outline"}
+                        name3="My Reports"
+                        onPress3={() => this.props.navigation.navigate('reports')}
+                        iconName3= {Icons.report + "-outline"}
+                    />
+                    <HomeScreenTileRow
+                        name1={SectionHeader.stats}
+                        iconName1= {Icons.stats + "-outline"}
+                        onPress1={() => this.props.navigation.navigate('statSelection')}
+                        name3="My Cal"
+                        iconName3= {Icons.calendar + "-outline"}
+                        onPress3={() => this.props.navigation.navigate('schedule')}
+                        third={true}
+                        name2={SectionHeader.goals}
+                        onPress2={() => this.props.navigation.navigate('goals')}
+                        iconName2= {Icons.goals + "-outline"}
                     />
                 </View>
             </View>

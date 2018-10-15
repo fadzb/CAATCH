@@ -332,7 +332,7 @@ export default class VicChart extends React.Component {
                         height={Dimensions.get('window').height * .57}
                         theme={VictoryTheme.material}
                         categories={{
-                            [this.state.selectedDiaryItem !== STEPS && 'y']: this.getYCategorey(),
+                            [(this.state.selectedDiaryItem !== STEPS || this.state.graphData.reduce((acc, g) => acc + g.y, 0) === 0) && 'y']: this.getYCategorey(),
                             x: this.state.graphData.map(gr => gr.x)
                         }}
                     >
@@ -342,15 +342,15 @@ export default class VicChart extends React.Component {
                         <VictoryAxis dependentAxis
                                      fixLabelOverlap={true}
                                      tickFormat={(t) => {
-                                         if(t > 1000) {
-                                             return `${t / 1000}k`
-                                         } else {
-                                             return t
-                                         }
+                                          if(t > 1000) {
+                                              return `${t / 1000}k`
+                                          } else {
+                                              return t
+                                          }
                                      }}
                         />
                         <VictoryGroup data={this.state.graphData}
-                                      domain={{[this.state.selectedDiaryItem !== STEPS && 'y']: this.getYDomain(this.state.selectedDiaryItem)}}
+                                      domain={{[(this.state.selectedDiaryItem !== STEPS) && 'y']: this.getYDomain(this.state.selectedDiaryItem)}}
                                       >
                             <VictoryLine
                                 style={{

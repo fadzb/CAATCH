@@ -1,7 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, KeyboardAvoidingView, Dimensions, Alert, ScrollView } from 'react-native';
 import {connect} from 'react-redux'
-import {updateDatabase} from "../../Util/DatabaseHelper";
+import {deleteDatabaseRow, readDatabaseArg, updateDatabase, updateDatabaseArgument} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
 import {resetSleepRating, resetMoodRating} from "../../Redux/actions";
 import store from "../../Redux/store"
@@ -67,11 +67,22 @@ class General extends React.Component {
         //update DB for mood rating
 
         if(this.state.stepText.length > 0) {
-            updateDatabase(DbTableNames.diarySession,
-                [sessionId, DiaryId.steps, this.state.stepText],
-                ['sessionId', 'diaryId', 'rating'])
+            readDatabaseArg('*', DbTableNames.diarySession, res => {
+                    if(res.length > 0) {
+                        deleteDatabaseRow(DbTableNames.diarySession, 'where sessionId = ' + res[0].sessionId + ' and diaryId = ' + DiaryId.steps, res => {
+                            updateDatabase(DbTableNames.diarySession,
+                                [sessionId, DiaryId.steps, this.state.stepText],
+                                ['sessionId', 'diaryId', 'rating'])
+                        })
+                    } else {
+                        updateDatabase(DbTableNames.diarySession,
+                            [sessionId, DiaryId.steps, this.state.stepText],
+                            ['sessionId', 'diaryId', 'rating'])
+                    }
+                }, undefined,
+                'as ds inner join Session as s on ds.sessionId = s.sessionId where diaryId = ' + DiaryId.steps + ' and DATE(diaryDate) = "' + Moment(this.props.diaryDate).format("YYYY-MM-DD") + '"');
         }
-        //if user inputs step text, update DB
+        //if user inputs step text, update DB. Delete previous record for steps if already exists fdr diary date
 
         if(this.state.text.length > 0) {
             updateDatabase(DbTableNames.diarySession,
