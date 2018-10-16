@@ -202,7 +202,7 @@ export default class VicSkillsChart extends React.Component {
                                 nameStyle={{fontSize: 16}}
                             />
                         </View>
-                        <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={false} onRequestClose={this.handleModalClose}>
+                        <Modal visible={this.state.modalVisible} transparent={false} onRequestClose={this.handleModalClose}>
                             <View style={{flex: 1}}>
                                 <View style={chartStyle.closeButton}>
                                     <PressableIcon
