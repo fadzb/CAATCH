@@ -57,7 +57,7 @@ const InsightRow = (props) => (
 export default class Insights extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Insights',
+      title: 'App Usage',
     };
   };
 
@@ -248,6 +248,9 @@ export default class Insights extends React.Component {
           <Container>
             <StyleProvider style={getTheme(platform)}>
               <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
+                <Tab heading={'Overview'}>
+                  <UsageOverview />
+                </Tab>
                 <Tab heading={'Safety Plan'}>
                   <ScrollView style={{ marginTop: 10 }}>
                     <Accordion
@@ -272,9 +275,6 @@ export default class Insights extends React.Component {
                       underlayColor={'transparent'}
                     />
                   </ScrollView>
-                </Tab>
-                <Tab heading={'Overview'}>
-                  <UsageOverview />
                 </Tab>
               </Tabs>
             </StyleProvider>

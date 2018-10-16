@@ -34,7 +34,7 @@ export default class StatSelection extends React.Component {
             onPress={() => this.props.navigation.push('vicSkills')}
           />
           <CustomSelectionRow
-            name="Insights"
+            name="App Usage"
             icon={Icons.insights + '-outline'}
             iconSize={30}
             iconContainer={statSelectionStyle.iconContainer}
