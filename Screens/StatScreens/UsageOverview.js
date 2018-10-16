@@ -1,5 +1,14 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions, Text, ActivityIndicator, Modal, TouchableHighlight } from 'react-native';
+import {
+  StyleSheet,
+  View,
+  Dimensions,
+  Text,
+  ActivityIndicator,
+  Modal,
+  TouchableHighlight,
+  ScrollView,
+} from 'react-native';
 import { TabStyles } from '../../Styles/TabStyles';
 import Moment from 'moment';
 import { readDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
@@ -12,11 +21,13 @@ import {
   VictoryTheme,
   VictoryAxis,
   VictoryLabel,
-  VictoryPortal,
+  VictoryLegend,
   VictoryStack,
 } from 'victory-native';
 import { PressableIcon } from '../../Components/PressableIcon';
 import { DbTableNames } from '../../Constants/Constants';
+import { convertMilliseconds } from '../../Util/ConvertMilliseconds';
+import { ChartLegend } from '../../Components/ChartLegend';
 
 const timeFrames = {
   weekDate: Moment().subtract(6, 'd').format('YYYY-MM-DD'),
@@ -34,6 +45,14 @@ const periods = {
 };
 // String representations of above selections
 
+const chartColors = {
+  Home: '#c43a31',
+  Plan: 'blue',
+  Diary: 'green',
+  Crisis: 'yellow',
+  Settings: 'purple',
+};
+
 export default class UsageOverview extends React.Component {
   constructor(props) {
     super(props);
@@ -48,6 +67,8 @@ export default class UsageOverview extends React.Component {
       selectedTimeFrame: periods.week,
       data: [],
       dateRange: [],
+      todayTime: 0,
+      todayTimeChecked: false,
     };
   }
 
@@ -71,8 +92,8 @@ export default class UsageOverview extends React.Component {
     readDatabaseArg(
       'fu.functionId, f.title, DATE(fu.dateEntered) as dateEntered, sum(fu.functionValue) as time',
       DbTableNames.functionUsage,
-      (res) => this.setState({ data: res }, () => console.log(res)),
-      () => this.transformData(),
+      (res) => this.setState({ data: res }, this.transformData),
+      undefined,
       'as fu ' +
         'inner join ' +
         DbTableNames.function +
@@ -89,25 +110,22 @@ export default class UsageOverview extends React.Component {
   // update state as boxes are ticked in either selection list
 
   handleFinalSelection = () => {
-    if (this.state.checkedItemTime !== this.state.selectedTimeFrame) {
-      this.setState({ selectedTimeFrame: this.state.checkedItemTime }, () => {
-        if (this.state.checkedItemTime === periods.week) {
-          this.getSkillEntries(timeFrames.weekDate);
-        } else if (this.state.checkedItemTime === periods.month) {
-          this.getSkillEntries(timeFrames.monthDate);
-        } else if (this.state.checkedItemTime === periods.sixMonth) {
-          this.getSkillEntries(timeFrames.sixMonthDate);
-        } else {
-          this.getSkillEntries(timeFrames.yearDate);
-        }
-      });
-    }
-
-    if (this.state.checkedItemSkill !== this.state.selectedSkillCategory) {
-      this.setState({ selectedSkillCategory: this.state.checkedItemSkill }, () => this.transformData(this.state.data));
-    }
-
     this.handleModalClose();
+    this.setState({ selectedTimeFrame: this.state.checkedItemTime, graphReady: false }, () => {
+      setTimeout(() => {
+        if (this.state.checkedItemTime === periods.week) {
+          this.getDateRange(periods.week, this.transformData);
+        } else if (this.state.checkedItemTime === periods.month) {
+          this.getDateRange(periods.month, this.transformData);
+        } else if (this.state.checkedItemTime === periods.sixMonth) {
+          this.getDateRange(periods.sixMonth, this.transformData);
+        } else {
+          this.getDateRange(periods.year, this.transformData);
+        }
+      }, 100);
+    });
+
+    // setting timeout to allow spinner to appear
   };
 
   getDateRange = (timeRange, func) => {
@@ -150,6 +168,8 @@ export default class UsageOverview extends React.Component {
       Settings: [],
     };
 
+    const today = Moment().format('YYYY-MM-DD');
+
     if (this.state.selectedTimeFrame === periods.week || this.state.selectedTimeFrame === periods.month) {
       const tabSessionDates = this.state.data.map((s) => s.dateEntered);
 
@@ -161,96 +181,162 @@ export default class UsageOverview extends React.Component {
             x: Moment(date).format('DD/MM'),
             y: timeObj ? timeObj.time : 0,
           });
+
+          if (date === today && !this.state.todayTimeChecked) {
+            this.setState((prevState) => {
+              return {
+                todayTime: prevState.todayTime + (timeObj ? timeObj.time : 0),
+              };
+            });
+          }
         });
       });
-
-      this.setState({ graphData: trackGraph }, () => {
-        this.setState({ graphReady: true });
-      });
-
       // function for mapping diary data for chart analysis. If days has multiple entries, average is taken
+    } else {
+      this.state.dateRange.forEach((date) => {
+        Object.keys(trackGraph).forEach((k) => {
+          const accumTime = this.state.data
+            .filter((d) => Moment(d.dateEntered).format('MM/YY') === date && d.title === k)
+            .reduce((acc, cv) => cv.time + acc, 0);
+
+          trackGraph[k].push({
+            x: date,
+            y: accumTime,
+          });
+        });
+      });
     }
+
+    this.setState({ graphData: trackGraph, todayTimeChecked: true }, () => {
+      this.setState({ graphReady: true });
+    });
   };
 
   render() {
     return (
-      <View style={TabStyles.stackContainer}>
+      <ScrollView contentContainerStyle={TabStyles.stackContainer}>
         {this.state.graphReady ? (
           <View>
-            <VictoryChart
-              height={Dimensions.get('window').height * 0.57}
-              theme={VictoryTheme.material}
-              categories={{
-                x: this.state.graphData.Home.map((gr) => gr.x),
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                borderBottomWidth: 0,
+                marginHorizontal: 25,
+                borderRadius: 5,
+                flex: 0.15,
               }}
             >
-              <VictoryAxis fixLabelOverlap={true} />
-              <VictoryAxis dependentAxis fixLabelOverlap={true} />
-              <VictoryStack>
-                <VictoryBar
-                  style={{ data: { fill: '#c43a31', fillOpacity: 0.8 } }}
-                  data={this.state.graphData.Home}
-                  animate={{
-                    onExit: {
-                      duration: 0,
-                    },
+              <Text style={{ fontSize: 17 }}>
+                {"Today's Usage: "}
+                <Text style={{ color: '#808080', fontSize: 17 }}>{convertMilliseconds(this.state.todayTime)}</Text>
+              </Text>
+              {/*<Text>{Moment().format("LL")}</Text>*/}
+            </View>
+            <View style={{ flex: 1, justifyContent: 'center' }}>
+              <View style={{ alignItems: 'stretch' }}>
+                <ChartLegend
+                  data={[
+                    { name: 'Home', color: chartColors.Home },
+                    { name: 'Plan', color: chartColors.Plan },
+                    { name: 'Diary', color: chartColors.Diary },
+                    { name: 'Crisis', color: chartColors.Crisis },
+                    { name: 'Settings', color: chartColors.Settings },
+                  ]}
+                />
+              </View>
+              <VictoryChart
+                padding={{ top: 25, bottom: 35, left: 55, right: 50 }}
+                height={Dimensions.get('window').height * 0.47}
+                theme={VictoryTheme.material}
+                categories={{
+                  x: this.state.graphData.Home.map((gr) => gr.x),
+                }}
+              >
+                <VictoryAxis fixLabelOverlap={true} />
+                <VictoryAxis
+                  dependentAxis
+                  fixLabelOverlap={true}
+                  tickFormat={(t) => convertMilliseconds(t)}
+                  style={{
+                    tickLabels: { fontSize: 10 },
                   }}
                 />
-                <VictoryBar
-                  style={{ data: { fill: 'blue', fillOpacity: 0.8 } }}
-                  data={this.state.graphData.Plan}
-                  animate={{
-                    onExit: {
-                      duration: 0,
-                    },
-                  }}
-                />
-                <VictoryBar
-                  style={{ data: { fill: 'green', fillOpacity: 0.8 } }}
-                  data={this.state.graphData.Diary}
-                  animate={{
-                    onExit: {
-                      duration: 0,
-                    },
-                  }}
-                />
-                <VictoryBar
-                  style={{ data: { fill: 'yellow', fillOpacity: 0.8 } }}
-                  data={this.state.graphData.Crisis}
-                  animate={{
-                    onExit: {
-                      duration: 0,
-                    },
-                  }}
-                />
-                <VictoryBar
-                  style={{ data: { fill: 'purple', fillOpacity: 0.8 } }}
-                  data={this.state.graphData.Settings}
-                  animate={{
-                    onExit: {
-                      duration: 0,
-                    },
-                  }}
-                />
-              </VictoryStack>
-            </VictoryChart>
-            <View style={{ height: Dimensions.get('window').height * 0.1 }}>
+                <VictoryStack>
+                  <VictoryBar
+                    style={{ data: { fill: '#c43a31', fillOpacity: 0.8 } }}
+                    alignment="start"
+                    data={this.state.graphData.Home}
+                    barRatio={0.8}
+                    animate={{
+                      onExit: {
+                        duration: 0,
+                      },
+                    }}
+                  />
+                  <VictoryBar
+                    style={{ data: { fill: 'blue', fillOpacity: 0.8 } }}
+                    alignment="start"
+                    data={this.state.graphData.Plan}
+                    barRatio={0.8}
+                    animate={{
+                      onExit: {
+                        duration: 0,
+                      },
+                    }}
+                  />
+                  <VictoryBar
+                    style={{ data: { fill: 'green', fillOpacity: 0.8 } }}
+                    alignment="start"
+                    data={this.state.graphData.Diary}
+                    barRatio={0.8}
+                    animate={{
+                      onExit: {
+                        duration: 0,
+                      },
+                    }}
+                  />
+                  <VictoryBar
+                    style={{ data: { fill: 'yellow', fillOpacity: 0.8 } }}
+                    alignment="start"
+                    data={this.state.graphData.Crisis}
+                    barRatio={0.8}
+                    animate={{
+                      onExit: {
+                        duration: 0,
+                      },
+                    }}
+                  />
+                  <VictoryBar
+                    style={{ data: { fill: 'purple', fillOpacity: 0.8 } }}
+                    alignment="start"
+                    data={this.state.graphData.Settings}
+                    barRatio={0.8}
+                    animate={{
+                      onExit: {
+                        duration: 0,
+                      },
+                    }}
+                  />
+                </VictoryStack>
+              </VictoryChart>
+            </View>
+            <View style={{ flex: 0.15, justifyContent: 'flex-start', marginBottom: 20 }}>
               <CustomSelectionRow
                 name="Time Frame"
                 icon={Icons.calendar + '-outline'}
                 iconSize={Dimensions.get('window').height / 20}
                 iconContainer={overviewStyle.iconContainer}
                 selectedText={this.state.selectedTimeFrame}
-                onPress={() => this.setState({ timeFrameSelected: true }, () => this.toggleModal(true))}
+                onPress={() => {
+                  this.setState({ timeFrameSelected: true });
+
+                  this.toggleModal(true);
+                }}
                 nameStyle={{ fontSize: 16 }}
               />
             </View>
-            <Modal
-              animationType={'slide'}
-              visible={this.state.modalVisible}
-              transparent={false}
-              onRequestClose={this.handleModalClose}
-            >
+            <Modal visible={this.state.modalVisible} transparent={false} onRequestClose={this.handleModalClose}>
               <View style={{ flex: 1 }}>
                 <View style={overviewStyle.closeButton}>
                   <PressableIcon
@@ -295,7 +381,7 @@ export default class UsageOverview extends React.Component {
             <ActivityIndicator size="large" color="#007AFF" />
           </View>
         )}
-      </View>
+      </ScrollView>
     );
   }
 }
