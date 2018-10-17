@@ -107,25 +107,28 @@ export default class VicSkillsChart extends React.Component {
     // update state as boxes are ticked in either selection list
 
     handleFinalSelection = () => {
-        if (this.state.checkedItemTime !== this.state.selectedTimeFrame) {
-            this.setState({selectedTimeFrame: this.state.checkedItemTime}, () => {
-                if (this.state.checkedItemTime === periods.week) {
-                    this.getSkillEntries(timeFrames.weekDate)
-                } else if (this.state.checkedItemTime === periods.month) {
-                    this.getSkillEntries(timeFrames.monthDate)
-                } else if (this.state.checkedItemTime === periods.sixMonth) {
-                    this.getSkillEntries(timeFrames.sixMonthDate)
-                } else {
-                    this.getSkillEntries(timeFrames.yearDate)
-                }
-            });
-        }
-
-        if(this.state.checkedItemSkill !== this.state.selectedSkillCategory) {
-            this.setState({selectedSkillCategory: this.state.checkedItemSkill}, () => this.transformData(this.state.data));
-        }
-
         this.handleModalClose();
+
+        this.setState({graphReady: false}, () => setTimeout(() => {
+
+            if (this.state.checkedItemTime !== this.state.selectedTimeFrame) {
+                this.setState({selectedTimeFrame: this.state.checkedItemTime}, () => {
+                    if (this.state.checkedItemTime === periods.week) {
+                        this.getSkillEntries(timeFrames.weekDate)
+                    } else if (this.state.checkedItemTime === periods.month) {
+                        this.getSkillEntries(timeFrames.monthDate)
+                    } else if (this.state.checkedItemTime === periods.sixMonth) {
+                        this.getSkillEntries(timeFrames.sixMonthDate)
+                    } else {
+                        this.getSkillEntries(timeFrames.yearDate)
+                    }
+                });
+            }
+
+            if (this.state.checkedItemSkill !== this.state.selectedSkillCategory) {
+                this.setState({selectedSkillCategory: this.state.checkedItemSkill}, () => this.transformData(this.state.data));
+            }
+        }, 10))
     };
 
     transformData = res => {
@@ -154,8 +157,8 @@ export default class VicSkillsChart extends React.Component {
                         <VictoryChart
                             height={Dimensions.get('window').height * .55}
                             theme={VictoryTheme.material}
-                            domainPadding={10}
-                            padding={{ left: 80, top: 35, right: 30, bottom: 35 }}
+                            //domainPadding={10}
+                            padding={{ left: 80, top: 40, right: 30, bottom: 35 }}
                             domain={{x: this.state.xDomain}}
                             categories={this.state.graphData.length === 0 && {
                                 x: this.setCategory()
@@ -174,6 +177,7 @@ export default class VicSkillsChart extends React.Component {
                             <VictoryBar horizontal
                                         style={{ data: { fill: "#c43a31", fillOpacity: 0.8, } }}
                                         data={this.state.graphData}
+                                        alignment="start"
                                         animate={{
                                             onExit: {
                                                 duration: 0,

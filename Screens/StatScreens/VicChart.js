@@ -62,24 +62,29 @@ export default class VicChart extends React.Component {
             comparisonSelected: false,
             checkedItemTime: periods.week,
             checkedItemDiary: "Use Drugs",
-            checkedItemCompare: "None"
+            checkedItemCompare: "None",
+            ratingsInfo: {}
         }
     }
 
     componentDidMount() {
-        this.getDiaryData();
-
-        this.getDiaryList();
+        this.getDiaryList(this.getDiaryData);
     }
 
-    getDiaryList = () => {
+    getDiaryList = (func) => {
         readDatabase('*', 'Diary', res => {
             let list = {};
 
             const scaleList = res.filter(di => di.diaryType !== "Skill" && di.diaryName !== "Notes");
+            const ratingsInfo = scaleList.reduce((obj, s) => {
+                obj[s.diaryName] = {defaultRating: s.defaultRating, minRating: s.minRating, scale: s.scale};
+
+                return obj
+            }, {});
+
+            this.setState({ratingsInfo: ratingsInfo}, func);
 
             scaleList.forEach((d, i) => list[i] = d.diaryName);
-
 
             let compareList = {};
 
@@ -169,12 +174,13 @@ export default class VicChart extends React.Component {
                 ...rating,
                 diaryDate: Moment(rating.diaryDate).format("YYYY-MM-DD")
             }));
+
             const diaryDates = diaryRatings.map(skr => skr.diaryDate);
 
             this.state.dateRange.forEach(date => {
                 trackGraph.push({
                     x: date,
-                    y: (selectedDiaryItem === SLEEP_SCALE || selectedDiaryItem === MOOD_SCALE) ? 3 : 0
+                    y: this.state.ratingsInfo[this.state.selectedDiaryItem].defaultRating
                 });
 
                 if (diaryDates.includes(date)) {
@@ -195,12 +201,13 @@ export default class VicChart extends React.Component {
                 ...rating,
                 diaryDate: rating.diaryDate.slice(0, 3) + rating.diaryDate.slice(5)
             }));
+
             const diaryDates = diaryRatings.map(skr => skr.diaryDate);
 
             this.state.dateRange.forEach(date => {
                 trackGraph.push({
                     x: date,
-                    y: (selectedDiaryItem === SLEEP_SCALE || selectedDiaryItem === MOOD_SCALE) ? 3 : 0
+                    y: this.state.ratingsInfo[this.state.selectedDiaryItem].defaultRating
                 });
 
                 if (diaryDates.includes(date)) {
@@ -273,53 +280,52 @@ export default class VicChart extends React.Component {
     };
 
     handleFinalSelection = () => {
-        if(this.state.checkedItemCompare !== this.state.compareDiaryItem) {
-            this.setState({compareDiaryItem: this.state.checkedItemCompare}, () => {
-                this.transformFunction(this.state.compareDiaryItem, 'compareGraphData')
-            })
-        }
-
-        if (this.state.checkedItemTime !== this.state.selectedTimeFrame) {
-            this.setState({selectedTimeFrame: this.state.checkedItemTime}, () => {
-                if (this.state.checkedItemTime === periods.week) {
-                    this.transformForGraph(this.state.selectedDiaryItem, periods.week, false, () => this.transformFunction(this.state.compareDiaryItem, 'compareGraphData'))
-                } else if (this.state.checkedItemTime === periods.month) {
-                    this.transformForGraph(this.state.selectedDiaryItem, periods.month, false, () => this.transformFunction(this.state.compareDiaryItem, 'compareGraphData'))
-                } else if (this.state.checkedItemTime === periods.sixMonth) {
-                    this.transformForGraph(this.state.selectedDiaryItem, periods.sixMonth, false, () => this.transformFunction(this.state.compareDiaryItem, 'compareGraphData'))
-                } else {
-                    this.transformForGraph(this.state.selectedDiaryItem, periods.year, false, () => this.transformFunction(this.state.compareDiaryItem, 'compareGraphData'))
-                }
-            });
-        }
-
-        if(this.state.checkedItemDiary !== this.state.selectedDiaryItem) {
-            this.setState({selectedDiaryItem: this.state.checkedItemDiary, compareDiaryItem: 'None', checkedItemCompare: 'None'});
-
-            this.transformForGraph(this.state.checkedItemDiary, this.state.selectedTimeFrame, true);
-        }
-
         this.handleModalClose();
+
+        this.setState({graphReady: false}, () => setTimeout(() => {
+            if(this.state.checkedItemCompare !== this.state.compareDiaryItem) {
+                this.setState({compareDiaryItem: this.state.checkedItemCompare}, () => {
+                    this.transformFunction(this.state.compareDiaryItem, 'compareGraphData')
+                })
+            }
+
+            if (this.state.checkedItemTime !== this.state.selectedTimeFrame) {
+                this.setState({selectedTimeFrame: this.state.checkedItemTime}, () => {
+                    if (this.state.checkedItemTime === periods.week) {
+                        this.transformForGraph(this.state.selectedDiaryItem, periods.week, false, () => this.transformFunction(this.state.compareDiaryItem, 'compareGraphData'))
+                    } else if (this.state.checkedItemTime === periods.month) {
+                        this.transformForGraph(this.state.selectedDiaryItem, periods.month, false, () => this.transformFunction(this.state.compareDiaryItem, 'compareGraphData'))
+                    } else if (this.state.checkedItemTime === periods.sixMonth) {
+                        this.transformForGraph(this.state.selectedDiaryItem, periods.sixMonth, false, () => this.transformFunction(this.state.compareDiaryItem, 'compareGraphData'))
+                    } else {
+                        this.transformForGraph(this.state.selectedDiaryItem, periods.year, false, () => this.transformFunction(this.state.compareDiaryItem, 'compareGraphData'))
+                    }
+                });
+            }
+
+            if(this.state.checkedItemDiary !== this.state.selectedDiaryItem) {
+                this.setState({selectedDiaryItem: this.state.checkedItemDiary, compareDiaryItem: 'None', checkedItemCompare: 'None'});
+
+                this.transformForGraph(this.state.checkedItemDiary, this.state.selectedTimeFrame, true);
+            }
+        }, 10))
     };
     // call the transformGraph function based on what options have been selected
 
     getYDomain = (diaryItem) => {
-        if(diaryItem === USED_SKILLS) {
-            return [0, 7]
-        } else if(diaryItem === SLEEP_SCALE || diaryItem === MOOD_SCALE) {
-            return [1, 5]
-        } else {
-            return [0, 5]
-        }
+        return [this.state.ratingsInfo[diaryItem].minRating, this.state.ratingsInfo[diaryItem].scale]
     };
     // setting the min and max values expected for each type of diary item
 
     getYCategorey = () => {
-        if(this.state.selectedDiaryItem === USED_SKILLS) {
-            return ["1", "2", "3", "4", "5", "6", "7"]
-        } else {
-            return ["1", "2", "3", "4", "5"]
+        const scale = this.state.ratingsInfo[this.state.selectedDiaryItem].scale;
+        let categoryArr = [];
+
+        for(let i = 1; i <= scale; i++) {
+            categoryArr.push(i.toString())
         }
+
+        return categoryArr;
     };
     // setting Y axis labels for various diary types
 
@@ -332,7 +338,7 @@ export default class VicChart extends React.Component {
                         height={Dimensions.get('window').height * .57}
                         theme={VictoryTheme.material}
                         categories={{
-                            [(this.state.selectedDiaryItem !== STEPS || this.state.graphData.reduce((acc, g) => acc + g.y, 0) === 0) && 'y']: this.getYCategorey(),
+                            [(this.state.ratingsInfo[this.state.selectedDiaryItem].scale !== 'Undetermined' || this.state.graphData.reduce((acc, g) => acc + g.y, 0) === 0) && 'y']: this.getYCategorey(),
                             x: this.state.graphData.map(gr => gr.x)
                         }}
                     >
@@ -350,7 +356,7 @@ export default class VicChart extends React.Component {
                                      }}
                         />
                         <VictoryGroup data={this.state.graphData}
-                                      domain={{[(this.state.selectedDiaryItem !== STEPS) && 'y']: this.getYDomain(this.state.selectedDiaryItem)}}
+                                      domain={{[(this.state.ratingsInfo[this.state.selectedDiaryItem].scale !== 'Undetermined') && 'y']: this.getYDomain(this.state.selectedDiaryItem)}}
                                       >
                             <VictoryLine
                                 style={{

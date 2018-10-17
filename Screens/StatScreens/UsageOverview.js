@@ -99,7 +99,7 @@ export default class UsageOverview extends React.Component {
                 } else {
                     this.getDateRange(periods.year, this.transformData)
                 }
-            }, 100)
+            }, 10)
         })
 
         // setting timeout to allow spinner to appear
