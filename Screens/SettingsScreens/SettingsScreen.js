@@ -1,6 +1,6 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Modal, Dimensions, Alert, ActivityIndicator, TouchableHighlight, Platform } from 'react-native';
-import Ionicons from "react-native-vector-icons/Ionicons";
+import { StyleSheet, Text, View, Button, TextInput, Modal, Dimensions, Alert, ActivityIndicator } from 'react-native';
+import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Toast } from 'native-base';
 import {Icons} from "../../Constants/Icon";
 import PINCode from '@haskkor/react-native-pincode'
@@ -13,6 +13,9 @@ import store from '../../Redux/store';
 import Moment from 'moment';
 import { updateEmail } from '../../Redux/actions';
 import DateTimePicker from 'react-native-modal-datetime-picker';
+import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
+import getTheme from '../../native-base-theme/components';
+import platform from '../../native-base-theme/variables/platform';
 
 export default class SettingsScreen extends React.Component {
     static navigationOptions = {
@@ -58,6 +61,7 @@ export default class SettingsScreen extends React.Component {
       notificationSwitchValue: false,
       timePickerVisible: false,
       notificationTime: '',
+      dataReady: false,
     };
 
     toggleModal = bool => {
@@ -89,12 +93,15 @@ export default class SettingsScreen extends React.Component {
     const notificationTimestamp = dbObject[0].notificationTime;
     const notificationTime = notificationTimestamp ? Moment(notificationTimestamp).format('HH:mm') : '';
 
-    this.setState({
-      switchValue: Boolean(switchValue),
-      dbtSwitchValue: Boolean(dbtSwitchValue),
-      notificationSwitchValue: Boolean(notificationSwitchValue),
-      notificationTime: notificationTime,
-    });
+    this.setState(
+      {
+        switchValue: Boolean(switchValue),
+        dbtSwitchValue: Boolean(dbtSwitchValue),
+        notificationSwitchValue: Boolean(notificationSwitchValue),
+        notificationTime: notificationTime,
+      },
+      () => this.setState({ dataReady: true })
+    );
 
     handleDbtSwitch = value => {
         this.setState(prevState => {
@@ -500,53 +507,74 @@ export default class SettingsScreen extends React.Component {
   };
 
   render() {
+    const NUMBER_OF_TABS = 2;
+
     return (
       <View style={TabStyles.stackContainer}>
-        <View style={{ flex: 1, alignSelf: 'stretch' }}>
-          <SettingsSelectionRow
-            height={Dimensions.get('window').height / 11}
-            name={'Set Passcode'}
-            iconName={Icons.password + '-outline'}
-            switch={true}
-            switchValue={this.state.switchValue}
-            handleSwitch={() => this.handleSwitch()}
-          />
-          <SettingsSelectionRow
-            height={Dimensions.get('window').height / 11}
-            name={'DBT'}
-            iconName={Icons.dbt + '-outline'}
-            switch={true}
-            switchValue={this.state.dbtSwitchValue}
-            handleSwitch={() => this.handleDbtSwitch()}
-            info={true}
-            infoAlert={() => this.infoAlert('DBT', DBT)}
-          />
-          <SettingsSelectionRow
-            height={Dimensions.get('window').height / 11}
-            name={'Notifications'}
-            iconName={Icons.notifications + '-outline'}
-            switch={true}
-            switchValue={this.state.notificationSwitchValue}
-            handleSwitch={() => this.handleNotificationSwitch()}
-            info={true}
-            infoAlert={() =>
-              this.infoAlert(
-                'Notifications',
-                NOTIFICATIONS +
-                  (this.state.notificationTime !== ''
-                    ? '\n\nCurrent recurring notification time: ' + this.state.notificationTime
-                    : '')
-              )
-            }
-          />
-          <SettingsSelectionRow
-            height={Dimensions.get('window').height / 11}
-            name={'Backup and Restore'}
-            iconName={Icons.backup + '-outline'}
-            arrow={true}
-            onPress={() => this.props.navigation.push('backupRestore')}
-          />
-        </View>
+        {this.state.dataReady ? (
+          <Container>
+            <StyleProvider style={getTheme(platform)}>
+              <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
+                <Tab heading={'General'}>
+                  <View style={{ flex: 1, alignSelf: 'stretch' }}>
+                    <SettingsSelectionRow
+                      height={Dimensions.get('window').height / 11}
+                      name={'Set Passcode'}
+                      iconName={Icons.password + '-outline'}
+                      switch={true}
+                      switchValue={this.state.switchValue}
+                      handleSwitch={() => this.handleSwitch()}
+                    />
+                    <SettingsSelectionRow
+                      height={Dimensions.get('window').height / 11}
+                      name={'Notifications'}
+                      iconName={Icons.notifications + '-outline'}
+                      switch={true}
+                      switchValue={this.state.notificationSwitchValue}
+                      handleSwitch={() => this.handleNotificationSwitch()}
+                      info={true}
+                      infoAlert={() =>
+                        this.infoAlert(
+                          'Notifications',
+                          NOTIFICATIONS +
+                            (this.state.notificationTime !== ''
+                              ? '\n\nCurrent recurring notification time: ' + this.state.notificationTime
+                              : '')
+                        )
+                      }
+                    />
+                    <SettingsSelectionRow
+                      height={Dimensions.get('window').height / 11}
+                      name={'Backup and Restore'}
+                      iconName={Icons.backup + '-outline'}
+                      arrow={true}
+                      onPress={() => this.props.navigation.push('backupRestore')}
+                    />
+                  </View>
+                </Tab>
+                <Tab heading={'Clinical'}>
+                  <View style={{ flex: 1, alignSelf: 'stretch' }}>
+                    <SettingsSelectionRow
+                      height={Dimensions.get('window').height / 11}
+                      name={'DBT'}
+                      iconName={Icons.dbt + '-outline'}
+                      switch={true}
+                      switchValue={this.state.dbtSwitchValue}
+                      handleSwitch={() => this.handleDbtSwitch()}
+                      info={true}
+                      infoAlert={() => this.infoAlert('DBT', DBT)}
+                    />
+                  </View>
+                </Tab>
+              </Tabs>
+            </StyleProvider>
+          </Container>
+        ) : (
+          <View style={{ flex: 1, justifyContent: 'center' }}>
+            <ActivityIndicator size="large" color="#007AFF" />
+          </View>
+        )}
+
         <DateTimePicker
           isVisible={this.state.timePickerVisible}
           mode={'time'}
