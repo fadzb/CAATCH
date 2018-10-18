@@ -94,11 +94,11 @@ export const UsageFunctionIds = {
     helper: 21,
   },
   session: {
-    Home: 22,
+    statSelection: 22,
     Plan: 23,
     Diary: 24,
-    Crisis: 25,
-    Settings: 26,
+    goals: 25,
+    reports: 26,
   },
 };
 

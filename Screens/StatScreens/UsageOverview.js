@@ -46,11 +46,11 @@ const periods = {
 // String representations of above selections
 
 const chartColors = {
-  Home: '#c43a31',
+  statSelection: '#c43a31',
   Plan: 'blue',
   Diary: 'green',
-  Crisis: 'yellow',
-  Settings: 'purple',
+  goals: 'yellow',
+  reports: 'purple',
 };
 
 export default class UsageOverview extends React.Component {
@@ -161,11 +161,11 @@ export default class UsageOverview extends React.Component {
 
   transformData = () => {
     let trackGraph = {
-      Home: [],
+      statSelection: [],
       Plan: [],
       Diary: [],
-      Crisis: [],
-      Settings: [],
+      goals: [],
+      reports: [],
     };
 
     const today = Moment().format('YYYY-MM-DD');
@@ -237,11 +237,11 @@ export default class UsageOverview extends React.Component {
               <View style={{ alignItems: 'stretch' }}>
                 <ChartLegend
                   data={[
-                    { name: 'Home', color: chartColors.Home },
+                    { name: 'Stats', color: chartColors.statSelection },
                     { name: 'Plan', color: chartColors.Plan },
                     { name: 'Diary', color: chartColors.Diary },
-                    { name: 'Crisis', color: chartColors.Crisis },
-                    { name: 'Settings', color: chartColors.Settings },
+                    { name: 'Goals', color: chartColors.goals },
+                    { name: 'Reports', color: chartColors.reports },
                   ]}
                 />
               </View>
@@ -250,7 +250,7 @@ export default class UsageOverview extends React.Component {
                 height={Dimensions.get('window').height * 0.47}
                 theme={VictoryTheme.material}
                 categories={{
-                  x: this.state.graphData.Home.map((gr) => gr.x),
+                  x: this.state.graphData.statSelection.map((gr) => gr.x),
                 }}
               >
                 <VictoryAxis fixLabelOverlap={true} />
@@ -266,7 +266,7 @@ export default class UsageOverview extends React.Component {
                   <VictoryBar
                     style={{ data: { fill: '#c43a31', fillOpacity: 0.8 } }}
                     alignment="start"
-                    data={this.state.graphData.Home}
+                    data={this.state.graphData.statSelection}
                     barRatio={0.8}
                     animate={{
                       onExit: {
@@ -299,7 +299,7 @@ export default class UsageOverview extends React.Component {
                   <VictoryBar
                     style={{ data: { fill: 'yellow', fillOpacity: 0.8 } }}
                     alignment="start"
-                    data={this.state.graphData.Crisis}
+                    data={this.state.graphData.goals}
                     barRatio={0.8}
                     animate={{
                       onExit: {
@@ -310,7 +310,7 @@ export default class UsageOverview extends React.Component {
                   <VictoryBar
                     style={{ data: { fill: 'purple', fillOpacity: 0.8 } }}
                     alignment="start"
-                    data={this.state.graphData.Settings}
+                    data={this.state.graphData.reports}
                     barRatio={0.8}
                     animate={{
                       onExit: {
