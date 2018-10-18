@@ -64,7 +64,7 @@ export default class App extends React.Component {
                 if(res[0].enabled === 1) {
                     this.setState({passcodeEnabled: true})
                 } else {
-                    this.setState({currentTab: 'Home', startTime: new Date().getTime()})
+                    this.setState({currentTab: 'Home'})
                 }
                 // check passcode
 
@@ -102,32 +102,38 @@ export default class App extends React.Component {
 
             // if app goes from inactive/background to active, reset start time state
         } else if(store.getState().app === 'active' && (nextAppState === 'background' || nextAppState === 'inactive')) {
-            updateDatabase(DbTableNames.functionUsage, [UsageFunctionIds.session[this.state.currentTab], store.getState().usage, (new Date().getTime() - this.state.startTime)],
-                ['functionId', 'usageId', 'functionValue']);
+            if(Object.values(trackScreens).includes(this.state.currentTab)) {
+                updateDatabase(DbTableNames.functionUsage, [UsageFunctionIds.session[this.state.currentTab], store.getState().usage, (new Date().getTime() - this.state.startTime)],
+                    ['functionId', 'usageId', 'functionValue']);
 
-            // if app goes from active to inactive/background, push session time record to DB
+                // if app goes from active to inactive/background, push session time record to DB
+            }
         }
     };
 
     handleTabChange = tab => {
         this.setState(prevState => {
+
             const prevTab = prevState.currentTab;
 
-            if(prevTab) {
-                updateDatabase(DbTableNames.functionUsage, [UsageFunctionIds.session[prevTab], store.getState().usage, (new Date().getTime() - this.state.startTime)],
-                    ['functionId', 'usageId', 'functionValue'], undefined, res => {
-                        this.setState({
-                            currentTab: tab,
-                            startTime: new Date().getTime()
-                        })
-                    });
-            } else {
-                return {
-                    currentTab: tab,
-                    startTime: new Date().getTime()
+            if(prevTab !== tab) {
+                if (Object.values(trackScreens).includes(prevTab)) {
+                    updateDatabase(DbTableNames.functionUsage, [UsageFunctionIds.session[prevTab], store.getState().usage, (new Date().getTime() - this.state.startTime)],
+                        ['functionId', 'usageId', 'functionValue'], undefined, res => {
+                            this.setState({
+                                currentTab: tab,
+                                startTime: new Date().getTime()
+                            })
+                        });
+                } else {
+                    return {
+                        currentTab: tab,
+                        startTime: new Date().getTime()
+                    }
                 }
             }
         })
+
     };
 
     // when moving between tabs, record time of session to DB and reset start time and currentTab states
@@ -154,8 +160,20 @@ export default class App extends React.Component {
                                 const currentScreen = getActiveRouteNamePasscode(currentState);
                                 const prevScreen = getActiveRouteNamePasscode(prevState);
 
-                                if (prevScreen !== currentScreen) {
-                                    this.handleTabChange(currentScreen)
+                                if(currentScreen && prevScreen) {
+                                    if (prevScreen.routeName !== currentScreen.routeName) {
+                                        if (currentScreen.routeName === 'Home' && currentScreen.routes[1]) {
+                                            this.handleTabChange(currentScreen.routes[1].routeName)
+                                        } else {
+                                            this.handleTabChange(currentScreen.routeName)
+                                        }
+                                    }
+                                } else if(currentScreen) {
+                                    if (currentScreen.routeName === 'Home' && currentScreen.routes[1]) {
+                                        this.handleTabChange(currentScreen.routes[1].routeName)
+                                    } else {
+                                        this.handleTabChange(currentScreen.routeName)
+                                    }
                                 }
                             }}
                         />
@@ -173,8 +191,20 @@ export default class App extends React.Component {
                             const currentScreen = getActiveRouteName(currentState);
                             const prevScreen = getActiveRouteName(prevState);
 
-                            if (prevScreen !== currentScreen) {
-                                this.handleTabChange(currentScreen)
+                            if(currentScreen && prevScreen) {
+                                if (prevScreen.routeName !== currentScreen.routeName) {
+                                    if (currentScreen.routeName === 'Home' && currentScreen.routes[1]) {
+                                        this.handleTabChange(currentScreen.routes[1].routeName)
+                                    } else {
+                                        this.handleTabChange(currentScreen.routeName)
+                                    }
+                                }
+                            } else if(currentScreen) {
+                                if (currentScreen.routeName === 'Home' && currentScreen.routes[1]) {
+                                    this.handleTabChange(currentScreen.routes[1].routeName)
+                                } else {
+                                    this.handleTabChange(currentScreen.routeName)
+                                }
                             }
                         }}
                     />
@@ -215,9 +245,10 @@ function getActiveRouteName(navigationState) {
     }
     const route = navigationState.routes[navigationState.index];
     // dive into nested navigators
-    // console.log(navigationState)
 
-    return route.routeName;
+    if(!route.isTransitioning) {
+        return route;
+    }
 }
 
 function getActiveRouteNamePasscode(navigationState) {
@@ -230,6 +261,16 @@ function getActiveRouteNamePasscode(navigationState) {
 
         const route = allRoutes.routes[allRoutes.index];
 
-        return route.routeName;
+        if(!route.isTransitioning) {
+            return route;
+        }
     }
 }
+
+const trackScreens = {
+    stats: 'statSelection',
+    goals: 'goals',
+    reports: 'reports',
+    plan: 'Plan',
+    diary: 'Diary',
+};
