@@ -68,7 +68,7 @@ class BackupRestoreSelection extends React.Component {
   showRestoreAlert = (uri) => {
     Alert.alert(
       'WARNING',
-      'If you press "Restore" all current data will be overwritten with data from selected file',
+      'If you press "Restore" all current data will be overwritten with data from selected file.\n\nPreviously saved media will also be lost.',
       [
         { text: 'Cancel', style: 'cancel' },
         { text: 'Restore', onPress: () => this.restoreDb(uri), style: 'destructive' },
@@ -108,7 +108,10 @@ class BackupRestoreSelection extends React.Component {
       to: file,
     })
       .then((res) => {
-        Expo.Updates.reload();
+        const directoryName = 'SafetyplanMedia/';
+        const directory = Expo.FileSystem.documentDirectory + directoryName;
+
+        Expo.FileSystem.deleteAsync(directory).then((res) => Expo.Updates.reload());
       })
       .catch((err) => console.log(err));
   };
