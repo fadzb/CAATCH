@@ -8,6 +8,7 @@ import { CustomSelectionRow } from '../../Components/CustomSelectionRow';
 import { Icons } from '../../Constants/Icon';
 import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis, VictoryGroup, VictoryScatter } from 'victory-native';
 import { PressableIcon } from '../../Components/PressableIcon';
+import { connect } from 'react-redux';
 
 const timeFrames = {
   weekDate: Moment().subtract(6, 'd').format('YYYY-MM-DD'),
@@ -36,7 +37,7 @@ const SLEEP_SCALE = 'Sleep Scale';
 const MOOD_SCALE = 'Mood Scale';
 const STEPS = 'Steps';
 
-export default class VicChart extends React.Component {
+class VicChart extends React.Component {
   static navigationOptions = {
     title: 'Charts',
   };
@@ -48,7 +49,7 @@ export default class VicChart extends React.Component {
     this.state = {
       diaryData: [],
       oldDiaryData: [],
-      selectedDiaryItem: 'Use Drugs',
+      selectedDiaryItem: 'Mood Scale',
       compareDiaryItem: 'None',
       graphData: [
         { x: 0, y: 0 },
@@ -67,7 +68,7 @@ export default class VicChart extends React.Component {
       timeFrameSelected: false,
       comparisonSelected: false,
       checkedItemTime: periods.week,
-      checkedItemDiary: 'Use Drugs',
+      checkedItemDiary: 'Mood Scale',
       checkedItemCompare: 'None',
       ratingsInfo: {},
     };
@@ -81,7 +82,9 @@ export default class VicChart extends React.Component {
     readDatabase('*', 'Diary', (res) => {
       let list = {};
 
-      const scaleList = res.filter((di) => di.diaryType !== 'Skill' && di.diaryName !== 'Notes');
+      const scaleList = this.props.settings.dbt
+        ? res.filter((di) => di.diaryType !== 'Skill' && di.diaryName !== 'Notes')
+        : res.filter((di) => di.diaryType === 'General' && di.diaryName !== 'Notes');
       const ratingsInfo = scaleList.reduce((obj, s) => {
         obj[s.diaryName] = { defaultRating: s.defaultRating, minRating: s.minRating, scale: s.scale };
 
@@ -137,7 +140,8 @@ export default class VicChart extends React.Component {
         timeFrames.monthDate +
         "') and Date('" +
         today +
-        "') and diaryType = 'Feeling' or diaryType = 'General'"
+        "') and " +
+        (this.props.settings.dbt ? "diaryType = 'Feeling' or diaryType = 'General'" : "diaryType = 'General'")
     );
   };
   // retrieve ratings for diary items up to 30 days ago
@@ -153,7 +157,8 @@ export default class VicChart extends React.Component {
       timeFrames.yearDate +
       "') and Date('" +
       today +
-      "') and diaryType = 'Feeling' or diaryType = 'General')";
+      "') and " +
+      (this.props.settings.dbt ? "diaryType = 'Feeling' or diaryType = 'General')" : "diaryType = 'General')");
 
     readDatabaseArg(
       columns,
@@ -359,7 +364,12 @@ export default class VicChart extends React.Component {
   // setting the min and max values expected for each type of diary item
 
   getYCategorey = () => {
-    const scale = this.state.ratingsInfo[this.state.selectedDiaryItem].scale;
+    const scale =
+      this.state.ratingsInfo[this.state.selectedDiaryItem].scale === 'Undetermined'
+        ? 5
+        : this.state.ratingsInfo[this.state.selectedDiaryItem].scale;
+    // if scale is set to 'Undetermined' in DB, give it default of 5 for when no records in DB.
+
     let categoryArr = [];
 
     for (let i = 1; i <= scale; i++) {
@@ -566,3 +576,11 @@ const chartStyle = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+const mapStateToProps = (state) => ({
+  settings: state.setting,
+});
+// function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
+
+export default connect(mapStateToProps)(VicChart);
+// HOC that re-renders the component automatically every time a particular section of state is updated

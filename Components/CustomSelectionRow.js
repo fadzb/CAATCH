@@ -7,7 +7,7 @@ import { VideoThumbnail } from './VideoThumbnail';
 
 // Component used for rows in the touchable rows in the app
 export const CustomSelectionRow = (props) => (
-  <View style={customSelectionRowStyle.container}>
+  <View style={[customSelectionRowStyle.container, props.containerStyle]}>
     <TouchableHighlight underlayColor="#FDEDEC" style={customSelectionRowStyle.button} onPress={props.onPress}>
       <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
         <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'flex-start', alignItems: 'center' }}>
