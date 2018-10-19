@@ -7,7 +7,7 @@ import {VideoThumbnail} from "./VideoThumbnail";
 
 // Component used for rows in the touchable rows in the app
 export const CustomSelectionRow = (props) => (
-    <View style={customSelectionRowStyle.container}>
+    <View style={[customSelectionRowStyle.container, props.containerStyle]}>
         <TouchableHighlight
             underlayColor="#FDEDEC"
             style={customSelectionRowStyle.button}

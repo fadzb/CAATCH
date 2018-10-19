@@ -229,7 +229,7 @@ export default class UsageOverview extends React.Component {
                                 />
                                 <VictoryStack>
                                     <VictoryBar
-                                                style={{ data: { fill: "#c43a31", fillOpacity: 0.8, } }}
+                                                style={{ data: { fill: chartColors.statSelection, fillOpacity: 0.8, } }}
                                                 alignment="start"
                                                 data={this.state.graphData.statSelection}
                                                 barRatio={0.8}
@@ -240,7 +240,7 @@ export default class UsageOverview extends React.Component {
                                                 }}
                                     />
                                     <VictoryBar
-                                        style={{ data: { fill: "blue", fillOpacity: 0.8, } }}
+                                        style={{ data: { fill: chartColors.Plan, fillOpacity: 0.8, } }}
                                         alignment="start"
                                         data={this.state.graphData.Plan}
                                         barRatio={0.8}
@@ -251,7 +251,7 @@ export default class UsageOverview extends React.Component {
                                         }}
                                     />
                                     <VictoryBar
-                                        style={{ data: { fill: "green", fillOpacity: 0.8, } }}
+                                        style={{ data: { fill: chartColors.Diary, fillOpacity: 0.8, } }}
                                         alignment="start"
                                         data={this.state.graphData.Diary}
                                         barRatio={0.8}
@@ -262,7 +262,7 @@ export default class UsageOverview extends React.Component {
                                         }}
                                     />
                                     <VictoryBar
-                                        style={{ data: { fill: "yellow", fillOpacity: 0.8, } }}
+                                        style={{ data: { fill: chartColors.goals, fillOpacity: 0.8, } }}
                                         alignment="start"
                                         data={this.state.graphData.goals}
                                         barRatio={0.8}
@@ -273,7 +273,7 @@ export default class UsageOverview extends React.Component {
                                         }}
                                     />
                                     <VictoryBar
-                                        style={{ data: { fill: "purple", fillOpacity: 0.8, } }}
+                                        style={{ data: { fill: chartColors.reports, fillOpacity: 0.8, } }}
                                         alignment="start"
                                         data={this.state.graphData.reports}
                                         barRatio={0.8}
