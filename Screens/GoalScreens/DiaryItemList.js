@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'react-native';
 import CustomMultiSelectList from '../../Components/CustomMultiSelectList';
-
+import { connect } from 'react-redux';
 import { readDatabaseArg } from '../../Util/DatabaseHelper';
 
-export default class DiaryItemList extends React.Component {
+class DiaryItemList extends React.Component {
   static navigationOptions = {
     title: 'Diary Items',
   };
@@ -25,7 +25,7 @@ export default class DiaryItemList extends React.Component {
       'Diary',
       this.updateDiaryItems,
       () => console.log('DB read success'),
-      'where scale is not NULL'
+      'where scale is not NULL' + (!this.props.settings.dbt ? ' and diaryType = "General"' : '')
     );
   }
   // read DB for all currently saved diary items
@@ -135,3 +135,11 @@ const diaryItemStyle = StyleSheet.create({
     justifyContent: 'center',
   },
 });
+
+const mapStateToProps = (state) => ({
+  settings: state.setting,
+});
+// function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
+
+export default connect(mapStateToProps)(DiaryItemList);
+// HOC that re-renders the component automatically every time a particular section of state is updated
