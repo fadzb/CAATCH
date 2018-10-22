@@ -15,6 +15,7 @@ export const Icons = {
   contacts: 'ios-call',
   environmentSafe: 'ios-checkmark-circle',
   media: 'ios-images',
+  image: 'ios-image',
   delete: 'ios-trash',
   message: 'ios-text',
   email: 'ios-mail',

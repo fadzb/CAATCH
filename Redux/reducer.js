@@ -30,6 +30,7 @@ import {
   UPDATE_GOAL,
   GET_GOAL,
   UPDATE_APP_STATE,
+  UPDATE_WALLPAPER,
 } from './actions';
 import Moment from 'moment';
 
@@ -246,7 +247,7 @@ const scheduleReducer = (state = { appointments: {}, date: Moment().format('YYYY
 
 //Setting
 
-const settingReducer = (state = { dbt: false, email: 'None' }, action) => {
+const settingReducer = (state = { dbt: false, email: 'None', wallpaperImagePath: '' }, action) => {
   if (action.type === UPDATE_DBT_SETTING) {
     return { ...state, dbt: action.payload };
   }
@@ -256,6 +257,11 @@ const settingReducer = (state = { dbt: false, email: 'None' }, action) => {
     return { ...state, email: action.payload };
   }
   // used to update global backup email setting
+
+  if (action.type === UPDATE_WALLPAPER) {
+    return { ...state, wallpaperImage: action.payload };
+  }
+  // used to update global wallpaper setting
 
   return state;
 };
