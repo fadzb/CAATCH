@@ -6,7 +6,7 @@ import { Provider } from 'react-redux';
 import store from './Redux/store';
 import { readDatabase, updateDatabase } from './Util/DatabaseHelper';
 import Moment from 'moment';
-import { updateUsage, updateDbtSetting, updateAppState } from './Redux/actions';
+import { updateUsage, updateDbtSetting, updateAppState, updateWallpaper } from './Redux/actions';
 import { AppLoading } from 'expo';
 import { Root } from 'native-base';
 import { AppState, Text } from 'react-native';
@@ -75,6 +75,10 @@ export default class App extends React.Component {
           store.dispatch(updateDbtSetting(false));
         }
         // check DBT setting
+
+        if (res[0].wallpaper === 1) {
+          store.dispatch(updateWallpaper(res[0].wallpaperImage));
+        }
       },
       () => this.setState({ isReady: true })
     );

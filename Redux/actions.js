@@ -7,6 +7,8 @@ export const UPDATE_APP_STATE = 'UPDATE_APP_STATE';
 //Settings
 
 export const UPDATE_DBT_SETTING = 'UPDATE_DBT_SETTING';
+export const UPDATE_EMAIL = 'UPDATE_EMAIL';
+export const UPDATE_WALLPAPER = 'UPDATE_WALLPAPER';
 
 //SafetyPlan
 
@@ -65,6 +67,16 @@ export const UPDATE_SCHEDULE_DATE = 'UPDATE_SCHEDULE_DATE';
 
 export const updateDbtSetting = (update) => ({
   type: UPDATE_DBT_SETTING,
+  payload: update,
+});
+
+export const updateEmail = (update) => ({
+  type: UPDATE_EMAIL,
+  payload: update,
+});
+
+export const updateWallpaper = (update) => ({
+  type: UPDATE_WALLPAPER,
   payload: update,
 });
 

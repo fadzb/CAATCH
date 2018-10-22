@@ -8,7 +8,7 @@ import {updateDatabase, readDatabase, updateDatabaseArgument, readDatabaseArg} f
 import {SettingsSelectionRow} from "../../Components/SettingsSelectionRow";
 import { Constants } from 'expo';
 import { PressableIcon } from '../../Components/PressableIcon';
-import { updateDbtSetting } from '../../Redux/actions';
+import { updateDbtSetting, updateWallpaper } from '../../Redux/actions';
 import store from '../../Redux/store';
 import Moment from 'moment';
 import { updateEmail } from '../../Redux/actions';
@@ -58,6 +58,7 @@ export default class SettingsScreen extends React.Component {
       modalVisible: false,
       switchValue: false,
       dbtSwitchValue: false,
+      wallpaperSwitchValue: false,
       notificationSwitchValue: false,
       timePickerVisible: false,
       notificationTime: '',
@@ -68,27 +69,11 @@ export default class SettingsScreen extends React.Component {
         this.setState({modalVisible: bool})
     };
 
-    handlePinStore = pin => {
-        updateDatabaseArgument(DbTableNames.user,
-            [pin, 1],
-            ['passcode', 'enabled'],
-            'where userId = 1',
-            this.setState({switchValue: true, modalVisible: false}));
-    };
-    // saving pin to USER table in DB
-
-    handleSwitch = value => {
-        this.setState(prevState => {
-            if(prevState.switchValue === true) {
-                updateDatabaseArgument(DbTableNames.user,
-                    [0],
-                    ['enabled'],
-                    'where userId = 1')
-            }
-
-            return {switchValue: !prevState.switchValue}
-        },() => this.toggleModal(this.state.switchValue));
-    };
+  getSwitchValues = (dbObject) => {
+    const switchValue = dbObject[0].enabled;
+    const dbtSwitchValue = dbObject[0].dbt;
+    const notificationSwitchValue = dbObject[0].notifications;
+    const wallpaperSwitchValue = dbObject[0].wallpaper;
 
     const notificationTimestamp = dbObject[0].notificationTime;
     const notificationTime = notificationTimestamp ? Moment(notificationTimestamp).format('HH:mm') : '';
@@ -99,6 +84,7 @@ export default class SettingsScreen extends React.Component {
         dbtSwitchValue: Boolean(dbtSwitchValue),
         notificationSwitchValue: Boolean(notificationSwitchValue),
         notificationTime: notificationTime,
+        wallpaperSwitchValue: Boolean(wallpaperSwitchValue),
       },
       () => this.setState({ dataReady: true })
     );
@@ -225,8 +211,75 @@ export default class SettingsScreen extends React.Component {
 
         // create local notification object
 
-        let tomorrowNoteTime = new Date(time.getTime());
-        tomorrowNoteTime.setDate(tomorrowNoteTime.getDate() + 1);
+  handleWallpaperSwitch = (imageUri, cacheUri) => {
+    this.setState({ wallpaperSwitchValue: true }, () => {
+      Expo.FileSystem.moveAsync({
+        from: cacheUri,
+        to: imageUri,
+      }).then((res) => {
+        store.dispatch(updateWallpaper(imageUri));
+      });
+
+      updateDatabaseArgument(DbTableNames.user, [1, imageUri], ['wallpaper', 'wallpaperImage'], 'where userId = 1');
+    });
+  };
+  // if valid image selected from captureMedia function, toggle wallpaer switch and update gloabl state and DB values in User table
+
+  captureMedia = () => {
+    if (this.state.wallpaperSwitchValue) {
+      this.setState({ wallpaperSwitchValue: false }, () => {
+        updateDatabaseArgument(
+          DbTableNames.user,
+          [0, null],
+          ['wallpaper', 'wallpaperImage'],
+          'where userId = 1',
+          undefined,
+          (res) => {
+            this.removeWallpaperMedia(store.getState().setting.wallpaperImage, () =>
+              store.dispatch(updateWallpaper(''))
+            );
+          }
+        );
+      });
+      // if toggle is already switched on, update state and reset wallpaper values in User DB table. Also remove image file from documents directory to reduce storage usage
+    } else {
+      Expo.Permissions.askAsync(Expo.Permissions.CAMERA_ROLL).then((response) => {
+        if (response.status !== 'granted') {
+          console.error('Camera roll permission not granted!');
+          return;
+        }
+
+        Expo.ImagePicker.launchImageLibraryAsync({ mediaTypes: Expo.ImagePicker.MediaTypeOptions.Images }).then(
+          (selectedMedia) => {
+            if (!selectedMedia.cancelled) {
+              const splitName = selectedMedia.uri.split('/');
+              const shortName = splitName[splitName.length - 1];
+
+              const mediaDirectory = 'SafetyplanMedia/';
+              const imageUri = Expo.FileSystem.documentDirectory + mediaDirectory + shortName;
+
+              this.handleWallpaperSwitch(imageUri, selectedMedia.uri);
+            }
+          }
+        );
+        // open ImagePicker UI
+      });
+    }
+  };
+  // sets the state based on the media item that is selected
+
+  removeWallpaperMedia = (path, callback) => {
+    Expo.FileSystem.deleteAsync(path)
+      .then((res) => callback())
+      .catch((err) => console.log(err));
+  };
+  // remove media file from SP media folder in documentDirectory
+
+  handleNotificationSwitch = (value) => {
+    if (!this.state.notificationSwitchValue) {
+      Expo.Permissions.askAsync(Expo.Permissions.USER_FACING_NOTIFICATIONS).then((response) => {
+        if (response.status !== 'granted') {
+          console.log('Notification permission not granted!');
 
         // set tomorrow note time to 9am
 
@@ -524,6 +577,14 @@ export default class SettingsScreen extends React.Component {
                       switch={true}
                       switchValue={this.state.switchValue}
                       handleSwitch={() => this.handleSwitch()}
+                    />
+                    <SettingsSelectionRow
+                      height={Dimensions.get('window').height / 11}
+                      name={'Set Wallpaper'}
+                      iconName={Icons.image + '-outline'}
+                      switch={true}
+                      switchValue={this.state.wallpaperSwitchValue}
+                      handleSwitch={() => this.captureMedia()}
                     />
                     <SettingsSelectionRow
                       height={Dimensions.get('window').height / 11}
