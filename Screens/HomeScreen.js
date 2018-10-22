@@ -6,8 +6,9 @@ import {Icons} from "../Constants/Icon";
 import {TabStyles} from "../Styles/TabStyles";
 import {HomeScreenTileRow} from "../Components/HomeScreenTileRow";
 import {SectionHeader} from "../Constants/Constants";
+import {connect} from 'react-redux'
 
-export default class HomeScreen extends React.Component {
+class HomeScreen extends React.Component {
     static navigationOptions = {
         header: null,
         headerTitle: 'Home'
@@ -19,7 +20,7 @@ export default class HomeScreen extends React.Component {
             <View style={TabStyles.container}>
                 <Image resizeMode={'cover'}
                        style={{width: Dimensions.get('window').width, height: Dimensions.get('window').height / 2.8}}
-                       source={require("../Media/Images/lavender.jpg")} />
+                       source={this.props.wallpaperImage ? {uri: this.props.wallpaperImage} : require('../Media/Images/lavender.jpg')} />
                 <View style={homeStyle.tileContainer}>
                     <HomeScreenTileRow
                         name2={SectionHeader.diary}
@@ -64,4 +65,12 @@ const homeStyle = StyleSheet.create({
     },
 
 });
+
+const mapStateToProps = state => ({
+    wallpaperImage: state.setting.wallpaperImage,
+});
+// function passed into connect HOC below. Allows us to map section of redux state to props that we pass into our component
+
+export default connect(mapStateToProps)(HomeScreen)
+// HOC that re-renders the component automatically every time a particular section of state is updated
 
