@@ -48,4 +48,5 @@ export const Icons = {
   backup: 'ios-cloud-done',
   goals: 'ios-trophy',
   steps: 'ios-walk',
+  share: 'md-share',
 };
