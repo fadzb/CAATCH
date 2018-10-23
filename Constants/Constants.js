@@ -6,6 +6,40 @@ export const SafetyPlanConstants = {
   warningSign: 'WarningSign',
 };
 
+// SB table names for SP components. Used to query data for reports
+export const SafetyPlanDbTables = {
+  contact: {
+    tableName: 'Contact',
+    title: 'My Network',
+    dbNameColumn: 'firstName',
+  },
+  copingStrategy: {
+    tableName: 'CopingStrategy',
+    title: 'Coping Strategies',
+    dbNameColumn: 'copeName',
+  },
+  distraction: {
+    tableName: 'Distraction',
+    title: 'My Things',
+    dbNameColumn: 'distractName',
+  },
+  reason: {
+    tableName: 'Reason',
+    title: 'Life Worth Living',
+    dbNameColumn: 'reasonName',
+  },
+  warningSign: {
+    tableName: 'WarningSign',
+    title: 'Warning Signs',
+    dbNameColumn: 'signName',
+  },
+  // helper: {
+  //     tableName: 'Helper',
+  //     title: 'My Helpers',
+  //     dbNameColumn: 'contactId'
+  // },
+};
+
 // DB Table Name
 export const DbTableNames = {
   function: 'Function',
