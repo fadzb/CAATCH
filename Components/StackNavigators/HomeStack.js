@@ -9,14 +9,14 @@ import NewSchedule from "../../Screens/ScheduleScreens/NewSchedule";
 import VicChart from "../../Screens/StatScreens/VicChart";
 import StatSelection from "../../Screens/StatScreens/StatSelection";
 import Insights from "../../Screens/StatScreens/Insights";
-import Reports from "../../Screens/ReportScreens/Reports";
-import Pdf from "../../Screens/ReportScreens/Pdf";
 import VicSkillsChart from "../../Screens/StatScreens/VicSkillsChart";
 import Goals from "../../Screens/GoalScreens/Goals";
 import NewGoal from "../../Screens/GoalScreens/NewGoal";
 import DiaryItemList from "../../Screens/GoalScreens/DiaryItemList";
 import GoalSummary from "../../Screens/GoalScreens/GoalSummary";
 import EditGoal from "../../Screens/GoalScreens/EditGoal";
+import ReportSelection from "../../Screens/ReportScreens/ReportSelection";
+import SafetyPlanReport from "../../Screens/ReportScreens/SafetyPlanReport";
 
 const HomeStack = createStackNavigator(
     {
@@ -27,8 +27,8 @@ const HomeStack = createStackNavigator(
         insights: Insights,
         victory: VicChart,
         vicSkills: VicSkillsChart,
-        reports: Reports,
-        pdf: Pdf,
+        reportSelection: ReportSelection,
+        spReport: SafetyPlanReport,
         goals: Goals,
         newGoal: NewGoal,
         diaryItemList: DiaryItemList,

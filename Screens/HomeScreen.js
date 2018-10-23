@@ -31,7 +31,7 @@ class HomeScreen extends React.Component {
                         onPress1={() => this.props.navigation.navigate('Plan')}
                         third={true}
                         name3="My Reports"
-                        onPress3={() => this.props.navigation.navigate('reports')}
+                        onPress3={() => this.props.navigation.navigate('reportSelection')}
                         iconName3= {Icons.report + "-outline"}
                     />
                     <HomeScreenTileRow
