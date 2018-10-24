@@ -14,16 +14,17 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Icons } from '../../Constants/Icon';
-import { safetyPlanHtml } from '../../Components/HTML';
-import { readDatabase } from '../../Util/DatabaseHelper';
-import { SafetyPlanDbTables } from '../../Constants/Constants';
+import { diaryHtml, safetyPlanHtml } from '../../Components/HTML';
+import { readDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
+import { DbTableNames, SafetyPlanDbTables } from '../../Constants/Constants';
+import Moment from 'moment';
 
-export default class SafetyPlanReport extends React.Component {
+export default class DiaryReport extends React.Component {
   static navigationOptions = ({ navigation }) => {
     const { params = {} } = navigation.state;
 
     return {
-      title: ' SP Report',
+      title: 'Diary Report',
       headerRight: (
         <View style={{ paddingRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
           <Icon name={Icons.share} size={30} onPress={() => params.handleThis()} style={{ paddingRight: 15 }} />
@@ -37,8 +38,9 @@ export default class SafetyPlanReport extends React.Component {
     super(props);
 
     this.state = {
-      safetyPlanDataTracker: 0,
-      safetyPlanData: {},
+      diaryData: [],
+      resultData: [],
+      dataReady: false,
     };
   }
 
@@ -48,28 +50,43 @@ export default class SafetyPlanReport extends React.Component {
       handlePrint: this.print,
     });
 
-    this.getSafetyPlanData();
+    this.getDiaryList(this.getResultData);
   }
-
-  getSafetyPlanData = () => {
-    Object.keys(SafetyPlanDbTables).forEach((key) => {
-      readDatabase('*', SafetyPlanDbTables[key].tableName, (res) => {
-        this.setState(
-          (prevState) => ({ safetyPlanData: { ...prevState.safetyPlanData, [key]: res } }),
-          () => {
-            this.setState((prevState) => ({ safetyPlanDataTracker: prevState.safetyPlanDataTracker + 1 }));
-          }
-        );
-      });
-    });
-  };
 
   print = () => {
     Expo.DangerZone.Print.printAsync({
-      html: safetyPlanHtml(this.state.safetyPlanData),
+      html: diaryHtml(this.state.diaryData, this.state.resultData),
     })
       .then((res) => console.log(res))
       .catch((err) => console.log(err));
+  };
+
+  getDiaryList = (func) => {
+    readDatabaseArg(
+      '*',
+      DbTableNames.diary,
+      (res) => this.setState({ diaryData: res }, func),
+      undefined,
+      'where diaryType = "Feeling" or diaryType = "Skill"'
+    );
+  };
+
+  getResultData = () => {
+    const columns = 's.diaryDate, ds.rating, d.diaryName, d.diaryType';
+    const today = Moment().format('YYYY-MM-DD');
+
+    readDatabaseArg(
+      columns,
+      DbTableNames.diarySession,
+      (res) => this.setState({ resultData: res }, () => this.setState({ dataReady: true })),
+      undefined,
+      ' as ds inner join Diary as d on ds.diaryId = d.diaryId inner join Session as s on ds.sessionId = s.sessionId' +
+        " where DATE(diaryDate) between Date('" +
+        Moment().subtract(6, 'd').format('YYYY-MM-DD') +
+        "') and Date('" +
+        today +
+        "') and diaryType = 'Feeling' or diaryType = 'Skill'"
+    );
   };
 
   takeScreenShot = () => {
@@ -108,8 +125,8 @@ export default class SafetyPlanReport extends React.Component {
   render() {
     return (
       <View collapsable={false} style={{ flex: 1 }} ref={(ref) => (this.webView = ref)}>
-        {this.state.safetyPlanDataTracker === Object.keys(SafetyPlanDbTables).length ? (
-          <WebView originWhitelist={['*']} source={{ html: safetyPlanHtml(this.state.safetyPlanData) }} />
+        {this.state.dataReady ? (
+          <WebView originWhitelist={['*']} source={{ html: diaryHtml(this.state.diaryData, this.state.resultData) }} />
         ) : (
           <View style={{ flex: 1, justifyContent: 'center' }}>
             <ActivityIndicator size="large" color="#007AFF" />
@@ -120,7 +137,7 @@ export default class SafetyPlanReport extends React.Component {
   }
 }
 
-const spReportStyle = StyleSheet.create({
+const diaryReportStyle = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#ecf0f1',
