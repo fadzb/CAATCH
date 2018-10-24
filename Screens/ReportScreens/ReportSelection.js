@@ -32,7 +32,7 @@ export default class ReportSelection extends React.Component {
             icon={Icons.diary + '-outline'}
             iconSize={30}
             iconContainer={reportSelectionStyle.iconContainer}
-            onPress={() => console.log('hello')}
+            onPress={() => this.props.navigation.push('diaryReport')}
             containerStyle={{ flex: 0, height: Dimensions.get('window').height / 11 }}
           />
         </View>

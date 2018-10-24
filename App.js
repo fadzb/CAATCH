@@ -282,7 +282,7 @@ function getActiveRouteNamePasscode(navigationState) {
 const trackScreens = {
   stats: 'statSelection',
   goals: 'goals',
-  reports: 'reports',
+  reports: 'reportSelection',
   plan: 'Plan',
   diary: 'Diary',
 };

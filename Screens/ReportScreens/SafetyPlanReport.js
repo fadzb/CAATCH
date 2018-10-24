@@ -14,7 +14,7 @@ import {
 } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Icons } from '../../Constants/Icon';
-import { safetyPlanHtml } from './HTML';
+import { safetyPlanHtml } from '../../Components/HTML';
 import { readDatabase } from '../../Util/DatabaseHelper';
 import { SafetyPlanDbTables } from '../../Constants/Constants';
 
@@ -23,21 +23,11 @@ export default class SafetyPlanReport extends React.Component {
     const { params = {} } = navigation.state;
 
     return {
-      title: 'Report',
+      title: ' SP Report',
       headerRight: (
         <View style={{ paddingRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
           <Icon name={Icons.share} size={30} onPress={() => params.handleThis()} style={{ paddingRight: 15 }} />
-          <Icon
-            name={Icons.print + '-outline'}
-            size={30}
-            onPress={() => {
-              Expo.DangerZone.Print.printAsync({
-                html: safetyPlanHtml,
-              })
-                .then((res) => console.log(res))
-                .catch((err) => console.log(err));
-            }}
-          />
+          <Icon name={Icons.print + '-outline'} size={30} onPress={() => params.handlePrint()} />
         </View>
       ),
     };
@@ -55,6 +45,7 @@ export default class SafetyPlanReport extends React.Component {
   componentDidMount() {
     this.props.navigation.setParams({
       handleThis: this.takeScreenShot,
+      handlePrint: this.print,
     });
 
     this.getSafetyPlanData();
@@ -71,6 +62,14 @@ export default class SafetyPlanReport extends React.Component {
         );
       });
     });
+  };
+
+  print = () => {
+    Expo.DangerZone.Print.printAsync({
+      html: safetyPlanHtml(this.state.safetyPlanData),
+    })
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   takeScreenShot = () => {
