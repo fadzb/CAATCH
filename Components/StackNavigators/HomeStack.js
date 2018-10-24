@@ -17,6 +17,7 @@ import GoalSummary from "../../Screens/GoalScreens/GoalSummary";
 import EditGoal from "../../Screens/GoalScreens/EditGoal";
 import ReportSelection from "../../Screens/ReportScreens/ReportSelection";
 import SafetyPlanReport from "../../Screens/ReportScreens/SafetyPlanReport";
+import DiaryReport from "../../Screens/ReportScreens/DiaryReport";
 
 const HomeStack = createStackNavigator(
     {
@@ -29,6 +30,7 @@ const HomeStack = createStackNavigator(
         vicSkills: VicSkillsChart,
         reportSelection: ReportSelection,
         spReport: SafetyPlanReport,
+        diaryReport: DiaryReport,
         goals: Goals,
         newGoal: NewGoal,
         diaryItemList: DiaryItemList,

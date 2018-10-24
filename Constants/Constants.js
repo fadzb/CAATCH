@@ -132,7 +132,7 @@ export const UsageFunctionIds = {
         Plan: 23,
         Diary: 24,
         goals: 25,
-        reports: 26
+        reportSelection: 26
     }
 };
 
