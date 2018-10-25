@@ -11,7 +11,7 @@ const tableHtml = (title, items, key) => {
     let rows = '';
     items.forEach(i => rows = rows + rowHtml(i[SafetyPlanDbTables[key].dbNameColumn]));
 
-    return  "<table style=\"width:45%; margin-top: 70px\">\n" +
+    return  "<table style=\"width:45%; margin-top: 30px\">\n" +
             "  <tr>\n" +
             "    <th>" + title + "</th>\n" +
             "  </tr>\n" +
@@ -36,18 +36,18 @@ export const safetyPlanHtml = data => {
             "            text-align: center;\n" +
             "        }\n" +
             "        td {\n" +
-            "            font-size: 18px;\n" +
+            "            font-size: 1vw;\n" +
             "        }\n" +
             "        th {\n" +
-            "            font-size: 20px;\n" +
+            "            font-size: 1vw;\n" +
             "        }\n" +
             "    </style>\n" +
             "</head>\n" +
             "<body>\n" +
             "\n" +
             "<div style=\"display: flex; align-items: center; flex-direction: column;\">\n" +
-            "    <h2>Safety Plan Summary</h2>" +
-            "    <p style=\"margin: 0; padding: 0; font-size: 20px\">" + Moment().format('LL') + "</p>\n" +
+            "    <h2 style=\"font-size:4vw\">Safety Plan Summary</h2>" +
+            "    <p style=\"margin: 0; padding: 0; font-size:3vw\">" + Moment().format('LL') + "</p>\n" +
             "</div>\n" +
             "\n" +
             "<div style=\"display: flex; flex-wrap: wrap; justify-content: space-around\">\n" +
@@ -138,22 +138,26 @@ export const diaryHtml = (list, result) => {
         "            text-align: center;\n" +
         "        }\n" +
         "        td {\n" +
-        "            font-size: 18px;\n" +
+        "            font-size: 1vw;\n" +
         "        }\n" +
         "        th {\n" +
-        "            font-size: 20px;\n" +
+        "            font-size: 1vw;\n" +
         "        }\n" +
+        // "        table {\n" +
+        // "            overflow-x: auto;\n" +
+        // "            display: block;\n" +
+        // "        }\n" +
         "    </style>\n" +
         "</head>\n" +
         "<body>\n" +
         "\n" +
         "<div style=\"display: flex; align-items: center; flex-direction: column;\">\n" +
-        "    <h2>DBT Diary Card</h2>" +
-        "    <p style=\"margin: 0; padding: 0; font-size: 20px\">" + Moment().format('LL') + "</p>\n" +
+        "    <h2 style=\"font-size:4vw\">DBT Diary Card</h2>" +
+        "    <p style=\"margin: 0; padding: 0; font-size:3vw\">" + Moment().format('LL') + "</p>\n" +
         "</div>\n" +
         "\n" +
-        "<div style=\"display: flex; margin-bottom: 10px; justify-content: center\">\n" +
-            "<table style=\"width:95%; margin-top: 70px\">\n" +
+        "<div style=\"display: flex; justify-content: center\">\n" +
+            "<table style=\"width:95%; margin-top: 30px\">\n" +
                 "  <tr>\n" +
                 "    <th></th>\n" +
                     diaryHeaders +
@@ -166,7 +170,7 @@ export const diaryHtml = (list, result) => {
             "</table>" +
         "</div>\n" +
         "<div style=\"display: flex; margin-top: 10px; margin-bottom: 10px; justify-content: center\">\n" +
-            "<table style=\"width:95%; margin-top: 70px\">\n" +
+            "<table style=\"width:95%; margin-top: 30px\">\n" +
             "  <tr>\n" +
             "    <th></th>\n" +
                 skillHeaders +

@@ -3,8 +3,8 @@ import {Button, ScrollView, StyleSheet, Text, View, WebView, TouchableOpacity, S
 import Icon from "react-native-vector-icons/Ionicons";
 import {Icons} from "../../Constants/Icon";
 import {safetyPlanHtml} from "../../Components/HTML";
-import {readDatabase} from "../../Util/DatabaseHelper";
-import {SafetyPlanDbTables} from "../../Constants/Constants";
+import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
+import {DbTableNames, SafetyPlanDbTables} from "../../Constants/Constants";
 
 export default class SafetyPlanReport extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -14,12 +14,12 @@ export default class SafetyPlanReport extends React.Component {
             title: " SP Report",
             headerRight: (
                 <View style={{paddingRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                    <Icon
+                    {Platform.OS === 'ios' && <Icon
                         name={Icons.share}
                         size={30}
                         onPress={() => params.handleThis()}
                         style={{paddingRight: 15}}
-                    />
+                    />}
                     <Icon
                         name={Icons.print + '-outline'}
                         size={30}
@@ -50,11 +50,19 @@ export default class SafetyPlanReport extends React.Component {
 
     getSafetyPlanData = () => {
         Object.keys(SafetyPlanDbTables).forEach(key => {
-            readDatabase('*', SafetyPlanDbTables[key].tableName, res => {
-                this.setState(prevState => ({safetyPlanData: {...prevState.safetyPlanData, [key]: res}}), () => {
-                    this.setState(prevState => ({safetyPlanDataTracker: prevState.safetyPlanDataTracker + 1}))
+            if(key === 'helper') {
+                readDatabaseArg('h.*, c.firstName', SafetyPlanDbTables[key].tableName, res => {
+                    this.setState(prevState => ({safetyPlanData: {...prevState.safetyPlanData, [key]: res}}), () => {
+                        this.setState(prevState => ({safetyPlanDataTracker: prevState.safetyPlanDataTracker + 1}))
+                    })
+                }, undefined, 'as h inner join ' + DbTableNames.contact + ' as c on h.contactId = c.contactId')
+            } else {
+                readDatabase('*', SafetyPlanDbTables[key].tableName, res => {
+                    this.setState(prevState => ({safetyPlanData: {...prevState.safetyPlanData, [key]: res}}), () => {
+                        this.setState(prevState => ({safetyPlanDataTracker: prevState.safetyPlanDataTracker + 1}))
+                    })
                 })
-            })
+            }
         })
     };
 

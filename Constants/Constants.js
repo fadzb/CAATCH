@@ -38,11 +38,11 @@ export const SafetyPlanDbTables = {
         title: 'Environment Safe',
         dbNameColumn: 'environmentName'
     },
-    // helper: {
-    //     tableName: 'Helper',
-    //     title: 'My Helpers',
-    //     dbNameColumn: 'contactId'
-    // },
+    helper: {
+        tableName: 'Helper',
+        title: 'My Helpers',
+        dbNameColumn: 'firstName'
+    },
 };
 
 // DB Table Name

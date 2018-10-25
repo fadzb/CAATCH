@@ -57,8 +57,8 @@ export default class NewDbtItem extends React.Component {
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabase(DbTableNames.diary, [...Object.values(value), this.props.navigation.getParam('subType'), 'Feeling', 5, 1],
-                [...Object.keys(value), 'subType', 'diaryType', 'scale', 'deletable'],
+            updateDatabase(DbTableNames.diary, [...Object.values(value), this.props.navigation.getParam('subType'), 'Feeling', 5, 1, 0, 0],
+                [...Object.keys(value), 'subType', 'diaryType', 'scale', 'deletable', 'defaultRating', 'minRating'],
                 () => updateDiaryPrePops(() => {
                     this.props.navigation.navigate('feelings', {newFeeling: value.diaryName});
                 }),
