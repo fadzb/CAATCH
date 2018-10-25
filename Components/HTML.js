@@ -55,7 +55,7 @@ export const safetyPlanHtml = (data) => {
     '</p>\n' +
     '</div>\n' +
     '\n' +
-    '<div style="display: flex; flex-wrap: wrap; justify-content: space-around; margin-top: 10px">\n' +
+    '<div style="display: flex; flex-wrap: wrap; justify-content: space-around">\n' +
     titles +
     '</div>\n' +
     '\n' +
@@ -90,8 +90,8 @@ const skillTableRow = (dateArr, result, list) => {
     const resArr = result.filter((r) => r.diaryDate === d && r.diaryName === list.diaryName);
 
     resArr.length > 0
-      ? (rowData = rowData + '<td>' + resArr[0].rating + '</td>\n')
-      : (rowData = rowData + '<td>0</td>\n');
+      ? (rowData = rowData + '<td>' + (resArr[0].rating ? '✓' : '') + '</td>\n')
+      : (rowData = rowData + '<td></td>\n');
   });
 
   return '  <tr>\n' + '    <td>' + list.diaryName + '</td>\n' + rowData + '  </tr>\n';
@@ -178,7 +178,7 @@ export const diaryHtml = (list, result) => {
     '</p>\n' +
     '</div>\n' +
     '\n' +
-    '<div style="display: flex; margin-top: 10px; margin-bottom: 10px; justify-content: center">\n' +
+    '<div style="display: flex; margin-bottom: 10px; justify-content: center">\n' +
     '<table style="width:95%; margin-top: 70px">\n' +
     '  <tr>\n' +
     '    <th></th>\n' +
