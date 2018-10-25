@@ -27,7 +27,9 @@ export default class DiaryReport extends React.Component {
       title: 'Diary Report',
       headerRight: (
         <View style={{ paddingRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <Icon name={Icons.share} size={30} onPress={() => params.handleThis()} style={{ paddingRight: 15 }} />
+          {Platform.OS === 'ios' && (
+            <Icon name={Icons.share} size={30} onPress={() => params.handleThis()} style={{ paddingRight: 15 }} />
+          )}
           <Icon name={Icons.print + '-outline'} size={30} onPress={() => params.handlePrint()} />
         </View>
       ),
