@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions, Text, ActivityIndicator, Modal, TouchableHighlight, ScrollView } from 'react-native';
+import { StyleSheet, View, Dimensions, Text, ActivityIndicator, Modal, TouchableHighlight, ScrollView, Alert } from 'react-native';
 import {TabStyles} from "../../Styles/TabStyles";
 import Moment from 'moment'
 import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
@@ -11,6 +11,7 @@ import {PressableIcon} from "../../Components/PressableIcon";
 import {DbTableNames} from "../../Constants/Constants";
 import {convertMilliseconds} from "../../Util/ConvertMilliseconds";
 import {ChartLegend} from "../../Components/ChartLegend";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const timeFrames = {
     weekDate: Moment().subtract(6,'d').format('YYYY-MM-DD'),
@@ -51,15 +52,76 @@ export default class UsageOverview extends React.Component {
             data: [],
             dateRange: [],
             todayTime: 0,
-            todayTimeChecked: false
+            todayTimeChecked: false,
+            selectedRecipients: [],
+            snapshotFile: '',
+            emailModalVisible: false
         }
     }
 
     componentDidMount() {
-        // this.getUsageData();
-
         this.getDateRange(periods.week, this.getUsageData)
     }
+
+    handleEmailSelection = email => this.setState({selectedRecipients: email.filter(e => e !== undefined)});
+    // update selectedRecipients state when new email is selected in multi picker list
+
+    handleEmailModalClose = () => {
+        this.setState({emailModalVisible: false})
+    };
+
+    handleFinalEmailSelection = () => {
+        if(this.state.selectedRecipients.length > 0) {
+            Expo.MailComposer.composeAsync({
+                recipients: this.state.selectedRecipients,
+                subject: 'CAATCH Usage Graph ' + Moment().format('LL'),
+                body: "Hi, please find CAATCH Usage graph attached.",
+                attachments: [this.state.snapshotFile]
+            })
+                .then(result => console.log(result))
+                .then(res => this.handleEmailModalClose())
+                .catch(err => console.log(err))
+        } else {
+            this.notSelectedAlert()
+        }
+    };
+    // open email interface with snapshot attached as png file
+
+    notSelectedAlert = () => {
+        Alert.alert(
+            'Email Not Selected',
+            'Please select and email address from the list',
+            [
+                {text: 'OK', onPress: () => console.log('OK pressed')},
+            ],
+            { cancelable: false }
+        )
+    };
+
+    takeScreenShot = () => {
+        Expo.takeSnapshotAsync(this.chartView, {
+            format: 'png',
+            quality: 1,
+            result: 'file',
+        }).then(this.handleEmail).catch(err => console.log(err))
+    };
+    // take screenshot of entire screen view and call handleEmail function that sets the resulting file as the snapshotFile state
+
+    handleEmail = file => {
+        this.setState({snapshotFile: file, emailModalVisible: true});
+    };
+
+    infoAlert = () => {
+        Alert.alert(
+            'Recipients',
+            'Recipient list is populated with user email address and Helper email addresses.\n\nUser email address can be set in Backup and Restore setting menu',
+            [
+                {text: 'OK', onPress: () => console.log('OK pressed')},
+            ],
+            { cancelable: false }
+        )
+    };
+    // alert for displaying recipient info
 
     toggleModal = bool => {
         this.setState({modalVisible: bool})
@@ -193,113 +255,121 @@ export default class UsageOverview extends React.Component {
             <ScrollView contentContainerStyle={TabStyles.stackContainer}>
                 {this.state.graphReady ?
                     <View>
-                        <View style={{alignItems: 'center', justifyContent: 'center', borderBottomWidth: 0, marginHorizontal: 25, borderRadius: 5, flex: .15}}>
+                        <View style={{alignItems: 'center', justifyContent: 'center', borderBottomWidth: 0, marginHorizontal: 20, borderRadius: 5, flex: .15, flexDirection: 'row'}}>
                             <Text style={{fontSize: 17}}>{"Today's Usage: "}<Text style={{color: '#808080', fontSize: 17}}>{convertMilliseconds(this.state.todayTime)}</Text></Text>
-                            {/*<Text>{Moment().format("LL")}</Text>*/}
-                        </View>
-                        <View style={{flex: 1, justifyContent: 'center'}}>
-                            <View style={{alignItems: 'stretch'}}>
-                                <ChartLegend
-                                    data={[
-                                        { name: "Stats", color: chartColors.statSelection },
-                                        { name: "Plan", color: chartColors.Plan },
-                                        { name: "Diary", color: chartColors.Diary },
-                                        { name: "Goals", color: chartColors.goals },
-                                        { name: "Reports", color: chartColors.reports },
-                                    ]}
+                            <View style={{position: 'absolute', right: 0}}>
+                                <Icon
+                                    name={Icons.share}
+                                    size={25}
+                                    onPress={() => this.takeScreenShot()}
                                 />
                             </View>
-                            <VictoryChart
-                                padding={{top: 25, bottom: 35, left: 55, right: 50}}
-                                height={Dimensions.get('window').height * .47}
-                                theme={VictoryTheme.material}
-                                categories={{
-                                    x: this.state.graphData.statSelection.map(gr => gr.x)
-                                }}
-                            >
-                                <VictoryAxis
-                                    fixLabelOverlap={true}
-                                />
-                                <VictoryAxis dependentAxis
-                                             fixLabelOverlap={true}
-                                             tickFormat={(t) => convertMilliseconds(t)}
-                                             style={{
-                                                 tickLabels: { fontSize: 10 }
-                                             }}
-                                />
-                                <VictoryStack>
-                                    <VictoryBar
-                                                style={{ data: { fill: chartColors.statSelection, fillOpacity: 0.8, } }}
-                                                alignment="start"
-                                                data={this.state.graphData.statSelection}
-                                                barRatio={0.8}
-                                                animate={{
-                                                    onExit: {
-                                                        duration: 0,
-                                                    }
-                                                }}
-                                    />
-                                    <VictoryBar
-                                        style={{ data: { fill: chartColors.Plan, fillOpacity: 0.8, } }}
-                                        alignment="start"
-                                        data={this.state.graphData.Plan}
-                                        barRatio={0.8}
-                                        animate={{
-                                            onExit: {
-                                                duration: 0,
-                                            }
-                                        }}
-                                    />
-                                    <VictoryBar
-                                        style={{ data: { fill: chartColors.Diary, fillOpacity: 0.8, } }}
-                                        alignment="start"
-                                        data={this.state.graphData.Diary}
-                                        barRatio={0.8}
-                                        animate={{
-                                            onExit: {
-                                                duration: 0,
-                                            }
-                                        }}
-                                    />
-                                    <VictoryBar
-                                        style={{ data: { fill: chartColors.goals, fillOpacity: 0.8, } }}
-                                        alignment="start"
-                                        data={this.state.graphData.goals}
-                                        barRatio={0.8}
-                                        animate={{
-                                            onExit: {
-                                                duration: 0,
-                                            }
-                                        }}
-                                    />
-                                    <VictoryBar
-                                        style={{ data: { fill: chartColors.reports, fillOpacity: 0.8, } }}
-                                        alignment="start"
-                                        data={this.state.graphData.reports}
-                                        barRatio={0.8}
-                                        animate={{
-                                            onExit: {
-                                                duration: 0,
-                                            }
-                                        }}
-                                    />
-                                </VictoryStack>
-                            </VictoryChart>
                         </View>
-                        <View style={{flex: .15, justifyContent: 'flex-start', marginBottom: 20}}>
-                            <CustomSelectionRow
-                                name="Time Frame"
-                                icon={Icons.calendar + '-outline'}
-                                iconSize={Dimensions.get('window').height / 20}
-                                iconContainer={overviewStyle.iconContainer}
-                                selectedText={this.state.selectedTimeFrame}
-                                onPress={() => {
-                                    this.setState({timeFrameSelected: true});
+                        <View collapsable={false} ref={ref => this.chartView = ref} style={{flex: 1}}>
+                            <View style={{flex: 1, justifyContent: 'center'}}>
+                                <View style={{alignItems: 'stretch'}}>
+                                    <ChartLegend
+                                        data={[
+                                            { name: "Stats", color: chartColors.statSelection },
+                                            { name: "Plan", color: chartColors.Plan },
+                                            { name: "Diary", color: chartColors.Diary },
+                                            { name: "Goals", color: chartColors.goals },
+                                            { name: "Reports", color: chartColors.reports },
+                                        ]}
+                                    />
+                                </View>
+                                <VictoryChart
+                                    padding={{top: 25, bottom: 35, left: 55, right: 50}}
+                                    height={Dimensions.get('window').height * .47}
+                                    theme={VictoryTheme.material}
+                                    categories={{
+                                        x: this.state.graphData.statSelection.map(gr => gr.x)
+                                    }}
+                                >
+                                    <VictoryAxis
+                                        fixLabelOverlap={true}
+                                    />
+                                    <VictoryAxis dependentAxis
+                                                 fixLabelOverlap={true}
+                                                 tickFormat={(t) => convertMilliseconds(t)}
+                                                 style={{
+                                                     tickLabels: { fontSize: 10 }
+                                                 }}
+                                    />
+                                    <VictoryStack>
+                                        <VictoryBar
+                                                    style={{ data: { fill: chartColors.statSelection, fillOpacity: 0.8, } }}
+                                                    alignment="start"
+                                                    data={this.state.graphData.statSelection}
+                                                    barRatio={0.8}
+                                                    animate={{
+                                                        onExit: {
+                                                            duration: 0,
+                                                        }
+                                                    }}
+                                        />
+                                        <VictoryBar
+                                            style={{ data: { fill: chartColors.Plan, fillOpacity: 0.8, } }}
+                                            alignment="start"
+                                            data={this.state.graphData.Plan}
+                                            barRatio={0.8}
+                                            animate={{
+                                                onExit: {
+                                                    duration: 0,
+                                                }
+                                            }}
+                                        />
+                                        <VictoryBar
+                                            style={{ data: { fill: chartColors.Diary, fillOpacity: 0.8, } }}
+                                            alignment="start"
+                                            data={this.state.graphData.Diary}
+                                            barRatio={0.8}
+                                            animate={{
+                                                onExit: {
+                                                    duration: 0,
+                                                }
+                                            }}
+                                        />
+                                        <VictoryBar
+                                            style={{ data: { fill: chartColors.goals, fillOpacity: 0.8, } }}
+                                            alignment="start"
+                                            data={this.state.graphData.goals}
+                                            barRatio={0.8}
+                                            animate={{
+                                                onExit: {
+                                                    duration: 0,
+                                                }
+                                            }}
+                                        />
+                                        <VictoryBar
+                                            style={{ data: { fill: chartColors.reports, fillOpacity: 0.8, } }}
+                                            alignment="start"
+                                            data={this.state.graphData.reports}
+                                            barRatio={0.8}
+                                            animate={{
+                                                onExit: {
+                                                    duration: 0,
+                                                }
+                                            }}
+                                        />
+                                    </VictoryStack>
+                                </VictoryChart>
+                            </View>
+                            <View style={{flex: .15, justifyContent: 'flex-start', marginBottom: 20}}>
+                                <CustomSelectionRow
+                                    name="Time Frame"
+                                    icon={Icons.calendar + '-outline'}
+                                    iconSize={Dimensions.get('window').height / 20}
+                                    iconContainer={overviewStyle.iconContainer}
+                                    selectedText={this.state.selectedTimeFrame}
+                                    onPress={() => {
+                                        this.setState({timeFrameSelected: true});
 
-                                    this.toggleModal(true)
-                                }}
-                                nameStyle={{fontSize: 16}}
-                            />
+                                        this.toggleModal(true)
+                                    }}
+                                    nameStyle={{fontSize: 16}}
+                                />
+                            </View>
                         </View>
                         <Modal visible={this.state.modalVisible} transparent={false} onRequestClose={this.handleModalClose}>
                             <View style={{flex: 1}}>
@@ -333,6 +403,54 @@ export default class UsageOverview extends React.Component {
                                     <TouchableHighlight
                                         style={overviewStyle.button}
                                         onPress={this.handleFinalSelection}
+                                        underlayColor='#99d9f4'>
+                                        <Text style={overviewStyle.buttonText}>Done</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            </View>
+                        </Modal>
+                        <Modal visible={this.state.emailModalVisible} transparent={false} onRequestClose={this.handleEmailModalClose}>
+                            <View style={{flex: 1}}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <View style={overviewStyle.closeButton}>
+                                        <PressableIcon
+                                            size={45}
+                                            iconName={Icons.closeModal}
+                                            color="black"
+                                            onPressFunction={this.handleEmailModalClose}
+                                        />
+                                    </View>
+                                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: Expo.Constants.statusBarHeight, justifyContent: 'center'}}>
+                                        <Text style={{paddingRight: 5}}>Select Recipient(s)</Text>
+                                        <PressableIcon
+                                            iconName={Icons.info + '-outline'}
+                                            size={25}
+                                            onPressFunction={this.infoAlert}
+                                            color='#007AFF'
+                                        />
+                                    </View>
+                                </View>
+                                <View style={{flex: 1}}>
+                                    <View style={{flex: 1, marginBottom: 50}}>
+                                        <CustomMultiPicker
+                                            options={this.props.recipients}
+                                            multiple={true} //
+                                            returnValue={"label"} // label or value
+                                            callback={this.handleEmailSelection} // callback, array of selected items
+                                            rowBackgroundColor={"#fff"}
+                                            rowHeight={40}
+                                            rowRadius={5}
+                                            iconColor={"#00a2dd"}
+                                            iconSize={25}
+                                            itemStyle={overviewStyle.itemStyle}
+                                            selectedIconName={"ios-checkmark-circle-outline"}
+                                            unselectedIconName={"ios-radio-button-off-outline"}
+                                            search={true}
+                                        />
+                                    </View>
+                                    <TouchableHighlight
+                                        style={overviewStyle.button}
+                                        onPress={this.handleFinalEmailSelection}
                                         underlayColor='#99d9f4'>
                                         <Text style={overviewStyle.buttonText}>Done</Text>
                                     </TouchableHighlight>

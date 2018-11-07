@@ -126,7 +126,8 @@ class BackupRestoreSelection extends React.Component {
             subject: 'CAATCH Backup ' + Moment().format('LL'),
             body:"Hi, please find CAATCH backup attached.",
             attachments: [file]
-        }).then(res => console.log(res))
+        })
+            .then(res => console.log(res))
             .catch(err => console.log(err))
     };
     // opens mail app of choice

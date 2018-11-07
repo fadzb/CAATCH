@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, View, Dimensions, Text, ActivityIndicator, Modal, TouchableHighlight } from 'react-native';
+import { StyleSheet, View, Dimensions, Text, ActivityIndicator, Modal, TouchableHighlight, Alert } from 'react-native';
 import {TabStyles} from "../../Styles/TabStyles";
 import Moment from 'moment'
 import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
@@ -9,6 +9,7 @@ import {Icons} from "../../Constants/Icon";
 import { VictoryChart, VictoryBar, VictoryTheme, VictoryAxis, VictoryLabel, VictoryPortal } from 'victory-native';
 import {PressableIcon} from "../../Components/PressableIcon";
 import {DbTableNames} from "../../Constants/Constants";
+import Icon from "react-native-vector-icons/Ionicons";
 
 const timeFrames = {
     weekDate: Moment().subtract(6,'d').format('YYYY-MM-DD'),
@@ -34,8 +35,21 @@ const skillTypes = {
 };
 
 export default class VicSkillsChart extends React.Component {
-    static navigationOptions = {
-        title: 'Charts - DBT Skills'
+    static navigationOptions = ({ navigation }) => {
+        const {params = {}} = navigation.state;
+
+        return {
+            title: "Charts - DBT Skills",
+            headerRight: (
+                <View style={{paddingRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center'}}>
+                    <Icon
+                        name={Icons.share}
+                        size={30}
+                        onPress={() => params.handleScreenShot()}
+                    />
+                </View>
+            ),
+        }
     };
     // static property called navigationOptions that belongs to all screen components
 
@@ -53,13 +67,80 @@ export default class VicSkillsChart extends React.Component {
             selectedTimeFrame: periods.week,
             skillList: [],
             checkedItemSkill: 1,
-            data: []
+            data: [],
+            selectedRecipients: [],
+            snapshotFile: '',
+            emailModalVisible: false
         }
     }
 
     componentDidMount() {
+        this.props.navigation.setParams({
+            handleScreenShot: this.takeScreenShot,
+        });
+
         this.getSkillList(this.getSkillEntries(timeFrames.weekDate));
     }
+
+    handleEmailSelection = email => this.setState({selectedRecipients: email.filter(e => e !== undefined)});
+    // update selectedRecipients state when new email is selected in multi picker list
+
+    handleEmailModalClose = () => {
+        this.setState({emailModalVisible: false})
+    };
+
+    handleFinalEmailSelection = () => {
+        if(this.state.selectedRecipients.length > 0) {
+            Expo.MailComposer.composeAsync({
+                recipients: this.state.selectedRecipients,
+                subject: 'CAATCH Skills Graph ' + Moment().format('LL'),
+                body: "Hi, please find CAATCH Skills graph attached.",
+                attachments: [this.state.snapshotFile]
+            })
+                .then(result => console.log(result))
+                .then(res => this.handleEmailModalClose())
+                .catch(err => console.log(err))
+        } else {
+            this.notSelectedAlert()
+        }
+    };
+    // open email interface with snapshot attached as png file
+
+    notSelectedAlert = () => {
+        Alert.alert(
+            'Email Not Selected',
+            'Please select and email address from the list',
+            [
+                {text: 'OK', onPress: () => console.log('OK pressed')},
+            ],
+            { cancelable: false }
+        )
+    };
+
+    takeScreenShot = () => {
+        Expo.takeSnapshotAsync(this.chartView, {
+            format: 'png',
+            quality: 1,
+            result: 'file',
+        }).then(this.handleEmail).catch(err => console.log(err))
+    };
+    // take screenshot of entire screen view and call handleEmail function that sets the resulting file as the snapshotFile state
+
+    handleEmail = file => {
+        this.setState({snapshotFile: file, emailModalVisible: true});
+    };
+
+    infoAlert = () => {
+        Alert.alert(
+            'Recipients',
+            'Recipient list is populated with user email address and Helper email addresses.\n\nUser email address can be set in Backup and Restore setting menu',
+            [
+                {text: 'OK', onPress: () => console.log('OK pressed')},
+            ],
+            { cancelable: false }
+        )
+    };
+    // alert for displaying recipient info
 
     toggleModal = bool => {
         this.setState({modalVisible: bool})
@@ -153,7 +234,7 @@ export default class VicSkillsChart extends React.Component {
         return (
             <View style={TabStyles.stackContainer}>
                 {this.state.graphReady ?
-                    <View>
+                    <View collapsable={false} ref={ref => (this.chartView = ref)}>
                         <VictoryChart
                             height={Dimensions.get('window').height * .55}
                             theme={VictoryTheme.material}
@@ -238,6 +319,54 @@ export default class VicSkillsChart extends React.Component {
                                     <TouchableHighlight
                                         style={chartStyle.button}
                                         onPress={this.handleFinalSelection}
+                                        underlayColor='#99d9f4'>
+                                        <Text style={chartStyle.buttonText}>Done</Text>
+                                    </TouchableHighlight>
+                                </View>
+                            </View>
+                        </Modal>
+                        <Modal visible={this.state.emailModalVisible} transparent={false} onRequestClose={this.handleEmailModalClose}>
+                            <View style={{flex: 1}}>
+                                <View style={{flexDirection: 'row'}}>
+                                    <View style={chartStyle.closeButton}>
+                                        <PressableIcon
+                                            size={45}
+                                            iconName={Icons.closeModal}
+                                            color="black"
+                                            onPressFunction={this.handleEmailModalClose}
+                                        />
+                                    </View>
+                                    <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: Expo.Constants.statusBarHeight, justifyContent: 'center'}}>
+                                        <Text style={{paddingRight: 5}}>Select Recipient(s)</Text>
+                                        <PressableIcon
+                                            iconName={Icons.info + '-outline'}
+                                            size={25}
+                                            onPressFunction={this.infoAlert}
+                                            color='#007AFF'
+                                        />
+                                    </View>
+                                </View>
+                                <View style={{flex: 1}}>
+                                    <View style={{flex: 1, marginBottom: 50}}>
+                                        <CustomMultiPicker
+                                            options={this.props.navigation.getParam('recipients')}
+                                            multiple={true} //
+                                            returnValue={"label"} // label or value
+                                            callback={this.handleEmailSelection} // callback, array of selected items
+                                            rowBackgroundColor={"#fff"}
+                                            rowHeight={40}
+                                            rowRadius={5}
+                                            iconColor={"#00a2dd"}
+                                            iconSize={25}
+                                            itemStyle={chartStyle.itemStyle}
+                                            selectedIconName={"ios-checkmark-circle-outline"}
+                                            unselectedIconName={"ios-radio-button-off-outline"}
+                                            search={true}
+                                        />
+                                    </View>
+                                    <TouchableHighlight
+                                        style={chartStyle.button}
+                                        onPress={this.handleFinalEmailSelection}
                                         underlayColor='#99d9f4'>
                                         <Text style={chartStyle.buttonText}>Done</Text>
                                     </TouchableHighlight>

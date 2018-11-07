@@ -5,6 +5,8 @@ import {Icons} from "../../Constants/Icon";
 import {TabStyles} from "../../Styles/TabStyles";
 import {connect} from 'react-redux'
 import store from "../../Redux/store"
+import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
+import {DbTableNames} from "../../Constants/Constants";
 
 class StatSelection extends React.Component {
 
@@ -16,7 +18,57 @@ class StatSelection extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.state = {
+            emailRecipients: {}
+        }
     }
+
+    componentDidMount() {
+        this.getEmailRecipients();
+    }
+
+    getEmailRecipients = () => {
+        let emailArr = [];
+
+        readDatabase('email', DbTableNames.user, res => {
+            if(res[0].email) {
+
+                emailArr.push(res[0].email);
+
+                readDatabaseArg('c.email', DbTableNames.helper, res => {
+                    res.forEach(r => {
+                        if(r.email) {
+                            emailArr.push(r.email)
+                        }
+                    });
+
+                    this.setState({emailRecipients: emailArr.reduce((obj, email, i) => {
+                        obj[(i + 1).toString()] = email;
+
+                        return obj
+                    }, {})})
+
+                }, undefined, 'as h inner join ' + DbTableNames.contact + ' as c on h.contactId = c.contactId where h.dateDeleted is NULL')
+            } else {
+                readDatabaseArg('c.email', DbTableNames.helper, res => {
+                    res.forEach(r => {
+                        if(r.email) {
+                            emailArr.push(r.email)
+                        }
+                    });
+
+                    this.setState({emailRecipients: emailArr.reduce((obj, email, i) => {
+                        obj[(i + 1).toString()] = email;
+
+                        return obj
+                    }, {})})
+
+                }, undefined, 'as h inner join ' + DbTableNames.contact + ' as c on h.contactId = c.contactId where h.dateDeleted is NULL')
+            }
+        });
+    };
+    // reading user and helper db tables for email info (have restricted email recipients to user or helper)
 
     render() {
         return (
@@ -27,7 +79,7 @@ class StatSelection extends React.Component {
                         icon={Icons.charts + '-outline'}
                         iconSize={30}
                         iconContainer={statSelectionStyle.iconContainer}
-                        onPress={() => this.props.navigation.push('victory')}
+                        onPress={() => this.props.navigation.push('victory', {recipients: this.state.emailRecipients})}
                         containerStyle={{flex: 0, height: Dimensions.get('window').height / 11}}
                     />
                     {this.props.settings.dbt && <CustomSelectionRow
@@ -35,7 +87,7 @@ class StatSelection extends React.Component {
                         icon={Icons.charts + '-outline'}
                         iconSize={30}
                         iconContainer={statSelectionStyle.iconContainer}
-                        onPress={() => this.props.navigation.push('vicSkills')}
+                        onPress={() => this.props.navigation.push('vicSkills', {recipients: this.state.emailRecipients})}
                         containerStyle={{flex: 0, height: Dimensions.get('window').height / 11}}
                     />}
                     <CustomSelectionRow
@@ -43,7 +95,7 @@ class StatSelection extends React.Component {
                         icon={Icons.insights + '-outline'}
                         iconSize={30}
                         iconContainer={statSelectionStyle.iconContainer}
-                        onPress={() => this.props.navigation.push('insights')}
+                        onPress={() => this.props.navigation.push('insights', {recipients: this.state.emailRecipients})}
                         containerStyle={{flex: 0, height: Dimensions.get('window').height / 11}}
                     />
                 </View>
