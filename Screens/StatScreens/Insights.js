@@ -249,7 +249,7 @@ export default class Insights extends React.Component {
             <StyleProvider style={getTheme(platform)}>
               <Tabs prerenderingSiblingsNumber={NUMBER_OF_TABS}>
                 <Tab heading={'Overview'}>
-                  <UsageOverview />
+                  <UsageOverview recipients={this.props.navigation.getParam('recipients')} />
                 </Tab>
                 <Tab heading={'Safety Plan'}>
                   <ScrollView style={{ marginTop: 10 }}>
