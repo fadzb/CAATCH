@@ -150,6 +150,14 @@ export const DiaryId = {
     steps: 47
 };
 
+// Skill Groups
+export const SkillGroups = {
+    1: 'Mindfulness',
+    2: 'Interpersonal Effectiveness',
+    3: 'Emotion Regulation',
+    4: 'Distress Tolerance',
+};
+
 // Used Skill Rating
 export const UsedSkillRating = [
     'Not thought about or used',

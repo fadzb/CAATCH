@@ -1,4 +1,4 @@
-import {SafetyPlanDbTables} from "../Constants/Constants";
+import {SafetyPlanDbTables, SkillGroups} from "../Constants/Constants";
 import Moment from 'moment'
 
 const rowHtml = name => {
@@ -63,9 +63,9 @@ const diaryTableRow = (data, result, list) => {
     list.forEach(l => {
         const resArr = result.filter(r => r.diaryDate === data && r.diaryName === l);
 
-        resArr.length > 0 ? rowData = rowData + "<td>" + resArr.reduce((acc, res) => {
+        resArr.length > 0 ? rowData = rowData + "<td>" + Number.parseFloat(resArr.reduce((acc, res) => {
             return res.rating + acc
-        }, 0) / resArr.length + "</td>\n" : rowData = rowData + "<td>0</td>\n"
+        }, 0) / resArr.length).toFixed(2) + "</td>\n" : rowData = rowData + "<td>0</td>\n"
     });
 
     return  "  <tr>\n" +
@@ -106,8 +106,14 @@ export const diaryHtml = (list, result) => {
 
     let skillRows = '';
 
-    skillList.forEach(sk => {
-        skillRows = skillRows + skillTableRow(dateArray, skillResult.map(res => ({...res, diaryDate: Moment(res.diaryDate).format("YYYY-MM-DD")})).filter(skill => skill.diaryName === sk.diaryName), sk)
+    Object.keys(SkillGroups).forEach(gr => {
+        skillRows = skillRows + "  <tr>\n" +
+                                "    <th colspan='8'>" + SkillGroups[gr] + "</th>\n" +
+                                "  </tr>\n";
+
+        skillList.filter(li => li.subType.toString() === gr).forEach(sk => {
+            skillRows = skillRows + skillTableRow(dateArray, skillResult.map(res => ({...res, diaryDate: Moment(res.diaryDate).format("YYYY-MM-DD")})).filter(skill => skill.diaryName === sk.diaryName), sk)
+        });
     });
 
     let diaryRows = '';
@@ -128,6 +134,7 @@ export const diaryHtml = (list, result) => {
     return  "<!DOCTYPE html>\n" +
         "<html>\n" +
         "<head>\n" +
+        "   <meta name='viewport' content='width=device-width, initial-scale=.8'>\n" +
         "    <style>\n" +
         "        table, th, td {\n" +
         "            border: 1px solid black;\n" +
@@ -145,7 +152,8 @@ export const diaryHtml = (list, result) => {
         "        }\n" +
         // "        table {\n" +
         // "            overflow-x: auto;\n" +
-        // "            display: block;\n" +
+        // "            display: inline-flex;\n" +
+        // "            white-space: nowrap;\n" +
         // "        }\n" +
         "    </style>\n" +
         "</head>\n" +
