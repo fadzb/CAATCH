@@ -297,7 +297,11 @@ export default class UsageOverview extends React.Component {
                 <Icon name={Icons.share} size={25} onPress={() => this.takeScreenShot()} />
               </View>
             </View>
-            <View collapsable={false} ref={(ref) => (this.chartView = ref)} style={{ flex: 1 }}>
+            <View
+              collapsable={false}
+              ref={(ref) => (this.chartView = ref)}
+              style={{ flex: 1, backgroundColor: '#fff' }}
+            >
               <View style={{ flex: 1, justifyContent: 'center' }}>
                 <View style={{ alignItems: 'stretch' }}>
                   <ChartLegend
