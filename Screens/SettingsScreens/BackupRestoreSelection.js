@@ -85,7 +85,7 @@ class BackupRestoreSelection extends React.Component {
 
     restorePicker = () => {
         Expo.DocumentPicker.getDocumentAsync({
-            // type: '/*.db',
+            // type: 'public.database',
             copyToCacheDirectory: false
         }).then(res => {
             if(res.type !== 'cancel') {

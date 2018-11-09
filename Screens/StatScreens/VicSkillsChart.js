@@ -234,7 +234,7 @@ export default class VicSkillsChart extends React.Component {
         return (
             <View style={TabStyles.stackContainer}>
                 {this.state.graphReady ?
-                    <View collapsable={false} ref={ref => (this.chartView = ref)}>
+                    <View style={{backgroundColor: '#fff'}} collapsable={false} ref={ref => (this.chartView = ref)}>
                         <VictoryChart
                             height={Dimensions.get('window').height * .55}
                             theme={VictoryTheme.material}

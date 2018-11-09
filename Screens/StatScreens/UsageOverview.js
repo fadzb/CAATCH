@@ -265,7 +265,7 @@ export default class UsageOverview extends React.Component {
                                 />
                             </View>
                         </View>
-                        <View collapsable={false} ref={ref => this.chartView = ref} style={{flex: 1}}>
+                        <View collapsable={false} ref={ref => this.chartView = ref} style={{flex: 1, backgroundColor: '#fff'}}>
                             <View style={{flex: 1, justifyContent: 'center'}}>
                                 <View style={{alignItems: 'stretch'}}>
                                     <ChartLegend
