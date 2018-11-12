@@ -39,10 +39,10 @@ export const safetyPlanHtml = (data) => {
     '            text-align: center;\n' +
     '        }\n' +
     '        td {\n' +
-    '            font-size: 1vw;\n' +
+    '            font-size: 2vw;\n' +
     '        }\n' +
     '        th {\n' +
-    '            font-size: 1vw;\n' +
+    '            font-size: 2vw;\n' +
     '        }\n' +
     '    </style>\n' +
     '</head>\n' +
@@ -98,12 +98,12 @@ const skillTableRow = (dateArr, result, list) => {
   return '  <tr>\n' + '    <td>' + list.diaryName + '</td>\n' + rowData + '  </tr>\n';
 };
 
-export const diaryHtml = (list, result) => {
+export const diaryHtml = (list, result, date) => {
   let dateArray = [];
-  const today = Moment().format('YYYY-MM-DD');
-  let weekAgo = Moment().subtract(6, 'd').format('YYYY-MM-DD');
+  const selectedDate = Moment(date).format('YYYY-MM-DD');
+  let weekAgo = Moment(date).subtract(6, 'd').format('YYYY-MM-DD');
 
-  while (today >= weekAgo) {
+  while (selectedDate >= weekAgo) {
     dateArray.push(Moment(weekAgo).format('YYYY-MM-DD'));
     weekAgo = Moment(weekAgo).add(1, 'd').format('YYYY-MM-DD');
   }
@@ -170,16 +170,23 @@ export const diaryHtml = (list, result) => {
     '            text-align: center;\n' +
     '        }\n' +
     '        td {\n' +
-    '            font-size: 1vw;\n' +
+    '            font-size: 2vw;\n' +
     '        }\n' +
     '        th {\n' +
-    '            font-size: 1vw;\n' +
+    '            font-size: 2vw;\n' +
     '        }\n' +
-    // "        table {\n" +
-    // "            overflow-x: auto;\n" +
-    // "            display: inline-flex;\n" +
-    // "            white-space: nowrap;\n" +
-    // "        }\n" +
+    '        table {\n' +
+    '            page-break-inside: auto;\n' +
+    '        }\n' +
+    '        tr {\n' +
+    '            page-break-inside: avoid;\n' +
+    '        }\n' +
+    '        thead {\n' +
+    '            display: table-header-group;\n' +
+    '        }\n' +
+    '        tfoot {\n' +
+    '            display: table-footer-group;\n' +
+    '        }\n' +
     '    </style>\n' +
     '</head>\n' +
     '<body>\n' +
@@ -187,29 +194,35 @@ export const diaryHtml = (list, result) => {
     '<div style="display: flex; align-items: center; flex-direction: column;">\n' +
     '    <h2 style="font-size:4vw">DBT Diary Card</h2>' +
     '    <p style="margin: 0; padding: 0; font-size:3vw">' +
-    Moment().format('LL') +
+    Moment(date).format('LL') +
     '</p>\n' +
     '</div>\n' +
     '\n' +
     '<div style="display: flex; justify-content: center">\n' +
     '<table style="width:95%; margin-top: 30px">\n' +
+    '  <thead>\n' +
     '  <tr>\n' +
     '    <th></th>\n' +
     diaryHeaders +
     '  </tr>\n' +
+    '  </thead>\n' +
+    '  <tbody>\n' +
     '  <tr>\n' +
     '    <td></td>\n' +
     diaryScales +
     '  </tr>\n' +
     diaryRows +
+    '  </tbody>\n' +
     '</table>' +
     '</div>\n' +
     '<div style="display: flex; margin-top: 10px; margin-bottom: 10px; justify-content: center">\n' +
     '<table style="width:95%; margin-top: 30px">\n' +
+    '  <thead>\n' +
     '  <tr>\n' +
     '    <th></th>\n' +
     skillHeaders +
     '  </tr>\n' +
+    '  </thead>\n' +
     skillRows +
     '</table>' +
     '</div>\n' +
