@@ -15,12 +15,6 @@ export default class DiaryReport extends React.Component {
             title: "Diary Report",
             headerRight: (
                 <View style={{paddingRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center'}}>
-                    {/*{Platform.OS === 'ios' && <Icon*/}
-                        {/*name={Icons.share}*/}
-                        {/*size={30}*/}
-                        {/*onPress={() => params.handleThis()}*/}
-                        {/*style={{paddingRight: 15}}*/}
-                    {/*/>}*/}
                     <Icon
                         name={Icons.print + '-outline'}
                         size={30}
@@ -62,14 +56,14 @@ export default class DiaryReport extends React.Component {
 
     getResultData = () => {
         const columns = "s.diaryDate, ds.rating, d.diaryName, d.diaryType";
-        const today = Moment().format("YYYY-MM-DD");
+        const selectedDate = this.props.navigation.getParam('date');
 
         readDatabaseArg(columns,
             DbTableNames.diarySession,
             res =>  this.setState({resultData: res}, () => this.setState({dataReady: true})),
             undefined,
             " as ds inner join Diary as d on ds.diaryId = d.diaryId inner join Session as s on ds.sessionId = s.sessionId" +
-            " where DATE(diaryDate) between Date('" + Moment().subtract(6,'d').format('YYYY-MM-DD') + "') and Date('" + today + "') and diaryType = 'Feeling' or diaryType = 'Skill'");
+            " where DATE(diaryDate) between Date('" + Moment(this.props.navigation.getParam('date')).subtract(6,'d').format('YYYY-MM-DD') + "') and Date('" + selectedDate + "') and (diaryType = 'Feeling' or diaryType = 'Skill')");
     };
 
     takeScreenShot = () => {
@@ -107,7 +101,7 @@ export default class DiaryReport extends React.Component {
                 {this.state.dataReady ?
                     <WebView
                         originWhitelist={['*']}
-                        source={{html: diaryHtml(this.state.diaryData, this.state.resultData)}}
+                        source={{html: diaryHtml(this.state.diaryData, this.state.resultData, this.props.navigation.getParam('date'))}}
                     /> :
                     <View style={{flex: 1, justifyContent: 'center'}}>
                         <ActivityIndicator size="large" color="#007AFF" />

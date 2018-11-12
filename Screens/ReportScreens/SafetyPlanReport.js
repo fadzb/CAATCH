@@ -55,13 +55,13 @@ export default class SafetyPlanReport extends React.Component {
                     this.setState(prevState => ({safetyPlanData: {...prevState.safetyPlanData, [key]: res}}), () => {
                         this.setState(prevState => ({safetyPlanDataTracker: prevState.safetyPlanDataTracker + 1}))
                     })
-                }, undefined, 'as h inner join ' + DbTableNames.contact + ' as c on h.contactId = c.contactId')
+                }, undefined, 'as h inner join ' + DbTableNames.contact + ' as c on h.contactId = c.contactId where h.dateDeleted is NULL')
             } else {
-                readDatabase('*', SafetyPlanDbTables[key].tableName, res => {
+                readDatabaseArg('*', SafetyPlanDbTables[key].tableName, res => {
                     this.setState(prevState => ({safetyPlanData: {...prevState.safetyPlanData, [key]: res}}), () => {
                         this.setState(prevState => ({safetyPlanDataTracker: prevState.safetyPlanDataTracker + 1}))
                     })
-                })
+                }, undefined, 'where ' + SafetyPlanDbTables[key].delete + ' is NULL')
             }
         })
     };

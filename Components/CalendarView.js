@@ -1,7 +1,7 @@
 // Simple calendar view component
 
 import React from 'react';
-import { View, StyleSheet, Dimensions, TouchableOpacity } from 'react-native';
+import { View, StyleSheet, Dimensions, TouchableOpacity, Text } from 'react-native';
 import PropTypes from 'prop-types'
 import {Icons} from "../Constants/Icon";
 import { Calendar } from 'react-native-calendars';
@@ -17,6 +17,9 @@ export const CalendarView = props => {
                     color="black"
                     onPressFunction={props.onPress}
                 />
+                <View style={{paddingLeft: 25}}>
+                    <Text style={{fontWeight: 'bold'}}>{props.title}</Text>
+                </View>
             </View>
             <View style={calendarViewStyle.calendar}>
                 <Calendar
@@ -40,8 +43,9 @@ const calendarViewStyle = StyleSheet.create({
 
     closeButton: {
         paddingLeft: 25,
-        alignItems:'flex-start',
-        marginTop: 25
+        alignItems:'center',
+        marginTop: 25,
+        flexDirection: 'row'
     },
 
     image: {
