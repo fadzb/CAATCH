@@ -12,36 +12,43 @@ export const SafetyPlanDbTables = {
     tableName: 'Contact',
     title: 'My Network',
     dbNameColumn: 'firstName',
+    delete: 'dateDeleted',
   },
   copingStrategy: {
     tableName: 'CopingStrategy',
     title: 'Coping Strategies',
     dbNameColumn: 'copeName',
+    delete: 'dateDeleted',
   },
   distraction: {
     tableName: 'Distraction',
     title: 'My Things',
     dbNameColumn: 'distractName',
+    delete: 'dateDeleted',
   },
   reason: {
     tableName: 'Reason',
     title: 'Life Worth Living',
     dbNameColumn: 'reasonName',
+    delete: 'dateDeleted',
   },
   warningSign: {
     tableName: 'WarningSign',
     title: 'Warning Signs',
     dbNameColumn: 'signName',
+    delete: 'dateDeleted',
   },
   environment: {
     tableName: 'environment',
     title: 'Environment Safe',
     dbNameColumn: 'environmentName',
+    delete: 'dateDeleted',
   },
   helper: {
     tableName: 'Helper',
     title: 'My Helpers',
     dbNameColumn: 'firstName',
+    delete: 'dateDeleted',
   },
 };
 
