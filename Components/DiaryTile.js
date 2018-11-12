@@ -1,18 +1,19 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
-import PropTypes from 'prop-types'
+import PropTypes from 'prop-types';
 
 import Icon from "react-native-vector-icons/Ionicons";
+import {themeStyles} from "../Styles/TabStyles";
 
 export const DiaryTile = props => {
     return (
         <View style={tileStyle.container}>
             <TouchableHighlight
                 underlayColor="#FDEDEC"
-                style={tileStyle.button}
+                style={[tileStyle.button, themeStyles.tiles]}
                 onPress={props.onPress}>
                 <View style={{alignItems:"center"}}>
-                    <Text style={tileStyle.buttonText}>{props.name}</Text>
+                    <Text style={[tileStyle.buttonText, themeStyles.tileFont]}>{props.name}</Text>
                     <Icon
                         name={props.iconName}
                         size={60}
