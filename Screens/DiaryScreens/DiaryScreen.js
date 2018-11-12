@@ -10,12 +10,14 @@ import store from '../../Redux/store';
 import { updateDate } from '../../Redux/actions';
 import { getDiaryPrePops } from '../../Constants/Prepopulated';
 
-import { TabStyles } from '../../Styles/TabStyles';
+import { TabStyles, themeStyles } from '../../Styles/TabStyles';
 import { SectionHeader } from '../../Constants/Constants';
 
 class DiaryScreen extends React.Component {
   static navigationOptions = {
     title: SectionHeader.diary,
+    headerStyle: themeStyles.stackHeader,
+    headerTitleStyle: themeStyles.stackHeaderTitleFont,
   };
   // static property called navigationOptions that belongs to all screen components
 
@@ -44,7 +46,7 @@ class DiaryScreen extends React.Component {
 
   render() {
     return (
-      <View style={TabStyles.stackContainer}>
+      <View style={[TabStyles.stackContainer, themeStyles.background]}>
         <View style={diaryStyle.dateButtonContainer}>
           <TouchableOpacity onPress={() => this.toggleModal(true)}>
             <View style={diaryStyle.dateButton}>
