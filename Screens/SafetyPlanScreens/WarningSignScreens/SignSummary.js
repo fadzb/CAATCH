@@ -47,13 +47,13 @@ export default class SignSummary extends React.Component {
 
   getCopeLink = () => {
     const currentSignId = this.props.navigation.getParam('id');
-    const linkTable = 'CopeSignLink';
+    const linkTable = DbTableNames.copeSignLink;
     const columnQuery =
       'c.copeId, c.copeName, c.copeDesc, c.copeUrl, c.mediaType, c.mediaPath, c.dateEntered, c.dateDeleted';
 
     readDatabaseArg(
       columnQuery,
-      'CopingStrategy',
+      DbTableNames.copingStrategy,
       (copes) => {
         this.setState({ copes: copes });
       },
@@ -74,7 +74,7 @@ export default class SignSummary extends React.Component {
   getCompleteList = () => {
     readDatabaseArg(
       '*',
-      'WarningSign',
+      DbTableNames.warningSign,
       this.updateSigns,
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
@@ -97,7 +97,7 @@ export default class SignSummary extends React.Component {
 
   deleteSign = (id) => {
     updateDatabaseArgument(
-      'WarningSign',
+      DbTableNames.warningSign,
       [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
       ['dateDeleted'],
       'where signId = ' + id,

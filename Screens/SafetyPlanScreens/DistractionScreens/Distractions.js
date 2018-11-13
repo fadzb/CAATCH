@@ -9,6 +9,7 @@ import Moment from 'moment';
 import { FileSystem } from 'expo';
 import { Icons } from '../../../Constants/Icon';
 import { compareDates } from '../../../Util/Compare';
+import { DbTableNames } from '../../../Constants/Constants';
 
 class Distractions extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -35,7 +36,7 @@ class Distractions extends React.Component {
   getCompleteList = () => {
     readDatabaseArg(
       '*',
-      'Distraction',
+      DbTableNames.distraction,
       this.updateDistractions,
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
@@ -56,7 +57,7 @@ class Distractions extends React.Component {
     this.removeMediaFile(path);
 
     updateDatabaseArgument(
-      'Distraction',
+      DbTableNames.distraction,
       [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
       ['dateDeleted'],
       'where distractId = ' + id,

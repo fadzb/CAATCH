@@ -85,7 +85,13 @@ export default class NewDistraction extends React.Component {
   };
 
   refreshDb = (func) => {
-    readDatabaseArg('*', 'Distraction', func, () => console.log('DB read success'), 'where dateDeleted is NULL');
+    readDatabaseArg(
+      '*',
+      DbTableNames.distraction,
+      func,
+      () => console.log('DB read success'),
+      'where dateDeleted is NULL'
+    );
   };
   // for refreshing global state from Distraction table in DB
 
@@ -114,7 +120,7 @@ export default class NewDistraction extends React.Component {
 
     if (checkedContacts !== null) {
       checkedContacts.forEach((contactId) => {
-        updateDatabase('DistractContactLink', [contactId, distractId.insertId], ['contactId', 'distractId']);
+        updateDatabase(DbTableNames.distractContactLink, [contactId, distractId.insertId], ['contactId', 'distractId']);
       });
     } else {
       console.log('no contacts checked');
@@ -122,7 +128,7 @@ export default class NewDistraction extends React.Component {
 
     readDatabaseArg(
       '*',
-      'Distraction',
+      DbTableNames.distraction,
       (distractions) => store.dispatch(getDistraction(distractions)),
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
@@ -133,7 +139,7 @@ export default class NewDistraction extends React.Component {
     const mediaDirectory = 'SafetyplanMedia/';
 
     updateDatabaseArgument(
-      'Distraction',
+      DbTableNames.distraction,
       [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
       ['mediaPath', 'mediaType'],
       'where distractId = ' + distractId.insertId
@@ -206,7 +212,7 @@ export default class NewDistraction extends React.Component {
       // if validation fails, value will be null
       console.log(value);
       updateDatabase(
-        'Distraction',
+        DbTableNames.distraction,
         Object.values(value),
         Object.keys(value),
         this.updateDistractionList(value),

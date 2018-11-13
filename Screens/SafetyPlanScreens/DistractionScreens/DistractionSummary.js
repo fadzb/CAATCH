@@ -59,7 +59,7 @@ export default class DistractionSummary extends React.Component {
 
     readDatabaseArg(
       columnQuery,
-      'Contact',
+      DbTableNames.contact,
       (contacts) => {
         this.setState({ contacts: contacts });
       },
@@ -100,7 +100,7 @@ export default class DistractionSummary extends React.Component {
   getCompleteList = () => {
     readDatabaseArg(
       '*',
-      'Distraction',
+      DbTableNames.distraction,
       this.updateDistractions,
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
@@ -121,7 +121,7 @@ export default class DistractionSummary extends React.Component {
     this.removeMediaFile(path);
 
     updateDatabaseArgument(
-      'Distraction',
+      DbTableNames.distraction,
       [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
       ['dateDeleted'],
       'where distractId = ' + id,

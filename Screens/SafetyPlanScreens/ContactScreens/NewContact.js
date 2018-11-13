@@ -98,7 +98,7 @@ export default class NewContact extends React.Component {
   };
 
   refreshDb = (func) => {
-    readDatabaseArg('*', 'Contact', func, () => console.log('DB read success'), 'where dateDeleted is NULL');
+    readDatabaseArg('*', DbTableNames.contact, func, () => console.log('DB read success'), 'where dateDeleted is NULL');
   };
   // for refreshing global state from Contact table in DB
 
@@ -128,7 +128,7 @@ export default class NewContact extends React.Component {
     const mediaDirectory = 'SafetyplanMedia/';
 
     updateDatabaseArgument(
-      'Contact',
+      DbTableNames.contact,
       [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName],
       ['image'],
       'where contactId = ' + contactId.insertId
@@ -199,7 +199,7 @@ export default class NewContact extends React.Component {
       // if validation fails, value will be null
       console.log(value);
       updateDatabase(
-        'Contact',
+        DbTableNames.contact,
         [...Object.values(value), this.state.type === 0 ? 'Personal' : 'Professional'],
         [...Object.keys(value), 'contactType'],
         this.updateContactList({ ...value, contactType: this.state.type === 0 ? 'Personal' : 'Professional' }),

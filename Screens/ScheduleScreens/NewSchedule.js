@@ -18,6 +18,7 @@ import {
   deleteDatabaseRow,
   readDatabase,
 } from '../../Util/DatabaseHelper';
+import { DbTableNames } from '../../Constants/Constants';
 
 const Form = t.form.Form;
 
@@ -144,7 +145,7 @@ export default class NewSchedule extends React.Component {
                 })
                   .then(() => {
                     updateDatabaseArgument(
-                      'Schedule',
+                      DbTableNames.schedule,
                       [...Object.values(value), this.state.schDate, timeFrom, timeTo],
                       [...Object.keys(value), 'date', 'timeFrom', 'timeTo'],
                       'where scheduleId = ' + scheduleId,
@@ -188,7 +189,7 @@ export default class NewSchedule extends React.Component {
                 })
                   .then((id) => {
                     updateDatabase(
-                      'Schedule',
+                      DbTableNames.schedule,
                       [...Object.values(value), this.state.schDate, timeFrom, timeTo, id.toString()],
                       [...Object.keys(value), 'date', 'timeFrom', 'timeTo', 'nativeCalendarId'],
                       undefined,
@@ -206,7 +207,7 @@ export default class NewSchedule extends React.Component {
   };
 
   getGlobalSchedule = () => {
-    readDatabase('*', 'Schedule', (res) => {
+    readDatabase('*', DbTableNames.schedule, (res) => {
       let resultItems = {};
 
       res.forEach((sch) => {
@@ -295,7 +296,7 @@ export default class NewSchedule extends React.Component {
 
         Calendar.deleteEventAsync(nativeId)
           .then(() => {
-            deleteDatabaseRow('Schedule', 'where scheduleId = ' + scheduleId, this.getGlobalSchedule);
+            deleteDatabaseRow(DbTableNames.schedule, 'where scheduleId = ' + scheduleId, this.getGlobalSchedule);
           })
           .catch((err) => console.log(err));
       })

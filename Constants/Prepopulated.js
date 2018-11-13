@@ -3,13 +3,14 @@
 import { readDatabase, readDatabaseArg } from '../Util/DatabaseHelper';
 import store from '../Redux/store';
 import { resetFeelingRating, resetSkillRating } from '../Redux/actions';
+import { DbTableNames } from './Constants';
 
 // SafetyPlan
 
 export const getPrePops = () => {
   readDatabase(
     '*',
-    'PrepopSafetyPlan',
+    DbTableNames.prepopSafetyPlan,
     (p) => (safetyPlanPrePops = p.map((t) => ({ name: t.prepopName, category: t.prepopCategory, icon: t.icon })))
   );
 };
@@ -19,7 +20,7 @@ export let safetyPlanPrePops = [];
 // Diary
 
 export const getDiaryPrePops = () => {
-  readDatabase('*', 'Diary', (d) => {
+  readDatabase('*', DbTableNames.diary, (d) => {
     diaryPrePops = d;
 
     store.dispatch(
@@ -32,7 +33,7 @@ export const getDiaryPrePops = () => {
 };
 
 export const updateDiaryPrePops = (func) => {
-  readDatabase('*', 'Diary', (d) => {
+  readDatabase('*', DbTableNames.diary, (d) => {
     diaryPrePops = d;
 
     func();

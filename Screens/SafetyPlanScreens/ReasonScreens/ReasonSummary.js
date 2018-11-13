@@ -75,7 +75,7 @@ export default class ReasonSummary extends React.Component {
   getCompleteList = () => {
     readDatabaseArg(
       '*',
-      'Reason',
+      DbTableNames.reason,
       this.updateReasons,
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
@@ -96,7 +96,7 @@ export default class ReasonSummary extends React.Component {
     this.removeMediaFile(path);
 
     updateDatabaseArgument(
-      'Reason',
+      DbTableNames.reason,
       [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
       ['dateDeleted'],
       'where reasonId = ' + id,
