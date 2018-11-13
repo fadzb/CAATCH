@@ -14,6 +14,7 @@ import {
   readDatabaseArg,
   deleteDatabaseRow,
 } from '../../../Util/DatabaseHelper';
+import { DbTableNames } from '../../../Constants/Constants';
 
 const Form = t.form.Form;
 
@@ -92,7 +93,13 @@ export default class EditDistraction extends React.Component {
   };
 
   refreshDb = (func) => {
-    readDatabaseArg('*', 'Distraction', func, () => console.log('DB read success'), 'where dateDeleted is NULL');
+    readDatabaseArg(
+      '*',
+      DbTableNames.distraction,
+      func,
+      () => console.log('DB read success'),
+      'where dateDeleted is NULL'
+    );
   };
   // for refreshing global state from Distraction table in DB
 
@@ -113,16 +120,16 @@ export default class EditDistraction extends React.Component {
     const checkedContacts = this.props.navigation.getParam('checkedContacts', null);
 
     if (checkedContacts !== null) {
-      deleteDatabaseRow('DistractContactLink', 'where distractId = ' + distractId);
+      deleteDatabaseRow(DbTableNames.distractContactLink, 'where distractId = ' + distractId);
 
       checkedContacts.forEach((contactId) => {
-        updateDatabase('DistractContactLink', [contactId, distractId], ['contactId', 'distractId']);
+        updateDatabase(DbTableNames.distractContactLink, [contactId, distractId], ['contactId', 'distractId']);
       });
     }
 
     readDatabaseArg(
       '*',
-      'Distraction',
+      DbTableNames.distraction,
       (distractions) => store.dispatch(getDistraction(distractions)),
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
@@ -133,7 +140,7 @@ export default class EditDistraction extends React.Component {
     const mediaDirectory = 'SafetyplanMedia/';
 
     updateDatabaseArgument(
-      'Distraction',
+      DbTableNames.distraction,
       [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
       ['mediaPath', 'mediaType'],
       'where distractId = ' + distractId
@@ -205,7 +212,7 @@ export default class EditDistraction extends React.Component {
 
     readDatabaseArg(
       columnQuery,
-      'Contact',
+      DbTableNames.contact,
       (contacts) => {
         this.props.navigation.push('contactLink', { selectedContacts: contacts, edit: true });
         console.log(contacts);
@@ -227,7 +234,7 @@ export default class EditDistraction extends React.Component {
       // if validation fails, value will be null
       console.log(value);
       updateDatabaseArgument(
-        'Distraction',
+        DbTableNames.distraction,
         Object.values(value),
         Object.keys(value),
         'where distractId = ' + this.props.navigation.getParam('id'),

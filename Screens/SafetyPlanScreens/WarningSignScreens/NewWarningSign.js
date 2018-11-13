@@ -78,7 +78,7 @@ export default class NewWarningSign extends React.Component {
 
     if (checkedCopes !== null) {
       checkedCopes.forEach((copeId) => {
-        updateDatabase('CopeSignLink', [copeId, signId.insertId], ['copeId', 'signId']);
+        updateDatabase(DbTableNames.copeSignLink, [copeId, signId.insertId], ['copeId', 'signId']);
       });
     } else {
       console.log('no copes checked');
@@ -86,7 +86,7 @@ export default class NewWarningSign extends React.Component {
 
     readDatabaseArg(
       '*',
-      'WarningSign',
+      DbTableNames.warningSign,
       (signs) => store.dispatch(getSign(signs)),
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
@@ -109,7 +109,7 @@ export default class NewWarningSign extends React.Component {
       // if validation fails, value will be null
       console.log(value);
       updateDatabase(
-        'WarningSign',
+        DbTableNames.warningSign,
         Object.values(value),
         Object.keys(value),
         this.updateSignList(value),

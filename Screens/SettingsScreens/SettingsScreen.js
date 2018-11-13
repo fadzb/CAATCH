@@ -65,9 +65,10 @@ export default class SettingsScreen extends React.Component {
       dataReady: false,
     };
 
-    toggleModal = bool => {
-        this.setState({modalVisible: bool})
-    };
+  componentDidMount() {
+    readDatabase('*', DbTableNames.user, this.getSwitchValues);
+    // get user settings
+  }
 
   getSwitchValues = (dbObject) => {
     const switchValue = dbObject[0].enabled;
@@ -150,17 +151,23 @@ export default class SettingsScreen extends React.Component {
     };
     // sets the state based on the media item that is selected
 
-    removeWallpaperMedia = (path, callback) => {
-        Expo.FileSystem.deleteAsync(path).then(res => callback()).catch(err => console.log(err));
-    };
-    // remove media file from SP media folder in documentDirectory
+  handlePinStore = (pin) => {
+    updateDatabaseArgument(
+      DbTableNames.user,
+      [pin, 1],
+      ['passcode', 'enabled'],
+      'where userId = 1',
+      this.setState({ switchValue: true, modalVisible: false })
+    );
+  };
+  // saving pin to USER table in DB
 
-    handleNotificationSwitch = value => {
-        if(!this.state.notificationSwitchValue) {
-            Expo.Permissions.askAsync(Expo.Permissions.USER_FACING_NOTIFICATIONS)
-                .then(response => {
-                    if (response.status !== "granted") {
-                        console.log("Notification permission not granted!");
+  handleSwitch = (value) => {
+    this.setState(
+      (prevState) => {
+        if (prevState.switchValue === true) {
+          updateDatabaseArgument(DbTableNames.user, [0], ['enabled'], 'where userId = 1');
+        }
 
                         Toast.show({
                             text: 'Allow app notifications in device settings!',

@@ -88,7 +88,7 @@ export default class StrategySummary extends React.Component {
     this.removeMediaFile(path);
 
     updateDatabaseArgument(
-      'CopingStrategy',
+      DbTableNames.copingStrategy,
       [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
       ['dateDeleted'],
       'where copeId = ' + id,
@@ -106,7 +106,7 @@ export default class StrategySummary extends React.Component {
   getCompleteList = () => {
     readDatabaseArg(
       '*',
-      'CopingStrategy',
+      DbTableNames.copingStrategy,
       this.updateStrategies,
       () => console.log('DB read success'),
       'where dateDeleted is NULL'

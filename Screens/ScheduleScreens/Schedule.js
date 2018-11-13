@@ -16,6 +16,7 @@ import { connect } from 'react-redux';
 import store from '../../Redux/store';
 import { getSchedule, updateScheduleDate } from '../../Redux/actions';
 import { readDatabase } from '../../Util/DatabaseHelper';
+import { DbTableNames } from '../../Constants/Constants';
 
 class Schedule extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -38,7 +39,7 @@ class Schedule extends React.Component {
   }
 
   componentDidMount() {
-    readDatabase('*', 'Schedule', (res) => {
+    readDatabase('*', DbTableNames.schedule, (res) => {
       let resultItems = {};
 
       res.forEach((sch) => {

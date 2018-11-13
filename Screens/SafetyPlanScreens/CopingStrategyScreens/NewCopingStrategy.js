@@ -85,7 +85,13 @@ export default class NewCopingStrategy extends React.Component {
   };
 
   refreshDb = (func) => {
-    readDatabaseArg('*', 'CopingStrategy', func, () => console.log('DB read success'), 'where dateDeleted is NULL');
+    readDatabaseArg(
+      '*',
+      DbTableNames.copingStrategy,
+      func,
+      () => console.log('DB read success'),
+      'where dateDeleted is NULL'
+    );
   };
   // for refreshing global state from Coping Strategy table in DB
 
@@ -111,7 +117,7 @@ export default class NewCopingStrategy extends React.Component {
     const mediaDirectory = 'SafetyplanMedia/';
 
     updateDatabaseArgument(
-      'CopingStrategy',
+      DbTableNames.copingStrategy,
       [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
       ['mediaPath', 'mediaType'],
       'where copeId = ' + copeId.insertId
@@ -184,7 +190,7 @@ export default class NewCopingStrategy extends React.Component {
       // if validation fails, value will be null
       console.log(value);
       updateDatabase(
-        'CopingStrategy',
+        DbTableNames.copingStrategy,
         Object.values(value),
         Object.keys(value),
         this.updateCopeList(value),

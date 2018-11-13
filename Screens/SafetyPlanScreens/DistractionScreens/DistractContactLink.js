@@ -4,6 +4,7 @@ import CustomMultiPicker from 'react-native-multiple-select-list';
 import CustomMultiSelectList from '../../../Components/CustomMultiSelectList';
 
 import { readDatabaseArg } from '../../../Util/DatabaseHelper';
+import { DbTableNames } from '../../../Constants/Constants';
 
 export default class DistractContactLink extends React.Component {
   static navigationOptions = {
@@ -22,7 +23,7 @@ export default class DistractContactLink extends React.Component {
   componentDidMount() {
     readDatabaseArg(
       '*',
-      'Contact',
+      DbTableNames.contact,
       this.updateContacts,
       () => console.log('DB read success'),
       'where dateDeleted is NULL'

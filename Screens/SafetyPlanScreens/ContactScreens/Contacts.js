@@ -19,7 +19,7 @@ import { connect } from 'react-redux';
 import { getContact } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import Moment from 'moment';
-import { SectionHeader } from '../../../Constants/Constants';
+import { DbTableNames, SectionHeader } from '../../../Constants/Constants';
 
 class Contacts extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -41,7 +41,7 @@ class Contacts extends React.Component {
   getCompleteList = () => {
     readDatabaseArg(
       '*',
-      'Contact',
+      DbTableNames.contact,
       this.updateContacts,
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
@@ -68,7 +68,7 @@ class Contacts extends React.Component {
 
   deleteContact = (id) => {
     updateDatabaseArgument(
-      'Contact',
+      DbTableNames.contact,
       [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
       ['dateDeleted'],
       'where contactId = ' + id,

@@ -75,7 +75,7 @@ export default class ContactSummary extends React.Component {
   getCompleteList = () => {
     readDatabaseArg(
       '*',
-      'Contact',
+      DbTableNames.contact,
       this.updateContacts,
       () => console.log('DB read success'),
       'where dateDeleted is NULL'
@@ -102,7 +102,7 @@ export default class ContactSummary extends React.Component {
 
   deleteContact = (id) => {
     updateDatabaseArgument(
-      'Contact',
+      DbTableNames.contact,
       [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
       ['dateDeleted'],
       'where contactId = ' + id,
