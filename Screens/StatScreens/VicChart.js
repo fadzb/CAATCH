@@ -139,7 +139,7 @@ class VicChart extends React.Component {
     };
 
     getDiaryList = (func) => {
-        readDatabase('*', 'Diary', res => {
+        readDatabase('*', DbTableNames.diary, res => {
             let list = {};
 
             const scaleList = this.props.settings.dbt ? res.filter(di => di.diaryType !== "Skill" && di.diaryName !== "Notes") : res.filter(di => di.diaryType === "General" && di.diaryName !== "Notes");
@@ -188,7 +188,7 @@ class VicChart extends React.Component {
         const today = Moment().format("YYYY-MM-DD");
 
         readDatabaseArg(columns,
-            "DiarySession",
+            DbTableNames.diarySession,
             this.handleDiaryData,
             this.getOldDiaryData,
             " as ds inner join Diary as d on ds.diaryId = d.diaryId inner join Session as s on ds.sessionId = s.sessionId" +
@@ -199,9 +199,9 @@ class VicChart extends React.Component {
     getOldDiaryData = () => {
         const columns = "diaryDate, diaryName, avg(rating) as 'rating'";
         const today = Moment().format("YYYY-MM-DD");
-        const table = "(Select strftime('%m/%Y',s.diaryDate) as 'diaryDate', ds.rating, d.diaryName FROM DiarySession as ds \n" +
-            "inner join Diary as d on ds.diaryId = d.diaryId \n" +
-            "inner join Session as s on ds.sessionId = s.sessionId \n" +
+        const table = "(Select strftime('%m/%Y',s.diaryDate) as 'diaryDate', ds.rating, d.diaryName FROM " + DbTableNames.diarySession + " as ds \n" +
+            "inner join " + DbTableNames.diary + " as d on ds.diaryId = d.diaryId \n" +
+            "inner join " + DbTableNames.session + " as s on ds.sessionId = s.sessionId \n" +
             "where DATE(diaryDate) between Date('" + timeFrames.yearDate + "') and Date('" + today + "') and " + (this.props.settings.dbt ? "diaryType = 'Feeling' or diaryType = 'General')" : "diaryType = 'General')");
 
         readDatabaseArg(columns,

@@ -158,7 +158,7 @@ export default class VicSkillsChart extends React.Component {
             const today = Moment().format("YYYY-MM-DD");
 
             readDatabaseArg(columns,
-                "DiarySession",
+                DbTableNames.diarySession,
                 res => {
                     this.setState({data: res}, () => this.transformData(res))
                 },
@@ -169,7 +169,7 @@ export default class VicSkillsChart extends React.Component {
     };
 
     getSkillList = (func) => {
-        readDatabase('*', 'Diary', res => {
+        readDatabase('*', DbTableNames.diary, res => {
             this.setState({skillList: res.filter(sk => sk.diaryType === "Skill")}, func)
         })
     };

@@ -60,7 +60,7 @@ export default class ContactSummary extends React.Component {
     };
 
     getCompleteList = () => {
-        readDatabaseArg("*", "Contact", this.updateContacts, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.contact, this.updateContacts, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // fetching all contacts that do not have a deleted date
 
@@ -82,7 +82,7 @@ export default class ContactSummary extends React.Component {
     };
 
     deleteContact = id => {
-        updateDatabaseArgument("Contact",
+        updateDatabaseArgument(DbTableNames.contact,
             [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
             ["dateDeleted"],
             "where contactId = " + id,

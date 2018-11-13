@@ -59,7 +59,7 @@ export default class App extends React.Component {
 
     checkSettings = () => {
         readDatabase('*',
-            'User',
+            DbTableNames.user,
             (res) => {
                 if(res[0].enabled === 1) {
                     this.setState({passcodeEnabled: true})
@@ -84,7 +84,7 @@ export default class App extends React.Component {
     // checks if user has passcode enabled
 
     createNewUsage = () => {
-        updateDatabase("Usage",
+        updateDatabase(DbTableNames.usage,
             [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
             ["dateEntered"],
             undefined,

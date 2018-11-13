@@ -38,12 +38,12 @@ export default class SignSummary extends React.Component {
 
     getCopeLink = () => {
         const currentSignId = this.props.navigation.getParam('id');
-        const linkTable = "CopeSignLink";
+        const linkTable = DbTableNames.copeSignLink;
         const columnQuery = "c.copeId, c.copeName, c.copeDesc, c.copeUrl, c.mediaType, c.mediaPath, c.dateEntered, c.dateDeleted";
 
         readDatabaseArg(
             columnQuery,
-            "CopingStrategy",
+            DbTableNames.copingStrategy,
             copes => {this.setState({copes: copes})},
             undefined,
             'as c inner join ' + linkTable + ' as w on c.copeId = w.copeId where signId = ' + currentSignId + ' AND c.dateDeleted is null');
@@ -55,7 +55,7 @@ export default class SignSummary extends React.Component {
     };
 
     getCompleteList = () => {
-        readDatabaseArg("*", "WarningSign", this.updateSigns, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.warningSign, this.updateSigns, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // fetching all warning signs that do not have a deleted date
 
@@ -73,7 +73,7 @@ export default class SignSummary extends React.Component {
     };
 
     deleteSign = id => {
-        updateDatabaseArgument("WarningSign",
+        updateDatabaseArgument(DbTableNames.warningSign,
             [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
             ["dateDeleted"],
             "where signId = " + id,

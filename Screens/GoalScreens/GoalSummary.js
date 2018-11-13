@@ -66,7 +66,7 @@ export default class GoalSummary extends React.Component {
         const today = Moment().format("YYYY-MM-DD");
 
         readDatabaseArg(columns,
-            "DiarySession",
+            DbTableNames.diarySession,
             this.handleDiaryData,
             undefined,
             " as ds inner join Diary as d on ds.diaryId = d.diaryId inner join Session as s on ds.sessionId = s.sessionId" +

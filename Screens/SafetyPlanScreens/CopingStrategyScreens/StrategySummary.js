@@ -76,7 +76,7 @@ export default class StrategySummary extends React.Component {
     deleteStrat = (id, path) => {
         this.removeMediaFile(path);
 
-        updateDatabaseArgument("CopingStrategy",
+        updateDatabaseArgument(DbTableNames.copingStrategy,
             [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
             ["dateDeleted"], "where copeId = " + id,
             () => this.props.navigation.pop(),
@@ -90,7 +90,7 @@ export default class StrategySummary extends React.Component {
     };
 
     getCompleteList = () => {
-        readDatabaseArg("*", "CopingStrategy", this.updateStrategies, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.copingStrategy, this.updateStrategies, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // fetching all coping strategies that do not have a deleted date
 

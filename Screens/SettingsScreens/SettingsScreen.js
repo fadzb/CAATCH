@@ -45,7 +45,7 @@ export default class SettingsScreen extends React.Component {
     }
 
     componentDidMount() {
-        readDatabase('*', 'User', this.getSwitchValues);
+        readDatabase('*', DbTableNames.user, this.getSwitchValues);
         // get user settings
     }
 
@@ -82,7 +82,7 @@ export default class SettingsScreen extends React.Component {
     };
 
     handlePinStore = pin => {
-        updateDatabaseArgument('User',
+        updateDatabaseArgument(DbTableNames.user,
             [pin, 1],
             ['passcode', 'enabled'],
             'where userId = 1',
@@ -93,7 +93,7 @@ export default class SettingsScreen extends React.Component {
     handleSwitch = value => {
         this.setState(prevState => {
             if(prevState.switchValue === true) {
-                updateDatabaseArgument('User',
+                updateDatabaseArgument(DbTableNames.user,
                     [0],
                     ['enabled'],
                     'where userId = 1')

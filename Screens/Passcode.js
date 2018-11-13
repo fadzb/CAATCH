@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Modal, Dimensions } from 'react-native';
 import {readDatabase} from "../Util/DatabaseHelper";
 import PINCode from '@haskkor/react-native-pincode'
+import {DbTableNames} from "../Constants/Constants";
 
 export default class Passcode extends React.Component {
 
@@ -14,7 +15,7 @@ export default class Passcode extends React.Component {
     }
 
     componentDidMount() {
-        readDatabase('passcode', 'User', res => this.setState({userPin: res[0].passcode}));
+        readDatabase('passcode', DbTableNames.user, res => this.setState({userPin: res[0].passcode}));
     }
     // get saved user passcode
 

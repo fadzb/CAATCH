@@ -66,7 +66,7 @@ export default class NewReason extends React.Component {
     };
 
     refreshDb = func => {
-        readDatabaseArg("*", "Reason", func, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.reason, func, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // for refreshing global state from Reason table in DB
 
@@ -92,7 +92,7 @@ export default class NewReason extends React.Component {
 
         const mediaDirectory = 'SafetyplanMedia/';
 
-        updateDatabaseArgument('Reason',
+        updateDatabaseArgument(DbTableNames.reason,
             [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
             ['mediaPath', 'mediaType'],
             'where reasonId = ' + reasonId.insertId,
@@ -169,7 +169,7 @@ export default class NewReason extends React.Component {
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabase("Reason", Object.values(value), Object.keys(value), this.updateReasonList(value), this.checkMediaSelected);
+            updateDatabase(DbTableNames.reason, Object.values(value), Object.keys(value), this.updateReasonList(value), this.checkMediaSelected);
             // write the saved values to DB if valid
 
             this.props.navigation.pop();

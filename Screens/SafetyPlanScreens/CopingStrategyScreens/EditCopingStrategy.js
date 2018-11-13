@@ -9,6 +9,7 @@ import {Icons} from "../../../Constants/Icon";
 
 import {TabStyles} from "../../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
+import {DbTableNames} from "../../../Constants/Constants";
 
 const Form = t.form.Form;
 
@@ -87,7 +88,7 @@ export default class EditCopingStrategy extends React.Component {
     };
 
     refreshDb = func => {
-        readDatabaseArg("*", "CopingStrategy", func, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.copingStrategy, func, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // for refreshing global state from Coping Strategy table in DB
 
@@ -106,7 +107,7 @@ export default class EditCopingStrategy extends React.Component {
 
         const mediaDirectory = 'SafetyplanMedia/';
 
-        updateDatabaseArgument('CopingStrategy',
+        updateDatabaseArgument(DbTableNames.copingStrategy,
             [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
             ['mediaPath', 'mediaType'],
             'where copeId = ' + copeId,
@@ -183,7 +184,7 @@ export default class EditCopingStrategy extends React.Component {
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabaseArgument("CopingStrategy",
+            updateDatabaseArgument(DbTableNames.copingStrategy,
                 Object.values(value),
                 Object.keys(value),
                 'where copeId = ' + this.props.navigation.getParam('id'),

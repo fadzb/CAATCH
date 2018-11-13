@@ -85,7 +85,7 @@ export default class NewDistraction extends React.Component {
     };
 
     refreshDb = func => {
-        readDatabaseArg("*", "Distraction", func, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.distraction, func, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // for refreshing global state from Distraction table in DB
 
@@ -114,20 +114,20 @@ export default class NewDistraction extends React.Component {
 
         if (checkedContacts !== null) {
             checkedContacts.forEach(contactId => {
-                updateDatabase("DistractContactLink", [contactId, distractId.insertId], ["contactId", "distractId"]);
+                updateDatabase(DbTableNames.distractContactLink, [contactId, distractId.insertId], ["contactId", "distractId"]);
             });
         } else {
             console.log("no contacts checked");
         }
 
-        readDatabaseArg("*", "Distraction", (distractions) => store.dispatch(getDistraction(distractions)), () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.distraction, (distractions) => store.dispatch(getDistraction(distractions)), () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
 
     updateDBMedia = distractId => {
 
         const mediaDirectory = 'SafetyplanMedia/';
 
-        updateDatabaseArgument('Distraction',
+        updateDatabaseArgument(DbTableNames.distraction,
             [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
             ['mediaPath', 'mediaType'],
             'where distractId = ' + distractId.insertId,
@@ -204,7 +204,7 @@ export default class NewDistraction extends React.Component {
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabase("Distraction", Object.values(value), Object.keys(value), this.updateDistractionList(value), this.checkMediaSelected);
+            updateDatabase(DbTableNames.distraction, Object.values(value), Object.keys(value), this.updateDistractionList(value), this.checkMediaSelected);
             // write the saved values to DB if valid
 
             this.props.navigation.pop();

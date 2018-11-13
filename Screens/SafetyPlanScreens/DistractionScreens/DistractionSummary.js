@@ -50,7 +50,7 @@ export default class DistractionSummary extends React.Component {
 
         readDatabaseArg(
             columnQuery,
-            "Contact",
+            DbTableNames.contact,
             contacts => {this.setState({contacts: contacts})},
             undefined,
             'as c inner join ' + linkTable + ' as d on c.contactId = d.contactId where distractId = ' + currentDistractId + ' AND c.dateDeleted is null');
@@ -79,7 +79,7 @@ export default class DistractionSummary extends React.Component {
     };
 
     getCompleteList = () => {
-        readDatabaseArg("*", "Distraction", this.updateDistractions, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.distraction, this.updateDistractions, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // fetching all distractions that do not have a deleted date
 
@@ -95,7 +95,7 @@ export default class DistractionSummary extends React.Component {
     deleteDistraction = (id, path) => {
         this.removeMediaFile(path);
 
-        updateDatabaseArgument("Distraction",
+        updateDatabaseArgument(DbTableNames.distraction,
             [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')],
             ["dateDeleted"],
             "where distractId = " + id,

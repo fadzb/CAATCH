@@ -8,6 +8,7 @@ import Expo from 'expo'
 
 import {TabStyles} from "../../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg, deleteDatabaseRow} from "../../../Util/DatabaseHelper";
+import {DbTableNames} from "../../../Constants/Constants";
 
 const Form = t.form.Form;
 
@@ -78,14 +79,14 @@ export default class EditWarningSign extends React.Component {
         const checkedCopes = this.props.navigation.getParam('checkedCopes', null);
 
         if(checkedCopes !== null) {
-            deleteDatabaseRow("CopeSignLink", "where signId = " + this.props.navigation.getParam('id'));
+            deleteDatabaseRow(DbTableNames.copeSignLink, "where signId = " + this.props.navigation.getParam('id'));
 
             checkedCopes.forEach(copeId => {
-                updateDatabase("CopeSignLink", [copeId, this.props.navigation.getParam('id')], ["copeId", "signId"]);
+                updateDatabase(DbTableNames.copeSignLink, [copeId, this.props.navigation.getParam('id')], ["copeId", "signId"]);
             });
         }
 
-        readDatabaseArg("*", "WarningSign", (signs) => store.dispatch(getSign(signs)), () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.warningSign, (signs) => store.dispatch(getSign(signs)), () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // function that checks if any copes were linked and, if yes, updates CopeSignLink table with respective ID's
 
@@ -96,7 +97,7 @@ export default class EditWarningSign extends React.Component {
 
         readDatabaseArg(
             columnQuery,
-            "CopingStrategy",
+            DbTableNames.copingStrategy,
             strats => {this.props.navigation.push('copingLink', {selectedStrats: strats, edit: true}); console.log(strats)},
             undefined,
             'as c inner join ' + linkTable + ' as s on c.copeId = s.copeId where signId = ' + currentSignId + ' AND c.dateDeleted is null');
@@ -108,7 +109,7 @@ export default class EditWarningSign extends React.Component {
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabaseArgument("WarningSign",
+            updateDatabaseArgument(DbTableNames.warningSign,
                 Object.values(value),
                 Object.keys(value),
                 "where signId = " + this.props.navigation.getParam('id'),

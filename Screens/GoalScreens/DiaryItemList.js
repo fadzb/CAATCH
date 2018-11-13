@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'r
 import CustomMultiSelectList from "../../Components/CustomMultiSelectList"
 import {connect} from 'react-redux'
 import {readDatabaseArg} from "../../Util/DatabaseHelper";
+import {DbTableNames} from "../../Constants/Constants";
 
 class DiaryItemList extends React.Component {
     static navigationOptions = {
@@ -20,7 +21,7 @@ class DiaryItemList extends React.Component {
     }
 
     componentDidMount() {
-        readDatabaseArg("*", "Diary", this.updateDiaryItems, () => console.log("DB read success"), 'where scale is not NULL' + (!this.props.settings.dbt ? ' and diaryType = "General"' : ''));
+        readDatabaseArg("*", DbTableNames.diary, this.updateDiaryItems, () => console.log("DB read success"), 'where scale is not NULL' + (!this.props.settings.dbt ? ' and diaryType = "General"' : ''));
     }
     // read DB for all currently saved diary items
 

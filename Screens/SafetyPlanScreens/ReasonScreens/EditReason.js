@@ -9,6 +9,7 @@ import {Icons} from "../../../Constants/Icon";
 
 import {TabStyles} from "../../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
+import {DbTableNames} from "../../../Constants/Constants";
 
 const Form = t.form.Form;
 
@@ -68,7 +69,7 @@ export default class EditReason extends React.Component {
     };
 
     refreshDb = func => {
-        readDatabaseArg("*", "Reason", func, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.reason, func, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // for refreshing global state from Reason table in DB
 
@@ -87,7 +88,7 @@ export default class EditReason extends React.Component {
 
         const mediaDirectory = 'SafetyplanMedia/';
 
-        updateDatabaseArgument('Reason',
+        updateDatabaseArgument(DbTableNames.reason,
             [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName, this.state.selectedMediaType],
             ['mediaPath', 'mediaType'],
             'where reasonId = ' + reasonId,
@@ -164,7 +165,7 @@ export default class EditReason extends React.Component {
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabaseArgument("Reason",
+            updateDatabaseArgument(DbTableNames.reason,
                 Object.values(value),
                 Object.keys(value),
                 "where reasonId = " + this.props.navigation.getParam('id'),

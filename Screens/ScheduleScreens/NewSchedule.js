@@ -12,6 +12,7 @@ import {Permissions, Calendar} from 'expo';
 
 import {TabStyles} from "../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg, deleteDatabaseRow, readDatabase} from "../../Util/DatabaseHelper";
+import {DbTableNames} from "../../Constants/Constants";
 
 const Form = t.form.Form;
 
@@ -133,7 +134,7 @@ export default class NewSchedule extends React.Component {
                                 timeZone: timeZone
                             })
                                 .then(() => {
-                                    updateDatabaseArgument('Schedule', [...Object.values(value), this.state.schDate, timeFrom, timeTo],
+                                    updateDatabaseArgument(DbTableNames.schedule, [...Object.values(value), this.state.schDate, timeFrom, timeTo],
                                         [...Object.keys(value), 'date', 'timeFrom', 'timeTo'], 'where scheduleId = ' + scheduleId,
                                         undefined,
                                         res => this.getGlobalSchedule());
@@ -167,7 +168,7 @@ export default class NewSchedule extends React.Component {
                                 timeZone: timeZone
                             })
                                 .then(id => {
-                                    updateDatabase("Schedule", [...Object.values(value), this.state.schDate, timeFrom, timeTo, id.toString()],
+                                    updateDatabase(DbTableNames.schedule, [...Object.values(value), this.state.schDate, timeFrom, timeTo, id.toString()],
                                         [...Object.keys(value), 'date', 'timeFrom', 'timeTo', 'nativeCalendarId'],
                                         undefined,
                                         res => this.getGlobalSchedule());
@@ -183,7 +184,7 @@ export default class NewSchedule extends React.Component {
 
     getGlobalSchedule = () => {
         readDatabase('*',
-            'Schedule',
+            DbTableNames.schedule,
             res => {
                 let resultItems = {};
 
@@ -271,7 +272,7 @@ export default class NewSchedule extends React.Component {
 
                 Calendar.deleteEventAsync(nativeId)
                     .then(() => {
-                        deleteDatabaseRow('Schedule', 'where scheduleId = ' + scheduleId, this.getGlobalSchedule)
+                        deleteDatabaseRow(DbTableNames.schedule, 'where scheduleId = ' + scheduleId, this.getGlobalSchedule)
                     })
                     .catch(err => console.log(err))
             })

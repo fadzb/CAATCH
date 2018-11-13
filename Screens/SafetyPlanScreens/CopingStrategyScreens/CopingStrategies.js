@@ -9,7 +9,7 @@ import Moment from 'moment';
 import {FileSystem} from 'expo'
 import {Icons} from "../../../Constants/Icon";
 import {compareDates} from "../../../Util/Compare";
-import {SectionHeader} from "../../../Constants/Constants";
+import {DbTableNames, SectionHeader} from "../../../Constants/Constants";
 
 class CopingStrategies extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -35,7 +35,7 @@ class CopingStrategies extends React.Component {
     };
 
     getCompleteList = () => {
-        readDatabaseArg("*", "CopingStrategy", this.updateStrategies, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.copingStrategy, this.updateStrategies, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // fetching all coping strategies that do not have a deleted date
 
@@ -51,7 +51,7 @@ class CopingStrategies extends React.Component {
     deleteStrat = (id, path) => {
         this.removeMediaFile(path);
 
-        updateDatabaseArgument("CopingStrategy", [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where copeId = " + id, () => console.log("deleting strategy..."), (res) => this.getCompleteList());
+        updateDatabaseArgument(DbTableNames.copingStrategy, [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where copeId = " + id, () => console.log("deleting strategy..."), (res) => this.getCompleteList());
     };
     // deleting pressed strategy and updating redux global store to re-render the strategy list.
 

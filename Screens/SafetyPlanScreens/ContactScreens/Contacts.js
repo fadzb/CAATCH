@@ -9,7 +9,7 @@ import {connect} from 'react-redux'
 import {getContact} from "../../../Redux/actions";
 import store from "../../../Redux/store"
 import Moment from 'moment';
-import {SectionHeader} from "../../../Constants/Constants";
+import {DbTableNames, SectionHeader} from "../../../Constants/Constants";
 
 class Contacts extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -30,7 +30,7 @@ class Contacts extends React.Component {
     }
 
     getCompleteList = () => {
-        readDatabaseArg("*", "Contact", this.updateContacts, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.contact, this.updateContacts, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // fetching all contacts that do not have a deleted date
 
@@ -52,7 +52,7 @@ class Contacts extends React.Component {
     };
 
     deleteContact = id => {
-        updateDatabaseArgument("Contact", [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where contactId = " + id, () => console.log("deleting contact..."), (res) => this.getCompleteList())
+        updateDatabaseArgument(DbTableNames.contact, [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where contactId = " + id, () => console.log("deleting contact..."), (res) => this.getCompleteList())
     };
     // deleting pressed contact and updating redux global store to re-render the contact list
 

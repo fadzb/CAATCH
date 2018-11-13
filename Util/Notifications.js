@@ -1,10 +1,11 @@
 // function(s) used for updating notifications after diary entry
 
 import {readDatabase} from "../Util/DatabaseHelper";
+import {DbTableNames} from "../Constants/Constants";
 
 export const updateNotifications = () => {
 
-    readDatabase('*', 'User', res => {
+    readDatabase('*', DbTableNames.user, res => {
         if(res[0].notifications === 1) {
             // check if notifications have been enabled in settings table
 

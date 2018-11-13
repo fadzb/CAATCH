@@ -9,6 +9,7 @@ import Moment from 'moment';
 import {FileSystem} from 'expo'
 import {Icons} from "../../../Constants/Icon";
 import {compareDates} from "../../../Util/Compare";
+import {DbTableNames} from "../../../Constants/Constants";
 
 class ReasonsToLive extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -34,7 +35,7 @@ class ReasonsToLive extends React.Component {
     };
 
     getCompleteList = () => {
-        readDatabaseArg("*", "Reason", this.updateReasons, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.reason, this.updateReasons, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // fetching all reasons that do not have a deleted date
 
@@ -50,7 +51,7 @@ class ReasonsToLive extends React.Component {
     deleteReason = (id, path) => {
         this.removeMediaFile(path);
 
-        updateDatabaseArgument("Reason", [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where reasonId = " + id, () => console.log("deleting reason..."), (res) => this.getCompleteList());
+        updateDatabaseArgument(DbTableNames.reason, [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where reasonId = " + id, () => console.log("deleting reason..."), (res) => this.getCompleteList());
     };
     // deleting pressed reason and updating redux global store to re-render the reason list.
 

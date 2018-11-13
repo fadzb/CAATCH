@@ -10,6 +10,7 @@ import {ButtonGroup} from 'react-native-elements';
 
 import {TabStyles} from "../../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
+import {DbTableNames} from "../../../Constants/Constants";
 
 const Form = t.form.Form;
 
@@ -100,7 +101,7 @@ export default class EditContact extends React.Component {
     };
 
     refreshDb = func => {
-        readDatabaseArg("*", "Contact", func, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.contact, func, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // for refreshing global state from Contact table in DB
 
@@ -119,7 +120,7 @@ export default class EditContact extends React.Component {
 
         const mediaDirectory = 'SafetyplanMedia/';
 
-        updateDatabaseArgument('Contact',
+        updateDatabaseArgument(DbTableNames.contact,
             [Expo.FileSystem.documentDirectory + mediaDirectory + this.state.selectedMediaName],
             ['image'],
             'where contactId = ' + contactId,
@@ -194,7 +195,7 @@ export default class EditContact extends React.Component {
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabaseArgument("Contact",
+            updateDatabaseArgument(DbTableNames.contact,
                 [...Object.values(value), (this.state.type === 0 ? 'Personal' : 'Professional')],
                 [...Object.keys(value), 'contactType'],
                 "where contactId = " + this.props.navigation.getParam('id'),

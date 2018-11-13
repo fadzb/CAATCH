@@ -78,13 +78,13 @@ export default class NewWarningSign extends React.Component {
 
         if (checkedCopes !== null) {
             checkedCopes.forEach(copeId => {
-                updateDatabase("CopeSignLink", [copeId, signId.insertId], ["copeId", "signId"]);
+                updateDatabase(DbTableNames.copeSignLink, [copeId, signId.insertId], ["copeId", "signId"]);
             });
         } else {
             console.log("no copes checked");
         }
 
-        readDatabaseArg("*", "WarningSign", (signs) => store.dispatch(getSign(signs)), () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.warningSign, (signs) => store.dispatch(getSign(signs)), () => console.log("DB read success"), 'where dateDeleted is NULL');
 
         this.updateFunctionUsage(signId.insertId);
         // keeping track of new sign entries for 'my stats'
@@ -101,7 +101,7 @@ export default class NewWarningSign extends React.Component {
 
         if (value) { // if validation fails, value will be null
             console.log(value);
-            updateDatabase("WarningSign", Object.values(value), Object.keys(value), this.updateSignList(value), this.updateLinkDbTable);
+            updateDatabase(DbTableNames.warningSign, Object.values(value), Object.keys(value), this.updateSignList(value), this.updateLinkDbTable);
             // write the saved values to DB if valid
 
             this.props.navigation.pop();

@@ -8,7 +8,7 @@ import store from "../../../Redux/store"
 import Moment from 'moment';
 import {Icons} from "../../../Constants/Icon";
 import {compareDates} from "../../../Util/Compare";
-import {SectionHeader} from "../../../Constants/Constants";
+import {DbTableNames, SectionHeader} from "../../../Constants/Constants";
 
 class WarningSigns extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -29,7 +29,7 @@ class WarningSigns extends React.Component {
     }
 
     getCompleteList = () => {
-        readDatabaseArg("*", "WarningSign", this.updateSigns, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.warningSign, this.updateSigns, () => console.log("DB read success"), 'where dateDeleted is NULL');
     };
     // fetching all warning signs that do not have a deleted date
 
@@ -47,7 +47,7 @@ class WarningSigns extends React.Component {
     };
 
     deleteSign = id => {
-        updateDatabaseArgument("WarningSign", [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where signId = " + id, () => console.log("deleting sign..."), (res) => this.getCompleteList())
+        updateDatabaseArgument(DbTableNames.warningSign, [Moment(new Date()).format('YYYY-MM-DD HH:mm:ss.SSS')], ["dateDeleted"], "where signId = " + id, () => console.log("deleting sign..."), (res) => this.getCompleteList())
     };
     // deleting pressed strategy and updating redux global store to re-render the strategy list
 

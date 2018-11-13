@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight } from 'r
 import CustomMultiSelectList from "../../../Components/CustomMultiSelectList"
 
 import {readDatabaseArg} from "../../../Util/DatabaseHelper";
+import {DbTableNames} from "../../../Constants/Constants";
 
 export default class CopingStrategyLink extends React.Component {
     static navigationOptions = {
@@ -19,7 +20,7 @@ export default class CopingStrategyLink extends React.Component {
     }
 
     componentDidMount() {
-        readDatabaseArg("*", "CopingStrategy", this.updateCopes, () => console.log("DB read success"), 'where dateDeleted is NULL');
+        readDatabaseArg("*", DbTableNames.copingStrategy, this.updateCopes, () => console.log("DB read success"), 'where dateDeleted is NULL');
     }
     // read DB for all currently saved coping Strategies where dateDeleted is null
 
