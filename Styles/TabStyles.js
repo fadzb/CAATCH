@@ -24,17 +24,38 @@ export const TabStyles = StyleSheet.create({
   },
 });
 
+export const Tiles = {
+  //iconColor: 'white',
+};
+
 export const themeStyles = StyleSheet.create({
   tiles: {
-    backgroundColor: '#F3E9D2',
+    backgroundColor: 'white',
+    //borderWidth: .5,
+    //borderColor: '#F3E9D2',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+      },
+      android: {
+        elevation: 5,
+      },
+    }),
   },
   tileFont: {
+    //color: 'white',
     ...Platform.select({
       ios: {
         //fontFamily: 'normal',
       },
       android: {
-        fontFamily: 'Roboto',
+        //fontFamily: 'Roboto',
       },
     }),
   },
@@ -51,8 +72,12 @@ export const themeStyles = StyleSheet.create({
         //fontFamily: 'normal',
       },
       android: {
-        fontFamily: 'Roboto',
+        //fontFamily: 'Roboto',
       },
     }),
   },
+  diaryDatePicker: {
+    backgroundColor: 'white',
+  },
+  diaryDatePickerText: {},
 });
