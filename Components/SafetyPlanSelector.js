@@ -7,7 +7,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 export const SafetyPlanSelector = props => {
     return (
-        <View style={selectorStyle.container}>
+        <View style={[selectorStyle.container, {backgroundColor: props.color}]}>
             <TouchableHighlight
                 underlayColor="#FDEDEC"
                 style={selectorStyle.button}
@@ -47,7 +47,7 @@ const selectorStyle = StyleSheet.create({
 
     container: {
         flexDirection: "row",
-        flex: 1
+        flex: 1,
     },
     // need to wrap button in View in order to stretch to full width of screen using flexDirection
 

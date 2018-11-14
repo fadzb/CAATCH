@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types';
 
 import Icon from "react-native-vector-icons/Ionicons";
-import {themeStyles} from "../Styles/TabStyles";
+import {themeStyles, Tiles} from "../Styles/TabStyles";
 
 export const DiaryTile = props => {
     return (
@@ -17,6 +17,7 @@ export const DiaryTile = props => {
                     <Icon
                         name={props.iconName}
                         size={60}
+                        color={Tiles.iconColor}
                     />
                 </View>
             </TouchableHighlight>
@@ -34,7 +35,6 @@ DiaryTile.propTypes = {
 const tileStyle = StyleSheet.create({
     button: {
         flex: 1,
-        borderWidth: 1,
         borderRadius: 7,
         justifyContent: 'center'
     },
