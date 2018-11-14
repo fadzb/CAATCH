@@ -28,6 +28,7 @@ export default class PlanScreen extends React.Component {
     return (
       <View style={TabStyles.stackContainer}>
         <SafetyPlanSelector
+          color={'#E6EDEF'}
           iconName={Icons.warningSign + '-outline'}
           iconSize={iconSize}
           name={SectionHeader.signs}
@@ -35,6 +36,7 @@ export default class PlanScreen extends React.Component {
           screen="warning"
         />
         <SafetyPlanSelector
+          color={'#D9E4E8'}
           iconName={Icons.copingStrategy + '-outline'}
           iconSize={iconSize}
           name={SectionHeader.strategies}
@@ -42,6 +44,7 @@ export default class PlanScreen extends React.Component {
           screen="coping"
         />
         <SafetyPlanSelector
+          color={'#CDDBE0'}
           iconName={Icons.lifeWorthLiving + '-outline'}
           iconSize={iconSize}
           name="Life Worth Living"
@@ -49,6 +52,7 @@ export default class PlanScreen extends React.Component {
           screen="reason"
         />
         <SafetyPlanSelector
+          color={'#C1D2D8'}
           iconName={Icons.distractions + '-outline'}
           iconSize={iconSize}
           name="Things to Do"
@@ -56,6 +60,7 @@ export default class PlanScreen extends React.Component {
           screen="selectDistraction"
         />
         <SafetyPlanSelector
+          color={'#B4C9D1'}
           iconName={Icons.contacts + '-outline'}
           iconSize={iconSize}
           name={SectionHeader.contacts}
@@ -63,6 +68,7 @@ export default class PlanScreen extends React.Component {
           screen="contact"
         />
         <SafetyPlanSelector
+          color={'#A8C0C9'}
           iconName={Icons.helpers}
           iconSize={iconSize}
           name={SectionHeader.helpers}
@@ -70,6 +76,7 @@ export default class PlanScreen extends React.Component {
           screen="helper"
         />
         <SafetyPlanSelector
+          color={'#9CB7C1'}
           iconName={Icons.environmentSafe + '-outline'}
           iconSize={iconSize}
           name="Making the Environment Safe"

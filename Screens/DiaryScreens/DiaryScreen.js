@@ -1,5 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Modal, TouchableHighlight, TouchableOpacity } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  Modal,
+  TouchableHighlight,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Moment from 'moment';
 import { Icons } from '../../Constants/Icon';
@@ -48,12 +58,12 @@ class DiaryScreen extends React.Component {
     return (
       <View style={[TabStyles.stackContainer, themeStyles.background]}>
         <View style={diaryStyle.dateButtonContainer}>
-          <TouchableOpacity onPress={() => this.toggleModal(true)}>
-            <View style={diaryStyle.dateButton}>
+          <TouchableHighlight style={{ elevation: 3 }} onPress={() => this.toggleModal(true)}>
+            <View style={[diaryStyle.dateButton, themeStyles.diaryDatePicker]}>
               <Icon name={Icons.calendar + '-outline'} size={25} />
               <Text style={diaryStyle.dateButtonText}>{Moment(this.props.diaryDate).format('LL')}</Text>
             </View>
-          </TouchableOpacity>
+          </TouchableHighlight>
         </View>
         <View style={{ flex: 1, alignSelf: 'stretch' }}>
           <DiaryGrid
@@ -79,7 +89,6 @@ const diaryStyle = StyleSheet.create({
   dateButton: {
     paddingTop: 7,
     paddingBottom: 7,
-    borderWidth: 1,
     borderRadius: 5,
     flexDirection: 'row',
     justifyContent: 'center',
@@ -92,6 +101,22 @@ const diaryStyle = StyleSheet.create({
     marginLeft: 45,
     marginRight: 45,
     alignSelf: 'stretch',
+    borderRadius: 5,
+    //borderWidth: .5,
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 2,
+        },
+        shadowOpacity: 0.23,
+        shadowRadius: 2.62,
+      },
+      android: {
+        elevation: 3,
+      },
+    }),
   },
 
   dateButtonText: {

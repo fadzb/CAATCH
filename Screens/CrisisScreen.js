@@ -15,7 +15,7 @@ import Communications from 'react-native-communications';
 import openMap from 'react-native-open-maps';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import { TabStyles } from '../Styles/TabStyles';
+import { TabStyles, themeStyles } from '../Styles/TabStyles';
 
 const width = Dimensions.get('window').width;
 const samaritansNum = '116123';
@@ -24,7 +24,7 @@ const iconSize = width / 5;
 
 const CrisisTile = (props) => (
   <View style={{ height: Dimensions.get('window').height / 3.5 }}>
-    <TouchableOpacity onPress={props.onPress} style={crisisStyle.button}>
+    <TouchableOpacity onPress={props.onPress} style={[crisisStyle.button, themeStyles.tiles]}>
       <Text style={{ fontSize: 25, paddingBottom: 20 }}>{props.buttonHeader}</Text>
       <Icon name={props.iconName} size={props.size} color={props.color} />
     </TouchableOpacity>
@@ -94,7 +94,7 @@ const crisisStyle = StyleSheet.create({
 
   button: {
     flex: 1,
-    borderWidth: 2,
+    //borderWidth: 2,
     paddingVertical: 20,
     alignItems: 'center',
     borderRadius: 12,

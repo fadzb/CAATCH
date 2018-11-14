@@ -7,7 +7,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 
 export const SafetyPlanSelector = (props) => {
   return (
-    <View style={selectorStyle.container}>
+    <View style={[selectorStyle.container, { backgroundColor: props.color }]}>
       <TouchableHighlight
         underlayColor="#FDEDEC"
         style={selectorStyle.button}
