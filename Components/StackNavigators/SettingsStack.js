@@ -14,9 +14,7 @@ const SettingsStack = createStackNavigator(
 
   {
     initialRouteName: 'main',
-    navigationOptions: {
-      ...Stacks,
-    },
+    ...Stacks,
   }
 );
 // Settings stack navigator

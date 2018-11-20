@@ -130,7 +130,6 @@ class Helper extends React.Component {
 const helperStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   listContainer: {
     flex: 1,

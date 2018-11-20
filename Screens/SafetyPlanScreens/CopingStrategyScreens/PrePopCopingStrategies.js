@@ -75,7 +75,6 @@ export default class PrePopCopingStrategies extends React.Component {
 const preCopeStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   buttonText: {
     fontSize: 18,

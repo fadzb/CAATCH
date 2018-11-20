@@ -202,7 +202,6 @@ export default class SignSummary extends React.Component {
 const signSummaryStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    backgroundColor: '#fff',
   },
 
   text: {

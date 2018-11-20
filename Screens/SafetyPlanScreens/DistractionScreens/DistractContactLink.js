@@ -93,7 +93,6 @@ export default class DistractContactLink extends React.Component {
 const contactLinkStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   buttonText: {
     fontSize: 18,
