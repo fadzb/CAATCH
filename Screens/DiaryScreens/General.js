@@ -22,6 +22,7 @@ import { updateNotifications } from '../../Util/Notifications';
 import { PressableIcon } from '../../Components/PressableIcon';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { Icons } from '../../Constants/Icon';
+import { themeStyles } from '../../Styles/TabStyles';
 
 const steps = {
   title: 'Steps',
@@ -36,7 +37,7 @@ class General extends React.Component {
       title: 'General' + ' ' + Moment(diaryDate).format('DD.MM.YYYY'),
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('generalSummary')}>
-          <Text style={{ padding: 10 }}>Archive</Text>
+          <Text style={[{ padding: 10 }, themeStyles.stackHeaderTitleFont]}>Archive</Text>
         </TouchableOpacity>
       ),
     };

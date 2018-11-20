@@ -18,6 +18,7 @@ import EditGoal from '../../Screens/GoalScreens/EditGoal';
 import ReportSelection from '../../Screens/ReportScreens/ReportSelection';
 import SafetyPlanReport from '../../Screens/ReportScreens/SafetyPlanReport';
 import DiaryReport from '../../Screens/ReportScreens/DiaryReport';
+import { Stacks, themeStyles } from '../../Styles/TabStyles';
 
 const HomeStack = createStackNavigator(
   {
@@ -40,6 +41,9 @@ const HomeStack = createStackNavigator(
 
   {
     initialRouteName: 'main',
+    navigationOptions: {
+      ...Stacks,
+    },
   }
 );
 // Home stack navigator

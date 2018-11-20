@@ -11,7 +11,12 @@ export const DiaryTile = (props) => {
       <TouchableHighlight underlayColor="#FDEDEC" style={[tileStyle.button, themeStyles.tiles]} onPress={props.onPress}>
         <View style={{ alignItems: 'center' }}>
           <Text style={[tileStyle.buttonText, themeStyles.tileFont]}>{props.name}</Text>
-          <Icon name={props.iconName} size={60} color={Tiles.iconColor} />
+          <Icon
+            name={props.iconName}
+            size={45}
+            color={Tiles.iconColor}
+            //style={{fontWeight: 800}}
+          />
         </View>
       </TouchableHighlight>
     </View>
@@ -34,12 +39,13 @@ const tileStyle = StyleSheet.create({
 
   container: {
     flex: 1,
-    margin: 5,
+    marginHorizontal: 15,
+    marginVertical: 15,
   },
   // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
   buttonText: {
-    fontSize: 15,
+    fontSize: 14,
     paddingBottom: 10,
   },
 });

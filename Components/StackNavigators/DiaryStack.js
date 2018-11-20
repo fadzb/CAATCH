@@ -17,6 +17,7 @@ import SafetyPlanSummary from '../../Screens/DiaryScreens/SafetyPlanSummary';
 import SafetyPlanSession from '../../Screens/DiaryScreens/SafetyPlanSession';
 import { SectionHeader } from '../../Constants/Constants';
 import NewDbtItem from '../../Screens/DiaryScreens/NewDbtItem';
+import { Stacks, themeStyles } from '../../Styles/TabStyles';
 
 const DiaryStack = createStackNavigator(
   {
@@ -36,6 +37,9 @@ const DiaryStack = createStackNavigator(
 
   {
     initialRouteName: 'main',
+    navigationOptions: {
+      ...Stacks,
+    },
   }
 );
 // Diary stack navigator

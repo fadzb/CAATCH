@@ -3,6 +3,7 @@ import { Button, Text, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Icons } from '../../Constants/Icon';
+import { Stacks, themeStyles } from '../../Styles/TabStyles';
 
 import CrisisScreen from '../../Screens/CrisisScreen';
 
@@ -13,6 +14,9 @@ const CrisisStack = createStackNavigator(
 
   {
     initialRouteName: 'main',
+    navigationOptions: {
+      ...Stacks,
+    },
   }
 );
 // Crisis stack navigator

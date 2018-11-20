@@ -3,6 +3,7 @@ import { Button, Text, View } from 'react-native';
 import { createStackNavigator } from 'react-navigation';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Icons } from '../../Constants/Icon';
+import { Stacks, themeStyles } from '../../Styles/TabStyles';
 
 import SettingsScreen from '../../Screens/SettingsScreens/SettingsScreen';
 import BackupRestoreSelection from '../../Screens/SettingsScreens/BackupRestoreSelection';
@@ -15,6 +16,9 @@ const SettingsStack = createStackNavigator(
 
   {
     initialRouteName: 'main',
+    navigationOptions: {
+      ...Stacks,
+    },
   }
 );
 // Settings stack navigator
