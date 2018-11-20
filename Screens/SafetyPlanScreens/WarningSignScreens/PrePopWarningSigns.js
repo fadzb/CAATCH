@@ -70,7 +70,6 @@ export default class PrePopWarningSigns extends React.Component {
 const preSignStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     itemStyle: {
         //borderBottomWidth: 3,

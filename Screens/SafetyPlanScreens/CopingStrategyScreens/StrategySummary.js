@@ -195,7 +195,6 @@ export default class StrategySummary extends React.Component {
 const stratSummaryStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
 
     cardStyle: {

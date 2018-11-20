@@ -129,7 +129,6 @@ export default class PhoneContacts extends React.Component {
 const phoneContactStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     listContainer: {
         flex: 1,

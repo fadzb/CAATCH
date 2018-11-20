@@ -44,7 +44,7 @@ class DiaryScreen extends React.Component {
 
     render() {
         return (
-            <View style={[TabStyles.stackContainer, themeStyles.background]}>
+            <View style={TabStyles.stackContainer}>
                 <View style={diaryStyle.dateButtonContainer}>
                     <TouchableHighlight onPress={() => this.toggleModal(true)}>
                         <View style={[diaryStyle.dateButton, themeStyles.diaryDatePicker]}>

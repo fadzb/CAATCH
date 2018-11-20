@@ -114,7 +114,6 @@ class ReasonsToLive extends React.Component {
 const reasonStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     listContainer: {
         flex: 1,

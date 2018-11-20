@@ -6,21 +6,18 @@ import { Constants } from 'expo';
 export const TabStyles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center',
         marginTop: Constants.statusBarHeight
     },
 
     stackContainer: {
         flex: 1,
-        backgroundColor: '#fff',
         alignItems: 'center'
     },
     // for screens that already have default header bar
 
     planContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
 });
 
@@ -35,26 +32,32 @@ export const Tiles = {
 };
 
 export const Stacks = {
-    headerTintColor: 'white',
-    headerStyle: {
-        backgroundColor: '#31548B',
-        //backgroundColor: '#7E57C2'
+    navigationOptions: {
+        headerTintColor: 'white',
+        headerStyle: {
+            backgroundColor: '#31548B',
+            //backgroundColor: '#7E57C2'
+        },
+        headerTitleStyle: {
+            color: 'white',
+            ...Platform.select({
+                ios: {
+                    //fontFamily: 'normal',
+                },
+                android: {
+                    //fontFamily: 'Roboto',
+                },
+            }),
+        },
+        headerBackTitle: null,
+        headerBackTitleStyle: {
+            color: 'white'
+        },
     },
-    headerTitleStyle: {
-        color: 'white',
-        ...Platform.select({
-            ios: {
-                //fontFamily: 'normal',
-            },
-            android: {
-                //fontFamily: 'Roboto',
-            },
-        }),
-    },
-    headerBackTitle: null,
-    headerBackTitleStyle: {
-        color: 'white'
-    },
+    cardStyle: {
+        //backgroundColor: "#EEF1FE",
+        backgroundColor: "white",
+    }
 };
 
 export const themeStyles = StyleSheet.create({

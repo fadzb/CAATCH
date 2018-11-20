@@ -41,9 +41,7 @@ const HomeStack = createStackNavigator(
 
     {
         initialRouteName: "main",
-        navigationOptions: {
-            ...Stacks
-        },
+        ...Stacks
 
     }
 );

@@ -238,7 +238,6 @@ export default class DistractionSummary extends React.Component {
 const distractSummaryStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
 
     cardStyle: {

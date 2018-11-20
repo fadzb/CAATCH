@@ -37,9 +37,7 @@ const DiaryStack = createStackNavigator(
 
     {
         initialRouteName: "main",
-        navigationOptions: {
-            ...Stacks
-        },
+        ...Stacks
     }
 );
 // Diary stack navigator

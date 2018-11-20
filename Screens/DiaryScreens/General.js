@@ -197,7 +197,6 @@ const generalStyle = StyleSheet.create({
     listContainer: {
         flex: 1,
         alignSelf: 'stretch',
-        backgroundColor: 'white'
     },
 
     sleep: {

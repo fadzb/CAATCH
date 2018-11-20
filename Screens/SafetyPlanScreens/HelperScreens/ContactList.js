@@ -81,7 +81,6 @@ export default class ContactList extends React.Component {
 const contactListStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     buttonText: {
         fontSize: 18,

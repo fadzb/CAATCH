@@ -134,7 +134,6 @@ export default class SafetyPlanSelection extends React.Component {
 const SPSelectionStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     buttonText: {
         fontSize: 18,

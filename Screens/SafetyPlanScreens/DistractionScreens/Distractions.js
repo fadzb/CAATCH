@@ -114,7 +114,6 @@ class Distractions extends React.Component {
 const distractionStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     listContainer: {
         flex: 1,

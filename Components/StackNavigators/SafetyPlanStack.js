@@ -85,9 +85,7 @@ const PlanStack = createStackNavigator(
 
     {
         initialRouteName: "main",
-        navigationOptions: {
-            ...Stacks
-        },
+        ...Stacks
     }
 );
 // Safety Plan stack navigator

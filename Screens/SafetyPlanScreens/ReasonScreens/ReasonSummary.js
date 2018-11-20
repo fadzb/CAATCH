@@ -196,7 +196,6 @@ export default class ReasonSummary extends React.Component {
 const reasonSummaryStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
 
     cardStyle: {

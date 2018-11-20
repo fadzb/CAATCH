@@ -141,7 +141,6 @@ class Contacts extends React.Component {
 const contactsStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     listContainer: {
         flex: 1,

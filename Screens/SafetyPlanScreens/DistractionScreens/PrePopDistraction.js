@@ -70,7 +70,6 @@ export default class PrePopDistraction extends React.Component {
 const preDistractionStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     buttonText: {
         fontSize: 18,

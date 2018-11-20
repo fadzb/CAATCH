@@ -114,7 +114,6 @@ class CopingStrategies extends React.Component {
 const stratStyle = StyleSheet.create({
     viewContainer: {
         flex: 1,
-        backgroundColor: '#fff',
     },
     listContainer: {
         flex: 1,

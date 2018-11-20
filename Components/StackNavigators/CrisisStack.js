@@ -14,9 +14,7 @@ const CrisisStack = createStackNavigator(
 
     {
         initialRouteName: "main",
-        navigationOptions: {
-            ...Stacks
-        },
+        ...Stacks
     }
 );
 // Crisis stack navigator
