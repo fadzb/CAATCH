@@ -58,9 +58,10 @@ const selectorStyle = StyleSheet.create({
     textContainer: {
         flex: 4,
         flexDirection: "row",
-        justifyContent: "space-around",
+        //justifyContent: "space-around",
         alignItems: "center",
         borderBottomWidth: 1,
+        paddingLeft: 5
     },
 
     iconContainer: {

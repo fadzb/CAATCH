@@ -16,8 +16,9 @@ export const DiaryTile = props => {
                     <Text style={[tileStyle.buttonText, themeStyles.tileFont]}>{props.name}</Text>
                     <Icon
                         name={props.iconName}
-                        size={60}
+                        size={45}
                         color={Tiles.iconColor}
+                        //style={{fontWeight: 800}}
                     />
                 </View>
             </TouchableHighlight>
@@ -41,12 +42,13 @@ const tileStyle = StyleSheet.create({
 
     container: {
         flex: 1,
-        margin: 5,
+        marginHorizontal: 15,
+        marginVertical: 15,
     },
     // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
     buttonText: {
-        fontSize: 15,
+        fontSize: 14,
         paddingBottom: 10
     },
 

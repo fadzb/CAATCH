@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
+import { StyleSheet, Text, TouchableHighlight, View, Dimensions } from 'react-native';
 import PropTypes from 'prop-types'
 import {DiaryTile} from "./DiaryTile";
 import {Icons} from "../Constants/Icon";
@@ -10,8 +10,10 @@ import {SectionHeader} from "../Constants/Constants";
 export const DiaryGrid = (props) => {
     return (
         <View style={gridStyle.container}>
-            <View style={gridStyle.rowContainer}>
-                <DiaryTile onPress={() => props.navigation.push('general', {title: props.date})} name='General' iconName={Icons.generalDiary + '-outline'}/>
+            <View style={{flex: 1, alignItems: 'center'}}>
+                <View style={gridStyle.generalRowContainer}>
+                    <DiaryTile onPress={() => props.navigation.push('general', {title: props.date})} name='General' iconName={Icons.generalDiary + '-outline'}/>
+                </View>
             </View>
             <View style={gridStyle.rowContainer}>
                 <DiaryTile onPress={() => props.navigation.push('spSelection', {title: 'Signs', type: 'sign'})} name='Warning Sign' iconName={Icons.warningSign + '-outline'}/>
@@ -27,6 +29,8 @@ export const DiaryGrid = (props) => {
     )
 };
 
+const marginHorizontal = 25;
+
 const gridStyle = StyleSheet.create({
 
     rowContainer: {
@@ -34,15 +38,16 @@ const gridStyle = StyleSheet.create({
         flex: 1,
     },
 
-    lastRowContainer: {
+    generalRowContainer: {
         flexDirection: 'row',
         flex: 1,
-        marginTop: 15
+        width: (Dimensions.get('window').width - (marginHorizontal * 2)) / 2
     },
 
     container: {
         flex: 1,
-        margin: 15
+        marginVertical: 25,
+        marginHorizontal: marginHorizontal
 
     }
 });

@@ -3,7 +3,7 @@ import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types'
 
 import Icon from "react-native-vector-icons/Ionicons";
-import {themeStyles} from "../Styles/TabStyles";
+import {themeStyles, Tiles} from "../Styles/TabStyles";
 
 // Component used for each of the SP items on the first SP tab screen
 
@@ -15,10 +15,11 @@ export const HomeScreenTile = props => {
                 style={[tileStyle.button, themeStyles.tiles]}
                 onPress={props.onPress}>
                 <View style={{alignItems:"center", justifyContent: 'space-evenly', flex: 1}}>
-                    <Text style={tileStyle.buttonText}>{props.name}</Text>
+                    <Text style={[tileStyle.buttonText, themeStyles.tileFont]}>{props.name}</Text>
                     <Icon
                         name={props.iconName}
                         size={65}
+                        color={Tiles.iconColor}
                     />
                 </View>
             </TouchableHighlight>

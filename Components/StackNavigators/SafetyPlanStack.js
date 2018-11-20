@@ -41,6 +41,7 @@ import NewHelper from "../../Screens/SafetyPlanScreens/HelperScreens/NewHelper";
 import ContactList from "../../Screens/SafetyPlanScreens/HelperScreens/ContactList";
 import HelperSummary from "../../Screens/SafetyPlanScreens/HelperScreens/HelperSummary";
 import EditHelper from "../../Screens/SafetyPlanScreens/HelperScreens/EditHelper";
+import {Stacks, themeStyles} from "../../Styles/TabStyles";
 
 const PlanStack = createStackNavigator(
     {
@@ -83,7 +84,10 @@ const PlanStack = createStackNavigator(
     },
 
     {
-        initialRouteName: "main"
+        initialRouteName: "main",
+        navigationOptions: {
+            ...Stacks
+        },
     }
 );
 // Safety Plan stack navigator

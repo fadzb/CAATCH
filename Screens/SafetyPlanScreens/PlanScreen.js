@@ -27,13 +27,13 @@ export default class PlanScreen extends React.Component {
     render() {
         return (
             <View style={TabStyles.stackContainer}>
-                <SafetyPlanSelector color={'#E6EDEF'} iconName={Icons.warningSign + "-outline"} iconSize={iconSize} name={SectionHeader.signs} press={this.handleItemPress} screen="warning"/>
-                <SafetyPlanSelector color={'#D9E4E8'} iconName={Icons.copingStrategy + "-outline"} iconSize={iconSize} name={SectionHeader.strategies} press={this.handleItemPress} screen="coping"/>
-                <SafetyPlanSelector color={'#CDDBE0'} iconName={Icons.lifeWorthLiving + "-outline"} iconSize={iconSize} name="Life Worth Living" press={this.handleItemPress} screen="reason"/>
-                <SafetyPlanSelector color={'#C1D2D8'} iconName={Icons.distractions + "-outline"} iconSize={iconSize} name="Things to Do" press={this.handleItemPress} screen="selectDistraction"/>
-                <SafetyPlanSelector color={'#B4C9D1'} iconName={Icons.contacts + "-outline"} iconSize={iconSize} name={SectionHeader.contacts} press={this.handleItemPress} screen="contact"/>
-                <SafetyPlanSelector color={'#A8C0C9'} iconName={Icons.helpers} iconSize={iconSize} name={SectionHeader.helpers} press={this.handleItemPress} screen="helper"/>
-                <SafetyPlanSelector color={'#9CB7C1'} iconName={Icons.environmentSafe + "-outline"} iconSize={iconSize} name="Making the Environment Safe" press={this.handleItemPress} screen="environment"/>
+                <SafetyPlanSelector color={'white'} iconName={Icons.warningSign + "-outline"} iconSize={iconSize} name={SectionHeader.signs} press={this.handleItemPress} screen="warning"/>
+                <SafetyPlanSelector color={'white'} iconName={Icons.copingStrategy + "-outline"} iconSize={iconSize} name={SectionHeader.strategies} press={this.handleItemPress} screen="coping"/>
+                <SafetyPlanSelector color={'white'} iconName={Icons.lifeWorthLiving + "-outline"} iconSize={iconSize} name="Life Worth Living" press={this.handleItemPress} screen="reason"/>
+                <SafetyPlanSelector color={'white'} iconName={Icons.distractions + "-outline"} iconSize={iconSize} name="Things to Do" press={this.handleItemPress} screen="selectDistraction"/>
+                <SafetyPlanSelector color={'white'} iconName={Icons.contacts + "-outline"} iconSize={iconSize} name={SectionHeader.contacts} press={this.handleItemPress} screen="contact"/>
+                <SafetyPlanSelector color={'white'} iconName={Icons.helpers} iconSize={iconSize} name={SectionHeader.helpers} press={this.handleItemPress} screen="helper"/>
+                <SafetyPlanSelector color={'white'} iconName={Icons.environmentSafe + "-outline"} iconSize={iconSize} name="Making the Environment Safe" press={this.handleItemPress} screen="environment"/>
             </View>
         );
     }

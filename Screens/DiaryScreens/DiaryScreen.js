@@ -10,14 +10,12 @@ import store from "../../Redux/store"
 import {updateDate} from "../../Redux/actions";
 import {getDiaryPrePops} from "../../Constants/Prepopulated";
 
-import {TabStyles, themeStyles} from "../../Styles/TabStyles";
+import {ComponentStyleConst, TabStyles, themeStyles, Tiles} from "../../Styles/TabStyles";
 import {SectionHeader} from "../../Constants/Constants";
 
 class DiaryScreen extends React.Component {
     static navigationOptions = {
         title: SectionHeader.diary,
-        headerStyle: themeStyles.stackHeader,
-        headerTitleStyle: themeStyles.stackHeaderTitleFont,
     };
     // static property called navigationOptions that belongs to all screen components
 
@@ -48,13 +46,16 @@ class DiaryScreen extends React.Component {
         return (
             <View style={[TabStyles.stackContainer, themeStyles.background]}>
                 <View style={diaryStyle.dateButtonContainer}>
-                    <TouchableHighlight style={{elevation: 3}} onPress={() => this.toggleModal(true)}>
+                    <TouchableHighlight onPress={() => this.toggleModal(true)}>
                         <View style={[diaryStyle.dateButton, themeStyles.diaryDatePicker]}>
-                            <Icon
-                                name={Icons.calendar + '-outline'}
-                                size={25}
-                            />
-                            <Text style={diaryStyle.dateButtonText}>{Moment(this.props.diaryDate).format('LL')}</Text>
+                            <View style={{position: 'absolute', left: 10}}>
+                                <Icon
+                                    name={Icons.calendar + '-outline'}
+                                    size={20}
+                                    color={ComponentStyleConst.diaryDatePickerIconColor}
+                                />
+                            </View>
+                            <Text style={[diaryStyle.dateButtonText, themeStyles.diaryDatePickerText]}>{Moment(this.props.diaryDate).format('LL')}</Text>
                         </View>
                     </TouchableHighlight>
                 </View>
@@ -85,7 +86,7 @@ const diaryStyle = StyleSheet.create({
 
     dateButtonContainer: {
         marginTop: 30,
-        marginBottom: 20,
+        //marginBottom: 20,
         marginLeft: 45,
         marginRight: 45,
         alignSelf: 'stretch',
@@ -108,8 +109,8 @@ const diaryStyle = StyleSheet.create({
     },
 
     dateButtonText: {
-        fontSize: 18,
-        paddingLeft: 10
+        fontSize: 16,
+        //paddingLeft: 10
     }
 });
 
