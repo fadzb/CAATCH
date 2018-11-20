@@ -24,48 +24,23 @@ export const TabStyles = StyleSheet.create({
   },
 });
 
+export const ComponentStyleConst = {
+  //diaryDatePickerIconColor: '#2E9797'
+  diaryDatePickerIconColor: '#333333',
+};
+
 export const Tiles = {
+  iconColor: '#333333',
   //iconColor: 'white',
 };
 
-export const themeStyles = StyleSheet.create({
-  tiles: {
-    backgroundColor: 'white',
-    //borderWidth: .5,
-    //borderColor: '#F3E9D2',
-    ...Platform.select({
-      ios: {
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-      },
-      android: {
-        elevation: 5,
-      },
-    }),
+export const Stacks = {
+  headerTintColor: 'white',
+  headerStyle: {
+    backgroundColor: '#31548B',
+    //backgroundColor: '#7E57C2'
   },
-  tileFont: {
-    //color: 'white',
-    ...Platform.select({
-      ios: {
-        //fontFamily: 'normal',
-      },
-      android: {
-        //fontFamily: 'Roboto',
-      },
-    }),
-  },
-  background: {
-    //backgroundColor: '#114B5F'
-  },
-  stackHeader: {
-    backgroundColor: '#1A936F',
-  },
-  stackHeaderTitleFont: {
+  headerTitleStyle: {
     color: 'white',
     ...Platform.select({
       ios: {
@@ -76,8 +51,59 @@ export const themeStyles = StyleSheet.create({
       },
     }),
   },
+  headerBackTitle: null,
+  headerBackTitleStyle: {
+    color: 'white',
+  },
+};
+
+export const themeStyles = StyleSheet.create({
+  tiles: {
+    backgroundColor: 'white',
+    //backgroundColor: '#31548B',
+    borderWidth: 1,
+    //borderColor: '#C7D4EA',
+    borderColor: '#2E9797',
+    ...Platform.select({
+      ios: {
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 0,
+          height: 3,
+        },
+        shadowOpacity: 0.29,
+        shadowRadius: 4.65,
+      },
+      android: {
+        elevation: 7,
+      },
+    }),
+  },
+  tileFont: {
+    color: '#333333',
+    //color: 'white',
+    //fontWeight: 'bold',
+    ...Platform.select({
+      ios: {
+        //fontFamily: 'normal',
+      },
+      android: {
+        //fontFamily: 'Roboto',
+      },
+    }),
+  },
+  background: {
+    //backgroundColor: '#F8FAFF'
+    backgroundColor: '#EEF1FE',
+  },
   diaryDatePicker: {
     backgroundColor: 'white',
+    borderWidth: 1,
+    //borderColor: '#C7D4EA',
+    borderColor: '#2E9797',
   },
-  diaryDatePickerText: {},
+  diaryDatePickerText: {
+    color: '#333333',
+    //color: '#2E9797',
+  },
 });
