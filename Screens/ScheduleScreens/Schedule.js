@@ -144,7 +144,6 @@ class Schedule extends React.Component {
 const scheduleStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   item: {
     backgroundColor: 'white',

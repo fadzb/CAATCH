@@ -145,7 +145,6 @@ class Goals extends React.Component {
 const goalStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    backgroundColor: '#fff',
   },
   listContainer: {
     flex: 1,

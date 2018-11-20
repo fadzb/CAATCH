@@ -351,7 +351,6 @@ export default class GoalSummary extends React.Component {
 const goalSummaryStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    backgroundColor: '#fff',
   },
 
   text: {

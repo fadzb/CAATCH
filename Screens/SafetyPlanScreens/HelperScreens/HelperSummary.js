@@ -142,7 +142,6 @@ export default class HelperSummary extends React.Component {
 const helperSummaryStyle = StyleSheet.create({
   viewContainer: {
     flex: 1,
-    backgroundColor: '#fff',
   },
 
   text: {

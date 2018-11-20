@@ -146,7 +146,7 @@ export default class ContactSummary extends React.Component {
     const iconSize = Dimensions.get('window').height / 16;
 
     return (
-      <View style={{ flex: 1, backgroundColor: 'white' }}>
+      <View style={{ flex: 1 }}>
         <View style={contactSummaryStyle.thumbnailContainer}>
           {mediaPath !== null ? (
             <TouchableOpacity onPress={() => this.toggleModal(true)}>
