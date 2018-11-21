@@ -5,6 +5,7 @@ import {Icons} from "../../Constants/Icon";
 import {safetyPlanHtml} from "../../Components/HTML";
 import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
 import {DbTableNames, SafetyPlanDbTables} from "../../Constants/Constants";
+import {ComponentStyleConst} from "../../Styles/TabStyles";
 
 export default class SafetyPlanReport extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -24,6 +25,7 @@ export default class SafetyPlanReport extends React.Component {
                         name={Icons.print + '-outline'}
                         size={30}
                         onPress={() => params.handlePrint()}
+                        color={ComponentStyleConst.headerRightIconColor}
                     />
                 </View>
             ),

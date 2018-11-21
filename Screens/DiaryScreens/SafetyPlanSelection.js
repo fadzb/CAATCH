@@ -7,6 +7,7 @@ import store from "../../Redux/store";
 import {DbTableNames} from "../../Constants/Constants";
 import CustomMultiSelectList from "../../Components/CustomMultiSelectList"
 import {updateNotifications} from "../../Util/Notifications";
+import {themeStyles} from "../../Styles/TabStyles";
 
 export default class SafetyPlanSelection extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -17,7 +18,7 @@ export default class SafetyPlanSelection extends React.Component {
             headerRight: (
                 <TouchableOpacity
                     onPress={() => navigation.push('spSummary', {type: navigation.getParam('type')})}
-                ><Text style={{ padding: 10 }}>Archive</Text>
+                ><Text style={[{ padding: 10 }, themeStyles.headerRightText]}>Archive</Text>
                 </TouchableOpacity>
             ),
         }

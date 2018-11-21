@@ -10,6 +10,7 @@ import {FileSystem} from 'expo'
 import {Icons} from "../../../Constants/Icon";
 import {compareDates} from "../../../Util/Compare";
 import {DbTableNames} from "../../../Constants/Constants";
+import {themeStyles} from "../../../Styles/TabStyles";
 
 class Distractions extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -18,7 +19,7 @@ class Distractions extends React.Component {
             headerRight: (
                 <TouchableOpacity
                     onPress={() => navigation.push('newDistraction')}
-                ><Text style={{ padding: 10 }}>New +</Text>
+                ><Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
                 </TouchableOpacity>
             ),
         }

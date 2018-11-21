@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Dimensions, Text, ActivityIndicator, Modal, TouchableHighlight, Alert } from 'react-native';
-import {TabStyles} from "../../Styles/TabStyles";
+import {ComponentStyleConst, TabStyles} from "../../Styles/TabStyles";
 import Moment from 'moment'
 import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
 import CustomMultiPicker from "react-native-multiple-select-list";
@@ -46,6 +46,7 @@ export default class VicSkillsChart extends React.Component {
                         name={Icons.share}
                         size={30}
                         onPress={() => params.handleScreenShot()}
+                        color={ComponentStyleConst.headerRightIconColor}
                     />
                 </View>
             ),

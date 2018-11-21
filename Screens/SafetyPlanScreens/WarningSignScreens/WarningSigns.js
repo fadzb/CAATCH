@@ -9,6 +9,7 @@ import Moment from 'moment';
 import {Icons} from "../../../Constants/Icon";
 import {compareDates} from "../../../Util/Compare";
 import {DbTableNames, SectionHeader} from "../../../Constants/Constants";
+import {themeStyles} from "../../../Styles/TabStyles";
 
 class WarningSigns extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -17,7 +18,7 @@ class WarningSigns extends React.Component {
             headerRight: (
                 <TouchableOpacity
                     onPress={() => navigation.push('newWarning')}
-                ><Text style={{ padding: 10 }}>New +</Text>
+                ><Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
                 </TouchableOpacity>
             ),
         }

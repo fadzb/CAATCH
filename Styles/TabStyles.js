@@ -23,7 +23,8 @@ export const TabStyles = StyleSheet.create({
 
 export const ComponentStyleConst = {
     //diaryDatePickerIconColor: '#2E9797'
-    diaryDatePickerIconColor: '#333333'
+    diaryDatePickerIconColor: '#333333',
+    headerRightIconColor: 'white'
 };
 
 export const Tiles = {
@@ -61,6 +62,9 @@ export const Stacks = {
 };
 
 export const themeStyles = StyleSheet.create({
+    headerRightText: {
+        color: 'white'
+    },
     tiles: {
         backgroundColor: 'white',
         //backgroundColor: '#31548B',
@@ -94,10 +98,6 @@ export const themeStyles = StyleSheet.create({
                 //fontFamily: 'Roboto',
             },
         }),
-    },
-    background: {
-        //backgroundColor: '#F8FAFF'
-        backgroundColor: '#EEF1FE'
     },
     diaryDatePicker: {
         backgroundColor: 'white',
