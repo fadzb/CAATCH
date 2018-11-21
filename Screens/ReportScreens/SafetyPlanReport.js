@@ -73,6 +73,23 @@ export default class SafetyPlanReport extends React.Component {
           undefined,
           'as h inner join ' + DbTableNames.contact + ' as c on h.contactId = c.contactId where h.dateDeleted is NULL'
         );
+      } else if (key === 'environment') {
+        // only display user entered data i.e. not pre-populated
+
+        readDatabaseArg(
+          '*',
+          SafetyPlanDbTables[key].tableName,
+          (res) => {
+            this.setState(
+              (prevState) => ({ safetyPlanData: { ...prevState.safetyPlanData, [key]: res } }),
+              () => {
+                this.setState((prevState) => ({ safetyPlanDataTracker: prevState.safetyPlanDataTracker + 1 }));
+              }
+            );
+          },
+          undefined,
+          'where ' + SafetyPlanDbTables[key].delete + ' is NULL and userEntry = 1'
+        );
       } else {
         readDatabaseArg(
           '*',
