@@ -1,15 +1,27 @@
 import {SafetyPlanDbTables, SkillGroups} from "../Constants/Constants";
 import Moment from 'moment'
 
-const rowHtml = name => {
+const rowHtml = (name, bold) => {
+    const td = bold ? "    <td style='font-weight:bold'>" + name + "</td>\n" : "    <td>" + name + "</td>\n";
+
     return  "<tr>\n" +
-            "    <td>" + name + "</td>\n" +
+                td +
             "  </tr>"
 };
 
 const tableHtml = (title, items, key) => {
     let rows = '';
-    items.forEach(i => rows = rows + rowHtml(i[SafetyPlanDbTables[key].dbNameColumn]));
+
+    if(title === 'My Network') {
+        items.sort(sortContacts).forEach(i => {
+            const bold = i.contactType === 'Professional';
+
+            rows = rows + rowHtml(i[SafetyPlanDbTables[key].dbNameColumn], bold)
+        });
+    } else {
+        items.forEach(i => rows = rows + rowHtml(i[SafetyPlanDbTables[key].dbNameColumn], false));
+    }
+    // bold Professional contacts from 'My Network'
 
     return  "<table style=\"width:45%; margin-top: 30px\">\n" +
             "  <tr>\n" +
@@ -18,6 +30,17 @@ const tableHtml = (title, items, key) => {
                 rows +
             "</table>";
 };
+
+const sortContacts = (contact1, contact2) => {
+    if(contact1.contactType > contact2.contactType) {
+        return 1;
+    } else if(contact1.contactType < contact2.contactType) {
+        return -1;
+    } else {
+        return 0;
+    }
+};
+// keep professional contacts at bottom of table
 
 export const safetyPlanHtml = data => {
     let titles = '';

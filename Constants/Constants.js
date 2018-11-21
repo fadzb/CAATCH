@@ -8,10 +8,10 @@ export const SafetyPlanConstants = {
 
 // SB table names for SP components. Used to query data for reports
 export const SafetyPlanDbTables = {
-    contact: {
-        tableName: 'Contact',
-        title: 'My Network',
-        dbNameColumn: 'firstName',
+    warningSign: {
+        tableName: 'WarningSign',
+        title: 'Warning Signs',
+        dbNameColumn: 'signName',
         delete: 'dateDeleted'
     },
     copingStrategy: {
@@ -32,22 +32,22 @@ export const SafetyPlanDbTables = {
         dbNameColumn: 'reasonName',
         delete: 'dateDeleted'
     },
-    warningSign: {
-        tableName: 'WarningSign',
-        title: 'Warning Signs',
-        dbNameColumn: 'signName',
-        delete: 'dateDeleted'
-    },
-    environment: {
-        tableName: 'environment',
-        title: 'Environment Safe',
-        dbNameColumn: 'environmentName',
+    contact: {
+        tableName: 'Contact',
+        title: 'My Network',
+        dbNameColumn: 'firstName',
         delete: 'dateDeleted'
     },
     helper: {
         tableName: 'Helper',
         title: 'My Helpers',
         dbNameColumn: 'firstName',
+        delete: 'dateDeleted'
+    },
+    environment: {
+        tableName: 'environment',
+        title: 'Environment Safe',
+        dbNameColumn: 'environmentName',
         delete: 'dateDeleted'
     },
 };

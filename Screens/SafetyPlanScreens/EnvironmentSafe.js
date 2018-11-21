@@ -58,7 +58,7 @@ export default class EnvironmentSafe extends React.Component {
         if(!this.state.text) {
             this.setState({invalidText: true})
         } else {
-            updateDatabase(DbTableNames.environment, [this.state.text], ['environmentName'], undefined,
+            updateDatabase(DbTableNames.environment, [this.state.text, 1], ['environmentName', 'userEntry'], undefined,
                 res => this.setState(prevState => ({
                     data: [{
                         environmentName: prevState.text,
