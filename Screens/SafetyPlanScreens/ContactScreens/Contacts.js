@@ -20,6 +20,7 @@ import { getContact } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import Moment from 'moment';
 import { DbTableNames, SectionHeader } from '../../../Constants/Constants';
+import { themeStyles } from '../../../Styles/TabStyles';
 
 class Contacts extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -27,7 +28,7 @@ class Contacts extends React.Component {
       title: SectionHeader.contacts,
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newContact')}>
-          <Text style={{ padding: 10 }}>New +</Text>
+          <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
         </TouchableOpacity>
       ),
     };

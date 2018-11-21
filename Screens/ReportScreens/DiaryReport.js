@@ -18,6 +18,7 @@ import { diaryHtml, safetyPlanHtml } from '../../Components/HTML';
 import { readDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
 import { DbTableNames, SafetyPlanDbTables } from '../../Constants/Constants';
 import Moment from 'moment';
+import { ComponentStyleConst } from '../../Styles/TabStyles';
 
 export default class DiaryReport extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -27,7 +28,12 @@ export default class DiaryReport extends React.Component {
       title: 'Diary Report',
       headerRight: (
         <View style={{ paddingRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <Icon name={Icons.print + '-outline'} size={30} onPress={() => params.handlePrint()} />
+          <Icon
+            name={Icons.print + '-outline'}
+            size={30}
+            onPress={() => params.handlePrint()}
+            color={ComponentStyleConst.headerRightIconColor}
+          />
         </View>
       ),
     };

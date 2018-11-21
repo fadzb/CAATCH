@@ -10,6 +10,7 @@ import { FileSystem } from 'expo';
 import { Icons } from '../../Constants/Icon';
 import { compareDates } from '../../Util/Compare';
 import { DbTableNames, SectionHeader } from '../../Constants/Constants';
+import { themeStyles } from '../../Styles/TabStyles';
 
 class Goals extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -17,7 +18,7 @@ class Goals extends React.Component {
       title: SectionHeader.goals,
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newGoal')}>
-          <Text style={{ padding: 10 }}>New +</Text>
+          <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
         </TouchableOpacity>
       ),
     };

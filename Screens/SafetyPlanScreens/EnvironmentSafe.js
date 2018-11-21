@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import { TabStyles } from '../../Styles/TabStyles';
+import { TabStyles, themeStyles } from '../../Styles/TabStyles';
 import { Icons } from '../../Constants/Icon';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { readDatabaseArg, updateDatabase, updateDatabaseArgument } from '../../Util/DatabaseHelper';
@@ -27,7 +27,7 @@ export default class EnvironmentSafe extends React.Component {
       title: 'Make the Environment Safe',
       headerRight: (
         <TouchableOpacity onPress={() => params.handleThis()}>
-          <Text style={{ padding: 10 }}>New +</Text>
+          <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
         </TouchableOpacity>
       ),
     };
