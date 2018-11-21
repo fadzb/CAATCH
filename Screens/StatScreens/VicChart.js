@@ -11,7 +11,7 @@ import {
   Platform,
   Alert,
 } from 'react-native';
-import { TabStyles } from '../../Styles/TabStyles';
+import { ComponentStyleConst, TabStyles } from '../../Styles/TabStyles';
 import Moment from 'moment';
 import { readDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
 import CustomMultiPicker from 'react-native-multiple-select-list';
@@ -58,7 +58,12 @@ class VicChart extends React.Component {
       title: 'Charts',
       headerRight: (
         <View style={{ paddingRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
-          <Icon name={Icons.share} size={30} onPress={() => params.handleScreenShot()} />
+          <Icon
+            name={Icons.share}
+            size={30}
+            onPress={() => params.handleScreenShot()}
+            color={ComponentStyleConst.headerRightIconColor}
+          />
         </View>
       ),
     };

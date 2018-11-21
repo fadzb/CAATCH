@@ -37,7 +37,7 @@ class General extends React.Component {
       title: 'General' + ' ' + Moment(diaryDate).format('DD.MM.YYYY'),
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('generalSummary')}>
-          <Text style={[{ padding: 10 }, themeStyles.stackHeaderTitleFont]}>Archive</Text>
+          <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>Archive</Text>
         </TouchableOpacity>
       ),
     };

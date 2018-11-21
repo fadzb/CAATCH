@@ -16,6 +16,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Icons } from '../../Constants/Icon';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PressableIcon } from '../../Components/PressableIcon';
+import { themeStyles } from '../../Styles/TabStyles';
 
 const USED_SKILLS = 'Used Skills';
 
@@ -27,7 +28,7 @@ class Feelings extends React.Component {
       title: SectionHeader.info + ' ' + Moment(diaryDate).format('DD.MM.YYYY'),
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('feelingsSummary')}>
-          <Text style={{ padding: 10 }}>Archive</Text>
+          <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>Archive</Text>
         </TouchableOpacity>
       ),
     };

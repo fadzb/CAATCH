@@ -10,6 +10,7 @@ import { FileSystem } from 'expo';
 import { Icons } from '../../../Constants/Icon';
 import { compareDates } from '../../../Util/Compare';
 import { DbTableNames, SectionHeader } from '../../../Constants/Constants';
+import { themeStyles } from '../../../Styles/TabStyles';
 
 class CopingStrategies extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -17,7 +18,7 @@ class CopingStrategies extends React.Component {
       title: SectionHeader.strategies,
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newCoping')}>
-          <Text style={{ padding: 10 }}>New +</Text>
+          <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
         </TouchableOpacity>
       ),
     };

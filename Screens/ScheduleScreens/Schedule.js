@@ -17,6 +17,7 @@ import store from '../../Redux/store';
 import { getSchedule, updateScheduleDate } from '../../Redux/actions';
 import { readDatabase } from '../../Util/DatabaseHelper';
 import { DbTableNames } from '../../Constants/Constants';
+import { themeStyles } from '../../Styles/TabStyles';
 
 class Schedule extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -24,7 +25,7 @@ class Schedule extends React.Component {
       title: 'My Cal',
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newSchedule')}>
-          <Text style={{ padding: 10 }}>New +</Text>
+          <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
         </TouchableOpacity>
       ),
     };
