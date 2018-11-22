@@ -20,12 +20,12 @@ import { TabStyles, themeStyles } from '../Styles/TabStyles';
 const width = Dimensions.get('window').width;
 const samaritansNum = '116123';
 
-const iconSize = width / 5;
+const iconSize = width / 6.5;
 
 const CrisisTile = (props) => (
-  <View style={{ height: Dimensions.get('window').height / 3.5 }}>
+  <View style={{ height: Dimensions.get('window').height / 4.5 }}>
     <TouchableOpacity onPress={props.onPress} style={[crisisStyle.button, themeStyles.tiles]}>
-      <Text style={{ fontSize: 25, paddingBottom: 20 }}>{props.buttonHeader}</Text>
+      <Text style={{ fontSize: 20, paddingVertical: 7 }}>{props.buttonHeader}</Text>
       <Icon name={props.iconName} size={props.size} color={props.color} />
     </TouchableOpacity>
   </View>
@@ -39,9 +39,23 @@ export default class CrisisScreen extends React.Component {
   // static property called navigationOptions that belongs to all screen components
 
   goToMaps = () => {
-    openMap({ query: Platform.OS === 'ios' ? 'Hospitals' : 'Urgent Care' });
+    // Expo.Permissions.askAsync(Expo.Permissions.LOCATION)
+    //     .then(res => {
+    //         if(res.status !== 'granted') {
+    //             console.error("Location permission not granted!");
+    //
+    //             openMap({zoom: 2, provider: 'google', query: 'Urgent Care'});
+    //             return;
+    //         }
+    //
+    //         Expo.Location.getCurrentPositionAsync({enableHighAccuracy: false}).then(location => openMap({
+    //             latitude: location.coords.latitude, longitude: location.coords.longitude, zoom: 18, provider: 'google', query: 'Urgent Care'
+    //         }));
+    //     });
+
+    openMap({ provider: 'google', query: 'Urgent Care' });
   };
-  // opens native map app with 'urgent care' as search
+  // opens google map app with 'urgent care' as search query
 
   render() {
     return (
@@ -70,7 +84,7 @@ const crisisStyle = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-evenly',
     alignSelf: 'stretch',
-    marginHorizontal: 30,
+    marginHorizontal: 60,
   },
 
   tileView: {
@@ -95,9 +109,9 @@ const crisisStyle = StyleSheet.create({
   button: {
     flex: 1,
     //borderWidth: 2,
-    paddingVertical: 20,
+    paddingVertical: 7,
     alignItems: 'center',
     borderRadius: 12,
-    justifyContent: 'center',
+    justifyContent: 'space-evenly',
   },
 });
