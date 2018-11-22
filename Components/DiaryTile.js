@@ -13,7 +13,7 @@ export const DiaryTile = (props) => {
           <Text style={[tileStyle.buttonText, themeStyles.tileFont]}>{props.name}</Text>
           <Icon
             name={props.iconName}
-            size={45}
+            size={40}
             color={Tiles.iconColor}
             //style={{fontWeight: 800}}
           />
