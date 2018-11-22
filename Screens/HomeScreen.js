@@ -30,7 +30,7 @@ class HomeScreen extends React.Component {
                         iconName1= {Icons.plan + "-outline"}
                         onPress1={() => this.props.navigation.navigate('Plan')}
                         third={true}
-                        name3="My Reports"
+                        name3="Reports"
                         onPress3={() => this.props.navigation.navigate('reportSelection')}
                         iconName3= {Icons.report + "-outline"}
                     />
@@ -61,7 +61,8 @@ const homeStyle = StyleSheet.create({
         flex: 1,
         flexDirection: "column",
         alignSelf: "stretch",
-        margin: 10
+        marginHorizontal: 13,
+        marginVertical: 23
     },
 
 });

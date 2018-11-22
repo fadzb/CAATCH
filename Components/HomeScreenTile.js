@@ -18,7 +18,7 @@ export const HomeScreenTile = props => {
                     <Text style={[tileStyle.buttonText, themeStyles.tileFont]}>{props.name}</Text>
                     <Icon
                         name={props.iconName}
-                        size={65}
+                        size={40}
                         color={Tiles.iconColor}
                     />
                 </View>
@@ -47,12 +47,14 @@ const tileStyle = StyleSheet.create({
     container: {
         flex: 1,
         flexDirection: 'row',
-        margin: 10,
+        marginHorizontal: 15,
+        marginVertical: 23,
+        // margin: 10
     },
     // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
     buttonText: {
-        fontSize: 16,
+        fontSize: 14,
         //paddingBottom: 20
     },
 
