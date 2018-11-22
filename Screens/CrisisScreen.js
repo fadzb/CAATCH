@@ -15,7 +15,7 @@ const iconSize = width / 6.5;
 const CrisisTile = props => (
     <View style={{height: Dimensions.get('window').height / 4.5}}>
         <TouchableOpacity onPress={props.onPress} style={[crisisStyle.button, themeStyles.tiles]}>
-            <Text style={{fontSize: 20, paddingVertical: 7}}>{props.buttonHeader}</Text>
+            <Text style={{fontSize: 18, paddingVertical: 7}}>{props.buttonHeader}</Text>
             <Icon
                 name={props.iconName}
                 size={props.size}
@@ -78,7 +78,7 @@ const crisisStyle = StyleSheet.create({
         flex: 1,
         justifyContent: 'space-evenly',
         alignSelf: 'stretch',
-        marginHorizontal: 60
+        marginHorizontal: Dimensions.get('window').width / 4.5
     },
 
     tileView: {

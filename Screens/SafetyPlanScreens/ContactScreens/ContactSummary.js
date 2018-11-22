@@ -11,6 +11,7 @@ import {updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHel
 import {getContact} from "../../../Redux/actions";
 import store from "../../../Redux/store"
 import {DbTableNames, UsageFunctionIds, DbPrimaryKeys} from "../../../Constants/Constants";
+import ImageView from 'react-native-image-view';
 
 
 export default class ContactSummary extends React.Component {
@@ -124,6 +125,12 @@ export default class ContactSummary extends React.Component {
 
         const iconSize = Dimensions.get('window').height / 16;
 
+        const images = [
+            {
+                source: media,
+            },
+        ];
+
         return (
             <View style={{flex: 1}}>
                 <View style={contactSummaryStyle.thumbnailContainer}>
@@ -192,12 +199,13 @@ export default class ContactSummary extends React.Component {
                         />
                     </View>
                 </View>}
-                <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
-                    <ImageViewer
-                        image={media}
-                        onPress={() => this.toggleModal(false)}
-                    />
-                </Modal>
+                <ImageView
+                    images={images}
+                    imageIndex={0}
+                    isVisible={this.state.modalVisible}
+                    onClose={() => this.toggleModal(false)}
+                    animationType={'slide'}
+                />
             </View>
         );
     }

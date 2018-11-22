@@ -15,6 +15,7 @@ import {FileSystem} from 'expo'
 import {getDistraction} from "../../../Redux/actions";
 import store from "../../../Redux/store"
 import {DbTableNames, UsageFunctionIds, DbPrimaryKeys} from "../../../Constants/Constants";
+import ImageView from 'react-native-image-view';
 
 export default class DistractionSummary extends React.Component {
 
@@ -128,6 +129,12 @@ export default class DistractionSummary extends React.Component {
 
         const link = this.props.navigation.getParam('url');
 
+        const images = [
+            {
+                source: media,
+            },
+        ];
+
         return (
             <View style={{flex: 1}}>
                 <Container style={distractSummaryStyle.viewContainer}>
@@ -224,12 +231,13 @@ export default class DistractionSummary extends React.Component {
                     source={media}
                     shouldPlay={this.state.playVideo}
                 />
-                <Modal animationType={'slide'} visible={this.state.modalVisible} transparent={true} onRequestClose={() => this.toggleModal(false)}>
-                    <ImageViewer
-                        image={media}
-                        onPress={() => this.toggleModal(false)}
-                    />
-                </Modal>
+                <ImageView
+                    images={images}
+                    imageIndex={0}
+                    isVisible={this.state.modalVisible}
+                    onClose={() => this.toggleModal(false)}
+                    animationType={'slide'}
+                />
             </View>
         );
     }
