@@ -36,6 +36,7 @@
     "react-native-dialog": "^5.4.0",
     "react-native-elements": "^0.19.1",
     "react-native-elevated-view": "0.0.6",
+    "react-native-image-view": "^2.1.1",
     "react-native-image-zoom-viewer": "^2.2.13",
     "react-native-input-scroll-view": "^1.7.1",
     "react-native-keyboard-aware-scroll-view": "^0.6.0",

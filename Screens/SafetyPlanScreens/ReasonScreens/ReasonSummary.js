@@ -14,6 +14,7 @@ import { FileSystem } from 'expo';
 import { getReason } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import { DbTableNames, UsageFunctionIds, DbPrimaryKeys } from '../../../Constants/Constants';
+import ImageView from 'react-native-image-view';
 
 export default class ReasonSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -132,6 +133,12 @@ export default class ReasonSummary extends React.Component {
 
     const link = this.props.navigation.getParam('url');
 
+    const images = [
+      {
+        source: media,
+      },
+    ];
+
     return (
       <View style={{ flex: 1 }}>
         <Container style={reasonSummaryStyle.viewContainer}>
@@ -209,14 +216,13 @@ export default class ReasonSummary extends React.Component {
           source={media}
           shouldPlay={this.state.playVideo}
         />
-        <Modal
+        <ImageView
+          images={images}
+          imageIndex={0}
+          isVisible={this.state.modalVisible}
+          onClose={() => this.toggleModal(false)}
           animationType={'slide'}
-          visible={this.state.modalVisible}
-          transparent={true}
-          onRequestClose={() => this.toggleModal(false)}
-        >
-          <ImageViewer image={media} onPress={() => this.toggleModal(false)} />
-        </Modal>
+        />
       </View>
     );
   }
