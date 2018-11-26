@@ -1,9 +1,20 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, Dimensions, Image } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  TouchableHighlight,
+  Dimensions,
+  Image,
+  TouchableOpacity,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Icons } from '../Constants/Icon';
+import ImageView from 'react-native-image-view';
 
-import { TabStyles } from '../Styles/TabStyles';
+import { TabStyles, themeStyles } from '../Styles/TabStyles';
 import { HomeScreenTileRow } from '../Components/HomeScreenTileRow';
 import { SectionHeader } from '../Constants/Constants';
 import { connect } from 'react-redux';
@@ -15,16 +26,39 @@ class HomeScreen extends React.Component {
   };
   // static property called navigationOptions that belongs to all screen components
 
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      modalVisible: false,
+    };
+  }
+
+  toggleModal = (bool) => {
+    this.setState({ modalVisible: bool });
+  };
+  // modal for displaying image
+
   render() {
     return (
-      <View style={TabStyles.container}>
-        <Image
-          resizeMode={'cover'}
-          style={{ width: Dimensions.get('window').width, height: Dimensions.get('window').height / 2.8 }}
-          source={
-            this.props.wallpaperImage ? { uri: this.props.wallpaperImage } : require('../Media/Images/lavender.jpg')
-          }
-        />
+      <View style={[themeStyles.homeCrisisViewContainer, TabStyles.container]}>
+        <TouchableOpacity onPress={() => this.toggleModal(true)}>
+          <Image
+            resizeMode={'cover'}
+            style={{
+              width: Dimensions.get('window').width - 20,
+              height: Dimensions.get('window').height / 2.8,
+              marginTop: 20,
+              borderRadius: 20,
+              borderWidth: 1,
+              borderColor: '#2E9797',
+              opacity: 0.9,
+            }}
+            source={
+              this.props.wallpaperImage ? { uri: this.props.wallpaperImage } : require('../Media/Images/lavender.jpg')
+            }
+          />
+        </TouchableOpacity>
         <View style={homeStyle.tileContainer}>
           <HomeScreenTileRow
             name2={SectionHeader.diary}
@@ -51,6 +85,23 @@ class HomeScreen extends React.Component {
             iconName2={Icons.goals + '-outline'}
           />
         </View>
+        <ImageView
+          images={
+            this.props.wallpaperImage
+              ? [{ source: { uri: this.props.wallpaperImage } }]
+              : [
+                  {
+                    source: require('../Media/Images/lavender.jpg'),
+                    width: 992,
+                    height: 558,
+                  },
+                ]
+          }
+          imageIndex={0}
+          isVisible={this.state.modalVisible}
+          onClose={() => this.toggleModal(false)}
+          animationType={'slide'}
+        />
       </View>
     );
   }
@@ -65,8 +116,9 @@ const homeStyle = StyleSheet.create({
     flex: 1,
     flexDirection: 'column',
     alignSelf: 'stretch',
-    marginHorizontal: 13,
-    marginVertical: 23,
+    marginHorizontal: 10,
+    //marginVertical: 20,
+    marginBottom: 35,
   },
 });
 
