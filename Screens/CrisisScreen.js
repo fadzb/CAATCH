@@ -5,7 +5,7 @@ import Communications from 'react-native-communications'
 import openMap from 'react-native-open-maps';
 import Icon from "react-native-vector-icons/Ionicons";
 
-import {TabStyles, themeStyles} from "../Styles/TabStyles";
+import {TabStyles, themeStyles, Tiles} from "../Styles/TabStyles";
 
 const width = Dimensions.get('window').width;
 const samaritansNum = '116123';
@@ -15,11 +15,11 @@ const iconSize = width / 6.5;
 const CrisisTile = props => (
     <View style={{height: Dimensions.get('window').height / 4.5}}>
         <TouchableOpacity onPress={props.onPress} style={[crisisStyle.button, themeStyles.tiles]}>
-            <Text style={{fontSize: 18, paddingVertical: 7}}>{props.buttonHeader}</Text>
+            <Text style={[themeStyles.tileFont, {fontSize: 18, paddingVertical: 7}]}>{props.buttonHeader}</Text>
             <Icon
                 name={props.iconName}
                 size={props.size}
-                color={props.color}
+                color={Tiles.iconColor}
             />
         </TouchableOpacity>
     </View>
@@ -53,7 +53,7 @@ export default class CrisisScreen extends React.Component {
 
     render() {
         return (
-            <View style={TabStyles.stackContainer}>
+            <View style={[themeStyles.homeCrisisViewContainer, TabStyles.stackContainer]}>
                 <View style={crisisStyle.viewContainer}>
                     <CrisisTile
                         iconName={Icons.contacts + '-outline'}

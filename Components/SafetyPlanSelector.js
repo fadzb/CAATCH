@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types'
 import Icon from "react-native-vector-icons/Ionicons";
+import {ComponentStyleConst, themeStyles} from "../Styles/TabStyles";
 
 // Component used for each of the SP items on the first SP tab screen
 
@@ -17,10 +18,11 @@ export const SafetyPlanSelector = props => {
                         <Icon
                             name={props.iconName}
                             size={props.iconSize}
+                            color={ComponentStyleConst.safetyPlanIconColor}
                         />
                     </View>
-                    <View style={selectorStyle.textContainer}>
-                        <Text style={selectorStyle.buttonText}>{props.name}</Text>
+                    <View style={[selectorStyle.textContainer, themeStyles.planScreenTextContainer]}>
+                        <Text style={[selectorStyle.buttonText, themeStyles.planScreenText]}>{props.name}</Text>
                     </View>
                 </View>
             </TouchableHighlight>
