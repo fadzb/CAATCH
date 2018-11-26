@@ -25,11 +25,13 @@ export const ComponentStyleConst = {
   //diaryDatePickerIconColor: '#2E9797'
   diaryDatePickerIconColor: '#333333',
   headerRightIconColor: 'white',
+  safetyPlanIconColor: '#2E9797',
 };
 
 export const Tiles = {
-  iconColor: '#333333',
+  //iconColor: '#31548B',
   //iconColor: 'white',
+  iconColor: '#2E9797',
 };
 
 export const Stacks = {
@@ -37,7 +39,8 @@ export const Stacks = {
     headerTintColor: 'white',
     headerStyle: {
       backgroundColor: '#31548B',
-      //backgroundColor: '#7E57C2'
+      //backgroundColor: '#275DAD',
+      //backgroundColor: '#1A936F'
     },
     headerTitleStyle: {
       color: 'white',
@@ -58,6 +61,8 @@ export const Stacks = {
   cardStyle: {
     //backgroundColor: "#EEF1FE",
     backgroundColor: 'white',
+    //backgroundColor: '#F2F3F4'
+    //backgroundColor: '#ABB2BC'
   },
 };
 
@@ -87,7 +92,7 @@ export const themeStyles = StyleSheet.create({
     }),
   },
   tileFont: {
-    color: '#333333',
+    color: '#31548B',
     //color: 'white',
     //fontWeight: 'bold',
     ...Platform.select({
@@ -108,5 +113,17 @@ export const themeStyles = StyleSheet.create({
   diaryDatePickerText: {
     color: '#333333',
     //color: '#2E9797',
+  },
+  planScreenTextContainer: {
+    borderColor: '#2E9797',
+  },
+  planScreenText: {
+    color: '#31548B',
+  },
+  homeCrisisViewContainer: {
+    //backgroundColor: '#294572',
+    //backgroundColor: '#31548B',
+    backgroundColor: '#D5E3F8',
+    //backgroundColor: 'white',
   },
 });
