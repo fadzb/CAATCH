@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PressableIcon } from './PressableIcon';
 import { Icons } from '../Constants/Icon';
+import { ComponentStyleConst, themeStyles } from '../Styles/TabStyles';
 
 export const SettingsSelectionRow = (props) => {
   return (
@@ -11,8 +12,10 @@ export const SettingsSelectionRow = (props) => {
       <TouchableHighlight underlayColor="#FDEDEC" style={settingRowStyle.button} onPress={props.onPress}>
         <View style={settingRowStyle.rowContainer}>
           <View style={settingRowStyle.textContainer}>
-            <Icon name={props.iconName} size={30} />
-            <Text style={settingRowStyle.buttonText}>{props.name}</Text>
+            <View style={{ width: 30 }}>
+              <Icon name={props.iconName} size={30} color={ComponentStyleConst.settingsIconColor} />
+            </View>
+            <Text style={[themeStyles.settingsScreenText, settingRowStyle.buttonText]}>{props.name}</Text>
           </View>
           <View style={{ flexDirection: 'row', alignItems: 'center' }}>
             {props.info && (

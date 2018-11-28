@@ -22,16 +22,19 @@ export const TabStyles = StyleSheet.create({
 });
 
 export const ComponentStyleConst = {
-  //diaryDatePickerIconColor: '#2E9797'
   diaryDatePickerIconColor: '#333333',
   headerRightIconColor: 'white',
   safetyPlanIconColor: '#2E9797',
+  //safetyPlanIconColor: '#F09100',
+  settingsIconColor: '#2E9797',
+  //settingsIconColor: '#F09100',
+  bottomTabBarTint: '#2E9797',
+  //bottomTabBarTint: '#F09100'
 };
 
 export const Tiles = {
-  //iconColor: '#31548B',
-  //iconColor: 'white',
   iconColor: '#2E9797',
+  //iconColor: '#F09100',
 };
 
 export const Stacks = {
@@ -39,8 +42,7 @@ export const Stacks = {
     headerTintColor: 'white',
     headerStyle: {
       backgroundColor: '#31548B',
-      //backgroundColor: '#275DAD',
-      //backgroundColor: '#1A936F'
+      //backgroundColor: '#3f7d7d',
     },
     headerTitleStyle: {
       color: 'white',
@@ -59,10 +61,7 @@ export const Stacks = {
     },
   },
   cardStyle: {
-    //backgroundColor: "#EEF1FE",
     backgroundColor: 'white',
-    //backgroundColor: '#F2F3F4'
-    //backgroundColor: '#ABB2BC'
   },
 };
 
@@ -72,9 +71,8 @@ export const themeStyles = StyleSheet.create({
   },
   tiles: {
     backgroundColor: 'white',
-    //backgroundColor: '#31548B',
     borderWidth: 1,
-    //borderColor: '#C7D4EA',
+    //borderColor: '#F09100',
     borderColor: '#2E9797',
     ...Platform.select({
       ios: {
@@ -93,6 +91,7 @@ export const themeStyles = StyleSheet.create({
   },
   tileFont: {
     color: '#31548B',
+    //color: '#333333',
     //color: 'white',
     //fontWeight: 'bold',
     ...Platform.select({
@@ -107,7 +106,7 @@ export const themeStyles = StyleSheet.create({
   diaryDatePicker: {
     backgroundColor: 'white',
     borderWidth: 1,
-    //borderColor: '#C7D4EA',
+    //borderColor: '#F09100',
     borderColor: '#2E9797',
   },
   diaryDatePickerText: {
@@ -116,14 +115,26 @@ export const themeStyles = StyleSheet.create({
   },
   planScreenTextContainer: {
     borderColor: '#2E9797',
+    //borderColor: '#F09100'
   },
   planScreenText: {
     color: '#31548B',
+    //color: '#333333',
+  },
+  settingsScreenText: {
+    color: '#31548B',
+    //color: '#333333',
   },
   homeCrisisViewContainer: {
-    //backgroundColor: '#294572',
-    //backgroundColor: '#31548B',
     backgroundColor: '#D5E3F8',
     //backgroundColor: 'white',
+    //backgroundColor: '#C9D7F8'
+  },
+  homeScreenImage: {
+    borderRadius: 20,
+    borderWidth: 1,
+    borderColor: '#2E9797',
+    //borderColor: '#F09100',
+    opacity: 0.9,
   },
 });
