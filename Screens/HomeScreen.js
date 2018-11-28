@@ -34,7 +34,7 @@ class HomeScreen extends React.Component {
             <View style={[themeStyles.homeCrisisViewContainer, TabStyles.container]}>
                 <TouchableOpacity onPress={() => this.toggleModal(true)}>
                     <Image resizeMode={'cover'}
-                           style={{width: Dimensions.get('window').width - 20, height: Dimensions.get('window').height / 2.8, marginTop: 20, borderRadius: 20, borderWidth: 1, borderColor: '#2E9797', opacity: .9}}
+                           style={[themeStyles.homeScreenImage, {width: Dimensions.get('window').width - 30, height: Dimensions.get('window').height / 2.8, marginTop: 20}]}
                            source={this.props.wallpaperImage ? {uri: this.props.wallpaperImage} : require('../Media/Images/lavender.jpg')}
                     />
                 </TouchableOpacity>

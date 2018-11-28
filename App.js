@@ -18,6 +18,7 @@ import Passcode from "./Screens/Passcode";
 import HomeStack from "./Components/StackNavigators/HomeStack";
 import CrisisStack from "./Components/StackNavigators/CrisisStack";
 import {DbTableNames, UsageFunctionIds} from "./Constants/Constants";
+import {ComponentStyleConst} from "./Styles/TabStyles";
 
 //Initial Tab screens/stack navs
 
@@ -232,7 +233,7 @@ const TabBar = createBottomTabNavigator(
         tabBarOptions: {
             //activeTintColor: "#31548B"
             //activeTintColor: "#F09100"
-            activeTintColor: "#2E9797"
+            activeTintColor: ComponentStyleConst.bottomTabBarTint
         }
     }
 );

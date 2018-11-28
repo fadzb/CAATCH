@@ -132,7 +132,7 @@ export default class SettingsScreen extends React.Component {
             updateDatabaseArgument(DbTableNames.user, [1, imageUri], ['wallpaper', 'wallpaperImage'], 'where userId = 1');
         })
     };
-    // if valid image selected from captureMedia function, toggle wallpaer switch and update gloabl state and DB values in User table
+    // if valid image selected from captureMedia function, toggle wallpaper switch and update global state and DB values in User table
 
     captureMedia = () => {
         if(this.state.wallpaperSwitchValue) {
