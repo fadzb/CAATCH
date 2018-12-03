@@ -35,6 +35,12 @@ const CrisisTile = (props) => (
 export default class CrisisScreen extends React.Component {
   static navigationOptions = {
     title: 'Crisis',
+    headerStyle: {
+      backgroundColor: 'white',
+    },
+    headerTitleStyle: {
+      color: '#333333',
+    },
   };
   // static property called navigationOptions that belongs to all screen components
 

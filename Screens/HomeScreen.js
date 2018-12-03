@@ -48,9 +48,9 @@ class HomeScreen extends React.Component {
             style={[
               themeStyles.homeScreenImage,
               {
-                width: Dimensions.get('window').width - 30,
+                width: Dimensions.get('window').width - 50,
                 height: Dimensions.get('window').height / 2.8,
-                marginTop: 20,
+                marginTop: 35,
               },
             ]}
             source={
