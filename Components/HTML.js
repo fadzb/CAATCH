@@ -1,8 +1,8 @@
 import {SafetyPlanDbTables, SkillGroups} from "../Constants/Constants";
 import Moment from 'moment'
 
-const rowHtml = (name, bold) => {
-    const td = bold ? "    <td style='font-weight:bold'>" + name + "</td>\n" : "    <td>" + name + "</td>\n";
+const rowHtml = (number, name, bold) => {
+    const td = bold ? "    <td style='font-weight:bold'>" + number + ". " + name + "</td>\n" : "    <td>" + number + ". "  + name + "</td>\n";
 
     return  "<tr>\n" +
                 td +
@@ -13,13 +13,14 @@ const tableHtml = (title, items, key) => {
     let rows = '';
 
     if(title === 'My Network') {
-        items.sort(sortContacts).forEach(i => {
+        items.sort(sortContacts).forEach((i, ind) => {
             const bold = i.contactType === 'Professional';
+            const name = i.helper ? i[SafetyPlanDbTables[key].dbNameColumn] + " (h)" : i[SafetyPlanDbTables[key].dbNameColumn];
 
-            rows = rows + rowHtml(i[SafetyPlanDbTables[key].dbNameColumn], bold)
+            rows = rows + rowHtml((ind + 1).toString(), name + " - " + i.phone, bold)
         });
     } else {
-        items.forEach(i => rows = rows + rowHtml(i[SafetyPlanDbTables[key].dbNameColumn], false));
+        items.forEach((i, ind) => rows = rows + rowHtml((ind + 1).toString(), i[SafetyPlanDbTables[key].dbNameColumn], false));
     }
     // bold Professional contacts from 'My Network'
 
@@ -56,7 +57,7 @@ export const safetyPlanHtml = data => {
             "        }\n" +
             "        th, td {\n" +
             "            padding: 5px;\n" +
-            "            text-align: center;\n" +
+            "            text-align: left;\n" +
             "        }\n" +
             "        td {\n" +
             "            font-size: 2vw;\n" +
@@ -86,9 +87,10 @@ const diaryTableRow = (data, result, list) => {
     list.forEach(l => {
         const resArr = result.filter(r => r.diaryDate === data && r.diaryName === l);
 
-        resArr.length > 0 ? rowData = rowData + "<td>" + Number.parseFloat(resArr.reduce((acc, res) => {
+        resArr.length > 0 ? rowData = rowData + "<td>" + Math.round(resArr.reduce((acc, res) => {
             return res.rating + acc
-        }, 0) / resArr.length).toFixed(2) + "</td>\n" : rowData = rowData + "<td>0</td>\n"
+        }, 0) / resArr.length) + "</td>\n" : rowData = rowData + "<td>0</td>\n"
+        // keeping all ratings as whole numbers i.e. rounding averages
     });
 
     return  "  <tr>\n" +
