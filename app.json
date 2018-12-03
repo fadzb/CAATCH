@@ -5,5 +5,11 @@
       "assetExts": ["db"]
     },
     "orientation": "portrait"
+  },
+  "ios": {
+    "usesIcloudStorage": true
+  },
+  "android": {
+
   }
 }

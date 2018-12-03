@@ -24,17 +24,13 @@ export const TabStyles = StyleSheet.create({
 export const ComponentStyleConst = {
   diaryDatePickerIconColor: '#333333',
   headerRightIconColor: 'white',
-  safetyPlanIconColor: '#2E9797',
-  //safetyPlanIconColor: '#F09100',
-  settingsIconColor: '#2E9797',
-  //settingsIconColor: '#F09100',
-  bottomTabBarTint: '#2E9797',
-  //bottomTabBarTint: '#F09100'
+  safetyPlanIconColor: '#F09100',
+  settingsIconColor: '#F09100',
+  bottomTabBarTint: '#F09100',
 };
 
 export const Tiles = {
-  iconColor: '#2E9797',
-  //iconColor: '#F09100',
+  iconColor: '#F09100',
 };
 
 export const Stacks = {
@@ -42,7 +38,6 @@ export const Stacks = {
     headerTintColor: 'white',
     headerStyle: {
       backgroundColor: '#31548B',
-      //backgroundColor: '#3f7d7d',
     },
     headerTitleStyle: {
       color: 'white',
@@ -72,8 +67,7 @@ export const themeStyles = StyleSheet.create({
   tiles: {
     backgroundColor: 'white',
     borderWidth: 1,
-    //borderColor: '#F09100',
-    borderColor: '#2E9797',
+    borderColor: '#F09100',
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -91,9 +85,6 @@ export const themeStyles = StyleSheet.create({
   },
   tileFont: {
     color: '#31548B',
-    //color: '#333333',
-    //color: 'white',
-    //fontWeight: 'bold',
     ...Platform.select({
       ios: {
         //fontFamily: 'normal',
@@ -106,35 +97,27 @@ export const themeStyles = StyleSheet.create({
   diaryDatePicker: {
     backgroundColor: 'white',
     borderWidth: 1,
-    //borderColor: '#F09100',
-    borderColor: '#2E9797',
+    borderColor: '#F09100',
   },
   diaryDatePickerText: {
     color: '#333333',
-    //color: '#2E9797',
   },
   planScreenTextContainer: {
-    borderColor: '#2E9797',
-    //borderColor: '#F09100'
+    borderColor: '#F09100',
   },
   planScreenText: {
     color: '#31548B',
-    //color: '#333333',
   },
   settingsScreenText: {
     color: '#31548B',
-    //color: '#333333',
   },
   homeCrisisViewContainer: {
-    backgroundColor: '#D5E3F8',
-    //backgroundColor: 'white',
-    //backgroundColor: '#C9D7F8'
+    backgroundColor: '#31548B',
   },
   homeScreenImage: {
-    borderRadius: 20,
+    borderRadius: 7,
     borderWidth: 1,
-    borderColor: '#2E9797',
-    //borderColor: '#F09100',
+    borderColor: '#F09100',
     opacity: 0.9,
   },
 });
