@@ -38,12 +38,6 @@ export const SafetyPlanDbTables = {
     dbNameColumn: 'firstName',
     delete: 'dateDeleted',
   },
-  helper: {
-    tableName: 'Helper',
-    title: 'My Helpers',
-    dbNameColumn: 'firstName',
-    delete: 'dateDeleted',
-  },
   environment: {
     tableName: 'environment',
     title: 'Environment Safe',
@@ -73,7 +67,6 @@ export const DbTableNames = {
   user: 'User',
   warningSign: 'WarningSign',
   environment: 'Environment',
-  helper: 'Helper',
   goal: 'Goal',
 };
 
@@ -92,7 +85,6 @@ export const DbPrimaryKeys = {
   user: 'userId',
   warningSign: 'signId',
   environment: 'environmentId',
-  helper: 'helperId',
 };
 
 // Section Headers
@@ -102,11 +94,10 @@ export const SectionHeader = {
   stats: 'My Stats',
   signs: 'My Warning Signs',
   strategies: 'My Coping Strategies',
-  contacts: 'My Contacts',
+  contacts: 'My Network',
   shortPlan: 'My Plan',
   skills: 'DBT Skills',
-  info: 'DBT Info',
-  helpers: 'My Helpers',
+  info: 'DBT Diary',
   goals: 'My Goals',
 };
 
@@ -119,7 +110,6 @@ export const UsageFunctionIds = {
     reason: 4,
     contact: 5,
     environment: 6,
-    helper: 19,
   },
   lastEntered: {
     warningSign: 7,
@@ -128,7 +118,6 @@ export const UsageFunctionIds = {
     reason: 10,
     contact: 11,
     environment: 12,
-    helper: 20,
   },
   lastViewed: {
     warningSign: 13,
@@ -137,7 +126,6 @@ export const UsageFunctionIds = {
     reason: 16,
     contact: 17,
     environment: 18,
-    helper: 21,
   },
   session: {
     statSelection: 22,

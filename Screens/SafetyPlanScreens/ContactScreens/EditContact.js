@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableHighlight, ScrollView, Dimensions } from 'react-native';
 import t from 'tcomb-form-native';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import store from '../../../Redux/store';
@@ -11,6 +11,7 @@ import { ButtonGroup } from 'react-native-elements';
 import { TabStyles } from '../../../Styles/TabStyles';
 import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
 import { DbTableNames } from '../../../Constants/Constants';
+import { CheckBox } from '../../../Components/Checkbox';
 
 const Form = t.form.Form;
 
@@ -19,32 +20,10 @@ const contact = t.struct({
   surname: t.maybe(t.String),
   phone: t.String,
   email: t.maybe(t.String),
+  helper: t.Boolean,
+  responsibility: t.maybe(t.String),
 });
 // data structure for values to be capture in form below
-
-const options = {
-  fields: {
-    firstName: {
-      placeholder: 'First Name',
-      auto: 'none',
-    },
-    surname: {
-      placeholder: 'Surname',
-      auto: 'none',
-    },
-    phone: {
-      placeholder: 'Phone',
-      auto: 'none',
-      keyboardType: 'numeric',
-    },
-    email: {
-      placeholder: 'Email',
-      auto: 'none',
-      autoCapitalize: 'none',
-    },
-  },
-};
-// for customizing form UI
 
 export default class EditContact extends React.Component {
   static navigationOptions = {
@@ -60,10 +39,43 @@ export default class EditContact extends React.Component {
         surname: this.props.navigation.getParam('surname'),
         email: this.props.navigation.getParam('email'),
         phone: this.props.navigation.getParam('phone'),
+        helper: Boolean(this.props.navigation.getParam('helper')),
+        responsibility: this.props.navigation.getParam('responsibility'),
       },
       selectedMediaUri: '',
       selectedMediaName: '',
       type: this.props.navigation.getParam('contactType') === 'Professional' ? 1 : 0,
+      options: {
+        fields: {
+          firstName: {
+            placeholder: 'First Name',
+            auto: 'none',
+          },
+          surname: {
+            placeholder: 'Surname',
+            auto: 'none',
+          },
+          phone: {
+            placeholder: 'Phone',
+            auto: 'none',
+            keyboardType: 'numeric',
+          },
+          email: {
+            placeholder: 'Email',
+            auto: 'none',
+            autoCapitalize: 'none',
+          },
+          helper: {
+            label: 'Helper',
+            template: CheckBox,
+          },
+          responsibility: {
+            placeholder: 'How they can help me',
+            auto: 'none',
+            hidden: !Boolean(this.props.navigation.getParam('helper')),
+          },
+        },
+      },
     };
   }
 
@@ -92,7 +104,16 @@ export default class EditContact extends React.Component {
   };
 
   onChange = (value) => {
-    this.setState({ value: value });
+    this.setState({ value: value }, () => {
+      this.setState({
+        options: {
+          fields: {
+            ...this.state.options.fields,
+            responsibility: { ...this.state.options.fields.responsibility, hidden: !this.state.value.helper },
+          },
+        },
+      });
+    });
   };
 
   updateContactList = (contact) => {
@@ -226,9 +247,15 @@ export default class EditContact extends React.Component {
     const selectedType = this.state.type;
 
     return (
-      <View style={[TabStyles.planContainer, { justifyContent: 'space-evenly' }]}>
+      <ScrollView contentContainerstyle={[TabStyles.planContainer, { justifyContent: 'space-evenly' }]}>
         <View style={contactStyle.formContainer}>
-          <Form ref="form" type={contact} value={this.state.value} onChange={this.onChange} options={options} />
+          <Form
+            ref="form"
+            type={contact}
+            value={this.state.value}
+            onChange={this.onChange}
+            options={this.state.options}
+          />
           <ButtonGroup
             onPress={this.updateType}
             selectedIndex={selectedType}
@@ -263,7 +290,7 @@ export default class EditContact extends React.Component {
             buttonStyle={contactStyle.iconButton}
           />
         </View>
-      </View>
+      </ScrollView>
     );
   }
 }
@@ -307,5 +334,6 @@ const contactStyle = StyleSheet.create({
     alignItems: 'center',
     flexDirection: 'row',
     justifyContent: 'center',
+    height: Dimensions.get('window').height / 4.5,
   },
 });

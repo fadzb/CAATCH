@@ -55,7 +55,7 @@ class Contacts extends React.Component {
     // dispatching total list of contacts from DB to global redux store
   };
 
-  editContact = (id, firstName, surname, phone, email, image, contactType) => {
+  editContact = (id, firstName, surname, phone, email, image, contactType, helper, responsibility) => {
     this.props.navigation.push('editContact', {
       id: id,
       firstName: firstName,
@@ -64,6 +64,8 @@ class Contacts extends React.Component {
       email: email,
       image: image,
       contactType: contactType,
+      helper: helper,
+      responsibility: responsibility,
     });
   };
 
@@ -91,7 +93,7 @@ class Contacts extends React.Component {
     );
   };
 
-  summaryNav = (id, firstName, surname, phone, email, image, date, contactType) => {
+  summaryNav = (id, firstName, surname, phone, email, image, date, contactType, helper, responsibility) => {
     this.props.navigation.push('contactSummary', {
       id: id,
       firstName: firstName,
@@ -101,6 +103,8 @@ class Contacts extends React.Component {
       image: image,
       date: date,
       contactType: contactType,
+      helper: helper,
+      responsibility: responsibility,
     });
   };
 
@@ -130,7 +134,9 @@ class Contacts extends React.Component {
             item.email,
             item.image,
             item.dateEntered,
-            item.contactType
+            item.contactType,
+            item.helper,
+            item.responsibility
           )
         }
         deleteFunction={() => this.showAlert(item.contactId)}
@@ -142,11 +148,14 @@ class Contacts extends React.Component {
             item.phone,
             item.email,
             item.image,
-            item.contactType
+            item.contactType,
+            item.helper,
+            item.responsibility
           )
         }
         thumbnail={item.image === null ? undefined : { uri: item.image }}
         circleView={item.image === null ? item.firstName.slice(0, 1).toUpperCase() : undefined}
+        rightIcon={item.helper && 'ios-star'}
       />
     </View>
   );
@@ -159,7 +168,7 @@ class Contacts extends React.Component {
         <Container>
           <StyleProvider style={getTheme(platform)}>
             <Tabs locked={true} prerenderingSiblingsNumber={NUMBER_OF_TABS}>
-              <Tab heading={'My Network'}>
+              <Tab heading={'Personal'}>
                 <FlatList
                   data={this.props.contact
                     .sort(this.compareNames)

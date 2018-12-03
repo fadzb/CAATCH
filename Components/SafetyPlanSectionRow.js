@@ -71,6 +71,15 @@ export class SafetyPlanSectionRow extends React.Component {
                   {this.props.name}
                 </Text>
               </View>
+              {this.props.rightIcon && (
+                <View>
+                  <Icon
+                    name={this.props.rightIcon}
+                    size={25}
+                    //color={this.props.iconColor}
+                  />
+                </View>
+              )}
             </View>
           </TouchableHighlight>
         </View>

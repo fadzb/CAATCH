@@ -89,7 +89,7 @@ export default class ContactSummary extends React.Component {
     // dispatching total list of contacts from DB to global redux store
   };
 
-  editContact = (id, firstName, surname, phone, email, image, contactType) => {
+  editContact = (id, firstName, surname, phone, email, image, contactType, helper, responsibility) => {
     this.props.navigation.push('editContact', {
       id: id,
       firstName: firstName,
@@ -98,6 +98,8 @@ export default class ContactSummary extends React.Component {
       email: email,
       image: image,
       contactType: contactType,
+      helper: helper,
+      responsibility: responsibility,
     });
   };
 
@@ -142,6 +144,8 @@ export default class ContactSummary extends React.Component {
 
     const phone = this.props.navigation.getParam('phone');
     const email = this.props.navigation.getParam('email');
+    const helper = this.props.navigation.getParam('helper');
+    const responsibility = this.props.navigation.getParam('responsibility');
     const contactType = this.props.navigation.getParam('contactType');
 
     const iconSize = Dimensions.get('window').height / 16;
@@ -178,7 +182,9 @@ export default class ContactSummary extends React.Component {
                   phone,
                   email,
                   mediaPath,
-                  contactType
+                  contactType,
+                  helper,
+                  responsibility
                 )
               }
               buttonStyle={{ marginRight: 15 }}
@@ -222,7 +228,7 @@ export default class ContactSummary extends React.Component {
         </View>
         {email !== null && (
           <View style={contactSummaryStyle.contactTextRow}>
-            <View style={{ paddingLeft: 15 }}>
+            <View style={{ paddingLeft: 10 }}>
               <Text style={{ paddingBottom: 5, fontSize: 16, color: '#808080' }}>Email</Text>
               <Text style={{ fontSize: 16 }}>{email}</Text>
             </View>
@@ -232,6 +238,14 @@ export default class ContactSummary extends React.Component {
                 size={iconSize}
                 onPressFunction={() => Communications.email([email], null, null, null, null)}
               />
+            </View>
+          </View>
+        )}
+        {helper && (
+          <View style={contactSummaryStyle.contactTextRow}>
+            <View style={{ paddingLeft: 10 }}>
+              <Text style={{ paddingBottom: 5, fontSize: 16, color: '#808080' }}>How they can help me</Text>
+              <Text style={{ fontSize: 16 }}>{responsibility}</Text>
             </View>
           </View>
         )}
