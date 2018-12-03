@@ -8,13 +8,19 @@ import store from "../../../Redux/store"
 import Moment from 'moment';
 import {Icons} from "../../../Constants/Icon";
 import {compareDates} from "../../../Util/Compare";
-import {DbTableNames, SectionHeader} from "../../../Constants/Constants";
+import {DbTableNames, SafetyPlanDbTables, SectionHeader} from "../../../Constants/Constants";
 import {themeStyles} from "../../../Styles/TabStyles";
+import {SafetyPlanTitle} from "../../../Components/SafetyPlanTitle";
 
 class WarningSigns extends React.Component {
     static navigationOptions = ({ navigation }) => {
+        const {params = {}} = navigation.state;
+
         return {
-            title: SectionHeader.signs,
+            headerTitle: <SafetyPlanTitle
+                title={SectionHeader.signs}
+                onPress={() => params.handleInfo()}
+            />,
             headerRight: (
                 <TouchableOpacity
                     onPress={() => navigation.push('newWarning')}
@@ -26,8 +32,23 @@ class WarningSigns extends React.Component {
     // Implementation for 'new' strategy button
 
     componentDidMount() {
+        this.props.navigation.setParams({
+            handleInfo: this.getSpDescription,
+        });
+
         this.getCompleteList();
     }
+
+    getSpDescription = () => {
+        Alert.alert(
+            SafetyPlanDbTables.warningSign.title,
+            SafetyPlanDbTables.warningSign.reportTitle,
+            [
+                {text: 'OK', onPress: () => console.log('Cancelled'), style: 'cancel'},
+            ],
+            { cancelable: false }
+        )
+    };
 
     getCompleteList = () => {
         readDatabaseArg("*", DbTableNames.warningSign, this.updateSigns, () => console.log("DB read success"), 'where dateDeleted is NULL');

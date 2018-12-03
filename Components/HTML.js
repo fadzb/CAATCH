@@ -45,7 +45,7 @@ const sortContacts = (contact1, contact2) => {
 
 export const safetyPlanHtml = data => {
     let titles = '';
-    Object.keys(data).forEach(s => titles = titles + tableHtml(SafetyPlanDbTables[s].title, data[s], s));
+    Object.keys(data).forEach(s => titles = titles + tableHtml(SafetyPlanDbTables[s].reportTitle, data[s], s));
 
     return  "<!DOCTYPE html>\n" +
             "<html>\n" +

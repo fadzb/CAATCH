@@ -12,37 +12,43 @@ export const SafetyPlanDbTables = {
         tableName: 'WarningSign',
         title: 'Warning Signs',
         dbNameColumn: 'signName',
-        delete: 'dateDeleted'
+        delete: 'dateDeleted',
+        reportTitle: 'Step 1: Warning signs (thoughts, images, mood, situation, behavior) that a crisis may be developing:'
     },
     copingStrategy: {
         tableName: 'CopingStrategy',
         title: 'Coping Strategies',
         dbNameColumn: 'copeName',
-        delete: 'dateDeleted'
+        delete: 'dateDeleted',
+        reportTitle: 'Step 2: Internal coping strategies – Things I can do to take my mind off my problems without contacting another person (relaxation technique, physical activity):'
     },
     distraction: {
         tableName: 'Distraction',
-        title: 'My Things',
+        title: 'Things to Do',
         dbNameColumn: 'distractName',
-        delete: 'dateDeleted'
+        delete: 'dateDeleted',
+        reportTitle: 'Step 3: People and social settings that provide distraction:'
     },
     reason: {
         tableName: 'Reason',
         title: 'Life Worth Living',
         dbNameColumn: 'reasonName',
-        delete: 'dateDeleted'
+        delete: 'dateDeleted',
+        reportTitle: 'Step 4: Things that are important to me and worth living for:'
     },
     contact: {
         tableName: 'Contact',
         title: 'My Network',
         dbNameColumn: 'firstName',
-        delete: 'dateDeleted'
+        delete: 'dateDeleted',
+        reportTitle: 'Step 5: People whom I can ask for help:'
     },
     environment: {
         tableName: 'environment',
-        title: 'Environment Safe',
+        title: 'Making the Environment Safe',
         dbNameColumn: 'environmentName',
-        delete: 'dateDeleted'
+        delete: 'dateDeleted',
+        reportTitle: 'Step 6: Making the environment safe:'
     },
 };
 
@@ -98,7 +104,7 @@ export const SectionHeader = {
     shortPlan: 'My Plan',
     skills: 'DBT Skills',
     info: 'DBT Diary',
-    goals: 'My Goals'
+    goals: 'My Goals',
 };
 
 // Usage function id's
