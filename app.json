@@ -8,5 +8,8 @@
   },
   "ios": {
     "usesIcloudStorage": true
+  },
+  "android": {
+
   }
 }

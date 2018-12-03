@@ -16,6 +16,12 @@ import {SectionHeader} from "../../Constants/Constants";
 class DiaryScreen extends React.Component {
     static navigationOptions = {
         title: SectionHeader.diary,
+        headerStyle: {
+            backgroundColor: 'white',
+        },
+        headerTitleStyle: {
+            color: '#333333',
+        },
     };
     // static property called navigationOptions that belongs to all screen components
 
