@@ -39,7 +39,7 @@ export default class VicSkillsChart extends React.Component {
     const { params = {} } = navigation.state;
 
     return {
-      title: 'Charts - DBT Skills',
+      title: 'DBT Skills',
       headerRight: (
         <View style={{ paddingRight: 10, flex: 1, flexDirection: 'row', alignItems: 'center' }}>
           <Icon

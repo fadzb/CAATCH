@@ -14,11 +14,12 @@ import {
 import { CustomSelectionRow } from '../../../Components/CustomSelectionRow';
 import { Icons } from '../../../Constants/Icon';
 import { TabStyles } from '../../../Styles/TabStyles';
+import { SafetyPlanDbTables } from '../../../Constants/Constants';
 
 export default class DistractionSelection extends React.Component {
   static navigationOptions = ({ navigation }) => {
     return {
-      title: 'Things to Do',
+      title: SafetyPlanDbTables.distraction.title,
     };
   };
 

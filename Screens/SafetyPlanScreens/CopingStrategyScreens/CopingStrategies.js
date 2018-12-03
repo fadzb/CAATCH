@@ -11,11 +11,15 @@ import { Icons } from '../../../Constants/Icon';
 import { compareDates } from '../../../Util/Compare';
 import { DbTableNames, SectionHeader } from '../../../Constants/Constants';
 import { themeStyles } from '../../../Styles/TabStyles';
+import { SafetyPlanTitle } from '../../../Components/SafetyPlanTitle';
+import { SafetyPlanDbTables } from '../../../Constants/Constants';
 
 class CopingStrategies extends React.Component {
   static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+
     return {
-      title: SectionHeader.strategies,
+      headerTitle: <SafetyPlanTitle title={SectionHeader.strategies} onPress={() => params.handleInfo()} />,
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newCoping')}>
           <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
@@ -26,8 +30,21 @@ class CopingStrategies extends React.Component {
   // Implementation for 'new' strategy button
 
   componentDidMount() {
+    this.props.navigation.setParams({
+      handleInfo: this.getSpDescription,
+    });
+
     this.getCompleteList();
   }
+
+  getSpDescription = () => {
+    Alert.alert(
+      SafetyPlanDbTables.copingStrategy.title,
+      SafetyPlanDbTables.copingStrategy.reportTitle,
+      [{ text: 'OK', onPress: () => console.log('Cancelled'), style: 'cancel' }],
+      { cancelable: false }
+    );
+  };
 
   updateStrategies = (strats) => {
     store.dispatch(getCoping(strats));

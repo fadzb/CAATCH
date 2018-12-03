@@ -9,13 +9,16 @@ import Moment from 'moment';
 import { FileSystem } from 'expo';
 import { Icons } from '../../../Constants/Icon';
 import { compareDates } from '../../../Util/Compare';
-import { DbTableNames } from '../../../Constants/Constants';
+import { DbTableNames, SafetyPlanDbTables } from '../../../Constants/Constants';
 import { themeStyles } from '../../../Styles/TabStyles';
+import { SafetyPlanTitle } from '../../../Components/SafetyPlanTitle';
 
 class Distractions extends React.Component {
   static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+
     return {
-      title: 'My Things',
+      headerTitle: <SafetyPlanTitle title={'My Things'} onPress={() => params.handleInfo()} />,
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newDistraction')}>
           <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
@@ -26,8 +29,21 @@ class Distractions extends React.Component {
   // Implementation for 'new' distraction button
 
   componentDidMount() {
+    this.props.navigation.setParams({
+      handleInfo: this.getSpDescription,
+    });
+
     this.getCompleteList();
   }
+
+  getSpDescription = () => {
+    Alert.alert(
+      'My Things',
+      SafetyPlanDbTables.distraction.reportTitle,
+      [{ text: 'OK', onPress: () => console.log('Cancelled'), style: 'cancel' }],
+      { cancelable: false }
+    );
+  };
 
   updateDistractions = (distractions) => {
     store.dispatch(getDistraction(distractions));

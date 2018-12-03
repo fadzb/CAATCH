@@ -19,13 +19,16 @@ import { connect } from 'react-redux';
 import { getContact } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import Moment from 'moment';
-import { DbTableNames, SectionHeader } from '../../../Constants/Constants';
+import { DbTableNames, SafetyPlanDbTables, SectionHeader } from '../../../Constants/Constants';
 import { themeStyles } from '../../../Styles/TabStyles';
+import { SafetyPlanTitle } from '../../../Components/SafetyPlanTitle';
 
 class Contacts extends React.Component {
   static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+
     return {
-      title: SectionHeader.contacts,
+      headerTitle: <SafetyPlanTitle title={SectionHeader.contacts} onPress={() => params.handleInfo()} />,
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newContact')}>
           <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
@@ -36,8 +39,21 @@ class Contacts extends React.Component {
   // Implementation for 'new' contact button
 
   componentDidMount() {
+    this.props.navigation.setParams({
+      handleInfo: this.getSpDescription,
+    });
+
     this.getCompleteList();
   }
+
+  getSpDescription = () => {
+    Alert.alert(
+      SafetyPlanDbTables.contact.title,
+      SafetyPlanDbTables.contact.reportTitle,
+      [{ text: 'OK', onPress: () => console.log('Cancelled'), style: 'cancel' }],
+      { cancelable: false }
+    );
+  };
 
   getCompleteList = () => {
     readDatabaseArg(
