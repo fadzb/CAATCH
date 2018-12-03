@@ -35,8 +35,8 @@ class StatSelection extends React.Component {
         emailArr.push(res[0].email);
 
         readDatabaseArg(
-          'c.email',
-          DbTableNames.helper,
+          'email',
+          DbTableNames.contact,
           (res) => {
             res.forEach((r) => {
               if (r.email) {
@@ -53,12 +53,12 @@ class StatSelection extends React.Component {
             });
           },
           undefined,
-          'as h inner join ' + DbTableNames.contact + ' as c on h.contactId = c.contactId where h.dateDeleted is NULL'
+          'where dateDeleted is NULL and helper = 1'
         );
       } else {
         readDatabaseArg(
-          'c.email',
-          DbTableNames.helper,
+          'email',
+          DbTableNames.contact,
           (res) => {
             res.forEach((r) => {
               if (r.email) {
@@ -75,7 +75,7 @@ class StatSelection extends React.Component {
             });
           },
           undefined,
-          'as h inner join ' + DbTableNames.contact + ' as c on h.contactId = c.contactId where h.dateDeleted is NULL'
+          'where dateDeleted is NULL and helper = 1'
         );
       }
     });

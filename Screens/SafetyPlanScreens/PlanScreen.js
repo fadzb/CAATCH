@@ -7,7 +7,7 @@ import { SafetyPlanSelector } from '../../Components/SafetyPlanSelector';
 import { Icons } from '../../Constants/Icon';
 import { SectionHeader } from '../../Constants/Constants';
 
-const iconSize = 42;
+const iconSize = 46;
 
 export default class PlanScreen extends React.Component {
   static navigationOptions = {
@@ -56,19 +56,13 @@ export default class PlanScreen extends React.Component {
           screen="selectDistraction"
         />
         <SafetyPlanSelector
-          iconName={Icons.contacts + '-outline'}
+          iconName={Icons.helpers}
           iconSize={iconSize}
           name={SectionHeader.contacts}
           press={this.handleItemPress}
           screen="contact"
         />
-        <SafetyPlanSelector
-          iconName={Icons.helpers}
-          iconSize={iconSize}
-          name={SectionHeader.helpers}
-          press={this.handleItemPress}
-          screen="helper"
-        />
+        {/*<SafetyPlanSelector iconName={Icons.helpers} iconSize={iconSize} name={SectionHeader.helpers} press={this.handleItemPress} screen="helper"/>*/}
         <SafetyPlanSelector
           iconName={Icons.environmentSafe + '-outline'}
           iconSize={iconSize}
