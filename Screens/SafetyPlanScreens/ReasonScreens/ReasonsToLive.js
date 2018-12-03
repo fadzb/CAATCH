@@ -9,13 +9,16 @@ import Moment from 'moment';
 import { FileSystem } from 'expo';
 import { Icons } from '../../../Constants/Icon';
 import { compareDates } from '../../../Util/Compare';
-import { DbTableNames } from '../../../Constants/Constants';
+import { DbTableNames, SafetyPlanDbTables } from '../../../Constants/Constants';
 import { themeStyles } from '../../../Styles/TabStyles';
+import { SafetyPlanTitle } from '../../../Components/SafetyPlanTitle';
 
 class ReasonsToLive extends React.Component {
   static navigationOptions = ({ navigation }) => {
+    const { params = {} } = navigation.state;
+
     return {
-      title: 'Life Worth Living',
+      headerTitle: <SafetyPlanTitle title={SafetyPlanDbTables.reason.title} onPress={() => params.handleInfo()} />,
       headerRight: (
         <TouchableOpacity onPress={() => navigation.push('newReason')}>
           <Text style={[{ padding: 10 }, themeStyles.headerRightText]}>New +</Text>
@@ -26,8 +29,21 @@ class ReasonsToLive extends React.Component {
   // Implementation for 'new' reason button
 
   componentDidMount() {
+    this.props.navigation.setParams({
+      handleInfo: this.getSpDescription,
+    });
+
     this.getCompleteList();
   }
+
+  getSpDescription = () => {
+    Alert.alert(
+      SafetyPlanDbTables.reason.title,
+      SafetyPlanDbTables.reason.reportTitle,
+      [{ text: 'OK', onPress: () => console.log('Cancelled'), style: 'cancel' }],
+      { cancelable: false }
+    );
+  };
 
   updateReasons = (reasons) => {
     store.dispatch(getReason(reasons));

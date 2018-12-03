@@ -87,7 +87,7 @@ class StatSelection extends React.Component {
       <View style={TabStyles.stackContainer}>
         <View style={{ alignSelf: 'stretch' }}>
           <CustomSelectionRow
-            name="Charts - Feelings"
+            name="Charts"
             icon={Icons.charts + '-outline'}
             iconSize={30}
             iconContainer={statSelectionStyle.iconContainer}
@@ -96,7 +96,7 @@ class StatSelection extends React.Component {
           />
           {this.props.settings.dbt && (
             <CustomSelectionRow
-              name="Charts - DBT Skills"
+              name="DBT Skills"
               icon={Icons.charts + '-outline'}
               iconSize={30}
               iconContainer={statSelectionStyle.iconContainer}
