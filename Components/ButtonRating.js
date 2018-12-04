@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, Button, TextInput, Dimensions } from 'react-nat
 import { Icon } from 'react-native-elements';
 import store from '../Redux/store';
 import { updateSleepRating, updateMoodRating } from '../Redux/actions';
+import { AppColors } from '../Styles/TabStyles';
 
 const ratings = [
   { name: 'Awful', icon: 'emoticon-sad' },
@@ -41,7 +42,7 @@ export default class ButtonRating extends React.Component {
               <Icon
                 name={item.icon}
                 type={'material-community'}
-                color={this.state.pressedIndex === i ? '#007AFF' : '#B3B3B3'}
+                color={this.state.pressedIndex === i ? AppColors.orange : '#B3B3B3'}
                 size={Dimensions.get('window').width / 6}
                 onPress={() => this.handlePress(i)}
               />
@@ -63,5 +64,6 @@ const buttonRatingStyle = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
     paddingBottom: 5,
+    color: AppColors.grey,
   },
 });

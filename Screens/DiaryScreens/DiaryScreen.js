@@ -20,14 +20,15 @@ import store from '../../Redux/store';
 import { updateDate } from '../../Redux/actions';
 import { getDiaryPrePops } from '../../Constants/Prepopulated';
 
-import { ComponentStyleConst, TabStyles, themeStyles, Tiles } from '../../Styles/TabStyles';
+import { AppColors, ComponentStyleConst, TabStyles, themeStyles, Tiles } from '../../Styles/TabStyles';
 import { SectionHeader } from '../../Constants/Constants';
 
 class DiaryScreen extends React.Component {
   static navigationOptions = {
     title: SectionHeader.diary,
     headerStyle: {
-      backgroundColor: 'white',
+      //backgroundColor: '#f0f0f5',
+      backgroundColor: AppColors.white,
     },
     headerTitleStyle: {
       color: '#333333',

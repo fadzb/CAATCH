@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableHighlight, Platform } from 'react-native';
 import t from 'tcomb-form-native';
 import store from '../../Redux/store';
 import { newFeeling } from '../../Redux/actions';
-import { TabStyles } from '../../Styles/TabStyles';
+import { AppColors, TabStyles } from '../../Styles/TabStyles';
 import { updateDatabase } from '../../Util/DatabaseHelper';
 import { DbTableNames, UsageFunctionIds } from '../../Constants/Constants';
 import { updateDiaryPrePops } from '../../Constants/Prepopulated';
@@ -85,43 +85,43 @@ export default class NewDbtItem extends React.Component {
 }
 
 const dbtItemStyle = StyleSheet.create({
-    buttonText: {
-        fontSize: 18,
-        color: AppColors.white,
-        alignSelf: 'center',
-        fontWeight: Platform.OS === 'ios' ? '600' : '500'
-    },
-    button: {
-        height: 36,
-        backgroundColor: AppColors.orange,
-        borderColor: AppColors.orange,
-        borderWidth: 1,
-        borderRadius: 8,
-        marginBottom: 10,
-        marginTop: 10,
-        alignSelf: 'stretch',
-        justifyContent: 'center'
-    },
-    formContainer: {
-        margin: 40,
-    },
-    iconButton: {
-        alignItems: "center",
-        borderRadius: 10,
-        paddingRight: 20,
-        paddingLeft: 20
-    },
-    listButton: {
-        height: 36,
-        borderColor: '#cccccc', // <= relevant style here
-        borderWidth: 1,
-        borderRadius: 4,
-        marginBottom: 15,
-        backgroundColor: '#f2f2f2'
-    },
-    iconContainer: {
-        alignItems: 'center',
-        flexDirection: 'row',
-        justifyContent: 'center',
-    }
+  buttonText: {
+    fontSize: 18,
+    color: AppColors.white,
+    alignSelf: 'center',
+    fontWeight: Platform.OS === 'ios' ? '600' : '500',
+  },
+  button: {
+    height: 36,
+    backgroundColor: AppColors.orange,
+    borderColor: AppColors.orange,
+    borderWidth: 1,
+    borderRadius: 8,
+    marginBottom: 10,
+    marginTop: 10,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
+  },
+  formContainer: {
+    margin: 40,
+  },
+  iconButton: {
+    alignItems: 'center',
+    borderRadius: 10,
+    paddingRight: 20,
+    paddingLeft: 20,
+  },
+  listButton: {
+    height: 36,
+    borderColor: '#cccccc', // <= relevant style here
+    borderWidth: 1,
+    borderRadius: 4,
+    marginBottom: 15,
+    backgroundColor: '#f2f2f2',
+  },
+  iconContainer: {
+    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'center',
+  },
 });
