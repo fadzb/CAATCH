@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert, ActivityIndicator } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, FlatList, Alert, ActivityIndicator, Platform } from 'react-native';
 import { diaryPrePops, updateDiaryPrePops } from '../../Constants/Prepopulated';
 import FeelingRow from '../../Components/FeelingRow';
 import { deleteDatabaseRow, updateDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
@@ -16,7 +16,7 @@ import RNPickerSelect from 'react-native-picker-select';
 import { Icons } from '../../Constants/Icon';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PressableIcon } from '../../Components/PressableIcon';
-import { themeStyles } from '../../Styles/TabStyles';
+import { AppColors, themeStyles } from '../../Styles/TabStyles';
 
 const USED_SKILLS = 'Used Skills';
 
@@ -213,7 +213,7 @@ class Feelings extends React.Component {
                         onPressFunction={this.infoAlert}
                         color="#007AFF"
                       />
-                      <Text style={{ paddingLeft: 10, fontSize: 15 }}>{USED_SKILLS}</Text>
+                      <Text style={{ color: AppColors.blue, paddingLeft: 10, fontSize: 15 }}>{USED_SKILLS}</Text>
                     </View>
                     <RNPickerSelect
                       placeholder={{
@@ -290,13 +290,14 @@ const feelingStyle = StyleSheet.create({
   },
   buttonText: {
     fontSize: 18,
-    color: '#007AFF',
+    color: AppColors.white,
+    fontWeight: Platform.OS === 'ios' ? '600' : '500',
     alignSelf: 'center',
   },
   button: {
     height: 36,
-    backgroundColor: '#fff',
-    borderColor: '#007AFF',
+    backgroundColor: AppColors.orange,
+    borderColor: AppColors.orange,
     borderWidth: 1,
     borderRadius: 8,
     marginLeft: 15,
@@ -309,8 +310,8 @@ const feelingStyle = StyleSheet.create({
   buttons: {
     height: 36,
     flex: 1,
-    backgroundColor: '#fff',
-    borderColor: '#007AFF',
+    backgroundColor: AppColors.orange,
+    borderColor: AppColors.orange,
     borderWidth: 1,
     borderRadius: 8,
     justifyContent: 'center',
@@ -318,14 +319,15 @@ const feelingStyle = StyleSheet.create({
   },
   buttonNewText: {
     fontSize: 18,
-    color: 'white',
+    color: AppColors.orange,
+    fontWeight: Platform.OS === 'ios' ? '600' : '500',
     alignSelf: 'center',
   },
   buttonsNew: {
     height: 36,
     flex: 1,
-    backgroundColor: '#007AFF',
-    borderColor: '#007AFF',
+    backgroundColor: AppColors.white,
+    borderColor: AppColors.orange,
     borderWidth: 1,
     borderRadius: 8,
     justifyContent: 'center',

@@ -6,6 +6,7 @@ import store from '../Redux/store';
 import { updateSkillRating } from '../Redux/actions';
 import { PressableIcon } from './PressableIcon';
 import { Icons } from '../Constants/Icon';
+import { AppColors } from '../Styles/TabStyles';
 
 export default class SkillRow extends React.Component {
   constructor(props) {
@@ -78,6 +79,7 @@ const skillRowStyle = StyleSheet.create({
   button: {
     flex: 1,
     borderBottomWidth: 0.5,
+    borderColor: AppColors.orange,
     marginLeft: 10,
     marginRight: 10,
   },
@@ -93,6 +95,7 @@ const skillRowStyle = StyleSheet.create({
     fontSize: 15,
     paddingLeft: 5,
     flex: 1,
+    color: AppColors.blue,
   },
 
   textContainer: {

@@ -11,7 +11,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
 } from 'react-native';
-import { TabStyles, themeStyles } from '../../Styles/TabStyles';
+import { AppColors, TabStyles, themeStyles } from '../../Styles/TabStyles';
 import { Icons } from '../../Constants/Icon';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { readDatabaseArg, updateDatabase, updateDatabaseArgument } from '../../Util/DatabaseHelper';
@@ -128,7 +128,11 @@ export default class EnvironmentSafe extends React.Component {
       <View style={TabStyles.stackContainer}>
         <View style={{ flex: 1, marginHorizontal: 10 }}>
           <View style={environmentStyle.iconContainer}>
-            <Icon name={Icons.environmentSafe + '-outline'} size={Dimensions.get('window').width / 6} />
+            <Icon
+              name={Icons.environmentSafe + '-outline'}
+              size={Dimensions.get('window').width / 6}
+              color={AppColors.orange}
+            />
           </View>
           <Text style={environmentStyle.headTextStyle}>
             These are some steps that you can take to keep your environment safe
@@ -205,6 +209,7 @@ const environmentStyle = StyleSheet.create({
     fontSize: 17,
     fontWeight: 'bold',
     marginTop: 10,
+    color: AppColors.blue,
   },
   textContainer: {
     borderBottomWidth: 1,

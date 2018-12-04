@@ -1,9 +1,9 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableHighlight, Platform } from 'react-native';
 import t from 'tcomb-form-native';
 import store from '../../Redux/store';
 import { newFeeling } from '../../Redux/actions';
-import { TabStyles } from '../../Styles/TabStyles';
+import { AppColors, TabStyles } from '../../Styles/TabStyles';
 import { updateDatabase } from '../../Util/DatabaseHelper';
 import { DbTableNames, UsageFunctionIds } from '../../Constants/Constants';
 import { updateDiaryPrePops } from '../../Constants/Prepopulated';
@@ -89,13 +89,14 @@ export default class NewDbtItem extends React.Component {
 const dbtItemStyle = StyleSheet.create({
   buttonText: {
     fontSize: 18,
-    color: 'white',
+    color: AppColors.white,
     alignSelf: 'center',
+    fontWeight: Platform.OS === 'ios' ? '600' : '500',
   },
   button: {
     height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
+    backgroundColor: AppColors.orange,
+    borderColor: AppColors.orange,
     borderWidth: 1,
     borderRadius: 8,
     marginBottom: 10,

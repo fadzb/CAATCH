@@ -154,7 +154,7 @@ export default class CustomMultiSelectList extends Component {
                 }}
               >
                 <View style={{ flex: 6 }}>
-                  <Text>{label}</Text>
+                  <Text style={this.props.labelStyle}>{label}</Text>
                 </View>
                 <View style={{ flex: 1, alignItems: 'flex-end' }}>
                   {this._isSelected(itemKey) ? (
