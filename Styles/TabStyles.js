@@ -3,6 +3,13 @@ import { Constants } from 'expo';
 
 // globally shared TabStyles
 
+export const AppColors = {
+  orange: '#F09100',
+  blue: '#31548B',
+  grey: '#333333',
+  white: 'white',
+};
+
 export const TabStyles = StyleSheet.create({
   container: {
     flex: 1,
@@ -22,25 +29,25 @@ export const TabStyles = StyleSheet.create({
 });
 
 export const ComponentStyleConst = {
-  diaryDatePickerIconColor: '#333333',
-  headerRightIconColor: 'white',
-  safetyPlanIconColor: '#F09100',
-  settingsIconColor: '#F09100',
-  bottomTabBarTint: '#F09100',
+  diaryDatePickerIconColor: AppColors.grey,
+  headerRightIconColor: AppColors.white,
+  safetyPlanIconColor: AppColors.orange,
+  settingsIconColor: AppColors.orange,
+  bottomTabBarTint: AppColors.orange,
 };
 
 export const Tiles = {
-  iconColor: '#F09100',
+  iconColor: AppColors.orange,
 };
 
 export const Stacks = {
   navigationOptions: {
-    headerTintColor: 'white',
+    headerTintColor: AppColors.white,
     headerStyle: {
-      backgroundColor: '#31548B',
+      backgroundColor: AppColors.blue,
     },
     headerTitleStyle: {
-      color: 'white',
+      color: AppColors.white,
       ...Platform.select({
         ios: {
           //fontFamily: 'normal',
@@ -52,22 +59,22 @@ export const Stacks = {
     },
     headerBackTitle: null,
     headerBackTitleStyle: {
-      color: 'white',
+      color: AppColors.white,
     },
   },
   cardStyle: {
-    backgroundColor: 'white',
+    backgroundColor: AppColors.white,
   },
 };
 
 export const themeStyles = StyleSheet.create({
   headerRightText: {
-    color: 'white',
+    color: AppColors.white,
   },
   tiles: {
-    backgroundColor: 'white',
+    backgroundColor: AppColors.white,
     borderWidth: 1,
-    borderColor: '#F09100',
+    borderColor: AppColors.orange,
     ...Platform.select({
       ios: {
         shadowColor: '#000',
@@ -84,7 +91,7 @@ export const themeStyles = StyleSheet.create({
     }),
   },
   tileFont: {
-    color: '#31548B',
+    color: AppColors.blue,
     ...Platform.select({
       ios: {
         //fontFamily: 'normal',
@@ -95,29 +102,45 @@ export const themeStyles = StyleSheet.create({
     }),
   },
   diaryDatePicker: {
-    backgroundColor: 'white',
+    backgroundColor: AppColors.white,
     borderWidth: 1,
-    borderColor: '#F09100',
+    borderColor: AppColors.orange,
   },
   diaryDatePickerText: {
-    color: '#333333',
+    color: AppColors.grey,
   },
   planScreenTextContainer: {
-    borderColor: '#F09100',
+    borderColor: AppColors.orange,
   },
   planScreenText: {
-    color: '#31548B',
+    color: AppColors.blue,
   },
   settingsScreenText: {
-    color: '#31548B',
+    color: AppColors.blue,
+  },
+  settingsButtons: {
+    borderBottomWidth: 0.5,
+    borderColor: AppColors.orange,
   },
   homeCrisisViewContainer: {
-    backgroundColor: '#31548B',
+    backgroundColor: AppColors.blue,
   },
   homeScreenImage: {
     borderRadius: 7,
     borderWidth: 1,
-    borderColor: '#F09100',
+    borderColor: AppColors.orange,
     opacity: 0.9,
+  },
+  planFormSaveButtonText: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: Platform.OS === 'ios' ? '600' : '500',
+  },
+  planFormSaveButton: {
+    height: 36,
+    backgroundColor: AppColors.orange,
+    borderColor: AppColors.orange,
+    borderWidth: 1,
+    borderRadius: 8,
   },
 });

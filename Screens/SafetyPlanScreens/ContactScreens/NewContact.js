@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight, ScrollView, Dimensions } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableHighlight, ScrollView, Dimensions, Platform } from 'react-native';
 import t from 'tcomb-form-native';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import store from '../../../Redux/store';
@@ -8,7 +8,7 @@ import Expo from 'expo';
 import { Icons } from '../../../Constants/Icon';
 import { ButtonGroup } from 'react-native-elements';
 
-import { TabStyles } from '../../../Styles/TabStyles';
+import { AppColors, TabStyles, themeStyles } from '../../../Styles/TabStyles';
 import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
 import { DbTableNames, UsageFunctionIds } from '../../../Constants/Constants';
 import { latestSafetyPlanItem } from '../../../Util/Usage';
@@ -216,17 +216,16 @@ export default class NewContact extends React.Component {
 
     if (value) {
       // if validation fails, value will be null
-      console.log(value);
+      const updateValue = { ...value, helper: parseInt(value.helper ? 1 : 0) };
+
       updateDatabase(
         DbTableNames.contact,
-        [...Object.values(value), this.state.type === 0 ? 'Personal' : 'Professional'],
-        [...Object.keys(value), 'contactType'],
-        this.updateContactList({ ...value, contactType: this.state.type === 0 ? 'Personal' : 'Professional' }),
+        [...Object.values(updateValue), this.state.type === 0 ? 'Personal' : 'Professional'],
+        [...Object.keys(updateValue), 'contactType'],
+        this.updateContactList({ ...updateValue, contactType: this.state.type === 0 ? 'Personal' : 'Professional' }),
         this.checkMediaSelected
       );
       // write the saved values to DB if valid
-
-      //latestSafetyPlanItem(UsageFunctionIds.latest.contact,)
 
       this.props.navigation.pop();
       // pop to contact list once saved
@@ -276,11 +275,16 @@ export default class NewContact extends React.Component {
             name="Import Phone Contacts"
             buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
             buttonStyle={contactStyle.listButton}
-            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
+            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6, color: AppColors.grey }}
+            color={AppColors.grey}
             iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
           />
-          <TouchableHighlight style={contactStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
-            <Text style={contactStyle.buttonText}>Save</Text>
+          <TouchableHighlight
+            style={[contactStyle.button, themeStyles.planFormSaveButton]}
+            onPress={this.onPress}
+            underlayColor="#99d9f4"
+          >
+            <Text style={[contactStyle.buttonText, themeStyles.planFormSaveButtonText]}>Save</Text>
           </TouchableHighlight>
         </View>
         <View style={contactStyle.iconContainer}>
@@ -289,12 +293,14 @@ export default class NewContact extends React.Component {
             size={80}
             onPressFunction={this.captureMedia}
             buttonStyle={contactStyle.iconButton}
+            color={AppColors.grey}
           />
           <PressableIcon
             iconName={Icons.camera + '-outline'}
             size={80}
             onPressFunction={this.takePhoto}
             buttonStyle={contactStyle.iconButton}
+            color={AppColors.grey}
           />
         </View>
       </ScrollView>
@@ -304,16 +310,9 @@ export default class NewContact extends React.Component {
 
 const contactStyle = StyleSheet.create({
   buttonText: {
-    fontSize: 18,
-    color: 'white',
     alignSelf: 'center',
   },
   button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
     //marginBottom: 10,
     marginTop: 5,
     alignSelf: 'stretch',

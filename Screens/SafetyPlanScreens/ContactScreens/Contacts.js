@@ -20,7 +20,7 @@ import { getContact } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import Moment from 'moment';
 import { DbTableNames, SafetyPlanDbTables, SectionHeader } from '../../../Constants/Constants';
-import { themeStyles } from '../../../Styles/TabStyles';
+import { AppColors, themeStyles } from '../../../Styles/TabStyles';
 import { SafetyPlanTitle } from '../../../Components/SafetyPlanTitle';
 
 class Contacts extends React.Component {
@@ -171,7 +171,9 @@ class Contacts extends React.Component {
         }
         thumbnail={item.image === null ? undefined : { uri: item.image }}
         circleView={item.image === null ? item.firstName.slice(0, 1).toUpperCase() : undefined}
-        rightIcon={item.helper && 'ios-star'}
+        rightIcon={item.helper}
+        rightIconName={'ios-star'}
+        rightIconColor={AppColors.blue}
       />
     </View>
   );

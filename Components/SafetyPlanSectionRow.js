@@ -8,6 +8,7 @@ import Icon from 'react-native-vector-icons/Ionicons';
 import { VideoThumbnail } from './VideoThumbnail';
 
 import { PressableIcon } from './PressableIcon';
+import { AppColors } from '../Styles/TabStyles';
 
 // Component used for rows in the various SP section lists. Can display a thumbnail, icon or circleView(See contacts)
 
@@ -58,12 +59,12 @@ export class SafetyPlanSectionRow extends React.Component {
               )}
               {this.props.icon !== undefined && (
                 <View style={sectionRowStyle.iconContainer}>
-                  <Icon name={this.props.icon} size={56} color={this.props.iconColor} />
+                  <Icon name={this.props.icon} size={56} color={AppColors.orange} />
                 </View>
               )}
               {this.props.circleView !== undefined && (
                 <View style={sectionRowStyle.circleView}>
-                  <Text style={{ fontSize: 20 }}>{this.props.circleView}</Text>
+                  <Text style={{ fontSize: 20, color: AppColors.orange }}>{this.props.circleView}</Text>
                 </View>
               )}
               <View style={{ flex: 1 }}>
@@ -71,13 +72,9 @@ export class SafetyPlanSectionRow extends React.Component {
                   {this.props.name}
                 </Text>
               </View>
-              {this.props.rightIcon && (
+              {this.props.rightIcon === 1 && (
                 <View>
-                  <Icon
-                    name={this.props.rightIcon}
-                    size={25}
-                    //color={this.props.iconColor}
-                  />
+                  <Icon name={this.props.rightIconName} size={25} color={this.props.rightIconColor} />
                 </View>
               )}
             </View>
@@ -99,6 +96,7 @@ const sectionRowStyle = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     borderBottomWidth: 1,
+    borderColor: AppColors.orange,
     marginLeft: 30,
     marginRight: 30,
     paddingTop: 12,
@@ -114,6 +112,7 @@ const sectionRowStyle = StyleSheet.create({
   buttonText: {
     fontSize: 18,
     paddingLeft: 20,
+    color: AppColors.blue,
   },
 
   circleView: {
@@ -123,6 +122,7 @@ const sectionRowStyle = StyleSheet.create({
     borderWidth: 1,
     justifyContent: 'center',
     alignItems: 'center',
+    borderColor: AppColors.orange,
   },
 
   videoThumbnailView: {
@@ -132,6 +132,7 @@ const sectionRowStyle = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     overflow: 'hidden',
+    borderColor: AppColors.orange,
   },
 
   videoDisplay: {
