@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, ActivityIndicator, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, FlatList, TouchableOpacity, ActivityIndicator, ScrollView, Platform } from 'react-native';
 import Moment from 'moment';
 import SkillRow from '../../Components/SkillRow'
 import {connect} from 'react-redux'
@@ -12,6 +12,7 @@ import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
 import {DbTableNames, SectionHeader} from "../../Constants/Constants";
 import {updateNotifications} from "../../Util/Notifications";
+import {AppColors} from "../../Styles/TabStyles";
 
 class Skills extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -221,14 +222,15 @@ const skillStyle = StyleSheet.create({
 
     buttonText: {
         fontSize: 18,
-        color: '#007AFF',
+        color: AppColors.white,
         alignSelf: 'center',
+        fontWeight: Platform.OS === 'ios' ? '600' : '500'
     },
 
     button: {
         height: 36,
-        backgroundColor: '#fff',
-        borderColor: '#007AFF',
+        backgroundColor: AppColors.orange,
+        borderColor: AppColors.orange,
         borderWidth: 1,
         borderRadius: 8,
         marginLeft: 15,

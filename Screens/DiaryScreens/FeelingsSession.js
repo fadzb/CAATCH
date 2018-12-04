@@ -4,6 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import Moment from 'moment';
 import store from "../../Redux/store"
 import {Icons} from "../../Constants/Icon";
+import {AppColors} from "../../Styles/TabStyles";
 
 export default class FeelingsSession extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -54,7 +55,7 @@ const FeelingRow = (props) => (
                 <Icon
                 name={props.icon}
                 size={30}
-                color={props.iconColor}/>
+                color={AppColors.orange}/>
             </View>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text style={feelingSessionStyle.buttonText}>{props.name}</Text>
@@ -78,6 +79,7 @@ const feelingSessionStyle = StyleSheet.create({
         flex: 1,
         justifyContent: "space-around",
         borderBottomWidth: 1,
+        borderColor: AppColors.orange,
         marginLeft: 30,
         marginRight: 30,
         height: 80
@@ -86,11 +88,13 @@ const feelingSessionStyle = StyleSheet.create({
     buttonText: {
         fontSize: 18,
         paddingLeft: 10,
+        color: AppColors.blue
     },
 
     ratingText: {
         fontSize: 18,
-        paddingRight: 10
+        paddingRight: 10,
+        color: AppColors.blue
     },
 
     iconContainer: {

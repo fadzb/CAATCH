@@ -4,6 +4,7 @@ import {Icons} from "../Constants/Icon";
 import Icon from "react-native-vector-icons/Ionicons";
 import {PressableIcon} from "../Components/PressableIcon";
 import Swipeable from 'react-native-swipeable';
+import {AppColors} from "../Styles/TabStyles";
 
 export default class EnvironmentRow extends React.Component {
 
@@ -35,9 +36,10 @@ export default class EnvironmentRow extends React.Component {
                         <Icon
                             name={Icons.dividerArrow}
                             size={20}
+                            color={AppColors.orange}
                         />
                     </View>
-                    <Text style={{fontSize: 15, flex: 1}}>{this.props.description}</Text>
+                    <Text style={{color: AppColors.blue, fontSize: 15, flex: 1}}>{this.props.description}</Text>
                 </View>
             </Swipeable>
         )

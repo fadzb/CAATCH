@@ -6,6 +6,8 @@ import store from "../../Redux/store"
 import {Icons} from "../../Constants/Icon";
 import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
 import {DbTableNames} from "../../Constants/Constants";
+import App from "../../App";
+import {AppColors} from "../../Styles/TabStyles";
 
 export default class SafetyPlanSession extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -82,7 +84,7 @@ const GeneralRow = (props) => (
                 <Icon
                     name={props.icon}
                     size={30}
-                    color={props.iconColor}/>
+                    color={AppColors.orange}/>
             </View>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center'}}>
                 <Text style={spSessionStyle.buttonText}>{props.name}</Text>
@@ -90,7 +92,7 @@ const GeneralRow = (props) => (
                     <Icon
                     name={Icons.tick}
                     size={40}
-                    color={props.iconColor}/></View>}
+                    color={AppColors.blue}/></View>}
             </View>
         </View>
     </View>
@@ -112,7 +114,8 @@ const spSessionStyle = StyleSheet.create({
         borderBottomWidth: 1,
         marginLeft: 30,
         marginRight: 30,
-        height: 80
+        height: 80,
+        borderColor: AppColors.orange
     },
 
     noteContainer: {
@@ -128,6 +131,7 @@ const spSessionStyle = StyleSheet.create({
         fontSize: 18,
         paddingLeft: 10,
         flex: .8,
+        color: AppColors.blue
     },
 
     ratingText: {

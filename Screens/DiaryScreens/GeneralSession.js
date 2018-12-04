@@ -5,6 +5,7 @@ import Moment from 'moment';
 import store from "../../Redux/store"
 import {Icons} from "../../Constants/Icon";
 import {DiaryId} from "../../Constants/Constants";
+import {AppColors} from "../../Styles/TabStyles";
 
 export default class GeneralSession extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -62,7 +63,7 @@ const GeneralRow = (props) => (
                 <Icon
                     name={props.icon}
                     size={30}
-                    color={props.iconColor}/>
+                    color={AppColors.orange}/>
             </View>
             <View style={{flex: 1, flexDirection: 'row', justifyContent: 'space-between'}}>
                 <Text style={generalSessionStyle.buttonText}>{props.name}</Text>
@@ -80,7 +81,7 @@ const GeneralNote = props => (
                 <Icon
                     name={props.icon}
                     size={30}
-                    color={props.iconColor}/>
+                    color={AppColors.orange}/>
             </View>
             <View style={{flex: 1}}>
                 <View style={{flex: 1, paddingRight: 10, justifyContent: 'center'}}>
@@ -107,7 +108,8 @@ const generalSessionStyle = StyleSheet.create({
         borderBottomWidth: 1,
         marginLeft: 30,
         marginRight: 30,
-        height: 80
+        height: 80,
+        borderColor: AppColors.orange
     },
 
     noteContainer: {
@@ -117,16 +119,19 @@ const generalSessionStyle = StyleSheet.create({
         marginLeft: 30,
         marginRight: 30,
         alignItems: 'center',
+        borderColor: AppColors.orange
     },
 
     buttonText: {
         fontSize: 18,
         paddingLeft: 10,
+        color: AppColors.blue
     },
 
     ratingText: {
         fontSize: 18,
-        paddingRight: 10
+        paddingRight: 10,
+        color: AppColors.blue
     },
 
     iconContainer: {

@@ -4,6 +4,7 @@ import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, SectionList } from 'react-native';
 import { SearchBar } from 'react-native-elements'
 import {ContactRow} from "../../../Components/ContactRow";
+import {AppColors} from "../../../Styles/TabStyles";
 
 export default class PhoneContacts extends React.Component {
     static navigationOptions = {
@@ -87,7 +88,7 @@ export default class PhoneContacts extends React.Component {
     );
 
     renderSectionHeader = obj => <View style={phoneContactStyle.sectionHeader}>
-        <Text style={{fontSize: 24, fontWeight: 'bold'}}>{obj.section.title}</Text>
+        <Text style={{color: AppColors.orange, fontSize: 24, fontWeight: 'bold'}}>{obj.section.title}</Text>
     </View>;
 
     render() {
@@ -110,9 +111,9 @@ export default class PhoneContacts extends React.Component {
                 <SearchBar
                     onChangeText={this.handleChangeText}
                     placeholder='Type Here...'
-                    placeholderTextColor={'#000'}
-                    icon={{color: '#000'}}
-                    inputStyle={{color: '#000', backgroundColor: "white"}}
+                    placeholderTextColor={AppColors.grey}
+                    icon={{color: AppColors.grey}}
+                    inputStyle={{color: AppColors.grey, backgroundColor: "white"}}
                     clearButtonMode={'while-editing'}
                 />
                 <SectionList

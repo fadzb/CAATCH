@@ -35,7 +35,7 @@ export class SafetyPlanSectionRow extends React.Component {
                         iconName={Icons.edit + '-outline'}
                         size={40}
                         onPressFunction={this.onPressEdit}
-                        //color='black'
+                        color={AppColors.blue}
                     />
                 </View>,
 

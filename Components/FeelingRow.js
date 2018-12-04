@@ -5,6 +5,7 @@ import store from "../Redux/store"
 import {updateFeelingRating} from "../Redux/actions";
 import {PressableIcon} from "./PressableIcon";
 import {Icons} from "../Constants/Icon";
+import {AppColors} from "../Styles/TabStyles";
 
 export default class FeelingRow extends React.Component {
 
@@ -98,12 +99,14 @@ export default class FeelingRow extends React.Component {
                             step={1}
                             value={this.state.value}
                             onValueChange={this.valueChangeHandler}
+                            thumbTintColor={AppColors.blue}
+                            minimumTrackTintColor={AppColors.orange}
                         />
                     </TouchableWithoutFeedback>
                 </View>
                 <View style={{flexDirection: 'row', justifyContent: 'space-between'}}>
                     {this.state.options.map((m, i) => <View style={feelingRowStyle.labelContainer} key={i.toString()}>
-                        <Text style={{fontSize: 15}} >{i.toString()}</Text>
+                        <Text style={{color: AppColors.blue, fontSize: 15}} >{i.toString()}</Text>
                     </View>)}
                 </View>
             </View>
@@ -118,12 +121,14 @@ const feelingRowStyle = StyleSheet.create({
         flex: 1,
         paddingVertical: 10,
         borderBottomWidth: .5,
+        borderColor: AppColors.orange,
         marginLeft: sliderMargin,
         marginRight: sliderMargin,
     },
     text: {
         paddingLeft: 10,
-        fontSize: 15
+        fontSize: 15,
+        color: AppColors.blue
     },
     labelContainer: {
         height: 20,

@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, ActivityIndicator, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, TouchableHighlight, ActivityIndicator, TouchableOpacity, Platform } from 'react-native';
 import CustomMultiPicker from "react-native-multiple-select-list";
 import {readDatabaseArg, updateDatabase, deleteDatabaseRow} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
@@ -7,7 +7,7 @@ import store from "../../Redux/store";
 import {DbTableNames} from "../../Constants/Constants";
 import CustomMultiSelectList from "../../Components/CustomMultiSelectList"
 import {updateNotifications} from "../../Util/Notifications";
-import {themeStyles} from "../../Styles/TabStyles";
+import {AppColors, themeStyles} from "../../Styles/TabStyles";
 
 export default class SafetyPlanSelection extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -112,11 +112,13 @@ export default class SafetyPlanSelection extends React.Component {
                             callback={this.getCheckedItems} // callback, array of selected items
                             rowBackgroundColor={"#fff"}
                             rowRadius={5}
-                            iconColor={"#00a2dd"}
+                            iconColor={AppColors.blue}
                             iconSize={25}
-                            itemStyle={SPSelectionStyle.itemStyle}
+                            labelStyle={SPSelectionStyle.labelStyle}
                             selectedIconName={"ios-checkmark-circle-outline"}
                             unselectedIconName={"ios-radio-button-off-outline"}
+                            selectedIconStyle={{color: AppColors.blue}}
+                            unselectedIconStyle={{color: AppColors.blue}}
                             search={true}
                         />
                     </View>
@@ -139,16 +141,20 @@ const SPSelectionStyle = StyleSheet.create({
     buttonText: {
         fontSize: 18,
         color: 'white',
-        alignSelf: 'center'
+        alignSelf: 'center',
+        fontWeight: Platform.OS === 'ios' ? '600' : '500'
     },
     button: {
         height: 36,
-        backgroundColor: '#48BBEC',
-        borderColor: '#48BBEC',
+        backgroundColor: AppColors.orange,
+        borderColor: AppColors.orange,
         borderWidth: 1,
         borderRadius: 8,
         margin:15,
         alignSelf: 'stretch',
         justifyContent: 'center'
     },
+    labelStyle: {
+        color: AppColors.blue
+    }
 });

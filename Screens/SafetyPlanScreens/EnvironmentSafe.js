@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, Text, View, Button, TextInput, Dimensions, FlatList, Alert, ActivityIndicator, TouchableOpacity } from 'react-native';
-import {TabStyles, themeStyles} from "../../Styles/TabStyles";
+import {AppColors, TabStyles, themeStyles} from "../../Styles/TabStyles";
 import {Icons} from "../../Constants/Icon";
 import Icon from "react-native-vector-icons/Ionicons";
 import {readDatabaseArg, updateDatabase, updateDatabaseArgument} from "../../Util/DatabaseHelper";
@@ -98,6 +98,7 @@ export default class EnvironmentSafe extends React.Component {
                         <Icon
                             name={Icons.environmentSafe + '-outline'}
                             size={Dimensions.get('window').width / 6}
+                            color={AppColors.orange}
                         />
                     </View>
                     <Text style={environmentStyle.headTextStyle}>These are some steps that you can take to keep your environment safe</Text>
@@ -156,7 +157,8 @@ const environmentStyle = StyleSheet.create({
         textAlign: 'center',
         fontSize: 17,
         fontWeight: 'bold',
-        marginTop: 10
+        marginTop: 10,
+        color: AppColors.blue
     },
     textContainer: {
         borderBottomWidth: 1,

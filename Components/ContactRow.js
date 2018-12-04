@@ -1,6 +1,7 @@
 import React from 'react';
 import { StyleSheet, Text, TouchableHighlight, View } from 'react-native';
 import PropTypes from 'prop-types'
+import {AppColors} from "../Styles/TabStyles";
 
 export const ContactRow = props => {
     return (
@@ -31,6 +32,7 @@ const contactRowStyle = StyleSheet.create({
         borderBottomWidth: 1,
         marginLeft: 30,
         marginRight: 30,
+        borderColor: AppColors.orange
     },
 
     container: {
@@ -42,11 +44,13 @@ const contactRowStyle = StyleSheet.create({
     buttonText: {
         fontSize: 20,
         //alignSelf: 'center',
+        color: AppColors.blue
     },
 
     numberText: {
         fontSize: 16,
-        paddingTop: 10
+        paddingTop: 10,
+        color: AppColors.grey
     }
 
 });

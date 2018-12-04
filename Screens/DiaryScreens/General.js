@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, KeyboardAvoidingView, Dimensions, Alert, ScrollView } from 'react-native';
+import { StyleSheet, Text, View, Button, TextInput, TouchableOpacity, KeyboardAvoidingView, Dimensions, Alert, ScrollView, Platform } from 'react-native';
 import {connect} from 'react-redux'
 import {deleteDatabaseRow, readDatabaseArg, updateDatabase, updateDatabaseArgument} from "../../Util/DatabaseHelper";
 import Moment from 'moment';
@@ -11,7 +11,7 @@ import {updateNotifications} from "../../Util/Notifications";
 import {PressableIcon} from "../../Components/PressableIcon";
 import Icon from 'react-native-vector-icons/Ionicons';
 import {Icons} from "../../Constants/Icon";
-import {themeStyles} from "../../Styles/TabStyles";
+import {AppColors, themeStyles} from "../../Styles/TabStyles";
 
 const steps = {
     title: 'Steps',
@@ -148,7 +148,7 @@ class General extends React.Component {
                                 <View style={generalStyle.stepStyle}>
                                     <TextInput
                                         placeholder={'Enter step count'}
-                                        style={{paddingVertical: 7, paddingLeft: 15, flex: 1}}
+                                        style={{paddingVertical: 7, paddingLeft: 15, flex: 1, color: AppColors.grey}}
                                         placeholderTextColor="black"
                                         keyboardType={'phone-pad'}
                                         underlineColorAndroid='transparent'
@@ -157,6 +157,7 @@ class General extends React.Component {
                                     <Icon
                                         name={Icons.steps + '-outline'}
                                         size={30}
+                                        color={AppColors.grey}
                                     />
                                 </View>
                                 <View>
@@ -170,10 +171,9 @@ class General extends React.Component {
                             </View>
                         </View>
                         <View style={{marginLeft: 15, marginRight: 15}}>
-                            {/*<Text style={{fontWeight: 'bold', fontSize: 16, paddingBottom: 15}}>General Notes</Text>*/}
                             <TextInput
                                 multiline={true}
-                                style={{backgroundColor: '#f0f0f5', height: (this.state.keyboardViewHeight - this.state.nonGeneralViewHeight), borderRadius: 7, borderWidth: 1, padding: 15, paddingBottom: 15, paddingTop: 15, textAlignVertical: "top"}}
+                                style={{color: AppColors.grey, backgroundColor: '#f0f0f5', height: (this.state.keyboardViewHeight - this.state.nonGeneralViewHeight), borderColor: AppColors.orange, borderRadius: 7, borderWidth: 1, padding: 15, paddingBottom: 15, paddingTop: 15, textAlignVertical: "top"}}
                                 placeholder="Enter daily personal thoughts / notes here"
                                 placeholderTextColor="black"
                                 underlineColorAndroid='transparent'
@@ -211,13 +211,14 @@ const generalStyle = StyleSheet.create({
     },
     buttonText: {
         fontSize: 18,
-        color: '#007AFF',
+        color: AppColors.white,
         alignSelf: 'center',
+        fontWeight: Platform.OS === 'ios' ? '600' : '500'
     },
     button: {
         height: 36,
-        backgroundColor: '#fff',
-        borderColor: '#007AFF',
+        backgroundColor: AppColors.orange,
+        borderColor: AppColors.orange,
         borderWidth: 1,
         borderRadius: 8,
         margin: 15,
@@ -228,6 +229,7 @@ const generalStyle = StyleSheet.create({
         flexDirection: 'row',
         borderWidth: 1,
         borderRadius: 7,
+        borderColor: AppColors.orange,
         marginHorizontal: 15,
         flex: .6,
         paddingRight: 15,
