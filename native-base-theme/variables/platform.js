@@ -1,6 +1,7 @@
 import color from 'color';
 
 import { Platform, Dimensions, PixelRatio } from 'react-native';
+import { AppColors } from '../../Styles/TabStyles';
 
 const deviceHeight = Dimensions.get('window').height;
 const deviceWidth = Dimensions.get('window').width;
@@ -224,9 +225,9 @@ export default {
   // Tab
   tabDefaultBg: platform === 'ios' ? '#F8F8F8' : 'white',
   topTabBarTextColor: platform === 'ios' ? '#6b6b6b' : '#686868',
-  topTabBarActiveTextColor: platform === 'ios' ? '#007aff' : '#000',
+  topTabBarActiveTextColor: platform === 'ios' ? AppColors.orange : AppColors.orange,
   topTabBarBorderColor: platform === 'ios' ? '#a7a6ab' : '#000',
-  topTabBarActiveBorderColor: platform === 'ios' ? '#007aff' : '#000',
+  topTabBarActiveBorderColor: platform === 'ios' ? AppColors.orange : AppColors.orange,
 
   // Tabs
   tabBgColor: '#F8F8F8',

@@ -9,10 +9,10 @@ const rowHtml = (number, name, bold) => {
   return '<tr>\n' + td + '  </tr>';
 };
 
-const tableHtml = (title, items, key) => {
+const tableHtml = (categorey, title, items, key) => {
   let rows = '';
 
-  if (title === 'My Network') {
+  if (categorey === 'My Network') {
     items.sort(sortContacts).forEach((i, ind) => {
       const bold = i.contactType === 'Professional';
       const name = i.helper
@@ -53,7 +53,9 @@ const sortContacts = (contact1, contact2) => {
 
 export const safetyPlanHtml = (data) => {
   let titles = '';
-  Object.keys(data).forEach((s) => (titles = titles + tableHtml(SafetyPlanDbTables[s].reportTitle, data[s], s)));
+  Object.keys(data).forEach(
+    (s) => (titles = titles + tableHtml(SafetyPlanDbTables[s].title, SafetyPlanDbTables[s].reportTitle, data[s], s))
+  );
 
   return (
     '<!DOCTYPE html>\n' +
@@ -122,7 +124,7 @@ const skillTableRow = (dateArr, result, list) => {
     const resArr = result.filter((r) => r.diaryDate === d && r.diaryName === list.diaryName);
 
     resArr.length > 0
-      ? (rowData = rowData + '<td>' + (resArr[0].rating ? '✓' : '') + '</td>\n')
+      ? (rowData = rowData + '<td>' + (resArr[0].rating ? '&#10003;' : '') + '</td>\n')
       : (rowData = rowData + '<td></td>\n');
   });
 

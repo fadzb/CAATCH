@@ -1,12 +1,12 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-native';
+import { StyleSheet, Text, View, TextInput, TouchableHighlight, Platform } from 'react-native';
 import t from 'tcomb-form-native';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import store from '../../../Redux/store';
 import { updateSign, getSign } from '../../../Redux/actions';
 import Expo from 'expo';
 
-import { TabStyles } from '../../../Styles/TabStyles';
+import { AppColors, TabStyles, themeStyles } from '../../../Styles/TabStyles';
 import { updateDatabase, updateDatabaseArgument, readDatabaseArg } from '../../../Util/DatabaseHelper';
 import { DbTableNames, UsageFunctionIds } from '../../../Constants/Constants';
 import { latestSafetyPlanItem } from '../../../Util/Usage';
@@ -134,7 +134,8 @@ export default class NewWarningSign extends React.Component {
             name="Import"
             buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
             buttonStyle={signStyle.listButton}
-            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
+            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6, color: AppColors.grey }}
+            color={AppColors.grey}
             iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
           />
           <PressableIcon
@@ -144,11 +145,16 @@ export default class NewWarningSign extends React.Component {
             name="Coping Strategy"
             buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
             buttonStyle={signStyle.listButton}
-            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6 }}
+            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6, color: AppColors.grey }}
+            color={AppColors.grey}
             iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
           />
-          <TouchableHighlight style={signStyle.button} onPress={this.onPress} underlayColor="#99d9f4">
-            <Text style={signStyle.buttonText}>Save</Text>
+          <TouchableHighlight
+            style={[signStyle.button, themeStyles.planFormSaveButton]}
+            onPress={this.onPress}
+            underlayColor="#99d9f4"
+          >
+            <Text style={[signStyle.buttonText, themeStyles.planFormSaveButtonText]}>Save</Text>
           </TouchableHighlight>
         </View>
       </View>
@@ -158,16 +164,9 @@ export default class NewWarningSign extends React.Component {
 
 const signStyle = StyleSheet.create({
   buttonText: {
-    fontSize: 18,
-    color: 'white',
     alignSelf: 'center',
   },
   button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
     marginBottom: 10,
     marginTop: 10,
     alignSelf: 'stretch',
