@@ -7,7 +7,7 @@ import {updateReason, getReason} from "../../../Redux/actions";
 import Expo from 'expo';
 import {Icons} from "../../../Constants/Icon";
 
-import {TabStyles} from "../../../Styles/TabStyles";
+import {TabStyles, themeStyles, AppColors} from "../../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg} from "../../../Util/DatabaseHelper";
 import {DbTableNames} from "../../../Constants/Constants";
 
@@ -189,8 +189,8 @@ export default class EditReason extends React.Component {
                         onChange={this.onChange}
                         options={options}
                     />
-                    <TouchableHighlight style={reasonStyle.button} onPress={this.onPress} underlayColor='#99d9f4'>
-                        <Text style={reasonStyle.buttonText}>Save</Text>
+                    <TouchableHighlight style={[reasonStyle.button, themeStyles.planFormSaveButton]} onPress={this.onPress} underlayColor='#99d9f4'>
+                        <Text style={[reasonStyle.buttonText, themeStyles.planFormSaveButtonText]}>Save</Text>
                     </TouchableHighlight>
                 </View>
                 <View style={reasonStyle.iconContainer}>
@@ -199,12 +199,14 @@ export default class EditReason extends React.Component {
                         size={80}
                         onPressFunction={this.captureMedia}
                         buttonStyle={reasonStyle.iconButton}
+                        color={AppColors.grey}
                     />
                     <PressableIcon
                         iconName={Icons.camera + "-outline"}
                         size={80}
                         onPressFunction={this.takePhoto}
                         buttonStyle={reasonStyle.iconButton}
+                        color={AppColors.grey}
                     />
                 </View>
             </View>
@@ -214,16 +216,9 @@ export default class EditReason extends React.Component {
 
 const reasonStyle = StyleSheet.create({
     buttonText: {
-        fontSize: 18,
-        color: 'white',
         alignSelf: 'center'
     },
     button: {
-        height: 36,
-        backgroundColor: '#48BBEC',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
-        borderRadius: 8,
         marginBottom: 10,
         marginTop: 10,
         alignSelf: 'stretch',

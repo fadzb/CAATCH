@@ -4,14 +4,14 @@ import PropTypes from 'prop-types'
 import Icon from "react-native-vector-icons/Ionicons";
 import {PressableIcon} from "./PressableIcon";
 import {Icons} from "../Constants/Icon";
-import {ComponentStyleConst, themeStyles} from "../Styles/TabStyles";
+import {ComponentStyleConst, TabStyles, themeStyles} from "../Styles/TabStyles";
 
 export const SettingsSelectionRow = props => {
     return(
         <View style={[settingRowStyle.container,  {height: props.height}]}>
             <TouchableHighlight
                 underlayColor="#FDEDEC"
-                style={settingRowStyle.button}
+                style={[themeStyles.settingsButtons ,settingRowStyle.button]}
                 onPress={props.onPress}>
                 <View style={settingRowStyle.rowContainer}>
                     <View style={settingRowStyle.textContainer}>
@@ -63,7 +63,6 @@ SettingsSelectionRow.propTypes = {
 
 const settingRowStyle = StyleSheet.create({
     button: {
-        borderBottomWidth: .5,
         marginLeft: 10,
         marginRight: 10,
         flex: 1

@@ -12,6 +12,7 @@ import {getContact} from "../../../Redux/actions";
 import store from "../../../Redux/store"
 import {DbTableNames, UsageFunctionIds, DbPrimaryKeys} from "../../../Constants/Constants";
 import ImageView from 'react-native-image-view';
+import {AppColors} from "../../../Styles/TabStyles";
 
 
 export default class ContactSummary extends React.Component {
@@ -142,7 +143,7 @@ export default class ContactSummary extends React.Component {
                             <Thumbnail style={contactSummaryStyle.thumbnail} source={media} />
                         </TouchableOpacity> :
                         <View style={contactSummaryStyle.circleView}>
-                            <Text style={{fontSize: 70}}>{this.props.navigation.getParam('firstName').slice(0,1).toUpperCase()}</Text>
+                            <Text style={{fontSize: 70, color: AppColors.blue}}>{this.props.navigation.getParam('firstName').slice(0,1).toUpperCase()}</Text>
                         </View>}
                     <View style={contactSummaryStyle.deleteEditButtons}>
                         <PressableIcon
@@ -156,6 +157,7 @@ export default class ContactSummary extends React.Component {
                                 mediaPath,
                                 contactType, helper, responsibility)}
                             buttonStyle={{marginRight: 15}}
+                            color={AppColors.blue}
                         />
                         <PressableIcon
                             iconName={Icons.delete + '-outline'}
@@ -165,22 +167,24 @@ export default class ContactSummary extends React.Component {
                         />
                     </View>
                 </View>
-                <View style={contactSummaryStyle.nameTextView}><Text style={{fontSize: 22}}>{this.state.name}</Text></View>
+                <View style={contactSummaryStyle.nameTextView}><Text style={{fontSize: 22, color: AppColors.blue}}>{this.state.name}</Text></View>
                 <View style={contactSummaryStyle.contactTextRow}>
                     <View style={{flex: .55, paddingLeft: 10}}>
                         <Text style={{paddingBottom: 5, fontSize: 16, color: '#808080'}}>Mobile</Text>
-                        <Text style={{fontSize: 16}}>{phone}</Text>
+                        <Text style={{fontSize: 16, color: AppColors.blue}}>{phone}</Text>
                     </View>
                     <View style={contactSummaryStyle.contactButtonsView}>
                         <PressableIcon
                             iconName={Icons.contacts + "-outline"}
                             size={iconSize}
                             onPressFunction={() => Communications.phonecall(phone, true)}
+                            color={AppColors.orange}
                         />
                         <PressableIcon
                             iconName={Icons.message + "-outline"}
                             size={iconSize}
                             onPressFunction={() => Communications.text(phone, "")}
+                            color={AppColors.orange}
                         />
                         <PressableIcon
                             iconName={Icons.whatsapp}
@@ -193,20 +197,21 @@ export default class ContactSummary extends React.Component {
                 {email !== null && <View style={contactSummaryStyle.contactTextRow}>
                     <View style={{paddingLeft: 10}}>
                         <Text style={{paddingBottom: 5, fontSize: 16, color: '#808080'}}>Email</Text>
-                        <Text style={{fontSize: 16}}>{email}</Text>
+                        <Text style={{fontSize: 16, color: AppColors.blue}}>{email}</Text>
                     </View>
                     <View style={contactSummaryStyle.emailContactButtonsView}>
                         <PressableIcon
                             iconName={Icons.email + "-outline"}
                             size={iconSize}
                             onPressFunction={() => Communications.email([email], null, null, null, null)}
+                            color={AppColors.orange}
                         />
                     </View>
                 </View>}
                 {helper && <View style={contactSummaryStyle.contactTextRow}>
                     <View style={{paddingLeft: 10}}>
                         <Text style={{paddingBottom: 5, fontSize: 16, color: '#808080'}}>How they can help me</Text>
-                        <Text style={{fontSize: 16}}>{responsibility}</Text>
+                        <Text style={{fontSize: 16, color: AppColors.blue}}>{responsibility}</Text>
                     </View>
                 </View>}
                 <ImageView
@@ -235,7 +240,7 @@ const contactSummaryStyle = StyleSheet.create({
         width: 150,
         borderRadius: 150/2,
         borderWidth: 1,
-        borderColor: "#E0E0E0"
+        borderColor: AppColors.orange
     },
 
     circleView: {
@@ -245,6 +250,7 @@ const contactSummaryStyle = StyleSheet.create({
         borderWidth: 1,
         justifyContent: 'center',
         alignItems: 'center',
+        borderColor: AppColors.orange
     },
 
     nameTextView: {

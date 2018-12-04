@@ -7,7 +7,7 @@ import {updateDistraction, getDistraction} from "../../../Redux/actions";
 import Expo from 'expo';
 import {Icons} from "../../../Constants/Icon";
 
-import {TabStyles} from "../../../Styles/TabStyles";
+import {TabStyles, themeStyles, AppColors} from "../../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg, deleteDatabaseRow} from "../../../Util/DatabaseHelper";
 import {DbTableNames} from "../../../Constants/Constants";
 
@@ -254,11 +254,12 @@ export default class EditDistraction extends React.Component {
                         name="Contact"
                         buttonContainerStyle={{flex: 1, flexDirection: 'row'}}
                         buttonStyle={distractionStyle.listButton}
-                        textStyle={{alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6}}
+                        textStyle={{alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6, color: AppColors.grey}}
+                        color={AppColors.grey}
                         iconStyle={{alignSelf: 'center', flex: 1, alignItems: 'center'}}
                     />
-                    <TouchableHighlight style={distractionStyle.button} onPress={this.onPress} underlayColor='#99d9f4'>
-                        <Text style={distractionStyle.buttonText}>Save</Text>
+                    <TouchableHighlight style={[distractionStyle.button, themeStyles.planFormSaveButton]} onPress={this.onPress} underlayColor='#99d9f4'>
+                        <Text style={[distractionStyle.buttonText, themeStyles.planFormSaveButtonText]}>Save</Text>
                     </TouchableHighlight>
                 </View>
                 <View style={distractionStyle.iconContainer}>
@@ -267,12 +268,14 @@ export default class EditDistraction extends React.Component {
                         size={80}
                         onPressFunction={this.captureMedia}
                         buttonStyle={distractionStyle.iconButton}
+                        color={AppColors.grey}
                     />
                     <PressableIcon
                         iconName={Icons.camera + "-outline"}
                         size={80}
                         onPressFunction={this.takePhoto}
                         buttonStyle={distractionStyle.iconButton}
+                        color={AppColors.grey}
                     />
                 </View>
             </View>
@@ -282,16 +285,9 @@ export default class EditDistraction extends React.Component {
 
 const distractionStyle = StyleSheet.create({
     buttonText: {
-        fontSize: 18,
-        color: 'white',
         alignSelf: 'center'
     },
     button: {
-        height: 36,
-        backgroundColor: '#48BBEC',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
-        borderRadius: 8,
         marginBottom: 10,
         marginTop: 10,
         alignSelf: 'stretch',
