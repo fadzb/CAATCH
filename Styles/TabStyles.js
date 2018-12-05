@@ -143,4 +143,16 @@ export const themeStyles = StyleSheet.create({
     borderWidth: 1,
     borderRadius: 8,
   },
+  multiSelectSaveButtonText: {
+    fontSize: 18,
+    color: 'white',
+    fontWeight: Platform.OS === 'ios' ? '600' : '500',
+  },
+  multiSelectSaveButton: {
+    height: 36,
+    backgroundColor: AppColors.orange,
+    borderColor: AppColors.orange,
+    borderWidth: 1,
+    borderRadius: 8,
+  },
 });

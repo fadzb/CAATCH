@@ -4,6 +4,7 @@ import CustomMultiPicker from 'react-native-multiple-select-list';
 import { safetyPlanPrePops } from '../../../Constants/Prepopulated';
 import { SafetyPlanConstants } from '../../../Constants/Constants';
 import CustomMultiSelectList from '../../../Components/CustomMultiSelectList';
+import { themeStyles } from '../../../Styles/TabStyles';
 
 export default class PrePopWarningSigns extends React.Component {
   static navigationOptions = {
@@ -57,7 +58,7 @@ export default class PrePopWarningSigns extends React.Component {
           />
         </View>
         <TouchableHighlight
-          style={preSignStyle.button}
+          style={[preSignStyle.button, themeStyles.multiSelectSaveButton]}
           onPress={
             this.props.navigation.getParam('edit')
               ? () => this.props.navigation.navigate('editWarning', { checkedSigns: this.state.checkedSigns })
@@ -65,7 +66,7 @@ export default class PrePopWarningSigns extends React.Component {
           }
           underlayColor="#99d9f4"
         >
-          <Text style={preSignStyle.buttonText}>Done</Text>
+          <Text style={[preSignStyle.buttonText, themeStyles.multiSelectSaveButtonText]}>Done</Text>
         </TouchableHighlight>
       </View>
     );
@@ -82,16 +83,9 @@ const preSignStyle = StyleSheet.create({
     //marginRight: 30
   },
   buttonText: {
-    fontSize: 18,
-    color: 'white',
     alignSelf: 'center',
   },
   button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
     margin: 15,
     alignSelf: 'stretch',
     justifyContent: 'center',

@@ -10,6 +10,7 @@ import {
   Alert,
   ActivityIndicator,
   TouchableHighlight,
+  Platform,
 } from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Toast } from 'native-base';
@@ -28,30 +29,10 @@ import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from
 import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
 import CustomMultiPicker from 'react-native-multiple-select-list';
+import CustomMultiSelectList from '../../Components/CustomMultiSelectList';
 
-export default class SettingsScreen extends React.Component {
-    static navigationOptions = {
-        title: "Settings"
-    };
-    // static property called navigationOptions that belongs to all screen components
-
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            modalVisible: false,
-            switchValue: false,
-            dbtSwitchValue: false,
-            wallpaperSwitchValue: false,
-            notificationSwitchValue: false,
-            timePickerVisible: false,
-            notificationTime: '',
-            dataReady: false,
-            emailRecipients: {},
-            emailModalVisible: false,
-            selectedRecipients: [],
-        }
-    }
+import { AppColors, TabStyles } from '../../Styles/TabStyles';
+import { DbTableNames } from '../../Constants/Constants';
 
 const DBT =
   'Dialectical Behaviour Therapy (DBT) is a treatment programme aimed at helping people with ongoing difficulties managing intense emotions';
@@ -861,7 +842,7 @@ export default class SettingsScreen extends React.Component {
                 <PressableIcon
                   size={45}
                   iconName={Icons.closeModal}
-                  color="black"
+                  color={AppColors.blue}
                   onPressFunction={this.handleEmailModalClose}
                 />
               </View>
@@ -874,7 +855,7 @@ export default class SettingsScreen extends React.Component {
                   justifyContent: 'center',
                 }}
               >
-                <Text style={{ paddingRight: 5 }}>Select Recipient(s)</Text>
+                <Text style={{ color: AppColors.blue, paddingRight: 5 }}>Select Recipient(s)</Text>
                 <PressableIcon
                   iconName={Icons.info + '-outline'}
                   size={25}
@@ -885,7 +866,7 @@ export default class SettingsScreen extends React.Component {
             </View>
             <View style={{ flex: 1 }}>
               <View style={{ flex: 1, marginBottom: 50 }}>
-                <CustomMultiPicker
+                <CustomMultiSelectList
                   options={this.state.emailRecipients}
                   multiple={true} //
                   returnValue={'label'} // label or value
@@ -893,9 +874,7 @@ export default class SettingsScreen extends React.Component {
                   rowBackgroundColor={'#fff'}
                   rowHeight={40}
                   rowRadius={5}
-                  iconColor={'#00a2dd'}
                   iconSize={25}
-                  itemStyle={settingsStyle.itemStyle}
                   selectedIconName={'ios-checkmark-circle-outline'}
                   unselectedIconName={'ios-radio-button-off-outline'}
                   search={true}
@@ -935,14 +914,15 @@ const settingsStyle = StyleSheet.create({
 
   buttonText: {
     fontSize: 18,
-    color: 'white',
+    color: AppColors.white,
     alignSelf: 'center',
+    fontWeight: Platform.OS === 'ios' ? '600' : '500',
   },
 
   button: {
     height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
+    backgroundColor: AppColors.orange,
+    borderColor: AppColors.orange,
     borderWidth: 1,
     borderRadius: 8,
     margin: 15,

@@ -10,7 +10,7 @@ import {
   ScrollView,
   Alert,
 } from 'react-native';
-import { TabStyles } from '../../Styles/TabStyles';
+import { AppColors, TabStyles, themeStyles } from '../../Styles/TabStyles';
 import Moment from 'moment';
 import { readDatabase, readDatabaseArg } from '../../Util/DatabaseHelper';
 import CustomMultiPicker from 'react-native-multiple-select-list';
@@ -30,6 +30,7 @@ import { DbTableNames } from '../../Constants/Constants';
 import { convertMilliseconds } from '../../Util/ConvertMilliseconds';
 import { ChartLegend } from '../../Components/ChartLegend';
 import Icon from 'react-native-vector-icons/Ionicons';
+import CustomMultiSelectList from '../../Components/CustomMultiSelectList';
 
 const timeFrames = {
   weekDate: Moment().subtract(6, 'd').format('YYYY-MM-DD'),
@@ -289,12 +290,12 @@ export default class UsageOverview extends React.Component {
                 flexDirection: 'row',
               }}
             >
-              <Text style={{ fontSize: 17 }}>
+              <Text style={{ fontSize: 17, color: AppColors.blue }}>
                 {"Today's Usage: "}
-                <Text style={{ color: '#808080', fontSize: 17 }}>{convertMilliseconds(this.state.todayTime)}</Text>
+                <Text style={{ color: AppColors.grey, fontSize: 17 }}>{convertMilliseconds(this.state.todayTime)}</Text>
               </Text>
               <View style={{ position: 'absolute', right: 0 }}>
-                <Icon name={Icons.share} size={25} onPress={() => this.takeScreenShot()} />
+                <Icon name={Icons.share} size={25} onPress={() => this.takeScreenShot()} color={AppColors.blue} />
               </View>
             </View>
             <View
@@ -412,13 +413,13 @@ export default class UsageOverview extends React.Component {
                   <PressableIcon
                     size={45}
                     iconName={Icons.closeModal}
-                    color="black"
+                    color={AppColors.blue}
                     onPressFunction={this.handleModalClose}
                   />
                 </View>
                 <View style={{ flex: 1 }}>
                   <View style={{ flex: 1, marginBottom: 50 }}>
-                    <CustomMultiPicker
+                    <CustomMultiSelectList
                       options={periods}
                       multiple={false} //
                       returnValue={'label'} // label or value
@@ -428,7 +429,6 @@ export default class UsageOverview extends React.Component {
                       rowRadius={5}
                       iconColor={'#00a2dd'}
                       iconSize={25}
-                      itemStyle={overviewStyle.itemStyle}
                       selectedIconName={'ios-checkmark-circle-outline'}
                       unselectedIconName={'ios-radio-button-off-outline'}
                       search={true}
@@ -436,11 +436,11 @@ export default class UsageOverview extends React.Component {
                     />
                   </View>
                   <TouchableHighlight
-                    style={overviewStyle.button}
+                    style={[overviewStyle.button, themeStyles.multiSelectSaveButton]}
                     onPress={this.handleFinalSelection}
                     underlayColor="#99d9f4"
                   >
-                    <Text style={overviewStyle.buttonText}>Done</Text>
+                    <Text style={[overviewStyle.buttonText, themeStyles.multiSelectSaveButtonText]}>Done</Text>
                   </TouchableHighlight>
                 </View>
               </View>
@@ -456,7 +456,7 @@ export default class UsageOverview extends React.Component {
                     <PressableIcon
                       size={45}
                       iconName={Icons.closeModal}
-                      color="black"
+                      color={AppColors.blue}
                       onPressFunction={this.handleEmailModalClose}
                     />
                   </View>
@@ -469,7 +469,7 @@ export default class UsageOverview extends React.Component {
                       justifyContent: 'center',
                     }}
                   >
-                    <Text style={{ paddingRight: 5 }}>Select Recipient(s)</Text>
+                    <Text style={{ color: AppColors.blue, paddingRight: 5 }}>Select Recipient(s)</Text>
                     <PressableIcon
                       iconName={Icons.info + '-outline'}
                       size={25}
@@ -480,7 +480,7 @@ export default class UsageOverview extends React.Component {
                 </View>
                 <View style={{ flex: 1 }}>
                   <View style={{ flex: 1, marginBottom: 50 }}>
-                    <CustomMultiPicker
+                    <CustomMultiSelectList
                       options={this.props.recipients}
                       multiple={true} //
                       returnValue={'label'} // label or value
@@ -490,18 +490,17 @@ export default class UsageOverview extends React.Component {
                       rowRadius={5}
                       iconColor={'#00a2dd'}
                       iconSize={25}
-                      itemStyle={overviewStyle.itemStyle}
                       selectedIconName={'ios-checkmark-circle-outline'}
                       unselectedIconName={'ios-radio-button-off-outline'}
                       search={true}
                     />
                   </View>
                   <TouchableHighlight
-                    style={overviewStyle.button}
+                    style={[overviewStyle.button, themeStyles.multiSelectSaveButton]}
                     onPress={this.handleFinalEmailSelection}
                     underlayColor="#99d9f4"
                   >
-                    <Text style={overviewStyle.buttonText}>Done</Text>
+                    <Text style={[overviewStyle.buttonText, themeStyles.multiSelectSaveButtonText]}>Done</Text>
                   </TouchableHighlight>
                 </View>
               </View>
@@ -536,17 +535,10 @@ const overviewStyle = StyleSheet.create({
   },
 
   buttonText: {
-    fontSize: 18,
-    color: 'white',
     alignSelf: 'center',
   },
 
   button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
     margin: 15,
     alignSelf: 'stretch',
     justifyContent: 'center',

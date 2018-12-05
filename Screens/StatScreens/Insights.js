@@ -11,7 +11,7 @@ import {
   ScrollView,
 } from 'react-native';
 import { Icons } from '../../Constants/Icon';
-import { TabStyles } from '../../Styles/TabStyles';
+import { AppColors, TabStyles } from '../../Styles/TabStyles';
 import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
@@ -42,7 +42,7 @@ const InsightRow = (props) => (
     <View>
       <View style={{ flexDirection: 'row', alignItems: 'center', marginBottom: 8 }}>
         <View style={insightsStyle.iconContainer}>
-          <Icon name={props.icon} size={30} color={props.iconColor} />
+          <Icon name={props.icon} size={30} color={AppColors.orange} />
         </View>
         <Text style={insightsStyle.buttonText}>{props.name}</Text>
       </View>
@@ -213,7 +213,9 @@ export default class Insights extends React.Component {
           </View>
           {!a.type.includes('Average') && (
             <View style={{ paddingRight: 10, justifyContent: 'center' }}>
-              <Text style={insightsStyle.ratingTextInfo}>{Moment(a.date).format('DD.MM.YYYY')}</Text>
+              <Text style={[insightsStyle.ratingTextInfo, { color: AppColors.blue }]}>
+                {Moment(a.date).format('DD.MM.YYYY')}
+              </Text>
             </View>
           )}
         </View>
@@ -222,8 +224,8 @@ export default class Insights extends React.Component {
 
   renderSectionHeader = (section, _, isActive) => (
     <View style={insightsStyle.sectionHeader}>
-      <Text style={{ fontSize: 18 }}>{section.title}</Text>
-      <Icon name={isActive ? Icons.up + '-outline' : Icons.down + '-outline'} size={25} />
+      <Text style={{ color: AppColors.blue, fontSize: 18 }}>{section.title}</Text>
+      <Icon name={isActive ? Icons.up + '-outline' : Icons.down + '-outline'} size={25} color={AppColors.blue} />
     </View>
   );
 
@@ -258,6 +260,7 @@ export default class Insights extends React.Component {
                       renderHeader={this.renderSectionHeader}
                       renderContent={this.renderItem}
                       underlayColor={'transparent'}
+                      initiallyActiveSection={0}
                     />
                   </ScrollView>
                 </Tab>
@@ -265,7 +268,7 @@ export default class Insights extends React.Component {
                   <ScrollView style={{ marginTop: 10 }}>
                     {this.state.diaryData.length !== 0 && (
                       <View style={{ marginHorizontal: 10, marginBottom: 10 }}>
-                        <Text style={{ fontSize: 18 }}>Past 7 days</Text>
+                        <Text style={{ color: AppColors.blue, fontSize: 18 }}>Past 7 days</Text>
                       </View>
                     )}
                     <Accordion
@@ -273,6 +276,7 @@ export default class Insights extends React.Component {
                       renderHeader={this.renderSectionHeader}
                       renderContent={this.renderDiaryItem}
                       underlayColor={'transparent'}
+                      initiallyActiveSection={0}
                     />
                   </ScrollView>
                 </Tab>
@@ -293,18 +297,19 @@ const insightsStyle = StyleSheet.create({
   buttonText: {
     fontSize: 16,
     paddingLeft: 10,
+    color: AppColors.blue,
   },
 
   ratingText: {
     fontSize: 15,
-    color: '#4d4d4d',
     paddingBottom: 5,
     fontWeight: 'bold',
+    color: AppColors.blue,
   },
 
   ratingTextInfo: {
     fontSize: 15,
-    color: '#4d4d4d',
+    color: AppColors.grey,
   },
 
   iconContainer: {
@@ -318,6 +323,7 @@ const insightsStyle = StyleSheet.create({
   container: {
     flex: 1,
     borderBottomWidth: 1,
+    borderColor: AppColors.orange,
     marginLeft: 10,
     marginRight: 10,
     paddingTop: 15,
@@ -343,5 +349,6 @@ const insightsStyle = StyleSheet.create({
     alignItems: 'center',
     marginLeft: 10,
     marginRight: 10,
+    borderColor: AppColors.orange,
   },
 });
