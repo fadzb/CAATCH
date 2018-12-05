@@ -2,7 +2,7 @@ import React from 'react';
 import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList, Alert } from 'react-native';
 import { CustomSelectionRow } from '../../Components/CustomSelectionRow';
 import { Icons } from '../../Constants/Icon';
-import { TabStyles } from '../../Styles/TabStyles';
+import { AppColors, TabStyles } from '../../Styles/TabStyles';
 import { connect } from 'react-redux';
 import store from '../../Redux/store';
 import Dialog from 'react-native-dialog';
@@ -152,7 +152,7 @@ class BackupRestoreSelection extends React.Component {
             iconContainer={backupRestoreStyle.iconContainer}
             //onPress={() => this.props.navigation.push('insights')}
             selectedText={this.props.settings.email}
-            selectedTextStyle={{ color: '#c43a31' }}
+            selectedTextStyle={{ color: AppColors.grey }}
             selectedTextViewStyle={{ flex: 0.7, alignItems: 'flex-end' }}
             nameStyle={{ paddingLeft: 10 }}
             onPress={this.showDialog}

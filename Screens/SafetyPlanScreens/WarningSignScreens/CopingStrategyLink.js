@@ -4,6 +4,7 @@ import CustomMultiSelectList from '../../../Components/CustomMultiSelectList';
 
 import { readDatabaseArg } from '../../../Util/DatabaseHelper';
 import { DbTableNames } from '../../../Constants/Constants';
+import { themeStyles } from '../../../Styles/TabStyles';
 
 export default class CopingStrategyLink extends React.Component {
   static navigationOptions = {
@@ -68,7 +69,7 @@ export default class CopingStrategyLink extends React.Component {
           }
         />
         <TouchableHighlight
-          style={copeLinkStyle.button}
+          style={[copeLinkStyle.button, themeStyles.multiSelectSaveButton]}
           onPress={
             this.props.navigation.getParam('edit')
               ? () => this.props.navigation.navigate('editWarning', { checkedCopes: this.state.checkedCopes })
@@ -76,7 +77,7 @@ export default class CopingStrategyLink extends React.Component {
           }
           underlayColor="#99d9f4"
         >
-          <Text style={copeLinkStyle.buttonText}>Done</Text>
+          <Text style={[copeLinkStyle.buttonText, themeStyles.multiSelectSaveButtonText]}>Done</Text>
         </TouchableHighlight>
       </View>
     );
@@ -89,16 +90,9 @@ const copeLinkStyle = StyleSheet.create({
   },
 
   buttonText: {
-    fontSize: 18,
-    color: 'white',
     alignSelf: 'center',
   },
   button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
     margin: 15,
     alignSelf: 'stretch',
     justifyContent: 'center',

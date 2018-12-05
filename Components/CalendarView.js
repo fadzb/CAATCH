@@ -6,18 +6,28 @@ import PropTypes from 'prop-types';
 import { Icons } from '../Constants/Icon';
 import { Calendar } from 'react-native-calendars';
 import { PressableIcon } from './PressableIcon';
+import { AppColors } from '../Styles/TabStyles';
 
 export const CalendarView = (props) => {
   return (
     <View style={calendarViewStyle.container}>
       <View style={calendarViewStyle.closeButton}>
-        <PressableIcon size={45} iconName={Icons.closeModal} color="black" onPressFunction={props.onPress} />
+        <PressableIcon size={45} iconName={Icons.closeModal} color={AppColors.blue} onPressFunction={props.onPress} />
         <View style={{ paddingLeft: 25 }}>
-          <Text style={{ fontWeight: 'bold' }}>{props.title}</Text>
+          <Text style={{ color: AppColors.blue, fontWeight: 'bold' }}>{props.title}</Text>
         </View>
       </View>
       <View style={calendarViewStyle.calendar}>
-        <Calendar onDayPress={props.dayPress} maxDate={props.maxDate && new Date()} />
+        <Calendar
+          onDayPress={props.dayPress}
+          maxDate={props.maxDate && new Date()}
+          theme={{
+            todayTextColor: AppColors.orange,
+            arrowColor: AppColors.orange,
+            monthTextColor: AppColors.orange,
+            dayTextColor: AppColors.blue,
+          }}
+        />
       </View>
     </View>
   );

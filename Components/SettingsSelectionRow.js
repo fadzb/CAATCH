@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { PressableIcon } from './PressableIcon';
 import { Icons } from '../Constants/Icon';
-import { ComponentStyleConst, TabStyles, themeStyles } from '../Styles/TabStyles';
+import { AppColors, ComponentStyleConst, TabStyles, themeStyles } from '../Styles/TabStyles';
 
 export const SettingsSelectionRow = (props) => {
   return (
@@ -35,7 +35,7 @@ export const SettingsSelectionRow = (props) => {
             {props.switch && <Switch value={props.switchValue} onValueChange={props.handleSwitch} />}
             {props.arrow && (
               <View style={{ paddingRight: 15 }}>
-                <Icon name={Icons.dividerArrow} size={25} />
+                <Icon name={Icons.dividerArrow} size={25} color={AppColors.blue} />
               </View>
             )}
           </View>

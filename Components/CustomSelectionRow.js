@@ -4,6 +4,7 @@ import { Thumbnail } from 'native-base';
 import PropTypes from 'prop-types';
 import Icon from 'react-native-vector-icons/Ionicons';
 import { VideoThumbnail } from './VideoThumbnail';
+import { AppColors } from '../Styles/TabStyles';
 
 // Component used for rows in the touchable rows in the app
 export const CustomSelectionRow = (props) => (
@@ -21,7 +22,7 @@ export const CustomSelectionRow = (props) => (
           )}
           {props.icon !== undefined && (
             <View style={props.iconContainer}>
-              <Icon name={props.icon} size={props.iconSize} color={props.iconColor} />
+              <Icon name={props.icon} size={props.iconSize} color={AppColors.orange} />
             </View>
           )}
           {props.circleView !== undefined && (
@@ -52,6 +53,7 @@ const customSelectionRowStyle = StyleSheet.create({
     flex: 1,
     justifyContent: 'space-around',
     borderBottomWidth: 1,
+    borderColor: AppColors.orange,
     marginLeft: 30,
     marginRight: 30,
   },
@@ -65,6 +67,7 @@ const customSelectionRowStyle = StyleSheet.create({
   buttonText: {
     fontSize: 15,
     paddingLeft: 20,
+    color: AppColors.blue,
   },
 
   circleView: {

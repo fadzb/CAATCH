@@ -5,6 +5,7 @@ import CustomMultiSelectList from '../../../Components/CustomMultiSelectList';
 
 import { readDatabaseArg } from '../../../Util/DatabaseHelper';
 import { DbTableNames } from '../../../Constants/Constants';
+import { themeStyles } from '../../../Styles/TabStyles';
 
 export default class DistractContactLink extends React.Component {
   static navigationOptions = {
@@ -75,7 +76,7 @@ export default class DistractContactLink extends React.Component {
           }
         />
         <TouchableHighlight
-          style={contactLinkStyle.button}
+          style={[contactLinkStyle.button, themeStyles.multiSelectSaveButton]}
           onPress={
             this.props.navigation.getParam('edit')
               ? () => this.props.navigation.navigate('editDistraction', { checkedContacts: this.state.checkedContacts })
@@ -83,7 +84,7 @@ export default class DistractContactLink extends React.Component {
           }
           underlayColor="#99d9f4"
         >
-          <Text style={contactLinkStyle.buttonText}>Done</Text>
+          <Text style={[contactLinkStyle.buttonText, themeStyles.multiSelectSaveButtonText]}>Done</Text>
         </TouchableHighlight>
       </View>
     );
@@ -95,16 +96,9 @@ const contactLinkStyle = StyleSheet.create({
     flex: 1,
   },
   buttonText: {
-    fontSize: 18,
-    color: 'white',
     alignSelf: 'center',
   },
   button: {
-    height: 36,
-    backgroundColor: '#48BBEC',
-    borderColor: '#48BBEC',
-    borderWidth: 1,
-    borderRadius: 8,
     margin: 15,
     alignSelf: 'stretch',
     justifyContent: 'center',
