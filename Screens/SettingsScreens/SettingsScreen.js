@@ -1,5 +1,16 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, Modal, Dimensions, Alert, ActivityIndicator } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  Button,
+  TextInput,
+  Modal,
+  Dimensions,
+  Alert,
+  ActivityIndicator,
+  TouchableHighlight,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Toast } from 'native-base';
 import { Icons } from '../../Constants/Icon';
@@ -16,6 +27,7 @@ import DateTimePicker from 'react-native-modal-datetime-picker';
 import { Container, Header, Content, Tab, Tabs, TabHeading, StyleProvider } from 'native-base';
 import getTheme from '../../native-base-theme/components';
 import platform from '../../native-base-theme/variables/platform';
+import CustomMultiPicker from 'react-native-multiple-select-list';
 
 import { TabStyles } from '../../Styles/TabStyles';
 import { DbTableNames } from '../../Constants/Constants';
@@ -42,6 +54,9 @@ export default class SettingsScreen extends React.Component {
       timePickerVisible: false,
       notificationTime: '',
       dataReady: false,
+      emailRecipients: {},
+      emailModalVisible: false,
+      selectedRecipients: [],
     };
   }
 
@@ -319,6 +334,172 @@ export default class SettingsScreen extends React.Component {
     this.toggleNotification(time, () => this.checkDiaryEntriesForToday(time));
   };
 
+  getCsvData = () => {
+    const columns = 'd.*, s.diaryDate, ds.rating, ds.dateEntered';
+
+    readDatabaseArg(
+      columns,
+      DbTableNames.diary,
+      this.createCsvFile,
+      undefined,
+      ' as d inner join ' +
+        DbTableNames.diarySession +
+        ' as ds on d.diaryId = ds.diaryId inner join ' +
+        DbTableNames.session +
+        ' as s on ds.sessionId = s.sessionId'
+    );
+  };
+
+  createCsvFile = (data) => {
+    //console.log(data)
+
+    const headerString =
+      'Diary Id,Diary Name,Diary Type,Min Rating,Max Rating,Rating,Date Entered,Diary Date,Unique Id\n';
+    let rowString = '';
+
+    const installationId = Expo.Constants.installationId;
+
+    data.forEach((d) => {
+      let updatedName = d.diaryName;
+
+      if (d.diaryName.includes(',')) {
+        updatedName = d.diaryName.replace(',', '-');
+      }
+      // removing commas from diary names in order to produce correct CSV file
+
+      rowString =
+        rowString +
+        d.diaryId +
+        ',' +
+        updatedName +
+        ',' +
+        d.diaryType +
+        ',' +
+        d.minRating +
+        ',' +
+        d.scale +
+        ',' +
+        d.rating +
+        ',' +
+        d.dateEntered +
+        ',' +
+        d.diaryDate +
+        ',' +
+        installationId +
+        '\n';
+    });
+
+    Expo.FileSystem.writeAsStringAsync(Expo.FileSystem.cacheDirectory + 'results.csv', headerString + rowString).then(
+      (res) => {
+        Expo.MailComposer.composeAsync({
+          recipients: this.state.selectedRecipients,
+          subject: 'CAATCH Ratings Data ' + Moment().format('LL'),
+          body: 'Hi, please find CAATCH Ratings data attached.',
+          attachments: [Expo.FileSystem.cacheDirectory + 'results.csv'],
+        })
+          .then((result) => console.log(result))
+          .then((res) => this.handleEmailModalClose())
+          .catch((err) => console.log(err));
+      }
+    );
+  };
+
+  getEmailRecipients = () => {
+    let emailArr = [];
+
+    readDatabase('email', DbTableNames.user, (res) => {
+      if (res[0].email) {
+        emailArr.push(res[0].email);
+
+        readDatabaseArg(
+          'email',
+          DbTableNames.contact,
+          (res) => {
+            res.forEach((r) => {
+              if (r.email) {
+                emailArr.push(r.email);
+              }
+            });
+
+            this.setState(
+              {
+                emailRecipients: emailArr.reduce((obj, email, i) => {
+                  obj[(i + 1).toString()] = email;
+
+                  return obj;
+                }, {}),
+              },
+              () => this.setState({ emailModalVisible: true })
+            );
+          },
+          undefined,
+          'where dateDeleted is NULL and helper = 1'
+        );
+      } else {
+        readDatabaseArg(
+          'email',
+          DbTableNames.contact,
+          (res) => {
+            res.forEach((r) => {
+              if (r.email) {
+                emailArr.push(r.email);
+              }
+            });
+
+            this.setState(
+              {
+                emailRecipients: emailArr.reduce((obj, email, i) => {
+                  obj[(i + 1).toString()] = email;
+
+                  return obj;
+                }, {}),
+              },
+              () => this.setState({ emailModalVisible: true })
+            );
+          },
+          undefined,
+          'where dateDeleted is NULL and helper = 1'
+        );
+      }
+    });
+  };
+  // reading user and helper db tables for email info (have restricted email recipients to user or helper)
+
+  handleEmailModalClose = () => {
+    this.setState({ emailModalVisible: false });
+  };
+
+  handleEmailSelection = (email) => this.setState({ selectedRecipients: email.filter((e) => e !== undefined) });
+  // update selectedRecipients state when new email is selected in multi picker list
+
+  handleFinalEmailSelection = () => {
+    if (this.state.selectedRecipients.length > 0) {
+      this.getCsvData();
+    } else {
+      this.notSelectedAlert();
+    }
+  };
+  // open email interface with ratings csv attached
+
+  notSelectedAlert = () => {
+    Alert.alert(
+      'Email Not Selected',
+      'Please select and email address from the list',
+      [{ text: 'OK', onPress: () => console.log('OK pressed') }],
+      { cancelable: false }
+    );
+  };
+
+  csvInfoAlert = () => {
+    Alert.alert(
+      'Recipients',
+      'Recipient list is populated with user email address and Helper email addresses.\n\nUser email address can be set in Backup and Restore setting menu',
+      [{ text: 'OK', onPress: () => console.log('OK pressed') }],
+      { cancelable: false }
+    );
+  };
+  // alert for displaying recipient info
+
   render() {
     const NUMBER_OF_TABS = 2;
 
@@ -363,6 +544,13 @@ export default class SettingsScreen extends React.Component {
                               : '')
                         )
                       }
+                    />
+                    <SettingsSelectionRow
+                      height={Dimensions.get('window').height / 11}
+                      name={'Export Rating Data'}
+                      iconName={Icons.export + '-outline'}
+                      arrow={true}
+                      onPress={this.getEmailRecipients}
                     />
                     <SettingsSelectionRow
                       height={Dimensions.get('window').height / 11}
@@ -419,6 +607,63 @@ export default class SettingsScreen extends React.Component {
           />
           <PINCode status={'choose'} storePin={this.handlePinStore} handleResultEnterPin />
         </Modal>
+        <Modal visible={this.state.emailModalVisible} transparent={false} onRequestClose={this.handleEmailModalClose}>
+          <View style={{ flex: 1 }}>
+            <View style={{ flexDirection: 'row' }}>
+              <View style={settingsStyle.closeButton}>
+                <PressableIcon
+                  size={45}
+                  iconName={Icons.closeModal}
+                  color="black"
+                  onPressFunction={this.handleEmailModalClose}
+                />
+              </View>
+              <View
+                style={{
+                  flex: 1,
+                  flexDirection: 'row',
+                  alignItems: 'center',
+                  marginTop: Expo.Constants.statusBarHeight,
+                  justifyContent: 'center',
+                }}
+              >
+                <Text style={{ paddingRight: 5 }}>Select Recipient(s)</Text>
+                <PressableIcon
+                  iconName={Icons.info + '-outline'}
+                  size={25}
+                  onPressFunction={this.csvInfoAlert}
+                  color="#007AFF"
+                />
+              </View>
+            </View>
+            <View style={{ flex: 1 }}>
+              <View style={{ flex: 1, marginBottom: 50 }}>
+                <CustomMultiPicker
+                  options={this.state.emailRecipients}
+                  multiple={true} //
+                  returnValue={'label'} // label or value
+                  callback={this.handleEmailSelection} // callback, array of selected items
+                  rowBackgroundColor={'#fff'}
+                  rowHeight={40}
+                  rowRadius={5}
+                  iconColor={'#00a2dd'}
+                  iconSize={25}
+                  itemStyle={settingsStyle.itemStyle}
+                  selectedIconName={'ios-checkmark-circle-outline'}
+                  unselectedIconName={'ios-radio-button-off-outline'}
+                  search={true}
+                />
+              </View>
+              <TouchableHighlight
+                style={settingsStyle.button}
+                onPress={this.handleFinalEmailSelection}
+                underlayColor="#99d9f4"
+              >
+                <Text style={settingsStyle.buttonText}>Done</Text>
+              </TouchableHighlight>
+            </View>
+          </View>
+        </Modal>
       </View>
     );
   }
@@ -429,5 +674,32 @@ const settingsStyle = StyleSheet.create({
     flex: 1,
     backgroundColor: '#fff',
     marginTop: Constants.statusBarHeight,
+  },
+
+  itemStyle: {
+    borderBottomWidth: 3,
+  },
+
+  closeButton: {
+    paddingLeft: 25,
+    alignItems: 'flex-start',
+    marginTop: Expo.Constants.statusBarHeight,
+  },
+
+  buttonText: {
+    fontSize: 18,
+    color: 'white',
+    alignSelf: 'center',
+  },
+
+  button: {
+    height: 36,
+    backgroundColor: '#48BBEC',
+    borderColor: '#48BBEC',
+    borderWidth: 1,
+    borderRadius: 8,
+    margin: 15,
+    alignSelf: 'stretch',
+    justifyContent: 'center',
   },
 });
