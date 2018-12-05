@@ -4,6 +4,7 @@ import CustomMultiPicker from "react-native-multiple-select-list";
 import {safetyPlanPrePops} from "../../../Constants/Prepopulated";
 import {SafetyPlanConstants} from "../../../Constants/Constants";
 import CustomMultiSelectList from "../../../Components/CustomMultiSelectList"
+import {themeStyles} from "../../../Styles/TabStyles";
 
 export default class PrePopCopingStrategies extends React.Component {
     static navigationOptions = {
@@ -55,12 +56,12 @@ export default class PrePopCopingStrategies extends React.Component {
                     />
                 </View>
                 <TouchableHighlight
-                    style={preCopeStyle.button}
+                    style={[preCopeStyle.button, themeStyles.multiSelectSaveButton]}
                     onPress={this.props.navigation.getParam('edit')
                         ? () => this.props.navigation.navigate('editCoping', {checkedStrats: this.state.checkedStrats})
                         : () => this.props.navigation.navigate('newCoping', {checkedStrats: this.state.checkedStrats})}
                     underlayColor='#99d9f4'>
-                    <Text style={preCopeStyle.buttonText}>Done</Text>
+                    <Text style={[preCopeStyle.buttonText, themeStyles.multiSelectSaveButtonText]}>Done</Text>
                 </TouchableHighlight>
             </View>
         )
@@ -72,16 +73,9 @@ const preCopeStyle = StyleSheet.create({
         flex: 1,
     },
     buttonText: {
-        fontSize: 18,
-        color: 'white',
         alignSelf: 'center'
     },
     button: {
-        height: 36,
-        backgroundColor: '#48BBEC',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
-        borderRadius: 8,
         margin:15,
         alignSelf: 'stretch',
         justifyContent: 'center'

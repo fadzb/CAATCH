@@ -11,6 +11,7 @@ import {
 } from 'react-native';
 var { width, height } = Dimensions.get('window');
 import Icon from 'react-native-vector-icons/Ionicons';
+import {AppColors} from "../Styles/TabStyles";
 
 export default class CustomMultiSelectList extends Component {
     constructor(props){
@@ -101,7 +102,7 @@ export default class CustomMultiSelectList extends Component {
             <View onLayout={(evt)=>{this.getNewDimensions(evt)}}>
                 {this.props.search && <View style={{ flexDirection: 'row', height: 55 }}>
                     <View style={{ marginTop: 15, marginLeft: 15, backgroundColor: 'transparent' }}>
-                        <Icon name="ios-search-outline" color={this.props.iconColor} size={25}/>
+                        <Icon name="ios-search-outline" color={AppColors.blue} size={25}/>
                     </View>
                     <TextInput
                         style={{
@@ -112,7 +113,7 @@ export default class CustomMultiSelectList extends Component {
                             marginLeft: -25,
                             padding: 5,
                             paddingLeft: 30,
-                            borderColor: this.props.iconColor,
+                            borderColor: AppColors.blue,
                             borderWidth: 1,
                             borderRadius: 5
                         }}
@@ -151,18 +152,18 @@ export default class CustomMultiSelectList extends Component {
                                 }}
                             >
                                 <View style={{flex: 6}}>
-                                    <Text style={this.props.labelStyle}>{label}</Text>
+                                    <Text style={[this.props.labelStyle, {color: AppColors.blue}]}>{label}</Text>
                                 </View>
                                 <View style={{flex: 1, alignItems: 'flex-end'}}>
                                 {
 
                                     this._isSelected(itemKey) ?
                                         <Icon name={this.props.selectedIconName}
-                                              style={[{color: this.props.iconColor, fontSize: this.props.iconSize}, this.props.selectedIconStyle]}
+                                              style={[{color: this.props.iconColor, fontSize: this.props.iconSize}, this.props.selectedIconStyle, {color: AppColors.blue}]}
                                         />
                                         :
                                         <Icon name={this.props.unselectedIconName}
-                                              style={[{color: this.props.iconColor, fontSize: this.props.iconSize}, this.props.unselectedIconStyle]}
+                                              style={[{color: this.props.iconColor, fontSize: this.props.iconSize}, this.props.unselectedIconStyle, {color: AppColors.blue}]}
                                         />
                                 }
                                 </View>

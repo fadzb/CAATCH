@@ -10,7 +10,7 @@ import Moment from 'moment';
 import DateTimePicker from 'react-native-modal-datetime-picker';
 import {Permissions, Calendar} from 'expo';
 
-import {TabStyles} from "../../Styles/TabStyles";
+import {TabStyles, themeStyles} from "../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg, deleteDatabaseRow, readDatabase} from "../../Util/DatabaseHelper";
 import {DbTableNames} from "../../Constants/Constants";
 
@@ -322,8 +322,8 @@ export default class NewSchedule extends React.Component {
                         onChange={this.onChange}
                         options={options}
                     />
-                    <TouchableHighlight style={newScheduleStyle.button} onPress={this.onPress} underlayColor='#99d9f4'>
-                        <Text style={newScheduleStyle.buttonText}>Save</Text>
+                    <TouchableHighlight style={[newScheduleStyle.button, themeStyles.planFormSaveButton]} onPress={this.onPress} underlayColor='#99d9f4'>
+                        <Text style={[newScheduleStyle.buttonText, themeStyles.planFormSaveButtonText]}>Save</Text>
                     </TouchableHighlight>
                     {this.props.navigation.getParam('edit') && <PressableIcon
                         iconName={Icons.delete + "-outline"}
@@ -354,16 +354,9 @@ export default class NewSchedule extends React.Component {
 
 const newScheduleStyle = StyleSheet.create({
     buttonText: {
-        fontSize: 18,
-        color: 'white',
         alignSelf: 'center'
     },
     button: {
-        height: 36,
-        backgroundColor: '#48BBEC',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
-        borderRadius: 8,
         marginBottom: 10,
         marginTop: 10,
         alignSelf: 'stretch',

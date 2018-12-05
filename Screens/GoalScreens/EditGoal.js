@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, TextInput, TouchableHighlight } from 'react-nat
 import { PressableIcon } from "../../Components/PressableIcon";
 import store from "../../Redux/store"
 import {updateGoal, getGoal} from "../../Redux/actions";
-import {TabStyles} from "../../Styles/TabStyles";
+import {TabStyles, themeStyles} from "../../Styles/TabStyles";
 import {updateDatabase, updateDatabaseArgument, readDatabaseArg} from "../../Util/DatabaseHelper";
 import {DbTableNames, UsageFunctionIds} from "../../Constants/Constants";
 import {latestSafetyPlanItem} from "../../Util/Usage";
@@ -168,8 +168,8 @@ export default class EditGoal extends React.Component {
                         onChange={this.onChange}
                         options={options}
                     />
-                    <TouchableHighlight style={goalStyle.button} onPress={this.onPress} underlayColor='#99d9f4'>
-                        <Text style={goalStyle.buttonText}>Save</Text>
+                    <TouchableHighlight style={[goalStyle.button, themeStyles.planFormSaveButton]} onPress={this.onPress} underlayColor='#99d9f4'>
+                        <Text style={[goalStyle.buttonText, themeStyles.planFormSaveButtonText]}>Save</Text>
                     </TouchableHighlight>
                 </View>
             </View>
@@ -179,16 +179,9 @@ export default class EditGoal extends React.Component {
 
 const goalStyle = StyleSheet.create({
     buttonText: {
-        fontSize: 18,
-        color: 'white',
         alignSelf: 'center'
     },
     button: {
-        height: 36,
-        backgroundColor: '#48BBEC',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
-        borderRadius: 8,
         marginBottom: 10,
         marginTop: 10,
         alignSelf: 'stretch',

@@ -6,7 +6,7 @@ import store from "../../Redux/store"
 import {getSchedule, updateScheduleDate} from "../../Redux/actions";
 import {readDatabase} from "../../Util/DatabaseHelper";
 import {DbTableNames} from "../../Constants/Constants";
-import {themeStyles} from "../../Styles/TabStyles";
+import {AppColors, themeStyles} from "../../Styles/TabStyles";
 
 class Schedule extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -82,6 +82,11 @@ class Schedule extends React.Component {
                     renderEmptyData={this.renderEmptyDate}
                     rowHasChanged={this.rowHasChanged}
                     onDayPress={day => store.dispatch(updateScheduleDate(day.dateString))}
+                    theme={{
+                        dotColor: AppColors.orange,
+                        selectedDayBackgroundColor: AppColors.orange,
+                        agendaKnobColor: AppColors.blue
+                    }}
                 /> : <View style={{flex: 1, justifyContent: 'center'}}>
                     <ActivityIndicator size="large" color="#007AFF" />
                 </View>}

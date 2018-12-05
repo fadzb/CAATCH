@@ -4,6 +4,7 @@ import CustomMultiSelectList from "../../Components/CustomMultiSelectList"
 import {connect} from 'react-redux'
 import {readDatabaseArg} from "../../Util/DatabaseHelper";
 import {DbTableNames} from "../../Constants/Constants";
+import {themeStyles} from "../../Styles/TabStyles";
 
 class DiaryItemList extends React.Component {
     static navigationOptions = {
@@ -66,7 +67,7 @@ class DiaryItemList extends React.Component {
                     />
                 </View>
                 <TouchableHighlight
-                    style={diaryItemStyle.button}
+                    style={[diaryItemStyle.button, themeStyles.multiSelectSaveButton]}
                     onPress={this.props.navigation.getParam('edit')
                         ? () => {
                             const selectedObject = this.state.diaryList.find(di => di.diaryId === Number(this.state.checkedItems[0]));
@@ -87,7 +88,7 @@ class DiaryItemList extends React.Component {
                             })
                         }}
                     underlayColor='#99d9f4'>
-                    <Text style={diaryItemStyle.buttonText}>Done</Text>
+                    <Text style={[diaryItemStyle.buttonText, themeStyles.multiSelectSaveButtonText]}>Done</Text>
                 </TouchableHighlight>
             </View>
         )
@@ -99,16 +100,9 @@ const diaryItemStyle = StyleSheet.create({
         flex: 1,
     },
     buttonText: {
-        fontSize: 18,
-        color: 'white',
         alignSelf: 'center'
     },
     button: {
-        height: 36,
-        backgroundColor: '#48BBEC',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
-        borderRadius: 8,
         margin:15,
         alignSelf: 'stretch',
         justifyContent: 'center'

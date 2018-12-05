@@ -288,12 +288,12 @@ export default class GoalSummary extends React.Component {
                                 <VictoryLine
                                     data={this.state.goalArray}
                                     style={{
-                                        data: { stroke: "blue", strokeWidth: 2.5 },
+                                        data: { stroke: "#008080", strokeWidth: 2.5 },
                                     }}
                                 />
                             </VictoryChart>
                             <View style={{alignSelf: 'flex-start', flex: 1, marginHorizontal: 20}}>
-                                <Text style={goalSummaryStyle.text}>{this.props.navigation.getParam('diaryId') === DiaryId.steps ? 'Target Steps: ' : 'Target Rating: '}<Text style={{color: 'blue', fontWeight: 'bold'}}>{this.props.navigation.getParam('rating')}</Text></Text>
+                                <Text style={goalSummaryStyle.text}>{this.props.navigation.getParam('diaryId') === DiaryId.steps ? 'Target Steps: ' : 'Target Rating: '}<Text style={{color: '#008080', fontWeight: 'bold'}}>{this.props.navigation.getParam('rating')}</Text></Text>
                             </View>
                         </Body>
                     </Content>

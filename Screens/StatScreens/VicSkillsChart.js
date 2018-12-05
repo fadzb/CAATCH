@@ -1,6 +1,6 @@
 import React from 'react';
 import { StyleSheet, View, Dimensions, Text, ActivityIndicator, Modal, TouchableHighlight, Alert } from 'react-native';
-import {ComponentStyleConst, TabStyles} from "../../Styles/TabStyles";
+import {AppColors, ComponentStyleConst, TabStyles, themeStyles} from "../../Styles/TabStyles";
 import Moment from 'moment'
 import {readDatabase, readDatabaseArg} from "../../Util/DatabaseHelper";
 import CustomMultiPicker from "react-native-multiple-select-list";
@@ -10,6 +10,7 @@ import { VictoryChart, VictoryBar, VictoryTheme, VictoryAxis, VictoryLabel, Vict
 import {PressableIcon} from "../../Components/PressableIcon";
 import {DbTableNames} from "../../Constants/Constants";
 import Icon from "react-native-vector-icons/Ionicons";
+import CustomMultiSelectList from "../../Components/CustomMultiSelectList"
 
 const timeFrames = {
     weekDate: Moment().subtract(6,'d').format('YYYY-MM-DD'),
@@ -257,7 +258,7 @@ export default class VicSkillsChart extends React.Component {
                                          }}
                             />
                             <VictoryBar horizontal
-                                        style={{ data: { fill: "#c43a31", fillOpacity: 0.8, } }}
+                                        style={{ data: { fill: '#008080', fillOpacity: 0.8, } }}
                                         data={this.state.graphData}
                                         alignment="start"
                                         animate={{
@@ -294,13 +295,13 @@ export default class VicSkillsChart extends React.Component {
                                     <PressableIcon
                                         size={45}
                                         iconName={Icons.closeModal}
-                                        color="black"
+                                        color={AppColors.blue}
                                         onPressFunction={this.handleModalClose}
                                     />
                                 </View>
                                 <View style={{flex: 1}}>
                                     <View style={{flex: 1, marginBottom: 50}}>
-                                        <CustomMultiPicker
+                                        <CustomMultiSelectList
                                             options={this.state.timeFrameSelected ? periods : skillTypes}
                                             multiple={false} //
                                             returnValue={this.state.timeFrameSelected ? "label" : "id"} // label or value
@@ -310,7 +311,6 @@ export default class VicSkillsChart extends React.Component {
                                             rowRadius={5}
                                             iconColor={"#00a2dd"}
                                             iconSize={25}
-                                            itemStyle={chartStyle.itemStyle}
                                             selectedIconName={"ios-checkmark-circle-outline"}
                                             unselectedIconName={"ios-radio-button-off-outline"}
                                             search={true}
@@ -318,10 +318,10 @@ export default class VicSkillsChart extends React.Component {
                                         />
                                     </View>
                                     <TouchableHighlight
-                                        style={chartStyle.button}
+                                        style={[chartStyle.button, themeStyles.multiSelectSaveButton]}
                                         onPress={this.handleFinalSelection}
                                         underlayColor='#99d9f4'>
-                                        <Text style={chartStyle.buttonText}>Done</Text>
+                                        <Text style={[chartStyle.buttonText, themeStyles.multiSelectSaveButtonText]}>Done</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -333,12 +333,12 @@ export default class VicSkillsChart extends React.Component {
                                         <PressableIcon
                                             size={45}
                                             iconName={Icons.closeModal}
-                                            color="black"
+                                            color={AppColors.blue}
                                             onPressFunction={this.handleEmailModalClose}
                                         />
                                     </View>
                                     <View style={{flex: 1, flexDirection: 'row', alignItems: 'center', marginTop: Expo.Constants.statusBarHeight, justifyContent: 'center'}}>
-                                        <Text style={{paddingRight: 5}}>Select Recipient(s)</Text>
+                                        <Text style={{color: AppColors.blue, paddingRight: 5}}>Select Recipient(s)</Text>
                                         <PressableIcon
                                             iconName={Icons.info + '-outline'}
                                             size={25}
@@ -349,7 +349,7 @@ export default class VicSkillsChart extends React.Component {
                                 </View>
                                 <View style={{flex: 1}}>
                                     <View style={{flex: 1, marginBottom: 50}}>
-                                        <CustomMultiPicker
+                                        <CustomMultiSelectList
                                             options={this.props.navigation.getParam('recipients')}
                                             multiple={true} //
                                             returnValue={"label"} // label or value
@@ -359,17 +359,16 @@ export default class VicSkillsChart extends React.Component {
                                             rowRadius={5}
                                             iconColor={"#00a2dd"}
                                             iconSize={25}
-                                            itemStyle={chartStyle.itemStyle}
                                             selectedIconName={"ios-checkmark-circle-outline"}
                                             unselectedIconName={"ios-radio-button-off-outline"}
                                             search={true}
                                         />
                                     </View>
                                     <TouchableHighlight
-                                        style={chartStyle.button}
+                                        style={[chartStyle.button, themeStyles.multiSelectSaveButton]}
                                         onPress={this.handleFinalEmailSelection}
                                         underlayColor='#99d9f4'>
-                                        <Text style={chartStyle.buttonText}>Done</Text>
+                                        <Text style={[chartStyle.buttonText, themeStyles.multiSelectSaveButtonText]}>Done</Text>
                                     </TouchableHighlight>
                                 </View>
                             </View>
@@ -402,17 +401,10 @@ const chartStyle = StyleSheet.create({
     },
 
     buttonText: {
-        fontSize: 18,
-        color: 'white',
         alignSelf: 'center'
     },
 
     button: {
-        height: 36,
-        backgroundColor: '#48BBEC',
-        borderColor: '#48BBEC',
-        borderWidth: 1,
-        borderRadius: 8,
         margin:15,
         alignSelf: 'stretch',
         justifyContent: 'center'
