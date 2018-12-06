@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList, Alert } from 'react-native';
+import { View, StyleSheet, Dimensions, Modal, TouchableHighlight, Linking, FlatList, Alert, Platform } from 'react-native';
 import {CustomSelectionRow} from "../../Components/CustomSelectionRow";
 import {Icons} from "../../Constants/Icon";
 import {AppColors, TabStyles} from "../../Styles/TabStyles";
@@ -85,21 +85,23 @@ class BackupRestoreSelection extends React.Component {
 
     restorePicker = () => {
         Expo.DocumentPicker.getDocumentAsync({
-            // type: 'public.database',
+            type: 'text/plain',
             copyToCacheDirectory: false
         }).then(res => {
+
             if(res.type !== 'cancel') {
-                if (res.name.includes('caatch.db')) {
-                    this.showRestoreAlert(res.uri)
+                if(Platform.OS === 'ios') {
+                    Expo.FileSystem.downloadAsync(
+                        res.uri,
+                        Expo.FileSystem.cacheDirectory + 'caatch'
+                    ).then(({ uri }) => {
+                        this.showRestoreAlert(uri)
+                    })
                 } else {
-                    Toast.show({
-                        text: 'Please select correct .db file',
-                        buttonText: 'Okay',
-                        duration: 4000,
-                        style: { marginBottom: 50 }
-                    });
+                    this.showRestoreAlert(res.uri)
                 }
             }
+            // must download file first if user has iOS device
         }).catch(err => console.log(err))
     };
     // opens document picker and ensures that user selects file that contains 'caatch.db' in title
@@ -121,14 +123,24 @@ class BackupRestoreSelection extends React.Component {
     // replaces old db file and restarts app
 
     emailBackup = () => {
-        Expo.MailComposer.composeAsync({
-            recipients: [this.props.settings.email],
-            subject: 'SafePlan Backup ' + Moment().format('LL'),
-            body:"Hi, please find SafePlan backup attached.",
-            attachments: [file]
+        const txtFile = Expo.FileSystem.cacheDirectory + 'caatch.txt';
+        // converting .db file to .txt so can be read by iOS
+
+        Expo.FileSystem.copyAsync({
+            from: file,
+            to: txtFile
         })
-            .then(res => console.log(res))
-            .catch(err => console.log(err))
+            .then(copied => {
+                Expo.MailComposer.composeAsync({
+                    recipients: [this.props.settings.email],
+                    subject: 'SafePlan Backup ' + Moment().format('LL'),
+                    body:"Hi, please find SafePlan backup attached.",
+                    attachments: [txtFile]
+                })
+                    .then(res => console.log(res))
+                    .catch(err => console.log(err))
+            })
+            .catch(err => console.log(err));
     };
     // opens mail app of choice
 
