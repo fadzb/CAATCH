@@ -5,6 +5,10 @@
       "assetExts": ["db"]
     },
     "orientation": "portrait"
+//    "splash": {
+//      "image": "./Media/Images/CAATCHLogo.png",
+//      "resizeMode": "cover"
+//    }
   },
   "ios": {
     "usesIcloudStorage": true

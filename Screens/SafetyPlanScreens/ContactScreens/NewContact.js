@@ -1,5 +1,15 @@
 import React from 'react';
-import { StyleSheet, Text, View, TextInput, TouchableHighlight, ScrollView, Dimensions, Platform } from 'react-native';
+import {
+  StyleSheet,
+  Text,
+  View,
+  TextInput,
+  TouchableHighlight,
+  ScrollView,
+  Dimensions,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 import t from 'tcomb-form-native';
 import { PressableIcon } from '../../../Components/PressableIcon';
 import store from '../../../Redux/store';
@@ -254,55 +264,59 @@ export default class NewContact extends React.Component {
 
     return (
       <ScrollView contentContainerstyle={[TabStyles.planContainer, { justifyContent: 'space-evenly' }]}>
-        <View style={contactStyle.formContainer}>
-          <Form
-            ref="form"
-            type={contact}
-            value={this.state.value}
-            onChange={this.onChange}
-            options={this.state.options}
-          />
-          <ButtonGroup
-            onPress={this.updateType}
-            selectedIndex={selectedType}
-            buttons={buttons}
-            containerStyle={{ height: 36, marginBottom: 20 }}
-          />
-          <PressableIcon
-            iconName="ios-arrow-dropright-outline"
-            size={25}
-            onPressFunction={this.getPhoneContacts}
-            name="Import Phone Contacts"
-            buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
-            buttonStyle={contactStyle.listButton}
-            textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6, color: AppColors.grey }}
-            color={AppColors.grey}
-            iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
-          />
-          <TouchableHighlight
-            style={[contactStyle.button, themeStyles.planFormSaveButton]}
-            onPress={this.onPress}
-            underlayColor="#99d9f4"
-          >
-            <Text style={[contactStyle.buttonText, themeStyles.planFormSaveButtonText]}>Save</Text>
-          </TouchableHighlight>
-        </View>
-        <View style={contactStyle.iconContainer}>
-          <PressableIcon
-            iconName={Icons.media + '-outline'}
-            size={80}
-            onPressFunction={this.captureMedia}
-            buttonStyle={contactStyle.iconButton}
-            color={AppColors.grey}
-          />
-          <PressableIcon
-            iconName={Icons.camera + '-outline'}
-            size={80}
-            onPressFunction={this.takePhoto}
-            buttonStyle={contactStyle.iconButton}
-            color={AppColors.grey}
-          />
-        </View>
+        <KeyboardAvoidingView style={{ flex: 1 }} behavior={'padding'}>
+          <View style={contactStyle.formContainer}>
+            <Form
+              ref="form"
+              type={contact}
+              value={this.state.value}
+              onChange={this.onChange}
+              options={this.state.options}
+            />
+            <ButtonGroup
+              onPress={this.updateType}
+              selectedIndex={selectedType}
+              buttons={buttons}
+              containerStyle={{ height: 36, marginBottom: 20 }}
+              selectedButtonStyle={{ backgroundColor: AppColors.blue }}
+              selectedTextStyle={{ color: AppColors.white, fontWeight: Platform.OS === 'ios' ? '600' : '500' }}
+            />
+            <PressableIcon
+              iconName="ios-arrow-dropright-outline"
+              size={25}
+              onPressFunction={this.getPhoneContacts}
+              name="Import Phone Contacts"
+              buttonContainerStyle={{ flex: 1, flexDirection: 'row' }}
+              buttonStyle={contactStyle.listButton}
+              textStyle={{ alignSelf: 'center', paddingLeft: 7, fontSize: 17, flex: 6, color: AppColors.grey }}
+              color={AppColors.grey}
+              iconStyle={{ alignSelf: 'center', flex: 1, alignItems: 'center' }}
+            />
+            <TouchableHighlight
+              style={[contactStyle.button, themeStyles.planFormSaveButton]}
+              onPress={this.onPress}
+              underlayColor="#99d9f4"
+            >
+              <Text style={[contactStyle.buttonText, themeStyles.planFormSaveButtonText]}>Save</Text>
+            </TouchableHighlight>
+          </View>
+          <View style={contactStyle.iconContainer}>
+            <PressableIcon
+              iconName={Icons.media + '-outline'}
+              size={80}
+              onPressFunction={this.captureMedia}
+              buttonStyle={contactStyle.iconButton}
+              color={AppColors.grey}
+            />
+            <PressableIcon
+              iconName={Icons.camera + '-outline'}
+              size={80}
+              onPressFunction={this.takePhoto}
+              buttonStyle={contactStyle.iconButton}
+              color={AppColors.grey}
+            />
+          </View>
+        </KeyboardAvoidingView>
       </ScrollView>
     );
   }

@@ -337,7 +337,7 @@ export default class SettingsScreen extends React.Component {
   };
 
   getCsvData = () => {
-    const columns = 'd.*, s.diaryDate, ds.rating, ds.dateEntered';
+    const columns = 'd.*, s.diaryDate, s.sessionId, ds.rating, ds.dateEntered';
 
     readDatabaseArg(
       columns,
@@ -356,7 +356,7 @@ export default class SettingsScreen extends React.Component {
     //console.log(data)
 
     const headerString =
-      'Diary Id,Diary Name,Diary Type,Min Rating,Max Rating,Rating,Date Entered,Diary Date,Unique Id\n';
+      'Session Id,Diary Id,Diary Name,Diary Type,Min Rating,Max Rating,Rating,Date Entered,Diary Date,Unique Id\n';
     let rowString = '';
 
     const installationId = Expo.Constants.installationId;
@@ -371,6 +371,8 @@ export default class SettingsScreen extends React.Component {
 
       rowString =
         rowString +
+        d.sessionId +
+        ',' +
         d.diaryId +
         ',' +
         updatedName +
@@ -391,19 +393,19 @@ export default class SettingsScreen extends React.Component {
         '\n';
     });
 
-    Expo.FileSystem.writeAsStringAsync(Expo.FileSystem.cacheDirectory + 'results.csv', headerString + rowString).then(
-      (res) => {
-        Expo.MailComposer.composeAsync({
-          recipients: this.state.selectedRecipients,
-          subject: 'CAATCH Ratings Data ' + Moment().format('LL'),
-          body: 'Hi, please find CAATCH Ratings data attached.',
-          attachments: [Expo.FileSystem.cacheDirectory + 'results.csv'],
-        })
-          .then((result) => console.log(result))
-          .then((res) => this.handleEmailModalClose())
-          .catch((err) => console.log(err));
-      }
-    );
+    const filePath = Expo.FileSystem.cacheDirectory + 'results - ' + Moment().format('DD.MM.YYYY') + '.csv';
+
+    Expo.FileSystem.writeAsStringAsync(filePath, headerString + rowString).then((res) => {
+      Expo.MailComposer.composeAsync({
+        recipients: this.state.selectedRecipients,
+        subject: 'SafePlan Ratings Data ' + Moment().format('LL'),
+        body: 'Hi, please find SafePlan Ratings data attached.',
+        attachments: [filePath],
+      })
+        .then((result) => console.log(result))
+        .then((res) => this.handleEmailModalClose())
+        .catch((err) => console.log(err));
+    });
   };
 
   getEmailRecipients = () => {
@@ -560,6 +562,13 @@ export default class SettingsScreen extends React.Component {
                       iconName={Icons.backup + '-outline'}
                       arrow={true}
                       onPress={() => this.props.navigation.push('backupRestore')}
+                    />
+                    <SettingsSelectionRow
+                      height={Dimensions.get('window').height / 11}
+                      name={'About'}
+                      iconName={Icons.about + '-outline'}
+                      arrow={true}
+                      onPress={() => this.props.navigation.push('about')}
                     />
                   </View>
                 </Tab>
