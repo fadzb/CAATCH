@@ -95,8 +95,8 @@ export default class VicSkillsChart extends React.Component {
         if(this.state.selectedRecipients.length > 0) {
             Expo.MailComposer.composeAsync({
                 recipients: this.state.selectedRecipients,
-                subject: 'CAATCH Skills Graph ' + Moment().format('LL'),
-                body: "Hi, please find CAATCH Skills graph attached.",
+                subject: 'SafePlan DBT Skills Graph ' + Moment().format('LL'),
+                body: "Hi, please find SafePlan DBT Skills graph attached.",
                 attachments: [this.state.snapshotFile]
             })
                 .then(result => console.log(result))

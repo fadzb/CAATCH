@@ -103,8 +103,8 @@ class VicChart extends React.Component {
         if(this.state.selectedRecipients.length > 0) {
             Expo.MailComposer.composeAsync({
                 recipients: this.state.selectedRecipients,
-                subject: 'CAATCH Feelings Graph ' + Moment().format('LL'),
-                body: "Hi, please find CAATCH Feelings graph attached.",
+                subject: 'SafePlan Graph ' + Moment().format('LL'),
+                body: "Hi, please find SafePlan graph attached.",
                 attachments: [this.state.snapshotFile]
             })
                 .then(result => console.log(result))

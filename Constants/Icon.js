@@ -50,5 +50,6 @@ export const Icons = {
     goals: 'ios-trophy',
     steps: 'ios-walk',
     share: 'md-share',
-    export: 'ios-share-alt'
+    export: 'ios-share-alt',
+    about: 'ios-help'
 };

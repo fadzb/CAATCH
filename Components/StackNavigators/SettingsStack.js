@@ -7,11 +7,13 @@ import {Stacks, themeStyles} from "../../Styles/TabStyles";
 
 import SettingsScreen from "../../Screens/SettingsScreens/SettingsScreen";
 import BackupRestoreSelection from "../../Screens/SettingsScreens/BackupRestoreSelection";
+import About from "../../Screens/SettingsScreens/About";
 
 const SettingsStack = createStackNavigator(
     {
         main: SettingsScreen,
-        backupRestore: BackupRestoreSelection
+        backupRestore: BackupRestoreSelection,
+        about: About
     },
 
     {

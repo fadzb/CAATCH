@@ -75,8 +75,8 @@ export default class UsageOverview extends React.Component {
         if(this.state.selectedRecipients.length > 0) {
             Expo.MailComposer.composeAsync({
                 recipients: this.state.selectedRecipients,
-                subject: 'CAATCH Usage Graph ' + Moment().format('LL'),
-                body: "Hi, please find CAATCH Usage graph attached.",
+                subject: 'SafePlan Usage Graph ' + Moment().format('LL'),
+                body: "Hi, please find SafePlan Usage graph attached.",
                 attachments: [this.state.snapshotFile]
             })
                 .then(result => console.log(result))
