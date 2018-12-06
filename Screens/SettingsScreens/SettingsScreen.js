@@ -566,7 +566,7 @@ export default class SettingsScreen extends React.Component {
                     <SettingsSelectionRow
                       height={Dimensions.get('window').height / 11}
                       name={'About'}
-                      iconName={Icons.about + '-outline'}
+                      iconName={Icons.info + '-outline'}
                       arrow={true}
                       onPress={() => this.props.navigation.push('about')}
                     />
