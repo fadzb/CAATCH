@@ -127,8 +127,8 @@ class BackupRestoreSelection extends React.Component {
   emailBackup = () => {
     Expo.MailComposer.composeAsync({
       recipients: [this.props.settings.email],
-      subject: 'CAATCH Backup ' + Moment().format('LL'),
-      body: 'Hi, please find CAATCH backup attached.',
+      subject: 'SafePlan Backup ' + Moment().format('LL'),
+      body: 'Hi, please find SafePlan backup attached.',
       attachments: [file],
     })
       .then((res) => console.log(res))

@@ -5,11 +5,15 @@ import Ionicons from 'react-native-vector-icons/Ionicons';
 import { Icons } from '../../Constants/Icon';
 import { Stacks, themeStyles } from '../../Styles/TabStyles';
 
-import SettingsScreen from '../../Screens/SettingsScreen';
+import SettingsScreen from '../../Screens/SettingsScreens/SettingsScreen';
+import BackupRestoreSelection from '../../Screens/SettingsScreens/BackupRestoreSelection';
+import About from '../../Screens/SettingsScreens/About';
 
 const SettingsStack = createStackNavigator(
   {
     main: SettingsScreen,
+    backupRestore: BackupRestoreSelection,
+    about: About,
   },
 
   {

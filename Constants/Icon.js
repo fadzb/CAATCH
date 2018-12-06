@@ -50,4 +50,5 @@ export const Icons = {
   steps: 'ios-walk',
   share: 'md-share',
   export: 'ios-share-alt',
+  about: 'ios-help',
 };
