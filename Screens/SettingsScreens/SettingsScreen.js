@@ -565,10 +565,28 @@ export default class SettingsScreen extends React.Component {
   getCsvData = () => {
     const columns = 'd.*, s.diaryDate, s.sessionId, ds.rating, ds.dateEntered';
 
+    // readDatabaseArg(columns, DbTableNames.diary, this.createCsvFile, undefined, ' as d inner join ' + DbTableNames.diarySession + ' as ds on d.diaryId = ds.diaryId inner join ' +
+    //     DbTableNames.session + ' as s on ds.sessionId = s.sessionId')
+
     readDatabaseArg(
       columns,
       DbTableNames.diary,
-      this.createCsvFile,
+      (res) => {
+        const usageColumns = 'fu.*, f.functionName, u.usageId, u.dateEntered as "usageDate"';
+
+        readDatabaseArg(
+          usageColumns,
+          DbTableNames.functionUsage,
+          (usageRes) => this.createCsvFile(res, usageRes),
+          undefined,
+          ' as fu inner join ' +
+            DbTableNames.function +
+            ' as f' +
+            ' on fu.functionId = f.functionId inner join ' +
+            DbTableNames.usage +
+            ' as u on u.usageId = fu.usageId where fu.usageId is not NULL'
+        );
+      },
       undefined,
       ' as d inner join ' +
         DbTableNames.diarySession +
@@ -578,9 +596,7 @@ export default class SettingsScreen extends React.Component {
     );
   };
 
-  createCsvFile = (data) => {
-    //console.log(data)
-
+  createCsvFile = (data, usageData) => {
     const headerString =
       'Session Id,Diary Id,Diary Name,Diary Type,Min Rating,Max Rating,Rating,Date Entered,Diary Date,Unique Id\n';
     let rowString = '';
@@ -619,19 +635,61 @@ export default class SettingsScreen extends React.Component {
         '\n';
     });
 
-    const filePath = Expo.FileSystem.cacheDirectory + 'results - ' + Moment().format('DD.MM.YYYY') + '.csv';
+    const filePath = Expo.FileSystem.cacheDirectory + 'DiaryResults-' + Moment().format('DD.MM.YYYY') + '.csv';
+    // diary ratings csv creation
 
-    Expo.FileSystem.writeAsStringAsync(filePath, headerString + rowString).then((res) => {
-      Expo.MailComposer.composeAsync({
-        recipients: this.state.selectedRecipients,
-        subject: 'SafePlan Ratings Data ' + Moment().format('LL'),
-        body: 'Hi, please find SafePlan Ratings data attached.',
-        attachments: [filePath],
+    Expo.FileSystem.writeAsStringAsync(filePath, headerString + rowString)
+      .then((res) => {
+        const usageHeaderString =
+          'Usage Id,Usage Date,Function Id,Function Name,Timestamp,Table Name,Item Name,Time Spent(ms),Unique Id\n';
+        let usageRowString = '';
+
+        usageData.forEach((u) => {
+          let updatedIdName = u.idName;
+
+          if (u.idName && u.idName.includes(',')) {
+            updatedIdName = u.idName.replace(',', '-');
+          }
+          // removing commas from idnames in order to produce correct CSV file
+
+          usageRowString =
+            usageRowString +
+            u.usageId +
+            ',' +
+            u.usageDate +
+            ',' +
+            u.functionId +
+            ',' +
+            u.functionName +
+            ',' +
+            u.dateEntered +
+            ',' +
+            u.tableName +
+            ',' +
+            updatedIdName +
+            ',' +
+            u.functionValue +
+            ',' +
+            installationId +
+            '\n';
+        });
+
+        const usageFilePath = Expo.FileSystem.cacheDirectory + 'UsageData-' + Moment().format('DD.MM.YYYY') + '.csv';
+        // usage csv creation
+
+        Expo.FileSystem.writeAsStringAsync(usageFilePath, usageHeaderString + usageRowString).then((res) => {
+          Expo.MailComposer.composeAsync({
+            recipients: this.state.selectedRecipients,
+            subject: 'SafePlan App Data ' + Moment().format('LL'),
+            body: 'Hi, please find SafePlan diary and usage data attached.',
+            attachments: [filePath, usageFilePath],
+          })
+            .then((result) => console.log(result))
+            .then((res) => this.handleEmailModalClose())
+            .catch((err) => console.log(err));
+        });
       })
-        .then((result) => console.log(result))
-        .then((res) => this.handleEmailModalClose())
-        .catch((err) => console.log(err));
-    });
+      .catch((err) => console.log(err));
   };
 
   getEmailRecipients = () => {
@@ -777,7 +835,7 @@ export default class SettingsScreen extends React.Component {
                     />
                     <SettingsSelectionRow
                       height={Dimensions.get('window').height / 11}
-                      name={'Export Rating Data'}
+                      name={'Export App Data'}
                       iconName={Icons.export + '-outline'}
                       arrow={true}
                       onPress={this.getEmailRecipients}
