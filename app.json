@@ -6,7 +6,7 @@
     },
     "orientation": "portrait",
     "splash": {
-      "image": "./Media/Images/CAATCHLogo.png",
+      "image": "./Media/Images/SafePlanLogo.png",
       "resizeMode": "cover"
     }
   },
