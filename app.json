@@ -4,11 +4,11 @@
     "packagerOpts": {
       "assetExts": ["db"]
     },
-    "orientation": "portrait"
-//    "splash": {
-//      "image": "./Media/Images/CAATCHLogo.png",
-//      "resizeMode": "cover"
-//    }
+    "orientation": "portrait",
+    "splash": {
+      "image": "./Media/Images/CAATCHLogo.png",
+      "resizeMode": "cover"
+    }
   },
   "ios": {
     "usesIcloudStorage": true

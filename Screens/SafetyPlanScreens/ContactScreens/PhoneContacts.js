@@ -22,8 +22,10 @@ export default class PhoneContacts extends React.Component {
     }
 
     componentDidMount() {
+        console.log(this.props.navigation.getParam('contacts'));
+
         this.setState({
-            contacts: this.props.navigation.getParam('contacts').map(c => {
+            contacts: this.props.navigation.getParam('contacts').filter(con => con.hasOwnProperty('name')).map(c => {
 
                 let phone = "";
                 let email = "";
@@ -48,7 +50,7 @@ export default class PhoneContacts extends React.Component {
     }
 
     compareNames = (contact1, contact2) => {
-        if(contact1.name.toUpperCase() < contact2.name.toUpperCase()) {
+        if (contact1.name.toUpperCase() < contact2.name.toUpperCase()) {
             return -1;
         } else if (contact1.name.toUpperCase() > contact2.name.toUpperCase()) {
             return 1;
