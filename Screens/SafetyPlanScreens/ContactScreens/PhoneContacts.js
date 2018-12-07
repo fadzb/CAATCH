@@ -22,8 +22,6 @@ export default class PhoneContacts extends React.Component {
     }
 
     componentDidMount() {
-        console.log(this.props.navigation.getParam('contacts'));
-
         this.setState({
             contacts: this.props.navigation.getParam('contacts').filter(con => con.hasOwnProperty('name')).map(c => {
 
