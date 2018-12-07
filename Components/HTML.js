@@ -51,8 +51,8 @@ export const safetyPlanHtml = data => {
             "<html>\n" +
             "<head>\n" +
             "    <style>\n" +
-            "        table, th, td {\n" +
-            "            border: 1px solid black;\n" +
+            "        table {\n" +
+            "            border: 1px solid #333333;\n" +
             "            border-collapse: collapse;\n" +
             "        }\n" +
             "        th, td {\n" +
@@ -64,6 +64,8 @@ export const safetyPlanHtml = data => {
             "        }\n" +
             "        th {\n" +
             "            font-size: 2vw;\n" +
+            "            border: 1px solid #333333;\n" +
+            "            border-collapse: collapse;\n" +
             "        }\n" +
             "    </style>\n" +
             "</head>\n" +
