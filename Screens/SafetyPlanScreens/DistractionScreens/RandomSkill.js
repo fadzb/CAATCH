@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Text, TouchableOpacity, Button } from 'react-native';
 import { safetyPlanPrePops } from '../../../Constants/Prepopulated';
-import { TabStyles } from '../../../Styles/TabStyles';
+import { AppColors, TabStyles } from '../../../Styles/TabStyles';
 import { SafetyPlanConstants } from '../../../Constants/Constants';
 import Carousel from 'react-native-snap-carousel';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -39,6 +39,7 @@ export default class RandomSkill extends React.Component {
       style={{
         flex: 1,
         borderWidth: 2,
+        borderColor: AppColors.blue,
         borderRadius: 10,
         justifyContent: 'space-evenly',
         alignItems: 'center',
@@ -46,8 +47,10 @@ export default class RandomSkill extends React.Component {
         paddingVertical: 20,
       }}
     >
-      <Icon name={item.icon} size={80} />
-      <Text style={{ paddingHorizontal: 25, fontSize: 18, textAlign: 'center' }}>{item.name}</Text>
+      <Icon name={item.icon} size={80} color={AppColors.orange} />
+      <Text style={{ color: AppColors.blue, paddingHorizontal: 25, fontSize: 18, textAlign: 'center' }}>
+        {item.name}
+      </Text>
     </View>
   );
 

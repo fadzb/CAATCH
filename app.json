@@ -6,7 +6,7 @@
     },
     "orientation": "portrait",
     "splash": {
-      "image": "./Media/Images/SafePlanLogo.png",
+      "image": "./Media/Images/SafePlanSplash.png",
       "resizeMode": "cover"
     }
   },
