@@ -50,6 +50,7 @@ export const safetyPlanHtml = data => {
     return  "<!DOCTYPE html>\n" +
             "<html>\n" +
             "<head>\n" +
+            "<link href='https://fonts.googleapis.com/css?family=Encode Sans Expanded' rel='stylesheet'>" +
             "    <style>\n" +
             "        table {\n" +
             "            border: 1px solid #333333;\n" +
@@ -76,7 +77,8 @@ export const safetyPlanHtml = data => {
             // "       <h3 style=\"font-size:4vw\">Safety Plan Summary</h3>" +
             // "       <img src='https://is2-ssl.mzstatic.com/image/thumb/Purple5/v4/db/50/d4/db50d46f-e62f-d0a6-1684-ca15a7b315ef/source/512x512bb.jpg' alt='SafePlan Logo' style='width:50px;height:50px;'>" +
             // "    </div>" +
-            "    <h3 style=\"font-size:4vw\">Safety Plan Summary</h3>" +
+            "    <h2 style=\"font-size:4vw; color: #31548B; font-family: Encode Sans Expanded\">Safe<span style=\"color: #F09100\">Plan</span></h2>" +
+            "    <p style=\"margin: 0; padding: 0; font-size:3vw; font-weight: bold; padding-bottom: 10px\">Safety Plan Summary</p>\n" +
             "    <p style=\"margin: 0; padding: 0; font-size:3vw\">" + Moment().format('LL') + "</p>\n" +
             "</div>\n" +
             "\n" +
@@ -165,6 +167,7 @@ export const diaryHtml = (list, result, date) => {
     return  "<!DOCTYPE html>\n" +
         "<html>\n" +
         "<head>\n" +
+        "<link href='https://fonts.googleapis.com/css?family=Encode Sans Expanded' rel='stylesheet'>" +
         "   <meta name='viewport' content='width=device-width, initial-scale=.8'>\n" +
         "    <style>\n" +
         "        table, th, td {\n" +
@@ -198,7 +201,8 @@ export const diaryHtml = (list, result, date) => {
         "<body>\n" +
         "\n" +
         "<div style=\"display: flex; align-items: center; flex-direction: column;\">\n" +
-        "    <h2 style=\"font-size:4vw\">DBT Diary Card</h2>" +
+        "    <h2 style=\"font-size:4vw; color: #31548B; font-family: Encode Sans Expanded\">Safe<span style=\"color: #F09100\">Plan</span></h2>" +
+        "    <p style=\"margin: 0; padding: 0; font-size:3vw; font-weight: bold; padding-bottom: 10px\">DBT Diary Card</p>\n" +
         "    <p style=\"margin: 0; padding: 0; font-size:3vw\">" + Moment(date).format('LL') + "</p>\n" +
         "</div>\n" +
         "\n" +

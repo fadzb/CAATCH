@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, StyleSheet, Dimensions, Text, TouchableOpacity, Button } from 'react-native';
 import {safetyPlanPrePops} from "../../../Constants/Prepopulated";
-import {TabStyles} from "../../../Styles/TabStyles";
+import {AppColors, TabStyles} from "../../../Styles/TabStyles";
 import {SafetyPlanConstants} from "../../../Constants/Constants";
 import Carousel from 'react-native-snap-carousel';
 import Icon from "react-native-vector-icons/Ionicons";
@@ -36,12 +36,13 @@ export default class RandomSkill extends React.Component {
     // update checklist with random skills from pre-populated array. Sort array in random order and set as randomSkills state
 
     renderItem = ({item, index}) => (
-        <View style={{flex: 1, borderWidth: 2, borderRadius: 10, justifyContent: 'space-evenly', alignItems: 'center', marginVertical: 70, paddingVertical: 20}}>
+        <View style={{flex: 1, borderWidth: 2, borderColor: AppColors.blue, borderRadius: 10, justifyContent: 'space-evenly', alignItems: 'center', marginVertical: 70, paddingVertical: 20}}>
             <Icon
                 name={item.icon}
                 size={80}
+                color={AppColors.orange}
             />
-            <Text style={{paddingHorizontal: 25, fontSize: 18, textAlign: 'center'}}>{ item.name }</Text>
+            <Text style={{color: AppColors.blue, paddingHorizontal: 25, fontSize: 18, textAlign: 'center'}}>{ item.name }</Text>
         </View>
     );
 

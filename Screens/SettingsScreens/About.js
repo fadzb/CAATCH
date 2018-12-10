@@ -1,5 +1,5 @@
 import React from 'react';
-import { StyleSheet, Text, View, Button, TextInput, WebView, Dimensions, TouchableOpacity, Platform, Image } from 'react-native';
+import { StyleSheet, ScrollView, Text, View, Button, TextInput, WebView, Dimensions, TouchableOpacity, Platform, Image } from 'react-native';
 import {Icons} from "../../Constants/Icon";
 import {AppColors, TabStyles} from "../../Styles/TabStyles";
 
@@ -13,12 +13,14 @@ export default class About extends React.Component {
 
     render() {
         return (
-            <View style={TabStyles.stackContainer}>
-                <View style={{overflow: 'hidden', borderRadius: 10, marginVertical: 20}}>
+            <ScrollView contentContainerStyle={{alignItems: 'center'}}>
+                <View style={{overflow: 'hidden', borderRadius: 10, marginVertical: 20, alignItems: 'center'}}>
                     <Image
-                        source={require('../../Media/Images/SafePlanLogo.png')}
+                        source={require('../../Media/Images/SafePlanLogoWithoutBackground.png')}
+                        //source={require('../../Media/Images/SafePlanLogo.png')}
                         style={{width: 80, height: 80}}
                     />
+                    <Text style={aboutStyle.logoText}>Safe<Text style={{color: AppColors.orange}}>Plan</Text></Text>
                 </View>
                 <View style={aboutStyle.textContainer}>
                     <Text style={{paddingVertical: 20, fontSize: 16, color: AppColors.blue}}>SafePlan was developed in conjunction with the HSE's "Connecting for Life" programme.</Text>
@@ -33,8 +35,14 @@ export default class About extends React.Component {
                     <View style={aboutStyle.paraContainer}>
                         <Text style={aboutStyle.paraText}>{'NUI Galway School of Computer Science\nNUI Galway School of Psychology'}</Text>
                     </View>
+                    <View style={aboutStyle.paraContainer}>
+                        <Text style={aboutStyle.headText}>Information Video</Text>
+                        <Text style={aboutStyle.urlText} onPress={() => this.props.navigation.push('webView', {
+                            url: 'https://www.youtube.com'
+                        })}>www.youtube.com</Text>
+                    </View>
                 </View>
-            </View>
+            </ScrollView>
         );
     }
 }
@@ -46,7 +54,7 @@ const aboutStyle = StyleSheet.create({
     },
 
     paraContainer: {
-        marginVertical: 15
+        marginVertical: 20
     },
 
     headText: {
@@ -59,6 +67,19 @@ const aboutStyle = StyleSheet.create({
     paraText: {
         color: AppColors.blue,
         fontSize: 16
-    }
+    },
+
+    logoText: {
+        fontSize: 22,
+        fontFamily: 'EncodeSansExpanded_medium',
+        paddingTop: 10,
+        color: AppColors.blue
+    },
+
+    urlText: {
+        textDecorationLine: 'underline',
+        color: AppColors.orange,
+        fontSize: 16
+    },
 
 });
