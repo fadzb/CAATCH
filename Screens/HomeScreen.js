@@ -35,7 +35,7 @@ class HomeScreen extends React.Component {
                 <TouchableOpacity onPress={() => this.toggleModal(true)}>
                     <Image resizeMode={'cover'}
                            style={[themeStyles.homeScreenImage, {width: Dimensions.get('window').width - 50, height: Dimensions.get('window').height / 2.8, marginTop: 35}]}
-                           source={this.props.wallpaperImage ? {uri: this.props.wallpaperImage} : require('../Media/Images/lavender.jpg')}
+                           source={this.props.wallpaperImage ? {uri: this.props.wallpaperImage} : require('../Media/Images/lavenderCropped.jpg')}
                     />
                 </TouchableOpacity>
                 <View style={homeStyle.tileContainer}>
@@ -53,23 +53,23 @@ class HomeScreen extends React.Component {
                     />
                     <HomeScreenTileRow
                         name1={SectionHeader.stats}
-                        iconName1= {Icons.stats + "-outline"}
+                        iconName1= {Icons.stats}
                         onPress1={() => this.props.navigation.navigate('statSelection')}
                         name3="My Cal"
-                        iconName3= {Icons.calendar + "-outline"}
+                        iconName3= {Icons.calendar}
                         onPress3={() => this.props.navigation.navigate('schedule')}
                         third={true}
                         name2={SectionHeader.goals}
                         onPress2={() => this.props.navigation.navigate('goals')}
-                        iconName2= {Icons.goals + "-outline"}
+                        iconName2= {Icons.goals}
                     />
                 </View>
                 <ImageView
                     images={this.props.wallpaperImage ? [{source: {uri: this.props.wallpaperImage}}] : [
                         {
-                            source: require('../Media/Images/lavender.jpg'),
-                            width: 992,
-                            height: 558,
+                            source: require('../Media/Images/lavenderCropped.jpg'),
+                            width: 652,
+                            height: 454,
                         }]}
                     imageIndex={0}
                     isVisible={this.state.modalVisible}
