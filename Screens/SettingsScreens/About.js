@@ -1,7 +1,12 @@
 import React from 'react';
-import { StyleSheet, ScrollView, Text, View, Button, TextInput, WebView, Dimensions, TouchableOpacity, Platform, Image } from 'react-native';
+import { StyleSheet, ScrollView, Text, View, Button, TextInput, WebView, Dimensions, TouchableOpacity, Platform, Image, Linking } from 'react-native';
 import {Icons} from "../../Constants/Icon";
 import {AppColors, TabStyles} from "../../Styles/TabStyles";
+
+const infoVideoUrl = 'https://www.youtube.com';
+// to be updated when info video is recorded
+
+const connectingForLifeUrl = 'https://www.hse.ie/eng/services/list/4/mental-health-services/connecting-for-life/strategy-implementation/local-action-plans/connectgalwaymayoroscommon.html';
 
 export default class About extends React.Component {
     static navigationOptions = ({ navigation }) => {
@@ -17,13 +22,15 @@ export default class About extends React.Component {
                 <View style={{overflow: 'hidden', borderRadius: 10, marginVertical: 20, alignItems: 'center'}}>
                     <Image
                         source={require('../../Media/Images/SafePlanLogoWithoutBackground.png')}
-                        //source={require('../../Media/Images/SafePlanLogo.png')}
                         style={{width: 80, height: 80}}
                     />
                     <Text style={aboutStyle.logoText}>Safe<Text style={{color: AppColors.orange}}>Plan</Text></Text>
                 </View>
                 <View style={aboutStyle.textContainer}>
-                    <Text style={{paddingVertical: 20, fontSize: 16, color: AppColors.blue}}>SafePlan was developed in conjunction with the HSE's "Connecting for Life" programme.</Text>
+                    <Text style={{paddingVertical: 20, fontSize: 16, color: AppColors.blue}}>SafePlan was developed in conjunction with the HSE's <Text
+                        style={aboutStyle.urlText}
+                        onPress={() => Linking.openURL(connectingForLifeUrl).catch(err => console.log(err))}
+                    >Connecting for Life</Text> programme.</Text>
                     <View style={aboutStyle.paraContainer}>
                         <Text style={aboutStyle.headText}>Developer</Text>
                         <Text style={aboutStyle.paraText}>Conor O'Grady</Text>
@@ -33,13 +40,11 @@ export default class About extends React.Component {
                         <Text style={aboutStyle.paraText}>Dr. Jim Duggan, Karen Young, Dr. Ruth Melia, Dr. John Bogue, Mary O'Sullivan</Text>
                     </View>
                     <View style={aboutStyle.paraContainer}>
-                        <Text style={aboutStyle.paraText}>{'NUI Galway School of Computer Science\nNUI Galway School of Psychology'}</Text>
+                        <Text style={aboutStyle.paraText}>{'School of Computer Science, NUI Galway\nSchool of Psychology, NUI Galway'}</Text>
                     </View>
                     <View style={aboutStyle.paraContainer}>
                         <Text style={aboutStyle.headText}>Information Video</Text>
-                        <Text style={aboutStyle.urlText} onPress={() => this.props.navigation.push('webView', {
-                            url: 'https://www.youtube.com'
-                        })}>www.youtube.com</Text>
+                        <Text style={aboutStyle.urlText} onPress={() => Linking.openURL(infoVideoUrl).catch(err => console.log(err))}>www.youtube.com</Text>
                     </View>
                 </View>
             </ScrollView>
