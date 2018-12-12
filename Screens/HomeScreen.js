@@ -53,15 +53,15 @@ class HomeScreen extends React.Component {
                     />
                     <HomeScreenTileRow
                         name1={SectionHeader.stats}
-                        iconName1= {Icons.stats}
+                        iconName1= {Icons.stats + "-outline"}
                         onPress1={() => this.props.navigation.navigate('statSelection')}
                         name3="My Cal"
-                        iconName3= {Icons.calendar}
+                        iconName3= {Icons.calendar + "-outline"}
                         onPress3={() => this.props.navigation.navigate('schedule')}
                         third={true}
                         name2={SectionHeader.goals}
                         onPress2={() => this.props.navigation.navigate('goals')}
-                        iconName2= {Icons.goals}
+                        iconName2= {Icons.goals + "-outline"}
                     />
                 </View>
                 <ImageView
