@@ -38,6 +38,8 @@ const DBT =
   'Dialectical Behaviour Therapy (DBT) is a treatment programme aimed at helping people with ongoing difficulties managing intense emotions';
 const NOTIFICATIONS = 'Select a time to receive a diary reminder at every day. Switch off to cancel all notifications';
 
+const gridUnit = 16;
+
 export default class SettingsScreen extends React.Component {
   static navigationOptions = {
     title: 'Settings',
@@ -900,7 +902,28 @@ export default class SettingsScreen extends React.Component {
             onPressFunction={this.handleCancelModal}
             buttonStyle={{ padding: 20 }}
           />
-          <PINCode status={'choose'} storePin={this.handlePinStore} handleResultEnterPin />
+          <PINCode
+            status={'choose'}
+            storePin={this.handlePinStore}
+            handleResultEnterPin
+            colorPassword={AppColors.orange}
+            numbersButtonOverlayColor={AppColors.orange}
+            stylePinCodeButtonNumber={AppColors.blue}
+            stylePinCodeColorTitle={AppColors.blue}
+            stylePinCodeButtonCircle={{
+              alignItems: 'center',
+              justifyContent: 'center',
+              width: gridUnit * 4,
+              height: gridUnit * 4,
+              backgroundColor: 'white',
+              borderRadius: gridUnit * 2,
+              borderWidth: 1,
+              borderColor: AppColors.orange,
+            }}
+            stylePinCodeDeleteButtonColorHideUnderlay={AppColors.blue}
+            stylePinCodeDeleteButtonColorShowUnderlay={AppColors.orange}
+            stylePinCodeColorSubtitle={AppColors.orange}
+          />
         </Modal>
         <Modal visible={this.state.emailModalVisible} transparent={false} onRequestClose={this.handleEmailModalClose}>
           <View style={{ flex: 1 }}>
