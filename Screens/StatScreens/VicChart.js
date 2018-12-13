@@ -21,7 +21,7 @@ import { VictoryChart, VictoryLine, VictoryTheme, VictoryAxis, VictoryGroup, Vic
 import { PressableIcon } from '../../Components/PressableIcon';
 import { connect } from 'react-redux';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { DbTableNames } from '../../Constants/Constants';
+import { AppName, DbTableNames } from '../../Constants/Constants';
 import CustomMultiSelectList from '../../Components/CustomMultiSelectList';
 
 const timeFrames = {
@@ -120,8 +120,8 @@ class VicChart extends React.Component {
     if (this.state.selectedRecipients.length > 0) {
       Expo.MailComposer.composeAsync({
         recipients: this.state.selectedRecipients,
-        subject: 'SafePlan Graph ' + Moment().format('LL'),
-        body: 'Hi, please find SafePlan graph attached.',
+        subject: AppName + ' Graph ' + Moment().format('LL'),
+        body: 'Hi, please find ' + AppName + ' graph attached.',
         attachments: [this.state.snapshotFile],
       })
         .then((result) => console.log(result))

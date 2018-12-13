@@ -33,8 +33,6 @@ export const checkDB = (callback) => {
             callback();
 
             //deleteDB();
-
-            // maybe change above to delete directory instead of file
           } else {
             console.log('File DOES NOT exist');
             //download file here
@@ -55,4 +53,4 @@ export const checkDB = (callback) => {
 const deleteDB = () => {
   FileSystem.deleteAsync(file);
 };
-// function to delete database from file system, FOR TESTING PURPOSES ONLY -> see line 31
+// function to delete database from file system, FOR TESTING PURPOSES ONLY -> see line 35
