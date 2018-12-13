@@ -2,6 +2,7 @@ import React from 'react';
 import { StyleSheet, ScrollView, Text, View, Button, TextInput, WebView, Dimensions, TouchableOpacity, Platform, Image, Linking } from 'react-native';
 import {Icons} from "../../Constants/Icon";
 import {AppColors, TabStyles} from "../../Styles/TabStyles";
+import {AppName} from "../../Constants/Constants";
 
 const infoVideoUrl = 'https://www.youtube.com';
 // to be updated when info video is recorded
@@ -18,8 +19,8 @@ export default class About extends React.Component {
 
     render() {
         return (
-            <ScrollView contentContainerStyle={{alignItems: 'center'}}>
-                <View style={{overflow: 'hidden', borderRadius: 10, marginVertical: 20, alignItems: 'center'}}>
+            <View style={{alignItems: 'center', flex: 1, marginBottom: 5}}>
+                <View style={{overflow: 'hidden', borderRadius: 10, marginVertical: 10, alignItems: 'center'}}>
                     <Image
                         source={require('../../Media/Images/SafePlanLogoWithoutBackground.png')}
                         style={{width: 80, height: 80}}
@@ -27,9 +28,11 @@ export default class About extends React.Component {
                     <Text style={aboutStyle.logoText}>Safe<Text style={{color: AppColors.orange}}>Plan</Text></Text>
                 </View>
                 <View style={aboutStyle.textContainer}>
-                    <Text style={{paddingVertical: 20, fontSize: 16, color: AppColors.blue}}>SafePlan was developed in conjunction with the HSE's <Text
+                    <Text style={{paddingTop: 15, fontSize: 16, color: AppColors.blue}}>{AppName + " was developed in conjunction with the HSE's "}<Text
                         style={aboutStyle.urlText}
-                        onPress={() => Linking.openURL(connectingForLifeUrl).catch(err => console.log(err))}
+                        onPress={() => this.props.navigation.push('webView', {
+                            url: connectingForLifeUrl
+                        })}
                     >Connecting for Life</Text> programme.</Text>
                     <View style={aboutStyle.paraContainer}>
                         <Text style={aboutStyle.headText}>Developer</Text>
@@ -37,17 +40,22 @@ export default class About extends React.Component {
                     </View>
                     <View style={aboutStyle.paraContainer}>
                         <Text style={aboutStyle.headText}>Design Team</Text>
-                        <Text style={aboutStyle.paraText}>Dr. Jim Duggan, Karen Young, Dr. Ruth Melia, Dr. John Bogue, Mary O'Sullivan</Text>
+                        <Text style={aboutStyle.paraText}>{"Dr. Jim Duggan, Karen Young\nDr. John Bogue, Dr. Ruth Melia\nMary O'Sullivan"}</Text>
                     </View>
                     <View style={aboutStyle.paraContainer}>
-                        <Text style={aboutStyle.paraText}>{'School of Computer Science, NUI Galway\nSchool of Psychology, NUI Galway'}</Text>
+                        <Text style={aboutStyle.paraText}>{'School of Computer Science, NUI Galway\nSchool of Psychology, NUI Galway\nHealth Service Executive'}</Text>
                     </View>
                     <View style={aboutStyle.paraContainer}>
-                        <Text style={aboutStyle.headText}>Information Video</Text>
-                        <Text style={aboutStyle.urlText} onPress={() => Linking.openURL(infoVideoUrl).catch(err => console.log(err))}>www.youtube.com</Text>
+                        <Text style={aboutStyle.headText}>Version 0.1</Text>
                     </View>
+                    {/*<View style={aboutStyle.paraContainer}>*/}
+                        {/*<Text style={aboutStyle.headText}>Information Video</Text>*/}
+                        {/*<Text style={aboutStyle.urlText} onPress={() => this.props.navigation.push('webView', {*/}
+                            {/*url: infoVideoUrl*/}
+                        {/*})}>www.youtube.com</Text>*/}
+                    {/*</View>*/}
                 </View>
-            </ScrollView>
+            </View>
         );
     }
 }
@@ -55,11 +63,14 @@ export default class About extends React.Component {
 const aboutStyle = StyleSheet.create({
     textContainer: {
         alignSelf: 'flex-start',
-        marginHorizontal: 20
+        marginHorizontal: 20,
+        justifyContent: 'space-between',
+        flex: 1
     },
 
     paraContainer: {
-        marginVertical: 20
+        //marginVertical: 10,
+        //flex: 1
     },
 
     headText: {

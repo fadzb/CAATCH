@@ -8,14 +8,14 @@ import {Stacks, themeStyles} from "../../Styles/TabStyles";
 import SettingsScreen from "../../Screens/SettingsScreens/SettingsScreen";
 import BackupRestoreSelection from "../../Screens/SettingsScreens/BackupRestoreSelection";
 import About from "../../Screens/SettingsScreens/About";
-import PlanWebView from "../../Screens/SafetyPlanScreens/PlanWebView";
+import SettingsWebView from "../../Screens/SettingsScreens/SettingsWebView";
 
 const SettingsStack = createStackNavigator(
     {
         main: SettingsScreen,
         backupRestore: BackupRestoreSelection,
         about: About,
-        webView: PlanWebView
+        webView: SettingsWebView
     },
 
     {

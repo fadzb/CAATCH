@@ -8,7 +8,7 @@ import {CustomSelectionRow} from "../../Components/CustomSelectionRow";
 import {Icons} from "../../Constants/Icon";
 import { VictoryChart, VictoryBar, VictoryTheme, VictoryAxis, VictoryLabel, VictoryLegend, VictoryStack } from 'victory-native';
 import {PressableIcon} from "../../Components/PressableIcon";
-import {DbTableNames} from "../../Constants/Constants";
+import {AppName, DbTableNames} from "../../Constants/Constants";
 import {convertMilliseconds} from "../../Util/ConvertMilliseconds";
 import {ChartLegend} from "../../Components/ChartLegend";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -75,8 +75,8 @@ export default class UsageOverview extends React.Component {
         if(this.state.selectedRecipients.length > 0) {
             Expo.MailComposer.composeAsync({
                 recipients: this.state.selectedRecipients,
-                subject: 'SafePlan Usage Graph ' + Moment().format('LL'),
-                body: "Hi, please find SafePlan Usage graph attached.",
+                subject: AppName + ' Usage Graph ' + Moment().format('LL'),
+                body: "Hi, please find " + AppName + " Usage graph attached.",
                 attachments: [this.state.snapshotFile]
             })
                 .then(result => console.log(result))

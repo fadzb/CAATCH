@@ -16,6 +16,7 @@ import {getDistraction} from "../../../Redux/actions";
 import store from "../../../Redux/store"
 import {DbTableNames, UsageFunctionIds, DbPrimaryKeys} from "../../../Constants/Constants";
 import ImageView from 'react-native-image-view';
+import {AppColors} from "../../../Styles/TabStyles";
 
 export default class DistractionSummary extends React.Component {
 
@@ -264,7 +265,7 @@ const distractSummaryStyle = StyleSheet.create({
 
     urlText: {
         textDecorationLine: 'underline',
-        color: 'blue',
+        color: AppColors.orange,
         alignSelf: 'center'
     },
 
