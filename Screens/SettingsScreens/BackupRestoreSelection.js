@@ -18,7 +18,7 @@ import store from '../../Redux/store';
 import Dialog from 'react-native-dialog';
 import { updateEmail } from '../../Redux/actions';
 import { updateDatabaseArgument } from '../../Util/DatabaseHelper';
-import { DbTableNames } from '../../Constants/Constants';
+import { AppName, DbTableNames } from '../../Constants/Constants';
 import Moment from 'moment';
 import { Toast } from 'native-base';
 
@@ -31,9 +31,13 @@ const file = directory + dbFileName;
 // uri's for location of .db file and directory
 
 const restoreInstructions =
-  "Android:\n1. Download the .txt file directly to your device\n2. Navigate to the 'Settings' tab in the SafePlan app" +
+  "Android:\n1. Download the .txt file directly to your device\n2. Navigate to the 'Settings' tab in the " +
+  AppName +
+  ' app' +
   "\n3. Press the 'Backup and Restore' option\n4. Press the 'Restore' option\n5. A file selection interface will appear. Navigate to the 'Download' folder and select the .txt file you had previously download" +
-  "\n6. You will be prompted to ensure that you wish to restore the selected database. If you are, press 'Restore'\n\niOS:\n1. Download the .txt file and move to one of your cloud backup providers eg. iCloud, Dropbox\n2. Navigate to the 'Settings' tab in the SafePlan app\n" +
+  "\n6. You will be prompted to ensure that you wish to restore the selected database. If you are, press 'Restore'\n\niOS:\n1. Download the .txt file and move to one of your cloud backup providers eg. iCloud, Dropbox\n2. Navigate to the 'Settings' tab in the " +
+  AppName +
+  ' app\n' +
   "3. Press the 'Backup and Restore' option\n4. Press the 'Restore' option\n5. A file selection interface will appear. Select the option for your cloud backup provider and select the .txt file\n" +
   "6. You will be prompted to ensure that you wish to restore the selected database. If you are, press 'Restore'";
 
@@ -144,9 +148,12 @@ class BackupRestoreSelection extends React.Component {
       .then((copied) => {
         Expo.MailComposer.composeAsync({
           recipients: [this.props.settings.email],
-          subject: 'SafePlan Backup ' + Moment().format('LL'),
+          subject: AppName + ' Backup ' + Moment().format('LL'),
           body:
-            'Hi, please find SafePlan backup attached.\n\nSee restore instructions below:\n\n' + restoreInstructions,
+            'Hi, please find ' +
+            AppName +
+            ' backup attached.\n\nSee restore instructions below:\n\n' +
+            restoreInstructions,
           attachments: [txtFile],
         })
           .then((res) => console.log(res))

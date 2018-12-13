@@ -176,22 +176,18 @@ class General extends React.Component {
                 <ButtonRating title="Mood Scale" />
                 <ButtonRating title="Sleep Scale" />
               </View>
-              <View
-                style={{ flexDirection: 'row', marginTop: 10, marginBottom: 25, alignItems: 'center', marginRight: 15 }}
-              >
+              <View style={{ flexDirection: 'row', marginTop: 10, marginBottom: 25, alignItems: 'center' }}>
                 <View style={generalStyle.stepStyle}>
+                  <Icon name={Icons.info + '-outline'} size={30} onPress={this.infoAlert} color="#007AFF" />
                   <TextInput
                     placeholder={'Enter step count'}
-                    style={{ paddingVertical: 7, paddingLeft: 15, flex: 1, color: AppColors.grey }}
+                    style={{ paddingVertical: 7, paddingLeft: 10, flex: 1, color: AppColors.grey }}
                     placeholderTextColor="black"
                     keyboardType={'phone-pad'}
                     underlineColorAndroid="transparent"
                     onChangeText={(text) => this.setState({ stepText: text })}
                   />
                   <Icon name={Icons.steps + '-outline'} size={30} color={AppColors.grey} />
-                </View>
-                <View>
-                  <Icon name={Icons.info + '-outline'} size={30} onPress={this.infoAlert} color="#007AFF" />
                 </View>
               </View>
             </View>
@@ -267,8 +263,9 @@ const generalStyle = StyleSheet.create({
     borderRadius: 7,
     borderColor: AppColors.orange,
     marginHorizontal: 15,
-    flex: 0.6,
-    paddingRight: 15,
+    flex: 1,
+    paddingRight: 10,
+    paddingLeft: 5,
     alignItems: 'center',
     backgroundColor: '#f0f0f5',
   },

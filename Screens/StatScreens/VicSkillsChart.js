@@ -8,7 +8,7 @@ import { CustomSelectionRow } from '../../Components/CustomSelectionRow';
 import { Icons } from '../../Constants/Icon';
 import { VictoryChart, VictoryBar, VictoryTheme, VictoryAxis, VictoryLabel, VictoryPortal } from 'victory-native';
 import { PressableIcon } from '../../Components/PressableIcon';
-import { DbTableNames } from '../../Constants/Constants';
+import { AppName, DbTableNames } from '../../Constants/Constants';
 import Icon from 'react-native-vector-icons/Ionicons';
 import CustomMultiSelectList from '../../Components/CustomMultiSelectList';
 
@@ -95,8 +95,8 @@ export default class VicSkillsChart extends React.Component {
     if (this.state.selectedRecipients.length > 0) {
       Expo.MailComposer.composeAsync({
         recipients: this.state.selectedRecipients,
-        subject: 'SafePlan DBT Skills Graph ' + Moment().format('LL'),
-        body: 'Hi, please find SafePlan DBT Skills graph attached.',
+        subject: AppName + ' DBT Skills Graph ' + Moment().format('LL'),
+        body: 'Hi, please find ' + AppName + ' DBT Skills graph attached.',
         attachments: [this.state.snapshotFile],
       })
         .then((result) => console.log(result))

@@ -32,7 +32,7 @@ import CustomMultiPicker from 'react-native-multiple-select-list';
 import CustomMultiSelectList from '../../Components/CustomMultiSelectList';
 
 import { AppColors, TabStyles } from '../../Styles/TabStyles';
-import { DbTableNames } from '../../Constants/Constants';
+import { AppName, DbTableNames } from '../../Constants/Constants';
 
 const DBT =
   'Dialectical Behaviour Therapy (DBT) is a treatment programme aimed at helping people with ongoing difficulties managing intense emotions';
@@ -682,8 +682,8 @@ export default class SettingsScreen extends React.Component {
         Expo.FileSystem.writeAsStringAsync(usageFilePath, usageHeaderString + usageRowString).then((res) => {
           Expo.MailComposer.composeAsync({
             recipients: this.state.selectedRecipients,
-            subject: 'SafePlan App Data ' + Moment().format('LL'),
-            body: 'Hi, please find SafePlan diary and usage data attached.',
+            subject: AppName + ' App Data ' + Moment().format('LL'),
+            body: 'Hi, please find ' + AppName + ' diary and usage data attached.',
             attachments: [filePath, usageFilePath],
           })
             .then((result) => console.log(result))

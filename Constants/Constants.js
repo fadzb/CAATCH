@@ -1,3 +1,5 @@
+export const AppName = 'SafePlan';
+
 // Safety Plan
 export const SafetyPlanConstants = {
   distraction: 'Distraction',

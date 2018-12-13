@@ -15,6 +15,7 @@ import { getReason } from '../../../Redux/actions';
 import store from '../../../Redux/store';
 import { DbTableNames, UsageFunctionIds, DbPrimaryKeys } from '../../../Constants/Constants';
 import ImageView from 'react-native-image-view';
+import { AppColors } from '../../../Styles/TabStyles';
 
 export default class ReasonSummary extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -249,7 +250,7 @@ const reasonSummaryStyle = StyleSheet.create({
 
   urlText: {
     textDecorationLine: 'underline',
-    color: 'blue',
+    color: AppColors.orange,
     alignSelf: 'center',
   },
 
