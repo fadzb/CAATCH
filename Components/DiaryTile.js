@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 import Icon from 'react-native-vector-icons/Ionicons';
 import { themeStyles, Tiles } from '../Styles/TabStyles';
+import { deviceHeight, smallDeviceHeight } from '../Constants/Constants';
 
 export const DiaryTile = (props) => {
   return (
@@ -45,7 +46,7 @@ const tileStyle = StyleSheet.create({
   // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
   buttonText: {
-    fontSize: 14,
+    fontSize: deviceHeight < smallDeviceHeight ? 12 : 14,
     paddingBottom: 10,
   },
 });
