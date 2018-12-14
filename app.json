@@ -12,13 +12,15 @@
     "splash": {
       "image": "./Media/Images/SafePlanSplash.png",
       "resizeMode": "cover"
+    },
+    "ios": {
+      "bundleIdentifier": "com.nuig.safeplan"
+    },
+    "android": {
+      "package": "com.nuig.safeplan"
     }
   },
   "ios": {
-    "usesIcloudStorage": true,
-    "bundleIdentifier": "com.nuig.safeplan"
-  },
-  "android": {
-    "package": "com.nuig.safeplan"
+    "usesIcloudStorage": true
   }
 }

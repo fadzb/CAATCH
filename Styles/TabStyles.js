@@ -1,5 +1,6 @@
 import { StyleSheet, Platform } from 'react-native';
 import { Constants } from 'expo';
+import {allowFontScaling} from "../Constants/Constants";
 
 // globally shared TabStyles
 
@@ -61,6 +62,7 @@ export const Stacks = {
         headerBackTitleStyle: {
             color: AppColors.white
         },
+        headerTitleAllowFontScaling: allowFontScaling
     },
     cardStyle: {
         backgroundColor: AppColors.white,

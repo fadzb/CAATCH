@@ -33,7 +33,7 @@ export default class About extends React.Component {
                         onPress={() => this.props.navigation.push('webView', {
                             url: connectingForLifeUrl
                         })}
-                    >Connecting for Life</Text> programme.</Text>
+                    >{"Connecting for Life"}</Text> programme.</Text>
                     <View style={aboutStyle.paraContainer}>
                         <Text style={aboutStyle.headText}>Developer</Text>
                         <Text style={aboutStyle.paraText}>Conor O'Grady</Text>
