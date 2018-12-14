@@ -9,7 +9,7 @@ import Moment from 'moment';
 import { updateUsage, updateDbtSetting, updateAppState, updateWallpaper } from './Redux/actions';
 import { AppLoading } from 'expo';
 import { Root } from 'native-base';
-import { AppState, Text } from 'react-native';
+import { AppState, Text, TextInput } from 'react-native';
 
 import PlanStack from './Components/StackNavigators/SafetyPlanStack';
 import DiaryStack from './Components/StackNavigators/DiaryStack';
@@ -17,7 +17,7 @@ import SettingsStack from './Components/StackNavigators/SettingsStack';
 import Passcode from './Screens/Passcode';
 import HomeStack from './Components/StackNavigators/HomeStack';
 import CrisisStack from './Components/StackNavigators/CrisisStack';
-import { DbTableNames, UsageFunctionIds } from './Constants/Constants';
+import { allowFontScaling, DbTableNames, UsageFunctionIds } from './Constants/Constants';
 import { ComponentStyleConst } from './Styles/TabStyles';
 
 //Initial Tab screens/stack navs
@@ -25,6 +25,12 @@ import { ComponentStyleConst } from './Styles/TabStyles';
 export default class App extends React.Component {
   constructor(props) {
     super(props);
+
+    Text.defaultProps.allowFontScaling = allowFontScaling;
+    // font size remains consistent regardless of option selected in device's accessibility settings
+
+    TextInput.defaultProps.allowFontScaling = allowFontScaling;
+    // This does not work on android devices as of 14.12.2018
 
     this.state = {
       isReady: false,
@@ -249,6 +255,7 @@ const TabBar = createBottomTabNavigator(
       //activeTintColor: "#31548B"
       //activeTintColor: "#F09100"
       activeTintColor: ComponentStyleConst.bottomTabBarTint,
+      allowFontScaling: allowFontScaling,
     },
   }
 );

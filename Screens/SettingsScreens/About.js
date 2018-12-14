@@ -54,7 +54,7 @@ export default class About extends React.Component {
                 })
               }
             >
-              Connecting for Life
+              {'Connecting for Life'}
             </Text>{' '}
             programme.
           </Text>
