@@ -1,5 +1,8 @@
 export const AppName = 'SafePlan';
 
+// const used control various components fontScaling Property
+export const allowFontScaling = false;
+
 // Safety Plan
 export const SafetyPlanConstants = {
   distraction: 'Distraction',

@@ -246,7 +246,7 @@ export default class ContactSummary extends React.Component {
             </View>
           </View>
         )}
-        {helper && (
+        {responsibility !== null && (
           <View style={contactSummaryStyle.contactTextRow}>
             <View style={{ paddingLeft: 10 }}>
               <Text style={{ paddingBottom: 5, fontSize: 16, color: '#808080' }}>How they can help me</Text>
