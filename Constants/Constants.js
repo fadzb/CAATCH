@@ -1,4 +1,10 @@
+import { Dimensions } from 'react-native';
+
 export const AppName = 'SafePlan';
+
+// used to render smaller text/icons if screen size is 4 inches or less
+export const deviceHeight = Dimensions.get('window').height;
+export const smallDeviceHeight = 600;
 
 // const used control various components fontScaling Property
 export const allowFontScaling = false;

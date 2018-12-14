@@ -21,7 +21,7 @@ import { updateDate } from '../../Redux/actions';
 import { getDiaryPrePops } from '../../Constants/Prepopulated';
 
 import { AppColors, ComponentStyleConst, TabStyles, themeStyles, Tiles } from '../../Styles/TabStyles';
-import { SectionHeader } from '../../Constants/Constants';
+import { deviceHeight, SectionHeader, smallDeviceHeight } from '../../Constants/Constants';
 
 class DiaryScreen extends React.Component {
   static navigationOptions = {
@@ -133,7 +133,7 @@ const diaryStyle = StyleSheet.create({
   },
 
   dateButtonText: {
-    fontSize: 16,
+    fontSize: deviceHeight < smallDeviceHeight ? 14 : 16,
     //paddingLeft: 10
   },
 });
