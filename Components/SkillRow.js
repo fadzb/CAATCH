@@ -7,6 +7,7 @@ import {updateSkillRating} from "../Redux/actions";
 import {PressableIcon} from "./PressableIcon";
 import {Icons} from "../Constants/Icon";
 import {AppColors} from "../Styles/TabStyles";
+import {deviceHeight, smallDeviceHeight} from "../Constants/Constants";
 
 export default class SkillRow extends React.Component {
 
@@ -98,7 +99,7 @@ const skillRowStyle = StyleSheet.create({
     // need to wrap button in View in order to stretch to full width of screen using flexDirection
 
     buttonText: {
-        fontSize: 15,
+        fontSize: deviceHeight < smallDeviceHeight ? 12 : 15,
         paddingLeft: 5,
         flex: 1,
         color: AppColors.blue

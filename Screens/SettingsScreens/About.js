@@ -2,7 +2,7 @@ import React from 'react';
 import { StyleSheet, ScrollView, Text, View, Button, TextInput, WebView, Dimensions, TouchableOpacity, Platform, Image, Linking } from 'react-native';
 import {Icons} from "../../Constants/Icon";
 import {AppColors, TabStyles} from "../../Styles/TabStyles";
-import {AppName} from "../../Constants/Constants";
+import {AppName, deviceHeight, smallDeviceHeight} from "../../Constants/Constants";
 
 const infoVideoUrl = 'https://www.youtube.com';
 // to be updated when info video is recorded
@@ -23,7 +23,7 @@ export default class About extends React.Component {
                 <View style={{overflow: 'hidden', borderRadius: 10, marginVertical: 10, alignItems: 'center'}}>
                     <Image
                         source={require('../../Media/Images/SafePlanLogoWithoutBackground.png')}
-                        style={{width: 80, height: 80}}
+                        style={{width: deviceHeight < smallDeviceHeight ? 40 : 80, height: deviceHeight < smallDeviceHeight ? 40 : 80}}
                     />
                     <Text style={aboutStyle.logoText}>Safe<Text style={{color: AppColors.orange}}>Plan</Text></Text>
                 </View>
