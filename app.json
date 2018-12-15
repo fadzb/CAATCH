@@ -2,7 +2,7 @@
   "expo": {
     "name": "SafePlan",
     "icon": "./Media/Images/SafePlanIcon.png",
-    "version": "0.1",
+    "version": "0.2",
     "slug": "safeplan",
     "sdkVersion": "27.0.0",
     "packagerOpts": {
@@ -14,13 +14,11 @@
       "resizeMode": "cover"
     },
     "ios": {
-      "bundleIdentifier": "com.nuig.safeplan"
+      "bundleIdentifier": "com.nuig.safeplan",
+      "usesIcloudStorage": true
     },
     "android": {
       "package": "com.nuig.safeplan"
     }
-  },
-  "ios": {
-    "usesIcloudStorage": true
   }
 }
