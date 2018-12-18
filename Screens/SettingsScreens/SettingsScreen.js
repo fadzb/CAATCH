@@ -324,57 +324,77 @@ export default class SettingsScreen extends React.Component {
     };
 
     createCsvFile = (data, usageData) => {
-        const headerString = 'Session Id,Diary Id,Diary Name,Diary Type,Min Rating,Max Rating,Rating,Date Entered,Diary Date,Unique Id\n';
+        const headerString = 'Session Id,Diary Id,Diary Name,Diary Type,Min Rating,Max Rating,Rating,Date Entered,Diary Date,Safety Plan Id,Unique Id\n';
         let rowString = '';
 
         const installationId = Expo.Constants.installationId;
 
-        data.forEach(d => {
-            let updatedName = d.diaryName;
+        readDatabaseArg('ws.signId, ws.signName, ss.dateEntered, s.sessionId, s.diaryDate, "Warning Sign" as type', DbTableNames.warningSign, res => {
+        // checking for any coping strategy or warning sign links
 
-            if(d.diaryName.includes(',')) {
-                updatedName = d.diaryName.replace(',', '-')
-            }
-            // removing commas from diary names in order to produce correct CSV file
+            res.forEach(r => {
+                let updatedName = r.signName;
 
-            rowString = rowString + d.sessionId + ',' + d.diaryId + ',' + updatedName + ',' + d.diaryType + ',' +d.minRating + ',' + d.scale + ',' + d.rating + ',' + d.dateEntered + ',' + d.diaryDate + ',' + installationId + '\n'
-        });
+                if(r.signName.includes(',')) {
+                    updatedName = r.signName.replace(',', '-')
+                }
+                // removing commas from SP names in order to produce correct CSV file
 
-        const filePath = Expo.FileSystem.cacheDirectory + 'DiaryResults-'+ Moment().format('DD.MM.YYYY') + '.csv';
-        // diary ratings csv creation
+                rowString = rowString + r.sessionId + ',null,' + updatedName + ',' + r.type + ',null,null,null,' + r.dateEntered + ',' + r.diaryDate + ',' + r.signId + ',' + installationId + '\n'
+            });
 
-        Expo.FileSystem.writeAsStringAsync(filePath, headerString + rowString)
-            .then(res => {
-                const usageHeaderString = 'Usage Id,Usage Date,Function Id,Function Name,Timestamp,Table Name,Item Name,Time Spent(ms),Unique Id\n';
-                let usageRowString = '';
+            data.forEach(d => {
+                let updatedName = d.diaryName;
 
-                usageData.forEach(u => {
-                    let updatedIdName = u.idName;
+                if(d.diaryName.includes(',')) {
+                    updatedName = d.diaryName.replace(',', '-')
+                }
+                // removing commas from diary names in order to produce correct CSV file
 
-                    if(u.idName && u.idName.includes(',')) {
-                        updatedIdName = u.idName.replace(',', '-')
-                    }
-                    // removing commas from idnames in order to produce correct CSV file
+                rowString = rowString + d.sessionId + ',' + d.diaryId + ',' + updatedName + ',' + d.diaryType + ',' +d.minRating + ',' + d.scale + ',' + d.rating + ',' + d.dateEntered + ',' + d.diaryDate + ',null,' + installationId + '\n'
+            });
 
-                    usageRowString = usageRowString + u.usageId + ',' + u.usageDate + ',' + u.functionId + ',' + u.functionName + ',' + u.dateEntered + ',' + u.tableName + ',' + updatedIdName + ',' + u.functionValue + ',' + installationId + '\n'
-                });
+            const filePath = Expo.FileSystem.cacheDirectory + 'DiaryResults-'+ Moment().format('DD.MM.YYYY') + '.csv';
+            // diary ratings csv creation
 
-                const usageFilePath = Expo.FileSystem.cacheDirectory + 'UsageData-'+ Moment().format('DD.MM.YYYY') + '.csv';
-                // usage csv creation
+            Expo.FileSystem.writeAsStringAsync(filePath, headerString + rowString)
+                .then(res => {
+                    const usageHeaderString = 'Usage Id,Usage Date,Function Id,Function Name,Timestamp,Table Name,Item Name,Time Spent(ms),Unique Id\n';
+                    let usageRowString = '';
 
-                Expo.FileSystem.writeAsStringAsync(usageFilePath, usageHeaderString + usageRowString)
-                    .then(res => {
-                        Expo.MailComposer.composeAsync({
-                            recipients: this.state.selectedRecipients,
-                            subject: AppName + ' App Data ' + Moment().format('LL'),
-                            body: "Hi, please find " + AppName + " diary and usage data attached.",
-                            attachments: [filePath, usageFilePath]
+                    usageData.forEach(u => {
+                        let updatedIdName = u.idName;
+
+                        if(u.idName && u.idName.includes(',')) {
+                            updatedIdName = u.idName.replace(',', '-')
+                        }
+                        // removing commas from idnames in order to produce correct CSV file
+
+                        usageRowString = usageRowString + u.usageId + ',' + u.usageDate + ',' + u.functionId + ',' + u.functionName + ',' + u.dateEntered + ',' + u.tableName + ',' + updatedIdName + ',' + u.functionValue + ',' + installationId + '\n'
+                    });
+
+                    const usageFilePath = Expo.FileSystem.cacheDirectory + 'UsageData-'+ Moment().format('DD.MM.YYYY') + '.csv';
+                    // usage csv creation
+
+                    Expo.FileSystem.writeAsStringAsync(usageFilePath, usageHeaderString + usageRowString)
+                        .then(res => {
+                            Expo.MailComposer.composeAsync({
+                                recipients: this.state.selectedRecipients,
+                                subject: AppName + ' App Data ' + Moment().format('LL'),
+                                body: "Hi, please find " + AppName + " diary and usage data attached.",
+                                attachments: [filePath, usageFilePath]
+                            })
+                                .then(result => console.log(result))
+                                .then(res => this.handleEmailModalClose())
+                                .catch(err => console.log(err))
                         })
-                            .then(result => console.log(result))
-                            .then(res => this.handleEmailModalClose())
-                            .catch(err => console.log(err))
-                    })
-            }).catch(err => console.log(err))
+                }).catch(err => console.log(err))
+        }, undefined, 'as ws inner join ' + DbTableNames.signSession + ' as ss on ss.signId = ws.signId' +
+            ' inner join ' + DbTableNames.session + ' as s on s.sessionId = ss.sessionId union all select c.copeId, c.copeName, cs.dateEntered, s.sessionId, s.diaryDate, "Coping Strategy" as type from ' + DbTableNames.copingStrategy + ' as c inner join ' + DbTableNames.copeSession + '' +
+            ' as cs on cs.copeId = c.copeId inner join ' + DbTableNames.session + ' as s on s.sessionId = cs.sessionId');
+
+
+
     };
 
     getEmailRecipients = () => {
