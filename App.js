@@ -20,7 +20,7 @@ import CrisisStack from './Components/StackNavigators/CrisisStack';
 import { allowFontScaling, DbTableNames, UsageFunctionIds } from './Constants/Constants';
 import { ComponentStyleConst } from './Styles/TabStyles';
 
-// Rewriting git history to format project (prettier) without overwriting logs
+// Rewriting git history to format project (prettier) without overwriting logs.
 
 //Initial Tab screens/stack navs
 
